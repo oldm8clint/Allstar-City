@@ -80,15 +80,15 @@ check(byId(15195).wearpos2 === 8 && byId(14505).wearpos2 === -1 && byId(14513).w
 check(param(byId(13597), 'allstar_req_defence') === 5 && param(byId(13599), 'allstar_req_defence') === 20 && param(byId(13600), 'allstar_req_defence') === undefined && param(byId(13601), 'allstar_req_defence') === undefined, 'defender Defence reqs: steel 5, mithril 20, "Adament"/rune none');
 check(param(byId(15145), 'allstar_req_defence') === 60 && !byId(15145).stackable && wearpos(15145) === 13, 'dragon arrows: Defence 60 ("Dragon" name rule), not stackable, quiver');
 check(param(byId(15156), 'allstar_req_ranged') === 80 && param(byId(15156), 'slashdefence') === 150, 'dark bow: Ranged 80, slash defence 150');
-check(param(byId(14915), 'allstar_blocks_shield') === 1 && param(byId(15334), 'allstar_blocks_shield') === undefined && byId(15334).wearpos2 === -1, 'only the anchor is in twoHanderz; godswords are one-handed');
+check(param(byId(14915), 'allstar_twohanderz') === 3 && param(byId(15334), 'allstar_twohanderz') === undefined && byId(15334).wearpos2 === -1, 'only the anchor is in twoHanderz (index 3); godswords are one-handed');
 check(param(byId(15334), 'allstar_req_attack') === 80 && param(byId(15333), 'allstar_req_attack') === undefined, 'godsword Attack reqs: BGS/ZGS 80, AGS none');
 const seq = (id: number, name: string) => param(byId(id), name);
-check(seq(15334, 'ready_baseanim') === 1662 && seq(15334, 'walk_f_baseanim') === 1663 && seq(15334, 'slashattack_anim') === 407, 'BGS anims: stand 1662, walk 1663, attack 407');
-check(seq(15336, 'slashattack_anim') === 407 && seq(15333, 'slashattack_anim') === 406 && seq(15333, 'ready_baseanim') === undefined, 'ZGS attack 407, AGS 406 with default stand');
-check(seq(14915, 'ready_baseanim') === 2065 && seq(14915, 'walk_f_baseanim') === 2064 && seq(14915, 'crushattack_anim') === 406, 'anchor anims: stand 2065, walk 2064, attack 406');
+check(seq(15334, 'allstar_stand_anim') === 1662 && seq(15334, 'allstar_walk_anim') === 1663 && seq(15334, 'slashattack_anim') === 407, 'BGS anims: stand 1662, walk 1663, attack 407');
+check(seq(15336, 'slashattack_anim') === 407 && seq(15333, 'slashattack_anim') === 406 && seq(15333, 'allstar_stand_anim') === undefined, 'ZGS attack 407, AGS 406 with default stand');
+check(seq(14915, 'allstar_stand_anim') === 2065 && seq(14915, 'allstar_walk_anim') === 2064 && seq(14915, 'crushattack_anim') === 406, 'anchor anims: stand 2065, walk 2064, attack 406');
 check(seq(15156, 'rangeattack_anim') === 426 && seq(10717, 'stabattack_anim') === 806, 'dark bow attack 426; other weapon-slot items 806');
 check(param(byId(14643), 'allstar_name') === '!! NOT EXISTING ITEM !!! - ID:14643' && byId(14643).cost === 1 && wearpos(14643) === 5, 'BA icons are undefined in item.cfg (1 gp) and go in the shield slot');
-check(param(byId(15195), 'allstar_sellable') === 1 && param(byId(14562), 'allstar_sellable') === 0, 'itemSellable overrides (15195 yes, 14562 no)');
+check(param(byId(15195), 'allstar_sellable') === 1 && param(byId(14562), 'allstar_sellable') === undefined, 'itemSellable overrides (15195 yes, 14562 no)');
 
 // ---- allstar_items enum
 const e = EnumType.getByName('allstar_items');

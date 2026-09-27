@@ -114,26 +114,6 @@ p_delay(0);
 ~mesbox("You hear the clunking of some hidden machinery.");
 
 [oploc1,ikov_chestclosed] ~open_chest(ikov_chestopen);
-[oploc2,ikov_chestopen] ~close_chest(ikov_chestclosed);
-
-[oploc1,ikov_chestopen]
-if(%ikov_icearrowchest_coord = null) {
-    ~randomize_ice_arrow_chest;
-}
-if(%ikov_icearrowchest_coord = loc_coord) {
-    def_int $count = calc(random(5) + 1);
-    inv_add(inv, ice_arrow, $count); // 1 - 5 arrows
-    sound_synth(found_ice_arrows, 1, 0);
-    ~randomize_ice_arrow_chest;
-    def_string $arrow_mes = "You found an ice arrow!";
-    if($count > 1) {
-        $arrow_mes = "You found some ice arrows!";
-    }
-    ~objbox(ice_arrow, $arrow_mes, 250, 0, 0);
-    return;
-}
-mes("You search the chest, but find nothing.");
-
 [oploc1,ikov_traplever]
 if(%ikov = ^ikov_disabled_trap) %ikov = ^ikov_pulled_lever;
 p_arrivedelay;

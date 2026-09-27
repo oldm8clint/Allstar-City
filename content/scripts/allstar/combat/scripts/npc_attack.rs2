@@ -23,7 +23,7 @@ def_coord $npc = npc_coord;
 if ($type ! chaoselemental & $type ! slayer_infernal_mage_3) {
     $npc = ~allstar_npc_follow_step($target);
 }
-if (~allstar_gooddistance($npc, $target, 1) = false & $type ! chaoselemental) {
+if (~allstar_gooddistance_to($npc, $target, 1) = false & $type ! chaoselemental) {
     return;
 }
 if (%asn_timer ! 0) {

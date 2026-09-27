@@ -55,27 +55,6 @@ else {
     mes("This door is locked.");
 }
 
-// Opens if north lever is up and south lever is up
-[oploc1,famcrest_doorh2]
-if (testbit(%crest_spells_levers_gauntlets, ^crest_north_lever) = ^true &
-    testbit(%crest_spells_levers_gauntlets, ^crest_south_lever) = ^true) {
-    ~open_and_close_door2(famcrest_doorh2i2, ~check_axis(coord, loc_coord, loc_angle), door_open);
-}
-else {
-    mes("This door is locked.");
-}
-
-// Opens if north lever is up and south lever is down
-[oploc1,famcrest_doorg2h1]
-if (testbit(%crest_spells_levers_gauntlets, ^crest_north_lever) = ^true &
-    testbit(%crest_spells_levers_gauntlets, ^crest_south_lever) = ^false) {
-    ~open_and_close_door2(famcrest_doorh2i2, ~check_axis(coord, loc_coord, loc_angle), door_open);
-}
-else {
-    mes("This door is locked.");
-}
-
-// Opens if north lever is up, south lever is down, and the north room lever is up
 [oploc1,famcrest_doori2h1]
 if (%crestquest = ^crest_complete | (testbit(%crest_spells_levers_gauntlets, ^crest_north_lever) = ^true &
     testbit(%crest_spells_levers_gauntlets, ^crest_south_lever) = ^false &

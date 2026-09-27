@@ -1,13 +1,3 @@
-[opheldu,achey_tree_logs]
-switch_obj(last_useitem) {
-    case knife : @make_ogre_shafts;
-    case tinderbox : @light_achey_inv(last_slot);
-    case default : ~displaymessage(^dm_default);
-}
-
-// In osrs, achey logs are special. when you tinderbox -> log, it goes through a different firemaking script.
-// In this different script, the log drops before some of the inzone checks. And in the trawler minigame
-// you're actually able to firemake with achey logs when its flooding, but not with normal logs
 [label,light_achey_inv](int $slot)
 def_obj $log = inv_getobj(inv, $slot);
 def_int $level = oc_param($log, levelrequire);

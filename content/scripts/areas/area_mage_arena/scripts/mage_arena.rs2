@@ -1,29 +1,3 @@
-[oploc1,magearena_lever_to_cellar]
-p_arrivedelay;
-anim(human_leverdown, 0);
-sound_synth(lever, 1, 0);
-loc_change(hauntedleverdown, 7);
-if_close;
-p_delay(1);
-mes("You pull the lever...");
-p_delay(0);
-
-~player_teleport_normal(0_39_73_43_40);
-
-[oploc1,magearena_lever_from_cellar]
-p_arrivedelay;
-anim(human_leverdown, 0);
-sound_synth(lever, 1, 0);
-loc_change(hauntedleverdown, 7);
-if_close;
-p_delay(1);
-mes("You pull the lever...");
-p_delay(0);
-~player_teleport_normal(0_48_61_18_52);
-
-[oploc1,magearena_waterportal1] @jump_in_sparkling_pool(^sparkling_pool_chamber_coord);
-[oploc1,magearena_waterportal2] @jump_in_sparkling_pool(^sparkling_pool_return_coord);
-
 [label,jump_in_sparkling_pool](coord $tele_coord)
 def_int $width = 3;
 def_int $length = 3;
@@ -85,8 +59,6 @@ p_delay(1);
 p_teleport($tele_coord);
 anim(null, 0);
 
-
-
 // need to find screenshots to confirm these
 [oploc1,magearena_scan]
 // if north of the loc
@@ -104,7 +76,6 @@ if (coordz(coord) > coordz(loc_coord)) {
     p_teleport(movecoord(loc_coord, 0, 0, 1));
 }
 mes("You pass through the mystical barrier."); //rsc
-
 
 [proc,can_enter_mage_arena]()(boolean)
 if ((inv_totalcat(inv, armour_hands) > 0 | inv_totalcat(worn, armour_hands) > 0)
@@ -164,7 +135,6 @@ if (npc_find(coord, arenamage1, 5, 0) = true) {
     @arenamage1_what_now;
     return;
 }
-
 
 [proc,mage_arena_exactmove](coord $spawn_coord)
 def_int $x = calc(coordx($spawn_coord) - coordx(^mage_arena_start_coord));

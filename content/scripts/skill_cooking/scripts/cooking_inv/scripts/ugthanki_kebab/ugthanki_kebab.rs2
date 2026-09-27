@@ -1,75 +1,3 @@
-[opheldu,onion]
-switch_obj(last_useitem) {
-    case bowl_empty : @make_bowl_mixture(last_slot);
-    case bowl_tomato, bowl_ugthanki, bowl_ugthankitomato : @make_bowl_mixture2(last_slot, last_useslot);
-    case bowl_oniontomato, bowl_onion, bowl_ugthankionion : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case half_baked_bowl : @add_bowl_ingredient(last_item);
-    case half_baked_batta : @add_batta_ingredient(last_item);
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,cooked_ugthanki_meat]
-switch_obj(last_useitem) {
-    case bowl_empty : @make_bowl_mixture(last_slot);
-    case bowl_tomato, bowl_onion, bowl_oniontomato : @make_bowl_mixture2(last_slot, last_useslot);
-    case bowl_ugthanki, bowl_ugthankitomato, bowl_ugthankionion : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bowl_tomato]
-switch_obj(last_useitem) {
-    case onion, cooked_ugthanki_meat : @make_bowl_mixture2(last_useslot, last_slot);
-    case tomato : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bowl_onion]
-switch_obj(last_useitem) {
-    case tomato, cooked_ugthanki_meat : @make_bowl_mixture2(last_useslot, last_slot);
-    case onion : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bowl_ugthanki]
-switch_obj(last_useitem) {
-    case tomato, onion : @make_bowl_mixture2(last_useslot, last_slot);
-    case cooked_ugthanki_meat : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bowl_oniontomato]
-switch_obj(last_useitem) {
-    case cooked_ugthanki_meat : @make_bowl_mixture2(last_useslot, last_slot);
-    case tomato, onion : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bowl_ugthankionion]
-switch_obj(last_useitem) {
-    case tomato : @make_bowl_mixture2(last_useslot, last_slot);
-    case onion, cooked_ugthanki_meat : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bowl_ugthankitomato]
-switch_obj(last_useitem) {
-    case onion : @make_bowl_mixture2(last_useslot, last_slot);
-    case tomato, cooked_ugthanki_meat : mes("This mixture already contains enough <lowercase(oc_name(last_useitem))>.");
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bowl_oniontomugthanki]
-switch_obj(last_useitem) {
-    case pitta_bread : @make_ugthanki_kebab(last_slot);
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,pitta_bread]
-switch_obj(last_useitem) {
-    case bowl_oniontomugthanki : @make_ugthanki_kebab(last_useslot);
-    case default : ~displaymessage(^dm_default);
-}
-
 [label,make_bowl_mixture](int $last)
 if (map_members = ^false) {
     mes("You can only make that on a members' server.");
@@ -87,7 +15,6 @@ def_struct $struct = oc_param($ingredient, ugthanki_kebab_struct);
 inv_add(inv, struct_param($struct, product), 1);
 //display message
 mes("You cut the <lowercase(oc_name($ingredient))> into the bowl.");
-
 
 [label,make_bowl_mixture2](int $ingredient_slot, int $mixture_slot)
 if (map_members = ^false) {
@@ -111,7 +38,6 @@ if($ingredient = struct_param($mixture_struct, ingredient)) {
 }
 //display message
 mes("You add the <lowercase(oc_name($ingredient))> into the <struct_param($mixture_struct, productmessage)> mixture.");
-
 
 [label,make_ugthanki_kebab](int $kebab_slot)
 if (map_members = ^false) {

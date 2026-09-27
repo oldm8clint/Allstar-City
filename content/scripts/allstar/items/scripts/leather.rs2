@@ -1,0 +1,62 @@
+// Allstar-Scape leather crafting: interface 2311 buttons (packet 185, L23517-23605).
+// The product is added first, then thread and leather are deleted and Crafting xp = k * current
+// level. Leather is not stackable, so deleting 2 or 3 removes one. BUG: gloves, boots, cowl and
+// vambraces never check for leather; their failure message is about thread even when the level is
+// too low.
+[if_button,leather_crafting:com_116]
+if (inv_total(inv, thread) >= 1 & stat(crafting) >= 0) {
+    ~allstar_make_leather(leather_gloves, 1, 20, "You make some gloves!");
+} else {
+    mes("You havnt got any thread!");
+}
+
+[if_button,leather_crafting:com_119]
+if (inv_total(inv, thread) >= 1 & stat(crafting) >= 4) {
+    ~allstar_make_leather(leather_boots, 1, 40, "You make some boots!");
+} else {
+    mes("You havnt got any thread!");
+}
+
+[if_button,leather_crafting:com_131]
+if (inv_total(inv, thread) >= 2 & stat(crafting) >= 9) {
+    ~allstar_make_leather(leather_cowl, 2, 60, "You make a leather cowl!!");
+} else {
+    mes("You havnt got any thread!");
+}
+
+[if_button,leather_crafting:com_122]
+if (inv_total(inv, thread) >= 2 & stat(crafting) >= 14) {
+    ~allstar_make_leather(leather_vambraces, 2, 80, "You make some leather vambraces!");
+} else {
+    mes("You havnt got any thread!");
+}
+
+[if_button,leather_crafting:com_125]
+if (inv_total(inv, leather) >= 1 & inv_total(inv, thread) >= 6 & stat(crafting) >= 34) {
+    ~allstar_make_leather(leather_chaps, 4, 140, "You make some leather chaps!!");
+} else {
+    mes("You need 6 thread and 1 piece of soft leather to make this!");
+}
+
+[if_button,leather_crafting:com_113]
+if (inv_total(inv, thread) >= 15 & inv_total(inv, leather) >= 1 & stat(crafting) >= 29) {
+    ~allstar_make_leather(leather_armour, 5, 120, "You make a leather body!!");
+} else {
+    mes("You need 15 thread and 1 pieces of soft leather to make this!");
+}
+
+[if_button,leather_crafting:com_128]
+if (inv_total(inv, thread) >= 2 & inv_total(inv, leather) >= 1 & stat(crafting) >= 34) {
+    ~allstar_make_leather(coif, 2, 140, "You make a coif!!");
+} else {
+    mes("You need 2 thread and 1 piece of soft leather to make this!");
+}
+
+[if_button,leather_crafting:com_89] if_close;
+
+[proc,allstar_make_leather](namedobj $product, int $thread, int $factor, string $message)
+~allstar_give($product, 1);
+inv_del(inv, thread, $thread);
+inv_del(inv, leather, 1);
+stat_advance(crafting, calc($factor * stat(crafting)));
+mes($message);

@@ -1,0 +1,266 @@
+// Allstar-Scape doors and gates (objectClick, allstar/spec/objects_buttons.md section 3.11).
+//
+// Allstar-Scape's server had no collision; a door handler only sent ReplaceObject to the clicking
+// player's client. Config/objects.cfg and data/Objects.cfg were never used, so doors never closed by
+// themselves. Here the change is made to the shared loc and reverts after ^allstar_door_duration.
+
+// ReplaceObject(x, y, id, face) (client.java L1508): the 317 client removed the wall (shapes 0-3) on
+// the tile and, for id > -1, added id as a straight wall. The face byte arrived as -face: 0 west,
+// -1 north, -2 east, -3 south.
+[proc,allstar_replaceobject](coord $coord, loc $loc, int $face)
+if ($loc = null) {
+    ~allstar_delwall($coord);
+    return;
+}
+loc_add($coord, $loc, and(calc(0 - $face), 3), wall_straight, ^allstar_door_duration);
+
+// ReplaceObject(x, y, -1, -1): remove the wall on the tile
+[proc,allstar_delwall](coord $coord)
+loc_findallzone($coord);
+while (loc_findnext = true) {
+    if (loc_coord = $coord & ~allstar_is_wall(loc_shape) = true) {
+        loc_del(^allstar_door_duration);
+        return;
+    }
+}
+
+[proc,allstar_is_wall](locshape $shape)(boolean)
+if ($shape = wall_straight | $shape = wall_diagonalcorner | $shape = wall_l | $shape = wall_squarecorner) {
+    return(true);
+}
+return(false);
+
+// Coordinates are compared without the level, like objectX/objectY.
+[proc,allstar_coordis](coord $coord, int $x, int $z)(boolean)
+if (coordx($coord) = $x & coordz($coord) = $z) {
+    return(true);
+}
+return(false);
+
+[proc,allstar_loc_offset](int $dx, int $dz)(coord)
+return(movecoord(loc_coord, $dx, 0, $dz));
+
+// 1600 / 1601 (QUEST_3): the missing breaks run the magic guild checks and then the generic door
+// swap, so the door opens whatever cape is worn.
+[label,allstar_magicguild_door](int $first)
+if ($first = 3087) {
+    ~allstar_magicguild_check(3087);
+}
+~allstar_magicguild_check(3088);
+@allstar_door_idminus1;
+
+[proc,allstar_magicguild_check](int $z)
+if (coordz(loc_coord) = $z) {
+    if (inv_getobj(worn, ^wearpos_back) = mourning_mourner_cloak) {
+        mes("You sneak into the mage guild...");
+        // ReplaceObject(x, y, id - 1, -2), replaced again at once by the door swap below
+    } else {
+        mes("Piss off! You ain't aloud in here!");
+    }
+}
+
+// 11993, 1537, 2427, 2429 (and 1600 / 1601): the loc with id - 1, facing by coordinate
+[label,allstar_door_idminus1]
+def_int $face = 0;
+def_coord $c = loc_coord;
+if (~allstar_coordis($c, 3231, 3433) = true | ~allstar_coordis($c, 3253, 3431) = true | ~allstar_coordis($c, 2719, 9671) = true
+    | ~allstar_coordis($c, 2722, 9671) = true | ~allstar_coordis($c, 3109, 3167) = true | ~allstar_coordis($c, 3107, 3162) = true) {
+    $face = -3;
+} else if (~allstar_coordis($c, 3234, 3426) = true | ~allstar_coordis($c, 3225, 3293) = true | ~allstar_coordis($c, 3230, 3291) = true
+    | ~allstar_coordis($c, 3235, 3406) = true | ~allstar_coordis($c, 3276, 3421) = true | ~allstar_coordis($c, 3207, 3210) = true) {
+    $face = -2;
+} else if (~allstar_coordis($c, 3233, 3427) = true | ~allstar_coordis($c, 3215, 3225) = true | ~allstar_coordis($c, 3207, 3217) = true
+    | ~allstar_coordis($c, 3208, 3211) = true) {
+    $face = -1;
+}
+def_loc $new = null;
+switch_loc (loc_type) {
+    case fai_wiztower_poor_door : $new = loc_11992;
+    case loc_1537 : $new = loc_1536;
+    case famcrest_doorh2 : $new = leveri2;
+    case famcrest_doorg2h1 : $new = famcrest_doorh2i2;
+    case magicguild_door_l : $new = memberfencegate_r;
+    case magicguild_door_r : $new = magicguild_door_l;
+}
+~allstar_replaceobject($c, $new, $face);
+
+// 1536 -> 1537
+[label,allstar_door_1536]
+def_int $face = 0;
+def_coord $c = loc_coord;
+if (~allstar_coordis($c, 3235, 3426) = true | ~allstar_coordis($c, 3233, 3438) = true | ~allstar_coordis($c, 3207, 3210) = true) {
+    $face = -3;
+} else if (~allstar_coordis($c, 3231, 3433) = true | ~allstar_coordis($c, 2611, 3324) = true) {
+    $face = -2;
+} else if (~allstar_coordis($c, 3234, 3426) = true | ~allstar_coordis($c, 3225, 3293) = true | ~allstar_coordis($c, 3230, 3291) = true
+    | ~allstar_coordis($c, 3241, 3406) = true | ~allstar_coordis($c, 3235, 3406) = true | ~allstar_coordis($c, 3276, 3421) = true
+    | ~allstar_coordis($c, 3248, 3396) = true | ~allstar_coordis($c, 3260, 3400) = true) {
+    $face = -1;
+}
+~allstar_replaceobject($c, loc_1537, $face);
+
+// 2558 pirate hut door, 1557 / 1558 Edgeville dungeon gates: id + 2 (2558 becomes a silk stall)
+[label,allstar_door_idplus2]
+def_loc $new = null;
+switch_loc (loc_type) {
+    case loc_2558 : $new = silk_stall_stealing;
+    case loc_1557 : $new = loc_1559;
+    case loc_1558 : $new = loc_1560;
+}
+~allstar_replaceobject(loc_coord, $new, 0);
+
+// double gates 1551 / 1552 / 1553 / 1556
+[label,allstar_double_gate]
+def_int $face = 0;
+def_int $gate = 1;
+def_coord $c = loc_coord;
+if (~allstar_coordis($c, 3253, 3266) = true | ~allstar_coordis($c, 3253, 3267) = true | ~allstar_coordis($c, 3241, 3301) = true
+    | ~allstar_coordis($c, 3241, 3302) = true) {
+    $face = -3;
+    $gate = 1;
+} else if (~allstar_coordis($c, 3236, 3284) = true | ~allstar_coordis($c, 3236, 3285) = true | ~allstar_coordis($c, 3236, 3295) = true
+    | ~allstar_coordis($c, 3236, 3296) = true) {
+    $face = -3;
+    $gate = 2;
+} else if (~allstar_coordis($c, 3312, 3234) = true | ~allstar_coordis($c, 3237, 3284) = true | ~allstar_coordis($c, 3238, 3284) = true
+    | ~allstar_coordis($c, 3237, 3295) = true | ~allstar_coordis($c, 3238, 3295) = true) {
+    $face = -2;
+    $gate = 2;
+}
+def_loc $type = loc_type;
+if ($gate = 1) {
+    if ($type = loc_1553) {
+        ~allstar_replaceobject(movecoord($c, -1, 0, -1), loc_1552, $face);
+        ~allstar_replaceobject(movecoord($c, -2, 0, -1), loc_1556, $face);
+        ~allstar_replaceobject(movecoord($c, 0, 0, -1), null, -1);
+    } else if ($type = loc_1551) {
+        ~allstar_replaceobject(movecoord($c, -1, 0, 0), loc_1552, $face);
+        ~allstar_replaceobject(movecoord($c, -2, 0, 0), loc_1556, $face);
+        ~allstar_replaceobject(movecoord($c, 0, 0, 1), null, -1);
+    } else if ($type = loc_1552) {
+        ~allstar_replaceobject(movecoord($c, 1, 0, 0), loc_1551, $face);
+        ~allstar_replaceobject(movecoord($c, 1, 0, 1), loc_1553, $face);
+        ~allstar_replaceobject(movecoord($c, -1, 0, 0), null, -1);
+    } else if ($type = loc_1556) {
+        ~allstar_replaceobject(movecoord($c, 2, 0, 0), loc_1551, $face);
+        ~allstar_replaceobject(movecoord($c, 2, 0, 1), loc_1553, $face);
+        ~allstar_replaceobject(movecoord($c, 1, 0, 0), null, -1);
+    }
+} else {
+    if ($type = loc_1553) {
+        ~allstar_replaceobject(movecoord($c, 2, 0, 0), loc_1552, $face);
+        ~allstar_replaceobject(movecoord($c, 1, 0, 0), loc_1556, $face);
+        ~allstar_replaceobject(movecoord($c, 0, 0, 1), null, -1);
+    } else if ($type = loc_1551) {
+        ~allstar_replaceobject(movecoord($c, 2, 0, -1), loc_1552, $face);
+        ~allstar_replaceobject(movecoord($c, 1, 0, -1), loc_1556, $face);
+        ~allstar_replaceobject(movecoord($c, 0, 0, -1), null, -1);
+    } else if ($type = loc_1552) {
+        ~allstar_replaceobject(movecoord($c, -2, 0, 1), loc_1551, $face);
+        ~allstar_replaceobject(movecoord($c, -2, 0, 0), loc_1553, $face);
+        ~allstar_replaceobject(movecoord($c, -1, 0, 0), null, -1);
+    } else if ($type = loc_1556) {
+        ~allstar_replaceobject(movecoord($c, -1, 0, 1), loc_1551, $face);
+        ~allstar_replaceobject(movecoord($c, -1, 0, 0), loc_1553, $face);
+        ~allstar_replaceobject(movecoord($c, 1, 0, 0), null, -1);
+    }
+}
+~allstar_replaceobject($c, null, -1);
+
+// large doors 1516 / 1517 / 1519 / 1520
+[label,allstar_large_door]
+def_int $face = 0;
+def_int $face2 = 0;
+def_coord $c = loc_coord;
+if (~allstar_coordis($c, 3217, 3218) = true | ~allstar_coordis($c, 3217, 3219) = true | ~allstar_coordis($c, 3213, 3222) = true
+    | ~allstar_coordis($c, 3213, 3221) = true) {
+    $face = -3;
+    $face2 = -1;
+}
+def_loc $type = loc_type;
+if ($type = loc_1516) {
+    ~allstar_replaceobject(movecoord($c, -1, 0, 0), loc_1517, $face);
+    ~allstar_replaceobject(movecoord($c, -1, 0, 1), loc_1520, $face2);
+    ~allstar_replaceobject(movecoord($c, 0, 0, 1), null, -1);
+    ~allstar_replaceobject($c, null, -1);
+} else if ($type = loc_1519) {
+    ~allstar_replaceobject(movecoord($c, -1, 0, -1), loc_1517, $face);
+    ~allstar_replaceobject(movecoord($c, -1, 0, 0), loc_1520, $face2);
+    ~allstar_replaceobject($c, null, -1);
+    ~allstar_replaceobject(movecoord($c, 0, 0, -1), null, -1);
+} else if ($type = loc_1517) {
+    ~allstar_replaceobject(movecoord($c, 1, 0, 1), loc_1519, $face);
+    ~allstar_replaceobject(movecoord($c, 1, 0, 0), loc_1516, $face);
+    ~allstar_replaceobject(movecoord($c, 0, 0, 1), null, -1);
+    ~allstar_replaceobject($c, null, -1);
+} else if ($type = loc_1520) {
+    ~allstar_replaceobject(movecoord($c, 1, 0, 0), loc_1519, $face);
+    ~allstar_replaceobject(movecoord($c, 1, 0, -1), loc_1516, $face);
+    ~allstar_replaceobject($c, null, -1);
+    ~allstar_replaceobject(movecoord($c, 0, 0, -1), null, -1);
+}
+
+// 1530: some doors only move the player through, the rest become loc 2 (objectID = +2)
+[label,allstar_door_1530]
+def_int $x = coordx(coord);
+def_int $z = coordz(coord);
+def_coord $c = loc_coord;
+if (~allstar_coordis($c, 2716, 3472) = true) {
+    ~allstar_replaceobject($c, mcannoncave, -1);
+}
+def_int $tx = -1;
+def_int $tz = -1;
+if ($x = 2564) {
+    $tx = 2563;
+    $tz = 3310;
+}
+if ($x = 2563) {
+    $tx = 2564;
+    $tz = 3310;
+}
+if ($x = 3246) {
+    $tx = 3247;
+    $tz = 3193;
+}
+if ($x = 3247) {
+    $tx = 3246;
+    $tz = 3193;
+}
+if ($x = 2575) {
+    $tx = 2576;
+    $tz = $z;
+}
+if ($x = 2581) {
+    $tx = 2582;
+    $tz = $z;
+}
+if ($x = 2576) {
+    $tx = 2575;
+    $tz = $z;
+}
+if ($x = 2582) {
+    $tx = 2581;
+    $tz = $z;
+} else {
+    ~allstar_replaceobject($c, mcannoncave, -2);
+}
+if ($tx ! -1) {
+    ~allstar_obj_tele_here($tx, $tz);
+}
+
+// members gates 1596 / 1597 (and the 5959 lever that falls into 1596) become loc 2630
+[label,allstar_membergate_l]
+if (coordx(loc_coord) = 3008) {
+    ~allstar_replaceobject(loc_coord, loc_2630, -2);
+} else {
+    ~allstar_replaceobject(loc_coord, loc_2630, -3);
+}
+
+[label,allstar_membergate_r]
+if (coordx(loc_coord) = 2816) {
+    ~allstar_replaceobject(loc_coord, loc_2630, -3);
+} else if (coordx(loc_coord) = 3008) {
+    ~allstar_replaceobject(loc_coord, loc_2630, -2);
+} else {
+    ~allstar_replaceobject(loc_coord, loc_2630, 0);
+}

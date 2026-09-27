@@ -1,9 +1,3 @@
-[opheld4,amulet_of_glory_4] @amulet_of_glory_interface("Your amulet has three charges left.");
-[opheld4,amulet_of_glory_3] @amulet_of_glory_interface("Your amulet has two charges left.");
-[opheld4,amulet_of_glory_2] @amulet_of_glory_interface("Your amulet has one charge left.");
-[opheld4,amulet_of_glory_1] @amulet_of_glory_interface("You use your amulet's last charge.");
-[opheld4,amulet_of_glory] mes("The amulet has lost its charge.");
-
 [label,amulet_of_glory_interface](string $message)
 def_obj $item = last_item;
 def_int $slot = last_slot;

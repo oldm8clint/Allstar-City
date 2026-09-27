@@ -1,7 +1,3 @@
-[opheldu,_gnome_unf_odd_crunchies] @finish_gnome_food(last_item, last_useitem);
-[opheldu,_gnome_unf_odd_bowl] @finish_gnome_food(last_item, last_useitem);
-[opheldu,_gnome_unf_odd_batta] @finish_gnome_food(last_item, last_useitem);
-
 [label,gnome_topping_add](obj $gnome_dish, obj $ingredient, namedobj $req_ingredient, namedobj $product, namedobj $fail)
 if (oc_param($ingredient, gnome_topping) = ^false) {
     ~displaymessage(^dm_default);
@@ -33,7 +29,6 @@ inv_add(inv, $product, 1);
 if (oc_param($product, gnome_cooking_type) = null) { // finished
     stat_advance(cooking, 300);
 }
-
 
 [label,finish_gnome_food](obj $food, obj $ingredient)
 switch_obj ($food) {

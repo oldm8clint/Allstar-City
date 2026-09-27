@@ -5,3 +5,4 @@ node_modules/
 .claude/
 dist/
 client/build/
+engine/data/allstar/

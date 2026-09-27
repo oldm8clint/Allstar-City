@@ -12,7 +12,6 @@
 %as_moveclicks = p_moveclicks;
 %as_poisondelay = 0;
 %as_poisonclear = 0;
-%as_currenthealth = stat(hitpoints);
 softtimer(allstar_combat, 1);
 
 // ---- client.process(), the parts that belong to combat, in the original order ----
@@ -21,7 +20,6 @@ softtimer(allstar_combat, 1);
 ~allstar_spec2_cycle;
 ~allstar_special_regen;
 ~allstar_ancient_staff;
-~allstar_area_hazards;
 ~allstar_player_poison;
 ~allstar_random_event;
 ~allstar_poison_wears_off;
@@ -254,7 +252,7 @@ if ($usebow = true) {
     ~allstar_stop_moving;
     $hit = randominc(15);
 }
-if (~allstar_gooddistance(npc_coord, coord, 1) = false & ~allstar_pvm_any_range($wep) = false) {
+if (~allstar_gooddistance_to(npc_coord, coord, 1) = false & ~allstar_pvm_any_range($wep) = false) {
     return;
 }
 if (%as_loopatt > map_clock) {

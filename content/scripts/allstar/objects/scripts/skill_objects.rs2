@@ -1,0 +1,225 @@
+// Allstar-Scape skill objects: stalls and crates, agility, runecrafting, the Mage Arena statues, skill
+// chests, training dummies and reward crates (allstar/spec/objects_buttons.md sections 3.2-3.9, 3.12,
+// 4). Xp is whole xp, straight from client.java.
+
+// TheifStall(name, message, lvlReq, XPamount, item, amount, delay, 0x340): no failure, no stun, no
+// depletion; theifTimer is the only limit.
+[proc,allstar_theifstall](string $name, string $message, int $level, int $xp, namedobj $obj, int $count, int $delay)
+if (~allstar_thief_ready = false) {
+    return;
+}
+if (stat(thieving) >= $level) {
+    anim(human_pickuptable, 0);
+    mes("You steal from the <$name>");
+    mes($message);
+    ~allstar_give($obj, $count);
+    stat_advance(thieving, $xp);
+    %allstar_thief_timer = calc(map_clock + $delay);
+} else {
+    mes("You need a theiving level of <tostring($level)> to theif from this stall.");
+}
+
+// TakeCape(god, skill, 99, skill, 5000, cape, 1, 60, 645)
+[proc,allstar_takecape](string $god, stat $req, stat $xpstat, namedobj $cape)
+if (~allstar_thief_ready = false) {
+    return;
+}
+if (stat($req) >= 99) {
+    anim(human_pray, 0);
+    mes("You bow down to <$god>");
+    mes("You recieve the cape of <$god>.");
+    stat_advance($xpstat, 5000);
+    ~allstar_give($cape, 1);
+    %allstar_thief_timer = calc(map_clock + 60);
+} else {
+    mes("You need a <~allstar_statname($req)> level of 99 to pray to <$god>.");
+}
+
+// Agility(message, x, y, lvlReq, xp, 24, 0x323)
+[proc,allstar_agility](string $message, int $x, int $z, int $level, int $xp)
+if (map_clock < %allstar_agility_timer) {
+    return;
+}
+if (stat(agility) >= $level) {
+    mes($message);
+    stat_advance(agility, $xp);
+    ~allstar_obj_tele_here($x, $z);
+    %allstar_agility_timer = calc(map_clock + 24);
+    anim(human_smokepuff_tele_appear, 0);
+} else {
+    mes("You need an agility level of <tostring($level)> to use this obstacle.");
+}
+
+// runecraft(req, xp, rune, x2, x3, x4, x5, x6) (client.java L750): every rune essence in the
+// inventory (pure essence does not count) is crafted at once; the multiplier comes from the
+// thresholds, the xp is flat.
+[proc,allstar_runecraft](int $req, int $xp, namedobj $rune, int $t2, int $t3, int $t4, int $t5)
+if (inv_total(inv, blankrune) < 1) {
+    mes("You need some rune essence to craft runes!");
+    return;
+}
+def_int $level = stat(runecraft);
+if ($level < $req) {
+    mes("You need <tostring($req)> Runecrafting to make <oc_name($rune)>!");
+    return;
+}
+def_int $essence = inv_total(inv, blankrune);
+def_int $amount = $essence;
+if ($level >= $t5) {
+    $amount = multiply($essence, 5);
+} else if ($level >= $t4) {
+    $amount = multiply($essence, 4);
+} else if ($level >= $t3) {
+    $amount = multiply($essence, 3);
+} else if ($level >= $t2) {
+    $amount = multiply($essence, 2);
+}
+inv_del(inv, blankrune, $essence);
+stat_advance(runecraft, $xp);
+~allstar_give($rune, $amount);
+mes("You craft <tostring($amount)> <oc_name($rune)>!");
+spotanim_map(runecrafting, coord, 100, 0);
+anim(human_runecraft, 0);
+
+// Money + xp objects: actionTimer 15, 1700 x the current level
+[label,allstar_skill_chest]
+if (~allstar_action_timer > 0) {
+    return;
+}
+switch_loc (loc_type) {
+    case eadgar_kitchen_drawers :
+        stat_advance(crafting, multiply(1700, stat(crafting)));
+        ~allstar_give(cert_mantaray, 10);
+        ~allstar_give(coins, 1000000);
+        mes("You Gain Some Crafting, and get some Cash!.");
+        anim(human_sapphirecutting, 0);
+    case abyss_exit_to_nature :
+        stat_advance(runecraft, multiply(1700, stat(runecraft)));
+        ~allstar_give(naturerune, 100);
+        ~allstar_give(coins, 1000000);
+        mes("You Gain Some RuneCrafting, and get some Cash!.");
+        anim(emote_dance, 0);
+    case loc_2513 :
+        stat_advance(ranged, multiply(1700, stat(ranged)));
+        ~allstar_give(coins, 1000000);
+        mes("You Gain Some Range, and get some Cash!.");
+        anim(human_sapphirecutting, 0);
+    case furnace1 :
+        // the 377 furnace has no first option ("Smelt" is the second), so this cannot be clicked
+        stat_advance(smithing, multiply(1700, stat(smithing)));
+        ~allstar_give(coins, 1000000);
+        mes("You Gain Some Smithing, and get some Cash!.");
+        anim(human_sapphirecutting, 0);
+    case barbarian_obstacle_pipe :
+        stat_advance(agility, multiply(1700, stat(agility)));
+        ~allstar_give(coins, 1000000);
+        mes("You Gain Some Agility, and get some Cash");
+        anim(human_smokepuff_tele_appear, 0);
+    case gemrock :
+        stat_advance(mining, multiply(1700, stat(mining)));
+        ~allstar_give(coins, 1000000);
+        mes("You Gain Some Mining, and get some Cash!!");
+        anim(human_mining_rune_pickaxe, 0);
+    case loc_2193 :
+        stat_advance(firemaking, multiply(1700, stat(firemaking)));
+        ~allstar_give(rune_arrow, 100);
+        ~allstar_give(coins, 1000000);
+        mes("You Gain Some FireMaking, and get some Cash, and Arrows!.");
+        anim(human_createfire, 0);
+    case fairy_chest_closed :
+        stat_advance(herblore, multiply(1700, stat(herblore)));
+        ~allstar_give(cert_3dose2strength, 1);
+        mes("You Gain Some Herblore!");
+        anim(human_sapphirecutting, 0);
+}
+~allstar_set_action_timer(15);
+
+// Training dummies (GoodDistance2: same row or column within 3 tiles, actionTimer)
+[label,allstar_training_dummy]
+if (~allstar_gooddistance2(loc_coord, 3) = false) {
+    return;
+}
+switch_loc (loc_type) {
+    case loc_2416 :
+        if (~allstar_action_timer = 0) {
+            mes("Go train on npc's, Fucker...");
+            ~allstar_set_action_timer(10);
+            anim(slayer_abyssal_whip_attack, 0);
+            stat_advance(strength, stat(strength));
+            ~allstar_stillgfx(sp_attackglow_red, coordx(coord), coordz(coord));
+        }
+    case ikov_chestopen :
+        if (~allstar_action_timer = 0) {
+            mes("You gain some slayer Exp");
+            ~allstar_set_action_timer(10);
+            anim(human_unarmedkick, 0);
+            stat_advance(slayer, multiply(1700, stat(slayer)));
+            ~allstar_stillgfx(levelup_anim, coordx(coord), coordz(coord));
+        }
+    case goal_gnomeball_game :
+        if (~allstar_action_timer = 0) {
+            mes("Go train on npc's");
+            ~allstar_set_action_timer(20);
+            anim(slayer_abyssal_whip_attack, 0);
+            stat_advance(ranged, stat(ranged));
+            ~allstar_stillgfx(sp_attackglow_red, coordx(coord), coordz(coord));
+        }
+    case arena_guard_chest_shut :
+        // no break: falls into the hay bales, which the new actionTimer then blocks
+        if (~allstar_action_timer = 0) {
+            mes("Go train on npc's please");
+            ~allstar_set_action_timer(10);
+            anim(human_unarmedpunch, 0);
+            stat_advance(attack, stat(attack));
+            ~allstar_stillgfx(sp_attackglow_red, coordx(coord), coordz(coord));
+        }
+        ~allstar_haystack;
+    case haystack2 :
+        ~allstar_haystack;
+}
+
+[proc,allstar_haystack]
+if (~allstar_action_timer = 0) {
+    mes("Go train on npc's please");
+    stat_advance(defence, stat(defence));
+    ~allstar_set_action_timer(10);
+    anim(caged, 0);
+}
+
+// Reward crates: no timer, no rank or coordinate check
+[label,allstar_reward_crate]
+switch_loc (loc_type) {
+    case loc_10687 :
+        ~allstar_give(cert_red_partyhat, 10);
+        ~allstar_give(cert_yellow_partyhat, 10);
+        ~allstar_give(cert_blue_partyhat, 10);
+        ~allstar_give(cert_green_partyhat, 10);
+        ~allstar_give(cert_purple_partyhat, 10);
+        ~allstar_give(cert_white_partyhat, 10);
+        ~allstar_give(cert_santa_hat, 10);
+        ~allstar_give(cert_halloweenmask_green, 10);
+        ~allstar_give(cert_halloweenmask_blue, 10);
+        ~allstar_give(cert_halloweenmask_red, 10);
+        mes("Give any of this away and you will be DEMOTED+BANNED!");
+    case loc_10688 :
+        // 14077 Str Cape (t), 14078 Str Hood
+        ~allstar_give(allstar_item_14077, 1);
+        ~allstar_give(allstar_item_14078, 1);
+    case loc_10689 :
+        // 14082 Range Cape, 14083 Range Cape (t), 14084 Range Hood, 14088 Magic Cape,
+        // 14089 Magic Cape (t), 14090 Magic Hood
+        ~allstar_give(allstar_item_14082, 1);
+        ~allstar_give(allstar_item_14083, 1);
+        ~allstar_give(allstar_item_14084, 1);
+        ~allstar_give(allstar_item_14088, 1);
+        ~allstar_give(allstar_item_14089, 1);
+        ~allstar_give(allstar_item_14090, 1);
+    case loc_10691 :
+        ~allstar_give(green_partyhat, 1);
+    case loc_10692 :
+        ~allstar_give(purple_partyhat, 1);
+    case loc_10693 :
+        ~allstar_give(white_partyhat, 1);
+    case loc_10695 :
+        ~allstar_give(santa_hat, 1);
+}

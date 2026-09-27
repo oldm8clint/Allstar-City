@@ -8,7 +8,6 @@ recol2d=15620
 recol3s=15855
 recol3d=20971
 iop1=Eat
-cost=30
 model=obj_uncooked_apple_pie
 2dyof=-9
 2dzoom=950
@@ -17,6 +16,11 @@ model=obj_uncooked_apple_pie
 weight=450g
 category=category_129
 param=next_obj_stage,half_an_apple_pie
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_apple_pie
 
 [redberry_pie]
 name=Redberry pie
@@ -28,7 +32,6 @@ recol2d=15620
 recol3s=15855
 recol3d=20971
 iop1=Eat
-cost=12
 model=obj_uncooked_apple_pie
 2dyof=-9
 2dzoom=950
@@ -37,6 +40,11 @@ model=obj_uncooked_apple_pie
 weight=450g
 category=category_129
 param=next_obj_stage,half_a_redberry_pie
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=10
+param=allstar_value,10
+param=allstar_sellable,yes
+param=allstar_note,cert_redberry_pie
 
 [meat_pie]
 name=Meat pie
@@ -48,7 +56,6 @@ recol2d=15620
 recol3s=15855
 recol3d=20971
 iop1=Eat
-cost=15
 model=obj_uncooked_apple_pie
 2dyof=-9
 2dzoom=950
@@ -57,6 +64,11 @@ model=obj_uncooked_apple_pie
 weight=450g
 category=category_129
 param=next_obj_stage,half_a_meat_pie
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=13
+param=allstar_value,13
+param=allstar_sellable,yes
+param=allstar_note,cert_meat_pie
 
 [half_a_meat_pie]
 name=Half a meat pie
@@ -74,7 +86,6 @@ recol5d=18858
 recol6s=15554
 recol6d=9315
 iop1=Eat
-cost=8
 model=obj_half_a_meat_pie
 2dyof=-9
 2dzoom=950
@@ -83,6 +94,11 @@ model=obj_half_a_meat_pie
 weight=225g
 category=category_129
 param=next_obj_stage,piedish
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=7
+param=allstar_value,7
+param=allstar_sellable,yes
+param=allstar_note,cert_half_a_meat_pie
 
 [half_a_redberry_pie]
 name=Half a redberry pie
@@ -100,7 +116,6 @@ recol5d=18858
 recol6s=15554
 recol6d=18564
 iop1=Eat
-cost=6
 model=obj_half_a_meat_pie
 2dyof=-9
 2dzoom=950
@@ -109,6 +124,11 @@ model=obj_half_a_meat_pie
 weight=225g
 category=category_129
 param=next_obj_stage,piedish
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=5
+param=allstar_value,5
+param=allstar_sellable,yes
+param=allstar_note,cert_half_a_redberry_pie
 
 [half_an_apple_pie]
 name=Half an apple pie
@@ -126,7 +146,6 @@ recol5d=18858
 recol6s=15554
 recol6d=22384
 iop1=Eat
-cost=15
 model=obj_half_a_meat_pie
 2dyof=-9
 2dzoom=950
@@ -135,6 +154,11 @@ model=obj_half_a_meat_pie
 weight=225g
 category=category_129
 param=next_obj_stage,piedish
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=13
+param=allstar_value,13
+param=allstar_sellable,yes
+param=allstar_note,cert_half_an_apple_pie
 
 [burnt_pie]
 name=Burnt pie
@@ -151,13 +175,15 @@ model=obj_uncooked_apple_pie
 2dzoom=950
 2dyan=104
 2dxan=192
-cost=1
 weight=350g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_pie
 
 [redberries]
 name=Redberries
 desc=Very bright red berries.
-cost=3
 model=obj_white_berries
 2dxof=1
 2dyof=4
@@ -166,6 +192,11 @@ model=obj_white_berries
 2dxan=404
 weight=7g
 param=uncooked_pie_struct,uncooked_redberry_pie
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2
+param=allstar_value,2
+param=allstar_sellable,yes
+param=allstar_note,cert_redberries
 
 [pie_shell]
 name=Pie shell
@@ -181,8 +212,12 @@ model=obj_piedish_unfired
 2dzoom=950
 2dyan=104
 2dxan=192
-cost=4
 weight=250g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_pie_shell
 
 [cooking_apple]
 name=Cooking apple
@@ -191,9 +226,12 @@ model=obj_cooking_apple
 2dzoom=940
 2dyan=80
 2dxan=212
-cost=1
 weight=3oz
 param=uncooked_pie_struct,uncooked_apple_pie
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_cooking_apple
 
 [piedish]
 name=Pie dish
@@ -209,5 +247,9 @@ model=obj_piedish_unfired
 2dzoom=950
 2dyan=104
 2dxan=192
-cost=3
 weight=100g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2
+param=allstar_value,2
+param=allstar_sellable,yes
+param=allstar_note,cert_piedish

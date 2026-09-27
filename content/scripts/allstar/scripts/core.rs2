@@ -19,6 +19,10 @@ if ($count > 0) {
 }
 return (true);
 
+// client.addItem(id, n) where the caller ignores the result (the item is lost if there is no room)
+[proc,allstar_give](namedobj $obj, int $count)
+def_boolean $added = ~allstar_additem($obj, $count);
+
 // Command teleports (Player.getNextPlayerMovement): instant, same height, no animation, walk queue
 // reset. Queued so it still happens while the player is busy, as it did in Allstar-Scape.
 [proc,allstar_telejump](int $x, int $z)
@@ -86,15 +90,13 @@ if ($child = 8144) {
 ~allstar_reset_stand;
 if_openmain($interface);
 
-// client.resetAnimation (L10123): the stand animation goes back to playerSE (the wielded weapon's,
-// or ::god's), undoing ::sit and the owner ::emote.
+// client.resetAnimation (L10123): the stand animation goes back to playerSE (%allstar_anim_stand:
+// the wielded weapon's, beer's or ::god's), undoing ::sit and the owner ::emote.
 [proc,allstar_reset_stand]
-if (%allstar_godmode = 1) {
-    readyanim(enum(int, seq, allstar_seq_ids, 1501));
-} else if (inv_getobj(worn, ^wearpos_rhand) = null) {
+if (%allstar_anim_stand = null) {
     readyanim(human_ready);
 } else {
-    readyanim(oc_param(inv_getobj(worn, ^wearpos_rhand), ready_baseanim));
+    readyanim(%allstar_anim_stand);
 }
 buildappearance(worn);
 
@@ -146,12 +148,14 @@ return (true, calc(0 - $result));
 %allstar_cmd_crashed = 1;
 p_kick;
 
-// client.actionTimer: the shared action cooldown in cycles, counted down once per cycle.
+// client.actionTimer: the shared action cooldown in cycles. %allstar_action_timer counts down once
+// per cycle in [softtimer,allstar_items_cycle] (process() L17028), so a packet handler sees what
+// Allstar-Scape's packet handler saw, and the cycle code what process() saw.
 [proc,allstar_action_timer]()(int)
-return (max(0, calc(%allstar_action_timer - map_clock)));
+return (%allstar_action_timer);
 
 [proc,allstar_set_action_timer](int $cycles)
-%allstar_action_timer = calc(map_clock + $cycles);
+%allstar_action_timer = $cycles;
 
 // client.inCombat: LogoutDelay = 2 cycles. The logout button refuses while it runs ("You must wait
 // 10 seconds after combat to log out!"); closing the client was not held back.

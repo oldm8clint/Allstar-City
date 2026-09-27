@@ -18,7 +18,7 @@ if (%as_approachp = .uid) {
     return;
 }
 mes("You are now following <.displayname>");
-if (~allstar_gooddistance(coord, .coord, 1) = false) {
+if (~allstar_gooddistance_to(coord, .coord, 1) = false) {
     // the 317 client walked up to the player after the click
     %as_approachp = .uid;
     p_aprange(1);
@@ -45,13 +45,13 @@ if (map_clock >= calc(%as_pking - 1)) {
         %as_isattacking = 1;
         ~allstar_incombat;
         ~.allstar_incombat;
-        if (~allstar_gooddistance(coord, .coord, 1) = true) {
+        if (~allstar_gooddistance_to(coord, .coord, 1) = true) {
             anim(~allstar_weapon_anim, 0);
         }
         facesquare(.coord);
     }
 }
-if (~allstar_gooddistance(coord, .coord, 1) = false) {
+if (~allstar_gooddistance_to(coord, .coord, 1) = false) {
     %as_approachp = .uid;
     p_aprange(1);
 }
@@ -121,7 +121,7 @@ if ($wep = 861) {
 if (~allstar_nonwild(coord) = true | ~allstar_nonwild(.coord) = true | .%as_protect ! 0) {
     return;
 }
-if (~allstar_gooddistance(.coord, coord, 1) = false & ~allstar_pvp_any_range($wep) = false) {
+if (~allstar_gooddistance_to(.coord, coord, 1) = false & ~allstar_pvp_any_range($wep) = false) {
     return;
 }
 if (%as_loopatt > map_clock) {

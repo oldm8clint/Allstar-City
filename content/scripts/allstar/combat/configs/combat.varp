@@ -92,13 +92,6 @@ protect=no
 [as_protect]
 protect=no
 
-// MonsterDelay (the cycle of the next area hazard hit) and currentHealth (KBDLair/Dungeon1)
-[as_monsterdelay]
-protect=no
-
-[as_currenthealth]
-protect=no
-
 // EntangleDelay: walking is refused until this cycle (entangle and the ancient spells)
 [as_entangle]
 protect=no

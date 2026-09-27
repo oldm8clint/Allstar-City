@@ -6,7 +6,6 @@ recol1d=21035
 recol2s=15360
 recol2d=19489
 iop1=Eat
-cost=20
 model=obj_half_plain_pizza
 2dxof=8
 2dyof=14
@@ -15,6 +14,11 @@ model=obj_half_plain_pizza
 2dxan=272
 weight=400g
 category=category_132
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=17
+param=allstar_value,17
+param=allstar_sellable,yes
+param=allstar_note,cert_half_plain_pizza
 
 [meat_pizza]
 name=Meat pizza
@@ -26,7 +30,6 @@ recol2d=26017
 recol3s=15360
 recol3d=19489
 iop1=Eat
-cost=50
 model=obj_meat_pizza
 2dyof=1
 2dzoom=990
@@ -35,6 +38,11 @@ model=obj_meat_pizza
 weight=900g
 category=category_132
 param=next_obj_stage,half_meat_pizza
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=42
+param=allstar_value,42
+param=allstar_sellable,yes
+param=allstar_note,cert_meat_pizza
 
 [half_meat_pizza]
 name=1/2 meat pizza
@@ -46,7 +54,6 @@ recol2d=26017
 recol3s=15360
 recol3d=19489
 iop1=Eat
-cost=25
 model=obj_half_meat_pizza
 2dxof=8
 2dyof=14
@@ -55,6 +62,11 @@ model=obj_half_meat_pizza
 2dxan=272
 weight=450g
 category=category_132
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=21
+param=allstar_value,21
+param=allstar_sellable,yes
+param=allstar_note,cert_half_meat_pizza
 
 [anchovie_pizza]
 name=Anchovy pizza
@@ -66,7 +78,6 @@ recol2d=26425
 recol3s=15360
 recol3d=19489
 iop1=Eat
-cost=60
 model=obj_meat_pizza
 2dyof=1
 2dzoom=990
@@ -75,6 +86,11 @@ model=obj_meat_pizza
 weight=900g
 category=category_132
 param=next_obj_stage,half_anchovie_pizza
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=50
+param=allstar_value,50
+param=allstar_sellable,yes
+param=allstar_note,cert_anchovie_pizza
 
 [half_anchovie_pizza]
 name=1/2 anchovy pizza
@@ -86,7 +102,6 @@ recol2d=26425
 recol3s=15360
 recol3d=19489
 iop1=Eat
-cost=30
 model=obj_half_meat_pizza
 2dxof=8
 2dyof=14
@@ -95,6 +110,11 @@ model=obj_half_meat_pizza
 2dxan=272
 weight=450g
 category=category_132
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_half_anchovie_pizza
 
 [pineapple_pizza]
 name=Pineapple pizza
@@ -106,7 +126,6 @@ recol2d=31457
 recol3s=15360
 recol3d=19489
 iop1=Eat
-cost=100
 model=obj_meat_pizza
 2dyof=1
 2dzoom=990
@@ -116,6 +135,11 @@ members=yes
 weight=900g
 category=category_132
 param=next_obj_stage,half_pineapple_pizza
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_pineapple_pizza
 
 [half_pineapple_pizza]
 name=1/2pineapple pizza
@@ -127,7 +151,6 @@ recol2d=31457
 recol3s=15360
 recol3d=19489
 iop1=Eat
-cost=50
 model=obj_half_meat_pizza
 2dxof=8
 2dyof=14
@@ -137,6 +160,11 @@ model=obj_half_meat_pizza
 weight=450g
 category=category_132
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=42
+param=allstar_value,42
+param=allstar_sellable,yes
+param=allstar_note,cert_half_pineapple_pizza
 
 [plain_pizza]
 name=Plain pizza
@@ -151,10 +179,14 @@ model=obj_uncooked_pizza
 2dzoom=990
 2dyan=176
 2dxan=260
-cost=40
 weight=800g
 category=category_132
 param=next_obj_stage,half_plain_pizza
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=34
+param=allstar_value,34
+param=allstar_sellable,yes
+param=allstar_note,cert_plain_pizza
 
 [burnt_pizza]
 name=Burnt pizza
@@ -165,18 +197,20 @@ recol2s=15360
 recol2d=8192
 recol3s=31649
 recol3d=3171
-cost=1
 model=obj_uncooked_pizza
 2dyof=1
 2dzoom=990
 2dyan=176
 2dxan=260
 weight=700g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_pizza
 
 [tomato]
 name=Tomato
 desc=This would make good ketchup.
-cost=4
 iop1=Eat
 model=obj_tomato
 2dyof=-4
@@ -188,11 +222,15 @@ category=category_86
 category=category_131
 param=gnome_cooking_ingredient,^true
 param=ugthanki_kebab_struct,tomato_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_tomato
 
 [cheese]
 name=Cheese
 desc=It's got holes in it.
-cost=4
 iop1=Eat
 model=obj_cheese
 2dzoom=1110
@@ -202,19 +240,28 @@ weight=200g
 category=category_59
 param=gnome_cooking_ingredient,^true
 param=batta_message,You crumble cheese over the gnome batta.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_cheese
 
 [pizza_base]
 name=Pizza base
 desc=I need to add some tomato next.
 recol1s=14790
 recol1d=29492
-cost=4
 model=obj_uncooked_pitta_bread
 2dyof=1
 2dzoom=990
 2dyan=176
 2dxan=260
 weight=100g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_pizza_base
 
 [incomplete_pizza]
 name=Incomplete pizza
@@ -223,10 +270,14 @@ recol1s=14790
 recol1d=29492
 recol2s=15360
 recol2d=19489
-cost=10
 model=obj_incomplete_pizza
 2dyof=1
 2dzoom=990
 2dyan=176
 2dxan=260
 weight=600g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_incomplete_pizza

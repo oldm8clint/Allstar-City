@@ -1,17 +1,3 @@
-[opheldu,battlestaff]
-switch_obj(last_useitem)
-{
-    case air_orb, fire_orb, water_orb, earth_orb : @craft_staff(last_useslot);
-    case default : ~displaymessage(^dm_default);
-};
-
-[opheldu,_craft_orb]
-switch_obj(last_useitem)
-{
-    case battlestaff : @craft_staff(last_slot);
-    case default : ~displaymessage(^dm_default);
-};
-
 [label,craft_staff](int $last)
 if (map_members = ^false) {
     mes(^mes_members_feature);
@@ -36,7 +22,3 @@ inv_del(inv, battlestaff, 1);
 inv_add(inv, $product, 1);
 // add exp
 stat_advance(crafting, struct_param($struct, productexp));
-
-
-
-

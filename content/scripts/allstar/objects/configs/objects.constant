@@ -1,0 +1,5 @@
+// Allstar-Scape changed doors, gates and tree stumps on the clicking player's 317 client only, until
+// the next map region load. Allstar-City's locs are shared, so the changes revert after these
+// durations (500 ms cycles).
+^allstar_door_duration = 500
+^allstar_stump_duration = 100

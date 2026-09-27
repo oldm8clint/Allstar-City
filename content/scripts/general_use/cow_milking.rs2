@@ -16,29 +16,6 @@ switch_obj(last_useitem) {
     case default : mes("The cow doesn't want that."); // osrs
 }
 
-[oploc1,fat_cow]
-if(inv_total(inv, bucket_empty) = 0) {
-    if(inzone(0_50_51_48_8, 0_50_51_55_15, loc_coord) = true) {
-        ~chatnpc_specific("Gillie Groats the Milkmaid", gillie_the_milkmaid, "<p,laugh>Tee hee! You've never milked a cow before, have you?");
-        ~chatplayer("<p,quiz>Erm... No. How could you tell?");
-        ~chatnpc_specific("Gillie Groats the Milkmaid", gillie_the_milkmaid, "<p,laugh>Because you're spilling milk all over the floor. What a waste! You need something to hold the milk.");
-        ~chatplayer("<p,neutral>Ah yes, I really should have guessed that one, shouldn't I?");
-        ~chatnpc_specific("Gillie Groats the Milkmaid", gillie_the_milkmaid, "<p,laugh>You're from the city, aren't you... Try it again with an empty bucket.");
-        ~chatplayer("<p,neutral>Right, I'll do that.");
-        return;
-    }
-    mes("You'll need an empty bucket to collect the milk.");
-    return;
-}
-weakqueue(milk_cow, 2, 0);
-
-[oplocu,fat_cow]
-if(last_useitem = bucket_empty) {
-    p_oploc(1);
-    return;
-}
-mes("The cow doesn't want that.");
-
 [queue,milk_cow]
 if(inv_total(inv, bucket_empty) = 0) {
     return;

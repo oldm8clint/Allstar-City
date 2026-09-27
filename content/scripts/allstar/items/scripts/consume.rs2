@@ -1,0 +1,251 @@
+// Allstar-Scape item first click: packet 122 -> client.CheckForSkillUse3 (L26197), then
+// client.buryBones (L9969) for the listed bones. allstar/spec/npc_item_handlers.md section 5.
+// Clue scrolls and the spade (also sent to buryBones) belong to the clue scroll system.
+[opheld1,_]
+~allstar_item_first_click(last_item, last_slot);
+~allstar_bury_bones(last_item, last_slot);
+
+[proc,allstar_item_first_click](obj $obj, int $slot)
+switch_obj ($obj) {
+    // toy horseys: anim + overhead text, not consumed
+    case horsey_brown :
+        anim(human_playhorsey_brown, 0);
+        say("Come on Swifty, we can win the race!");
+    case horsey_white :
+        anim(human_playhorsey_white, 0);
+        say("Come on Alex, we can win the race!");
+    case horsey_black :
+        anim(human_playhorsey_black, 0);
+        say("Come on Vegeta, we can win the race!");
+    case horsey_grey :
+        anim(human_playhorsey_grey, 0);
+        say("Come on MrWicked, we can win the race!");
+    case beer :
+        mes("You drink the beer, and feel a bit drunk!");
+        %allstar_drunk_timer = calc(%allstar_drunk_timer + 80);
+        inv_del(inv, beer, 1);
+    // potions: GoOn = false, so they never reach the eat/bury tail below
+    case 4dose2strength : ~allstar_potion(strength, $obj, 3dose2strength, ~allstar_boost_double(strength, 5)); return;
+    case 3dose2strength : ~allstar_potion(strength, $obj, 2dose2strength, ~allstar_boost_double(strength, 5)); return;
+    case 2dose2strength : ~allstar_potion(strength, $obj, 1dose2strength, ~allstar_boost_double(strength, 10)); return;
+    case 1dose2strength : ~allstar_potion(strength, $obj, vial_empty, ~allstar_boost_double(strength, 5)); return;
+    case strength4 : ~allstar_potion(strength, $obj, 3dose1strength, ~allstar_boost_half(strength, 5)); return;
+    case 3dose1strength : ~allstar_potion(strength, $obj, 2dose1strength, ~allstar_boost_half(strength, 5)); return;
+    case 2dose1strength : ~allstar_potion(strength, $obj, 1dose1strength, ~allstar_boost_half(strength, 5)); return;
+    case 1dose1strength : ~allstar_potion(strength, $obj, vial_empty, ~allstar_boost_half(strength, 5)); return;
+    case 4dose2defense : ~allstar_potion(defence, $obj, 3dose2defense, ~allstar_boost_double(defence, 10)); return;
+    case 3dose2defense : ~allstar_potion(defence, $obj, 2dose2defense, ~allstar_boost_double(defence, 10)); return;
+    case 2dose2defense : ~allstar_potion(defence, $obj, 1dose2defense, ~allstar_boost_double(defence, 10)); return;
+    case 1dose2defense : ~allstar_potion(defence, $obj, vial_empty, ~allstar_boost_double(defence, 10)); return;
+    case 4dose1defense : ~allstar_potion(defence, $obj, 3dose1defense, ~allstar_boost_half(defence, 10)); return;
+    case 3dose1defense : ~allstar_potion(defence, $obj, 2dose1defense, ~allstar_boost_half(defence, 10)); return;
+    case 2dose1defense : ~allstar_potion(defence, $obj, 1dose1defense, ~allstar_boost_half(defence, 10)); return;
+    case 1dose1defense : ~allstar_potion(defence, $obj, vial_empty, ~allstar_boost_half(defence, 10)); return;
+    case 4dose2attack : ~allstar_potion(attack, $obj, 3dose2attack, ~allstar_boost_double(attack, 10)); return;
+    case 3dose2attack : ~allstar_potion(attack, $obj, 2dose2attack, ~allstar_boost_double(attack, 10)); return;
+    case 2dose2attack : ~allstar_potion(attack, $obj, 1dose2attack, ~allstar_boost_double(attack, 10)); return;
+    case 1dose2attack : ~allstar_potion(attack, $obj, vial_empty, ~allstar_boost_double(attack, 10)); return;
+    // 2428 Attack potion(4): the original case is the attack-potion(4) dupe (boosts Defence, deletes
+    // Super strength(1), keeps the potion, adds a vial), classified JUNK in the spec; it is ported as
+    // the attack potion(4) the case was written for.
+    case 4dose1attack : ~allstar_potion(attack, $obj, 3dose1attack, ~allstar_boost_half(attack, 10)); return;
+    case 3dose1attack : ~allstar_potion(attack, $obj, 2dose1attack, ~allstar_boost_half(attack, 10)); return;
+    case 2dose1attack : ~allstar_potion(attack, $obj, 1dose1attack, ~allstar_boost_half(attack, 10)); return;
+    case 1dose1attack : ~allstar_potion(attack, $obj, vial_empty, ~allstar_boost_half(attack, 10)); return;
+    case 4dose1magic : ~allstar_potion(magic, $obj, 3dose1magic, 4); return;
+    case 3dose1magic : ~allstar_potion(magic, $obj, 2dose1magic, 4); return;
+    case 2dose1magic : ~allstar_potion(magic, $obj, 1dose1magic, 4); return;
+    case 1dose1magic : ~allstar_potion(magic, $obj, vial_empty, 4); return;
+    case 4doserangerspotion : ~allstar_potion(ranged, $obj, 3doserangerspotion, calc(stat_base(ranged) / 10 + 3)); return;
+    case 3doserangerspotion : ~allstar_potion(ranged, $obj, 2doserangerspotion, calc(stat_base(ranged) / 10 + 3)); return;
+    case 2doserangerspotion : ~allstar_potion(ranged, $obj, 1doserangerspotion, calc(stat_base(ranged) / 10 + 3)); return;
+    case 1doserangerspotion : ~allstar_potion(ranged, $obj, vial_empty, calc(stat_base(ranged) / 10 + 3)); return;
+    case 4doseantipoison : ~allstar_antipoison($obj, 3doseantipoison, "You drink a dose of the antipoison.");
+    case 3doseantipoison : ~allstar_antipoison($obj, 2doseantipoison, "You drink a dose of the antipoison.");
+    case 2doseantipoison : ~allstar_antipoison($obj, 1doseantipoison, "You drink a dose of the antipoison.");
+    case 1doseantipoison : ~allstar_antipoison($obj, null, "You drink the last dose of the antipoison.");
+    case xmas_yoyo : anim(yoyo_updown, 0);
+    // food: healing[min, max, leftover]
+    case shrimp : ~allstar_set_food(3, 3, null);
+    case anchovies : ~allstar_set_food(1, 1, null);
+    case sardine : ~allstar_set_food(4, 4, null);
+    case salmon : ~allstar_set_food(9, 9, null);
+    case trout : ~allstar_set_food(7, 7, null);
+    case cod : ~allstar_set_food(7, 7, null);
+    case herring : ~allstar_set_food(5, 5, null);
+    case pike : ~allstar_set_food(8, 8, null);
+    case mackerel : ~allstar_set_food(6, 6, null);
+    case tuna : ~allstar_set_food(10, 10, null);
+    case bass : ~allstar_set_food(13, 13, null);
+    case swordfish : ~allstar_set_food(14, 14, null);
+    case lobster : ~allstar_set_food(12, 12, null);
+    case shark : ~allstar_set_food(20, 20, null);
+    case mantaray : ~allstar_set_food(25, 25, null);
+    case seaturtle : ~allstar_set_food(25, 25, null);
+    case ugthanki_kebab, curry : ~allstar_set_food(19, 19, null);
+    case cake : ~allstar_set_food(4, 4, partial_cake);
+    case partial_cake : ~allstar_set_food(4, 4, cake_slice);
+    case cake_slice, chocolaty_milk, half_a_redberry_pie : ~allstar_set_food(4, 4, null);
+    case chocolate_cake : ~allstar_set_food(5, 5, partial_chocolate_cake);
+    case partial_chocolate_cake : ~allstar_set_food(5, 5, chocolate_slice);
+    case chocolate_slice : // empty case: nothing happens
+    case easter_egg :
+        anim(human_chicken_dance, 0);
+        ~allstar_set_food(35, 35, null);
+    case half_a_meat_pie, bread : ~allstar_set_food(5, 5, null);
+    case jug_wine, stew, half_pineapple_pizza : ~allstar_set_food(11, 11, null);
+    case lava_eel, cooked_oomlie : ~allstar_set_food(14, 14, null);
+    case plain_pizza : ~allstar_set_food(7, 7, half_plain_pizza);
+    case half_plain_pizza, half_an_apple_pie : ~allstar_set_food(7, 7, null);
+    case meat_pizza : ~allstar_set_food(8, 8, half_meat_pizza);
+    case half_meat_pizza : ~allstar_set_food(8, 8, null);
+    case anchovie_pizza : ~allstar_set_food(9, 9, half_anchovie_pizza);
+    case half_anchovie_pizza : ~allstar_set_food(9, 9, null);
+    case pineapple_pizza : ~allstar_set_food(11, 11, half_pineapple_pizza);
+    case apple_pie : ~allstar_set_food(7, 7, half_an_apple_pie);
+    // BUG: 3225 (Cloth) is used as "Redberry pie"
+    case cert_regicide_cloth : ~allstar_set_food(5, 5, half_a_redberry_pie);
+    case meat_pie : ~allstar_set_food(6, 6, half_a_meat_pie);
+    case cooked_chompy : ~allstar_set_food(10, 10, null);
+    case tbwt_cooked_karambwan, tbwt_poorly_cooked_karambwan : ~allstar_set_food(18, 18, null);
+    case snail_corpse_cooked1, snail_corpse_cooked2, snail_corpse_cooked3 : ~allstar_set_food(5, 9, null);
+    case mort_slimey_eel_cooked : ~allstar_set_food(6, 10, null);
+    case cooked_chicken_undead, cooked_meat_undead, cup_of_nettletea : ~allstar_set_food(3, 3, null);
+    case cave_eel : ~allstar_set_food(7, 11, null);
+    // BUG: (HP / 100) * 10 in integer maths is 0 below 100 hitpoints, so it is never eaten
+    case sweetcorn_cooked : ~allstar_set_food(calc(stat(hitpoints) / 100 * 10), calc(stat(hitpoints) / 100 * 10), null);
+    case tbw_spider_on_stick_cooked, tbw_spider_on_shaft_cooked : ~allstar_set_food(7, 10, null);
+    // bones: prayer[2] (buried by process() once a weapon is wielded)
+    case babydragon_bones : %allstar_bury_xp = 30;
+    case dragon_bones :
+        %allstar_bury_xp = 72;
+        anim(human_eat, 0);
+    case bones, bones_burnt, wolf_bones :
+        if (random(2) = 0) {
+            %allstar_bury_xp = 4;
+        } else {
+            %allstar_bury_xp = 5;
+        }
+    case bat_bones :
+        if (random(3) = 0) {
+            %allstar_bury_xp = 4;
+        } else {
+            %allstar_bury_xp = 5;
+        }
+    case big_bones, tbwt_jogre_bones : %allstar_bury_xp = 15;
+    case tbwt_beast_bones : %allstar_bury_xp = 25;
+    case mm_small_ninja_monkey_bones : %allstar_bury_xp = 5;
+    case zogre_bones :
+        if (random(2) = 0) {
+            %allstar_bury_xp = 22;
+        } else {
+            %allstar_bury_xp = 23;
+        }
+    case zogre_ancestral_bones_fayg : %allstar_bury_xp = 87;
+    case zogre_ancestral_bones_raurg : %allstar_bury_xp = 96;
+    case zogre_ancestral_bones_ourg : %allstar_bury_xp = 5000;
+    case default :
+        mes("Nothing interesting is happening.");
+        return;
+}
+// prayer[2] wins over healing[1]: while a bury is pending, any other click is buried instead
+if (%allstar_bury_xp > 0) {
+    %allstar_bury_pending = 1;
+    %allstar_bury_obj = $obj;
+    %allstar_bury_slot = $slot;
+    %allstar_bury_clock = map_clock;
+} else if (%allstar_eat_min > 0) {
+    %allstar_eat_pending = 1;
+    %allstar_eat_obj = $obj;
+    ~allstar_healing;
+}
+
+[proc,allstar_set_food](int $min, int $max, namedobj $leftover)
+%allstar_eat_min = $min;
+%allstar_eat_max = $max;
+%allstar_eat_leftover = $leftover;
+
+// client.healing (L30889): a wielded weapon is needed, otherwise the bite waits (process() retries it).
+// Anim 829, one food from its first slot, heal min + random(max - min) up to the base level (a level
+// above base is brought down to it), leftover added. No eat delay.
+[proc,allstar_healing]
+if (%allstar_eat_pending ! 1 | inv_getobj(worn, ^wearpos_rhand) = null) {
+    return;
+}
+anim(human_eat, 0);
+def_obj $food = %allstar_eat_obj;
+if ($food ! null) {
+    inv_del(inv, $food, 1);
+}
+def_int $heal = %allstar_eat_min;
+def_int $diff = calc(%allstar_eat_max - %allstar_eat_min);
+if ($diff > 0) {
+    $heal = calc($heal + randominc($diff));
+}
+if (%allstar_eat_leftover ! null) {
+    def_boolean $added = ~allstar_additem(%allstar_eat_leftover, 1);
+}
+def_int $hp = calc(stat(hitpoints) + $heal);
+if ($hp > stat_base(hitpoints)) {
+    $hp = stat_base(hitpoints);
+}
+~allstar_set_level(hitpoints, $hp);
+if ($food ! null) {
+    mes("You eat the <~allstar_obj_name($food)>.");
+}
+%allstar_eat_pending = 0;
+%allstar_eat_min = 0;
+%allstar_eat_max = 0;
+%allstar_eat_leftover = null;
+%allstar_eat_obj = null;
+
+// potion dose: the level is reset to base and the boost added (boosts do not stack, drains are cured).
+// No anim, no message. One potion goes from its first slot, the next dose to the first free slot.
+[proc,allstar_potion](stat $stat, obj $potion, namedobj $next, int $boost)
+~allstar_set_level($stat, calc(stat_base($stat) + $boost));
+%allstar_potion_stat = $stat;
+%allstar_potion_clock = map_clock;
+inv_del(inv, $potion, 1);
+def_boolean $added = ~allstar_additem($next, 1);
+
+// 2 * (base / n), at least 2 (super potions)
+[proc,allstar_boost_double](stat $stat, int $n)(int)
+def_int $boost = calc(stat_base($stat) / $n * 2);
+if ($boost <= 1) {
+    $boost = 2;
+}
+return($boost);
+
+// base / n + (base / n) / 2, at least 2 (normal potions)
+[proc,allstar_boost_half](stat $stat, int $n)(int)
+def_int $boost = calc(stat_base($stat) / $n + stat_base($stat) / $n / 2);
+if ($boost <= 1) {
+    $boost = 2;
+}
+return($boost);
+
+// Antipoison: PoisonDelay = 9,999,999 (the poison never ticks again), anim 829. No vial after (1).
+[proc,allstar_antipoison](obj $potion, namedobj $next, string $message)
+~allstar_poison_cure;
+anim(human_eat, 0);
+mes($message);
+inv_del(inv, $potion, 1);
+if ($next ! null) {
+    def_boolean $added = ~allstar_additem($next, 1);
+}
+
+// Hook for the combat workstream's port of Allstar-Scape poison (client.Poison, PoisonDelay).
+// Until then it clears Lost City poison without immunity.
+[proc,allstar_poison_cure]
+if (%poison > 0) {
+    %poison = 0;
+}
+
+// Sets the current level (Allstar-Scape assigned playerLevel[] directly)
+[proc,allstar_set_level](stat $stat, int $level)
+def_int $current = stat($stat);
+if ($level > $current) {
+    stat_add($stat, calc($level - $current), 0);
+} else if ($level < $current) {
+    stat_sub($stat, calc($current - $level), 0);
+}

@@ -178,7 +178,7 @@ switch_int ($wep) {
 }
 
 // client.GoodDistance: within d tiles on both axes (no height check)
-[proc,allstar_gooddistance](coord $a, coord $b, int $d)(boolean)
+[proc,allstar_gooddistance_to](coord $a, coord $b, int $d)(boolean)
 if (abs(calc(coordx($a) - coordx($b))) <= $d & abs(calc(coordz($a) - coordz($b))) <= $d) {
     return(true);
 }

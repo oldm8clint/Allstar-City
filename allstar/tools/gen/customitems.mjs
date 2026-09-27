@@ -3,71 +3,26 @@
 // Writes content/scripts/allstar/customitems/configs/:
 //   customitems.obj    one obj per item, debugname allstar_item_<id>, obj id = the Allstar id
 //   customitems.enum   allstar_items: Allstar id (incl. pack-1 aliases) -> obj
-//   customitems.param  the allstar_* params below
 //
-// Server data is read from allstar/legacy exactly as Allstar-Scape loaded it:
-//   item.cfg        name/desc/bonuses from the FIRST line of an id, shop value from the LAST line
-//                   (ItemHandler.loadItemList + client.GetItemName/GetItemShopValue); undefined ids
-//                   are "!! NOT EXISTING ITEM !!! - ID:<id>", 0 bonuses, 1 gp
-//   Item4.java      equip slot (client.itemType list order), arms/head hiding (Player.appendPlayerAppearance)
-//   Item.java       itemSellable overrides (sellable.dat stops at id 6799)
-//   client.java     twoHanderz, GetCL* wear requirements (id tables parsed, name rules ported below),
-//                   GetWepAnim/GetStandAnim/GetWalkAnim/GetRunAnim/GetBlockAnim (if-chains parsed)
+// Server data follows the same rules as the ids below 7956 (gen/items.mjs loadAllstarItems,
+// wornParams, itemParams): item.cfg name, bonuses and shop value, Item4.java equip slot and
+// arms/head hiding, Item.java sellable overrides, client.java twoHanderz, GetCL* wear requirements
+// and the stand/walk/run animations. The params are defined in
+// content/scripts/allstar/items/configs/items.param.
 // Client data (name, examine, models, icon, recolours) comes from customitems.data.mjs and
 // allstar/tools/models/customitems.json (allstar/tools/models/convert.mjs).
 //
-// Params other systems read (all objs here; values match the Java):
-//   allstar_name            item.cfg name the server used for name rules, messages and the weapon tab
-//   allstar_sellable        Item.itemSellable
-//   allstar_blocks_shield   in client.twoHanderz (cannot be wielded while a shield is worn)
-//   allstar_req_<skill>     GetCL<Skill>: level needed to wear (1 = none), for attack, defence,
-//                           strength, hitpoints, ranged, prayer, magic, cooking, woodcutting,
-//                           fletching, fishing, thieving, farming, slayer (the checks in client.wear)
-// plus the Lost City bonus params (stabattack ... prayerbonus) and, for weapon-slot items, the
-// attack/defend/stand/walk/run animations.
+// Weapon-slot items also get the Lost City attack and defend animation params, from the
+// client.java GetWepAnim/GetBlockAnim if-chains (parsed below).
 import fs from 'fs';
 import path from 'path';
 
 import { CUSTOM_ITEMS, PACK1_ALIASES } from './customitems.data.mjs';
+import { itemParams, loadAllstarItems, runAnim, standAnim, TWO_HANDERZ, walkAnim, wornParams } from './items.mjs';
 
 const OUT = 'content/scripts/allstar/customitems/configs';
 
 // ---------------------------------------------------------------- legacy parsing
-
-// ItemHandler.loadItemList: trim, split at '=', collapse tab runs (5 passes), split on tabs.
-function readItemCfg(file) {
-    const first = new Map();
-    const last = new Map();
-    for (const raw of fs.readFileSync(file, 'latin1').split(/\r?\n/)) {
-        const line = raw.trim();
-        const spot = line.indexOf('=');
-        if (spot === -1) {
-            if (line === '[ENDOFITEMLIST]') break;
-            continue;
-        }
-        if (line.substring(0, spot).trim() !== 'item') continue;
-        let value = line.substring(spot + 1).trim();
-        for (let i = 0; i < 5; i++) value = value.replaceAll('\t\t', '\t');
-        const t = value.split('\t');
-        const id = parseInt(t[0]);
-        const entry = {
-            id,
-            name: t[1].replaceAll('_', ' '),
-            desc: t[2].replaceAll('_', ' '),
-            shopValue: parseFloat(t[4]),
-            bonuses: t.slice(6, 18).map(v => parseInt(v))
-        };
-        if (!first.has(id)) first.set(id, entry);
-        last.set(id, entry);
-    }
-    return { first, last };
-}
-
-function javaIntArray(src, decl) {
-    const m = src.match(new RegExp(`${decl}\\s*=\\s*\\{([^}]*)\\}`));
-    if (!m) throw new Error(`array not found: ${decl}`);
-    return m[1].split(',').map(s => s.trim()).filter(Boolean).map(Number);
-}
 
 // Body of `public int <name>(...) {` with balanced braces, comments removed.
 function javaMethod(src, name) {
@@ -104,98 +59,15 @@ function lookup(table, id) {
     return table.fallback;
 }
 
-// GetCL<Skill>: the `if (ItemID == n) { return m; }` table before the name rules.
-function reqIdTable(src, skill) {
-    const body = javaMethod(src, `GetCL${skill}`);
-    const idPart = body.slice(0, body.indexOf('if (ItemID == -1)'));
-    return idRules(idPart, 'ItemID').rules;
-}
-
-// ---------------------------------------------------------------- GetCL* name rules (client.java)
-
-const WEAPON_WORDS = ['claws', 'dagger', 'sword', 'scimitar', 'mace', 'longsword', 'battleaxe', 'warhammer', '2h sword', 'harlberd'];
-const strip = (name, words) => words.reduce((s, w) => s.replaceAll(w, ''), name).trim();
-
-// client.java 33127 GetCLAttack
-function attackByName(id, name) {
-    const n2 = strip(name, ['Bronze', 'Iron', 'Steel', 'Black', 'Mithril', 'Adamant', 'Rune', 'Granite', 'Dragon', 'Crystal']);
-    if (WEAPON_WORDS.some(w => n2.startsWith(w))) {
-        for (const [prefix, level] of [['Bronze', 1], ['Iron', 1], ['Attack Cape', 100], ['Steel', 5], ['Black', 10], ['Mithril', 20], ['Adamant', 30], ['Rune', 40], ['Dragon', 60], ['White', 10]]) {
-            if (name.startsWith(prefix)) return level;
-        }
-        if (id === 10705) return 1;
-    } else if (name.startsWith('Granite')) {
-        return 50;
-    } else if (['whip', 'Ahrims staff', 'Torags hammers', 'Veracs flail', 'Guthans warspear', 'Dharoks greataxe'].some(s => name.endsWith(s))) {
-        return 70;
-    }
-    return 1;
-}
-
-// client.java 33481 GetCLDefence
-function defenceByName(id, name) {
-    const n2 = strip(name, ['Bronze', 'Iron', 'Steel', 'Mithril', 'Adamant', 'Rune', 'Granite', 'Dragon', 'White', 'Crystal']);
-    if (WEAPON_WORDS.some(w => n2.startsWith(w))) {
-        return 1;
-    }
-    if (['Ahrims', 'Karil', 'Torag', 'Verac', 'Guthans'].some(s => name.startsWith(s)) || name.endsWith('Dharok')) {
-        return ['staff', 'crossbow', 'hammers', 'flail', 'warspear', 'greataxe'].some(s => name.endsWith(s)) ? 1 : 70;
-    }
-    const starts = [['Bronze', 1], ['Iron', 1], ['Defence Cape', 100], ['Steel', 5], ['Mithril', 20], ['Adamant', 30], ['Rune full helm', 40], ['Rune Platelegs', 40], ['Rune Platebody', 40], ['Rune Plateskirt', 40], ['Rune Kite Shield', 40], ['Dragon', 60], ['dragon', 60], ['dragon Boots', 99], ['White', 1], ['Initiate', 20], ['initiate', 20]];
-    for (const [prefix, level] of starts) if (name.startsWith(prefix)) return level;
-    if (name.endsWith('Cavalier')) return 1;
-    for (const prefix of ['steel axe', 'black axe', 'mithril axe', 'adamant axe', 'rune axe', 'dragon axe']) if (name.startsWith(prefix)) return 1;
-    if (name.startsWith('Berserker_helm')) return 45;
-    if (name.endsWith('2h sword') || name.endsWith('halberd') || name.endsWith('spear(s)')) return 1;
-    if (name.endsWith('guthix')) return 40;
-    return 1;
-}
-
-const startsRule = rules => (id, name) => {
-    for (const [prefix, level] of rules) if (name.startsWith(prefix)) return level;
-    return 1;
-};
-
-// [skill, java name suffix, name rules]; order = the checks in client.wear (14977-15002)
-const REQUIREMENTS = [
-    ['attack', 'Attack', attackByName],
-    ['prayer', 'Prayer', startsRule([['Prayer cape', 99], ['Prayer hood', 99]])],
-    ['fletching', 'Fletching', startsRule([['Fletching cape', 99], ['Fletching hood', 99]])],
-    ['woodcutting', 'Woodcutting', startsRule([['Woodcut. cape', 100], ['Woodcutting hood', 100]])],
-    ['cooking', 'Cooking', startsRule([['Cooking cape', 100], ['Cooking hood', 100]])],
-    ['fishing', 'Fishing', startsRule([['Fishing cape', 100], ['Fishing hood', 100]])],
-    ['thieving', 'Thieving', startsRule([['Thieving cape', 100], ['Thieving hood', 100]])],
-    ['hitpoints', 'Hitpoints', startsRule([['Hitpoints cape', 100], ['Hitpoints hood', 100]])],
-    ['farming', 'Farming', startsRule([['Farming cape', 99], ['Farming hood', 99]])],
-    ['slayer', 'Slayer', startsRule([['Slayer cape', 100], ['Slayer hood', 100]])],
-    ['defence', 'Defence', defenceByName],
-    ['strength', 'Strength', (id, name) => (name.startsWith('Granite') ? 50 : name.startsWith('Torags hammers') || name.endsWith('Dharoks greataxe') ? 70 : name.startsWith('Strength Cape') ? 99 : 1)],
-    ['magic', 'Magic', startsRule([['Ahrim', 70], ['Magic Cape', 99]])],
-    ['ranged', 'Ranged', (id, name) => {
-        for (const [prefix, level] of [['Karil', 70], ['Range Cape', 99], ['Dark Bow', 99], ['Crystal', 75], ['Seercull', 70], ['Dharoks', 99]]) if (name.startsWith(prefix)) return level;
-        return id === 2497 ? 70 : 1;
-    }]
-];
-
 // ---------------------------------------------------------------- the step
 
-const BONUS_PARAMS = ['stabattack', 'slashattack', 'crushattack', 'magicattack', 'rangeattack', 'stabdefence', 'slashdefence', 'crushdefence', 'magicdefence', 'rangedefence', 'strengthbonus', 'prayerbonus'];
-const SLOT_LISTS = [['capes', 'back'], ['hats', 'hat'], ['boots', 'feet'], ['gloves', 'hands'], ['shields', 'lefthand'], ['amulets', 'front'], ['arrows', 'quiver'], ['rings', 'ring'], ['body', 'torso'], ['legs', 'legs']];
+// Player.java slot numbers = Lost City wearpos ids
+const WEARPOS = { 0: 'hat', 1: 'back', 2: 'front', 3: 'righthand', 4: 'torso', 5: 'lefthand', 7: 'legs', 9: 'hands', 10: 'feet', 12: 'ring', 13: 'quiver' };
 
 export default function customitems({ root, content, legacy, packs, report }) {
-    const legacyFile = name => fs.readFileSync(legacy.file(name), 'latin1');
-    const item4 = legacyFile('Item4.java');
-    const itemJava = legacyFile('Item.java');
-    const client = legacyFile('client.java');
-    const cfg = readItemCfg(legacy.file('item.cfg'));
-    const lists = Object.fromEntries(['capes', 'hats', 'boots', 'gloves', 'shields', 'amulets', 'arrows', 'rings', 'body', 'legs', 'platebody', 'fullHelm', 'fullMask'].map(n => [n, new Set(javaIntArray(item4, `public static int ${n}\\[\\]`))]));
-    const sellable = new Set([...itemJava.matchAll(/itemSellable\[(\d+)\]\s*=\s*true;/g)].map(m => Number(m[1])));
-    const twoHanderz = new Set(javaIntArray(client, 'public int\\[\\] twoHanderz'));
-    const reqTables = Object.fromEntries(REQUIREMENTS.map(([skill, java]) => [skill, reqIdTable(client, java)]));
+    const client = fs.readFileSync(legacy.file('client.java'), 'latin1');
+    const data = loadAllstarItems(path.join(root, 'allstar/legacy'));
     const wepAnim = idRules(javaMethod(client, 'GetWepAnim').replace(/if \(playerEquipment\[playerWeapon\] == -1\)[\s\S]*?return 422;\s*\}\s*\}/, ''), 'playerEquipment[playerWeapon]');
-    const standAnim = idRules(javaMethod(client, 'GetStandAnim'), 'id');
-    const walkAnim = idRules(javaMethod(client, 'GetWalkAnim'), 'id');
-    const runAnim = idRules(javaMethod(client, 'GetRunAnim'), 'id');
     const blockAnim = idRules(javaMethod(client, 'GetBlockAnim'), 'id');
 
     const models = JSON.parse(fs.readFileSync(path.join(root, 'allstar/tools/models/customitems.json'), 'utf8')).items;
@@ -214,22 +86,7 @@ export default function customitems({ root, content, legacy, packs, report }) {
     const rows = [];
     for (const item of CUSTOM_ITEMS) {
         const id = item.id;
-        const def = cfg.first.get(id);
-        const serverName = def ? def.name : `!! NOT EXISTING ITEM !!! - ID:${id}`;
-        const price = cfg.last.has(id) ? Math.floor(cfg.last.get(id).shopValue) : 1;
-        const bonuses = def ? def.bonuses : new Array(12).fill(0);
-        let slot = 'righthand';
-        for (const [list, wearpos] of SLOT_LISTS) {
-            if (lists[list].has(id)) {
-                slot = wearpos;
-                break;
-            }
-        }
-        const reqs = {};
-        for (const [skill, , byName] of REQUIREMENTS) {
-            const fromId = reqTables[skill].find(r => r.ids.includes(id));
-            reqs[skill] = fromId ? fromId.value : byName(id, serverName);
-        }
+        const slot = WEARPOS[data.slot(id)];
         const look = models[id];
         if (!look) throw new Error(`item ${id} missing from allstar/tools/models/customitems.json (run convert.mjs)`);
 
@@ -253,31 +110,25 @@ export default function customitems({ root, content, legacy, packs, report }) {
         }
         (look.recol ?? []).forEach(([s, d], i) => o.push(`recol${i + 1}s=${s}`, `recol${i + 1}d=${d}`));
         if (look.members) o.push('members=yes');
-        o.push(`cost=${price}`);
+        o.push(`cost=${data.value(id)}`);
         o.push(`wearpos=${slot}`);
         // Player.appendPlayerAppearance: arms hidden only by a chest item in Item4.platebody, head
         // (and beard, which Allstar never drew) only by a hat in Item4.fullHelm/fullMask
-        if (slot === 'torso' && lists.platebody.has(id)) o.push('wearpos2=arms');
-        if (slot === 'hat' && (lists.fullHelm.has(id) || lists.fullMask.has(id))) o.push('wearpos2=head', 'wearpos3=jaw');
-        o.push(`param=allstar_name,${serverName}`);
-        o.push(`param=allstar_sellable,${sellable.has(id) ? 'yes' : 'no'}`);
-        if (twoHanderz.has(id)) o.push('param=allstar_blocks_shield,yes');
-        for (const [skill] of REQUIREMENTS) if (reqs[skill] !== 1) o.push(`param=allstar_req_${skill},${reqs[skill]}`);
-        bonuses.forEach((b, i) => b !== 0 && o.push(`param=${BONUS_PARAMS[i]},${b}`));
+        const plate = slot === 'torso' && data.isPlate(id);
+        const head = slot === 'hat' && (data.isFullHelm(id) || data.isFullMask(id));
+        if (plate) o.push('wearpos2=arms');
+        if (head) o.push('wearpos2=head', 'wearpos3=jaw');
+        o.push(...wornParams(data, id, seq), ...itemParams(data, id, name));
         let anims = null;
         if (slot === 'righthand') {
-            anims = { attack: lookup(wepAnim, id), stand: lookup(standAnim, id), walk: lookup(walkAnim, id), run: lookup(runAnim, id), block: lookup(blockAnim, id) };
+            anims = { attack: lookup(wepAnim, id), stand: standAnim(id), walk: walkAnim(id), run: runAnim(id), block: lookup(blockAnim, id) };
             // GetWepAnim: one animation for every attack style
             for (const p of ['stabattack_anim', 'slashattack_anim', 'crushattack_anim']) o.push(`param=${p},${seq(anims.attack)}`);
             if (anims.attack === 426) o.push(`param=rangeattack_anim,${seq(anims.attack)}`);
             o.push(`param=defend_anim,${seq(anims.block)}`);
-            // turn and side/back walk animations were always 823/820/821/822 (Lost City defaults)
-            if (anims.stand !== 808) o.push(`param=ready_baseanim,${seq(anims.stand)}`);
-            if (anims.walk !== 819) o.push(`param=walk_f_baseanim,${seq(anims.walk)}`);
-            if (anims.run !== 824) o.push(`param=running_baseanim,${seq(anims.run)}`);
         }
         objLines.push(...o);
-        rows.push({ id, name, serverName, price, slot, bonuses, reqs, sellable: sellable.has(id), blocksShield: twoHanderz.has(id), plate: slot === 'torso' && lists.platebody.has(id), head: slot === 'hat' && (lists.fullHelm.has(id) || lists.fullMask.has(id)), anims, standin: look.standin });
+        rows.push({ id, serverName: data.name(id), price: data.value(id), slot, bonuses: data.bonuses(id), reqs: data.reqs(id), sellable: data.flags.sellable(id), blocksShield: TWO_HANDERZ.includes(id), plate, head, anims, standin: look.standin });
     }
 
     // obj ids = Allstar ids, so the client sees the same ids Allstar-Scape sent
@@ -302,34 +153,12 @@ export default function customitems({ root, content, legacy, packs, report }) {
         enumLines.push(`val=${from},allstar_item_${to}`);
     }
 
-    const paramLines = [
-        '// Allstar-Scape item data read by other systems (set on custom items here; see gen/customitems.mjs).',
-        '',
-        '// item.cfg name: what the server used for name-based rules, messages and the weapon tab',
-        '[allstar_name]',
-        'type=string',
-        'default=null',
-        '',
-        '// Item.itemSellable',
-        '[allstar_sellable]',
-        'type=boolean',
-        'default=no',
-        '',
-        '// client.twoHanderz: cannot be wielded while a shield is worn',
-        '[allstar_blocks_shield]',
-        'type=boolean',
-        'default=no',
-        ''
-    ];
-    for (const [skill, java] of REQUIREMENTS) {
-        paramLines.push(`// client.GetCL${java}: level needed to wear`, `[allstar_req_${skill}]`, 'type=int', 'default=1', '');
-    }
-
     const outDir = path.join(root, OUT);
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(path.join(outDir, 'customitems.obj'), objLines.join('\n') + '\n');
     fs.writeFileSync(path.join(outDir, 'customitems.enum'), enumLines.join('\n') + '\n');
-    fs.writeFileSync(path.join(outDir, 'customitems.param'), paramLines.join('\n'));
+    // the params moved to items.param (gen/items.mjs)
+    fs.rmSync(path.join(outDir, 'customitems.param'), { force: true });
 
     // cross-check against the spec tables (allstar/spec/allstar_items.csv)
     const problems = verifyAgainstSpec(root, rows);

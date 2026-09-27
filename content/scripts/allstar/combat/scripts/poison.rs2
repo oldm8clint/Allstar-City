@@ -1,5 +1,5 @@
-// Allstar-Scape player poison (client.Poison C:9182, PoisonPlayer C:9222, process C:17128-17190) and
-// the area hazards KBDLair/Dungeon1 (C:9230-9326). npcs_rules.md sections 3.6 and 4.4.
+// Allstar-Scape player poison (client.Poison C:9182, PoisonPlayer C:9222, process C:17128-17190).
+// npcs_rules.md section 3.6. (The KBDLair/Dungeon1 damage zones are objects' allstar_zones.)
 
 // PoisonPlayer(): PoisonDelay = 40, PoisonClear = 0; the first hit comes 39 cycles later.
 // %as_poisondelay is the cycle PoisonDelay reaches 1 (0: never poisoned since login).
@@ -39,60 +39,6 @@ if (%as_poisonclear >= 15) {
     %as_poisondelay = 0;
     mes("The poison wears off...");
 }
-
-// KBDLair (x 2630-2650, y 9517-9546): 3 + r(78) every 39 cycles, "You get hit!"; Dungeon1 (the
-// Brimhaven dungeon, x 2549-2625, y 9476-9535): 3 + r(20) every 19 cycles. The hits also count down
-// currentHealth, a separate counter: at 0 every item is deleted (not dropped), the player is sent to
-// 2889,3557 (KBDLair) or 3254,3420 (Dungeon1), "Oh dear you are dead!" and currentHealth is 99 again.
-// (Allstar-Scape saved currentHealth and showed hitpoints 99 in the skills tab; neither is ported.)
-[proc,allstar_area_hazards]
-~allstar_hazard(2630, 2650, 9517, 9546, 40, 78, "You get hit!", 0_45_55_9_37);
-~allstar_hazard(2549, 2625, 9476, 9535, 20, 20, "Poison from the dungeon starts to kill you!", 0_50_53_54_28);
-
-[proc,allstar_hazard](int $x1, int $x2, int $z1, int $z2, int $delay, int $max, string $text, coord $dest)
-if (coordx(coord) >= $x1 & coordx(coord) <= $x2 & coordz(coord) >= $z1 & coordz(coord) <= $z2) {
-    if (map_clock >= %as_monsterdelay) {
-        def_int $hit = calc(3 + randominc($max));
-        mes($text);
-        %as_monsterdelay = calc(map_clock + $delay - 1);
-        %as_currenthealth = calc(%as_currenthealth - $hit);
-        ~allstar_player_hit($hit, ^hitmark_damage);
-        ~allstar_incombat;
-    }
-}
-if (%as_currenthealth < 1) {
-    %as_currenthealth = 0;
-}
-if (%as_currenthealth = 0) {
-    %as_currenthealth = 99;
-    %as_phit = 1;
-    if (p_finduid(uid) = true) {
-        ~allstar_hazard_dead($dest);
-    } else {
-        strongqueue*(allstar_hazard_dead, 0)($dest);
-    }
-}
-
-[queue,allstar_hazard_dead](coord $dest)
-~allstar_hazard_dead($dest);
-
-// remove(item, slot) for every worn item (only while the inventory has room), then the inventory is emptied
-[proc,allstar_hazard_dead](coord $dest)
-def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
-def_int $slot = 0;
-def_obj $obj = null;
-while ($slot < inv_size(worn)) {
-    $obj = inv_getobj(worn, $slot);
-    if ($obj ! null & inv_freespace(inv) > 0) {
-        inv_moveitem(worn, inv, $obj, inv_getnum(worn, $slot));
-    }
-    $slot = calc($slot + 1);
-}
-inv_clear(inv);
-buildappearance(worn);
-~update_all($weapon);
-p_telejump(movecoord($dest, 0, coordy(coord), 0));
-mes("Oh dear you are dead!");
 
 // process() C:17182: a 1 in 3,000,000 chance every cycle of being sent to 3387,9786
 [proc,allstar_random_event]

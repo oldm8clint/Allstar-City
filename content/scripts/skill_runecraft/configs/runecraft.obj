@@ -1,7 +1,6 @@
 [air_talisman]
 name=Air talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_air_talisman
 2dxof=2
 2dyof=20
@@ -12,15 +11,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^air
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_air_talisman
 
 [cert_air_talisman]
 certlink=air_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,air_talisman
+param=allstar_withdraw_stackable,yes
 
 [earth_talisman]
 name=Earth talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_earth_talisman
 2dxof=2
 2dyof=20
@@ -31,15 +40,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^earth
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_earth_talisman
 
 [cert_earth_talisman]
 certlink=earth_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,earth_talisman
+param=allstar_withdraw_stackable,yes
 
 [fire_talisman]
 name=Fire talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_fire_talisman
 2dxof=2
 2dyof=20
@@ -50,15 +69,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^fire
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_fire_talisman
 
 [cert_fire_talisman]
 certlink=fire_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,fire_talisman
+param=allstar_withdraw_stackable,yes
 
 [water_talisman]
 name=Water talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_water_talisman
 2dxof=2
 2dyof=20
@@ -69,15 +98,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^water
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_water_talisman
 
 [cert_water_talisman]
 certlink=water_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,water_talisman
+param=allstar_withdraw_stackable,yes
 
 [body_talisman]
 name=Body talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_body_talisman
 2dxof=2
 2dyof=20
@@ -88,15 +127,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^body
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_body_talisman
 
 [cert_body_talisman]
 certlink=body_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,body_talisman
+param=allstar_withdraw_stackable,yes
 
 [mind_talisman]
 name=Mind talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_mind_talisman
 2dxof=2
 2dyof=20
@@ -107,15 +156,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^mind
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_mind_talisman
 
 [cert_mind_talisman]
 certlink=mind_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,mind_talisman
+param=allstar_withdraw_stackable,yes
 
 [blood_talisman]
 name=Blood talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_blood_talisman
 members=yes
 2dxof=2
@@ -127,15 +186,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^blood
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_blood_talisman
 
 [cert_blood_talisman]
 certlink=blood_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,blood_talisman
+param=allstar_withdraw_stackable,yes
 
 [chaos_talisman]
 name=Chaos talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_chaos_talisman
 members=yes
 2dxof=2
@@ -147,15 +216,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^chaos
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_chaos_talisman
 
 [cert_chaos_talisman]
 certlink=chaos_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,chaos_talisman
+param=allstar_withdraw_stackable,yes
 
 [cosmic_talisman]
 name=Cosmic talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_cosmic_talisman
 members=yes
 2dxof=2
@@ -167,15 +246,25 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^cosmic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_cosmic_talisman
 
 [cert_cosmic_talisman]
 certlink=cosmic_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,cosmic_talisman
+param=allstar_withdraw_stackable,yes
 
 [death_talisman]
 name=Death talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_death_talisman
 members=yes
 2dxof=2
@@ -187,15 +276,24 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^death
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_death_talisman
 
 [cert_death_talisman]
 certlink=death_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,death_talisman
 
 [law_talisman]
 name=Law talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_law_talisman
 members=yes
 2dxof=2
@@ -207,7 +305,10 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^law
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
 
 [cert_law_talisman]
 name=Rotten net
@@ -215,16 +316,18 @@ desc=For catching rotten fish.
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [soul_talisman]
 name=Soul talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_soul_talisman
 members=yes
 2dxof=2
@@ -236,15 +339,25 @@ iop4=Locate
 weight=20lb
 category=talismans
 param=rune_type,^soul
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_soul_talisman
 
 [cert_soul_talisman]
 certlink=soul_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,soul_talisman
+param=allstar_withdraw_stackable,yes
 
 [nature_talisman]
 name=Nature talisman
 desc=A mysterious power emanates from the talisman...
-cost=4
 model=obj_nature_talisman
 members=yes
 2dxof=2
@@ -256,10 +369,21 @@ iop4=Locate
 weight=15g
 category=talismans
 param=rune_type,^nature
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_nature_talisman
+param=allstar_withdraw_stackable,yes
 
 [cert_nature_talisman]
 certlink=nature_talisman
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,nature_talisman
 
 [tiara_air]
 name=Air tiara
@@ -275,15 +399,25 @@ manwear=obj_tiara_air_manwear,0
 womanwear=obj_tiara_air_womanwear,0
 manhead=obj_tiara_air_manhead
 womanhead=obj_tiara_air_manhead
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^air
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_air
 
 [cert_tiara_air]
 certlink=tiara_air
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_air
+param=allstar_withdraw_stackable,yes
 
 [tiara_mind]
 name=Mind tiara
@@ -299,15 +433,25 @@ manwear=obj_tiara_mind_manwear,0
 womanwear=obj_tiara_mind_womanwear,0
 manhead=obj_tiara_mind_manhead
 womanhead=obj_tiara_mind_manhead
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^mind
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_mind
 
 [cert_tiara_mind]
 certlink=tiara_mind
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_mind
+param=allstar_withdraw_stackable,yes
 
 [tiara_water]
 name=Water tiara
@@ -323,15 +467,25 @@ manwear=obj_tiara_water_manwear,0
 womanwear=obj_tiara_water_womanwear,0
 manhead=obj_tiara_water_manhead
 womanhead=obj_tiara_water_manhead
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^water
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_water
 
 [cert_tiara_water]
 certlink=tiara_water
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_water
+param=allstar_withdraw_stackable,yes
 
 [tiara_body]
 name=Body tiara
@@ -347,15 +501,25 @@ manwear=obj_tiara_body_manwear,0
 womanwear=obj_tiara_body_womanwear,0
 manhead=obj_tiara_body_manhead
 womanhead=obj_tiara_body_manhead
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^body
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_body
 
 [cert_tiara_body]
 certlink=tiara_body
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_body
+param=allstar_withdraw_stackable,yes
 
 [tiara_earth]
 name=Earth tiara
@@ -371,15 +535,25 @@ manwear=obj_tiara_earth_manwear,0
 womanwear=obj_tiara_earth_womanwear,0
 manhead=obj_tiara_earth_manhead
 womanhead=obj_tiara_earth_manhead
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^earth
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_earth
 
 [cert_tiara_earth]
 certlink=tiara_earth
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_earth
+param=allstar_withdraw_stackable,yes
 
 [tiara_fire]
 name=Fire tiara
@@ -395,15 +569,25 @@ manwear=obj_tiara_fire_manwear,0
 womanwear=obj_tiara_fire_womanwear,0
 manhead=obj_tiara_fire_manhead
 womanhead=obj_tiara_fire_manhead
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^fire
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_fire
 
 [cert_tiara_fire]
 certlink=tiara_fire
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_fire
+param=allstar_withdraw_stackable,yes
 
 [tiara_cosmic]
 name=Cosmic tiara
@@ -420,15 +604,25 @@ womanwear=obj_tiara_cosmic_womanwear,0
 manhead=obj_tiara_cosmic_manhead
 womanhead=obj_tiara_cosmic_manhead
 members=yes
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^cosmic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_cosmic
 
 [cert_tiara_cosmic]
 certlink=tiara_cosmic
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_cosmic
+param=allstar_withdraw_stackable,yes
 
 [tiara_nature]
 name=Nature tiara
@@ -445,15 +639,25 @@ womanwear=obj_tiara_nature_womanwear,0
 manhead=obj_tiara_nature_manhead
 womanhead=obj_tiara_nature_manhead
 members=yes
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^nature
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_nature
 
 [cert_tiara_nature]
 certlink=tiara_nature
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_nature
+param=allstar_withdraw_stackable,yes
 
 [tiara_chaos]
 name=Chaos tiara
@@ -470,15 +674,25 @@ womanwear=obj_tiara_chaos_womanwear,0
 manhead=obj_tiara_chaos_manhead
 womanhead=obj_tiara_chaos_manhead
 members=yes
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^chaos
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_chaos
 
 [cert_tiara_chaos]
 certlink=tiara_chaos
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_chaos
+param=allstar_withdraw_stackable,yes
 
 [tiara_law]
 name=Law tiara
@@ -495,23 +709,29 @@ womanwear=obj_tiara_law_womanwear,0
 manhead=obj_tiara_law_manhead
 womanhead=obj_tiara_law_manhead
 members=yes
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^law
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
 
 [cert_tiara_law]
 name=Broken tiara
 desc=This tiara has decayed and is useless.
 recol1s=2340
 recol1d=25073
-stackable=yes
-cost=1
 model=obj_tiara
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [tiara_death]
 name=Death tiara
@@ -528,15 +748,25 @@ womanwear=obj_tiara_death_womanwear,0
 manhead=obj_tiara_death_manhead
 womanhead=obj_tiara_death_manhead
 members=yes
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^death
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_death
 
 [cert_tiara_death]
 certlink=tiara_death
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_death
+param=allstar_withdraw_stackable,yes
 
 [tiara_blood]
 name=Blood tiara
@@ -553,15 +783,25 @@ womanwear=obj_tiara_blood_womanwear,0
 manhead=obj_tiara_blood_manhead
 womanhead=obj_tiara_blood_manhead
 members=yes
-cost=100
-wearpos=hat
 weight=1kg
 category=runecraft_tiaras
 param=rune_type,^blood
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_blood
 
 [cert_tiara_blood]
 certlink=tiara_blood
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_blood
+param=allstar_withdraw_stackable,yes
 
 [tiara_soul]
 name=Soul tiara
@@ -578,11 +818,21 @@ womanwear=obj_tiara_soul_womanwear,0
 manhead=obj_tiara_soul_manhead
 womanhead=obj_tiara_soul_manhead
 members=yes
-cost=100
 weight=20lb
 category=runecraft_tiaras
 param=rune_type,^soul
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=hat
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_note,cert_tiara_soul
 
 [cert_tiara_soul]
 certlink=tiara_soul
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,tiara_soul

@@ -263,6 +263,10 @@ async function pvp() {
     since = a.messages.length;
     await tele(a, 2855, 3591);
     await tele(b, 2855, 3592);
+    await a.until(() => a.playerByName(b.username) !== undefined, 5000, 'the target at home').catch(err => {
+        console.log('players seen:', JSON.stringify([...a.players.values()]), 'self', JSON.stringify(a.self), 'b', JSON.stringify(b.self));
+        throw err;
+    });
     const home = a.playerByName(b.username)!;
     const safe = b.myHits.length;
     a.opPlayer(3, home.pid);
@@ -436,6 +440,7 @@ async function pvpMagic() {
     await tele(a, 2855, 3591);
     await tele(b, 2855, 3593);
     since = a.messages.length;
+    await a.until(() => a.playerByName(b.username) !== undefined, 5000, 'the target at home');
     a.opPlayerT(a.playerByName(b.username)!.pid, 12861);
     const safe = await a.waitForMessage(/^This player is in a safe zone and cannot be attacked$/, 3000, since).catch(() => '');
     check(safe !== '', 'no spells in a safe zone');

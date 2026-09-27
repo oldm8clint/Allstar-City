@@ -84,7 +84,7 @@ npc_walk(movecoord(npc_coord, $dx, 0, $dz));
 if (%asn_close = 0) {
     playerall;
     while (huntnext = true) {
-        if (%asn_close = 0 & ~allstar_gooddistance(npc_coord, coord, 2) = true) {
+        if (%asn_close = 0 & ~allstar_gooddistance_to(npc_coord, coord, 2) = true) {
             %asn_timer = 2;
             %asn_close = 1;
         }

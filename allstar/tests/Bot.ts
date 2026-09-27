@@ -18,7 +18,8 @@ import ServerGameZoneProt from '../../engine/src/network/game/server/ServerGameZ
 const ENGINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../engine');
 
 const serverProts = new Map<number, ServerGameProt>();
-// zone packets (OBJ_ADD, MAP_ANIM ...) are also sent on their own
+// zone packets (OBJ_ADD, LOC_ADD_CHANGE, MAP_ANIM ...) can also arrive on their own after
+// UPDATE_ZONE_PARTIAL_FOLLOWS
 for (const value of [...Object.values(ServerGameProt), ...Object.values(ServerGameZoneProt)]) {
     if (value instanceof ServerGameProt) {
         serverProts.set(value.id, value);
@@ -147,6 +148,7 @@ export default class Bot {
     private zoneBase = { x: 0, z: 0 };
     private npcList: number[] = [];
     private playerList: number[] = [];
+    private playerNames = new Map<number, string>();
 
     private socket!: net.Socket;
     private buffer = Buffer.alloc(0);
@@ -364,8 +366,8 @@ export default class Bot {
                 break;
             }
             case ServerGameProt.REBUILD_NORMAL: {
-                const x = buf.g2();
                 const z = buf.g2();
+                const x = buf.g2_alt3();
                 this.region = { x, z };
                 // RebuildNormalEncoder: p2(zoneZ), p2_alt3(zoneX)
                 const zb = new Packet(Uint8Array.from(buf.data.subarray(0, 4)));
@@ -531,7 +533,7 @@ export default class Bot {
             if (dz > 15) dz -= 32;
             buf.gBit(1); // jump
             const update = buf.gBit(1);
-            this.players.set(pid, { pid, name: this.players.get(pid)?.name ?? '', x: this.self.x + dx, z: this.self.z + dz });
+            this.players.set(pid, { pid, name: this.players.get(pid)?.name ?? this.playerNames.get(pid) ?? '', x: this.self.x + dx, z: this.self.z + dz });
             list.push(pid);
             if (update === 1) updates.push(pid);
         }
@@ -561,6 +563,8 @@ export default class Bot {
                     const name = new Packet(bytes.slice(len - 11, len - 3)).g8();
                     const other = this.players.get(pid);
                     if (other) other.name = fromBase37(name);
+                    // the engine only resends an appearance that changed: remember it like the client
+                    this.playerNames.set(pid, fromBase37(name));
                 }
             }
             if (mask & 1024) {

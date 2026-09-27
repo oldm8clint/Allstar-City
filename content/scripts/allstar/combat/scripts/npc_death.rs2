@@ -36,11 +36,11 @@ if (~allstar_npc_killer = false) {
 def_coord $tile = npc_coord;
 switch_npc (npc_type) {
     case ikov_guardianfemale :
-        ~allstar_drop(ahoy_chest_key, 1, $tile);
+        ~allstar_drop_obj(ahoy_chest_key, 1, $tile);
         ~allstar_drop_teleport(0_40_49_48_27);
-    case al_kharid_warrior : ~allstar_drop(~allstar_droptable_guard, 1, $tile);
-    case hero : ~allstar_drop(~allstar_droptable_hero, 1, $tile);
-    case paladin2 : ~allstar_drop(~allstar_droptable_guardz, 1, $tile);
+    case al_kharid_warrior : ~allstar_drop_obj(~allstar_droptable_guard, 1, $tile);
+    case hero : ~allstar_drop_obj(~allstar_droptable_hero, 1, $tile);
+    case paladin2 : ~allstar_drop_obj(~allstar_droptable_guardz, 1, $tile);
     case elemental_air : ~allstar_drop_teleport(0_41_75_36_39);
     case elemental_earth : ~allstar_drop_teleport(0_42_75_25_36);
     case dragonslayer_demon : ~allstar_drop_teleport(0_39_47_46_21);
@@ -48,73 +48,73 @@ switch_npc (npc_type) {
     case fourdiamonds_assasin : ~allstar_drop_teleport(0_44_155_50_32);
     case zq_mainzombie3 :
         ~allstar_drop_teleport(0_43_145_40_45);
-        ~allstar_drop(mourning_excavation_key, 1, $tile);
+        ~allstar_drop_obj(mourning_excavation_key, 1, $tile);
     case ikov_guardianmale : ~allstar_drop_teleport(0_39_47_44_11);
     case ice_queen :
         ~allstar_drop_teleport(0_39_47_55_35);
-        ~allstar_drop(hauntedmine_lift_key, 1, $tile);
+        ~allstar_drop_obj(hauntedmine_lift_key, 1, $tile);
     case elemental_water : ~allstar_drop_teleport(0_40_75_24_36);
     case elemental_fire : ~allstar_drop_teleport(0_38_75_32_34);
-    case chaoselemental : ~allstar_drop(~allstar_droptable_silvchest, 1, $tile);
-    case trail_hard : ~allstar_drop(makinghistory_key, 1, $tile);
-    case hellhound : ~allstar_drop(ahoy_bone_key, 1, $tile);
-    case jb_baby_dagganoth : ~allstar_drop(rd_puzzleroom_key, 1, $tile);
-    case tzhaar_fightcave_swarm_boss : ~allstar_drop(tzhaar_cape_fire, 1, $tile);
+    case chaoselemental : ~allstar_drop_obj(~allstar_droptable_silvchest, 1, $tile);
+    case trail_hard : ~allstar_drop_obj(makinghistory_key, 1, $tile);
+    case hellhound : ~allstar_drop_obj(ahoy_bone_key, 1, $tile);
+    case jb_baby_dagganoth : ~allstar_drop_obj(rd_puzzleroom_key, 1, $tile);
+    case tzhaar_fightcave_swarm_boss : ~allstar_drop_obj(tzhaar_cape_fire, 1, $tile);
     case dwarf_rock_actual_demon :
-        ~allstar_drop(tzhaar_token, 10000000, $tile);
-        ~allstar_drop(~allstar_droptable_arzinian_being_of_bordanzan, 1, $tile);
-    case kalphite_queen : ~allstar_drop(~allstar_droptable_kq, 1, $tile);
-    case macro_rivertrollguardian_1 : ~allstar_drop(~allstar_droptable_troll, 1, $tile);
-    case chicken : ~allstar_drop(~allstar_droptable_chicken, 1, $tile);
-    case skeleton_unagressive : ~allstar_drop(~allstar_droptable_skeleton, 1, $tile);
-    case slayer_crawling_hand_1 : ~allstar_drop(~allstar_droptable_crawlinghand, 1, $tile);
-    case swamp_cave_bug : ~allstar_drop(~allstar_droptable_cavebug, 1, $tile);
-    case slayer_jelly_1 : ~allstar_drop(~allstar_droptable_jelly, 1, $tile);
+        ~allstar_drop_obj(tzhaar_token, 10000000, $tile);
+        ~allstar_drop_obj(~allstar_droptable_arzinian_being_of_bordanzan, 1, $tile);
+    case kalphite_queen : ~allstar_drop_obj(~allstar_droptable_kq, 1, $tile);
+    case macro_rivertrollguardian_1 : ~allstar_drop_obj(~allstar_droptable_troll, 1, $tile);
+    case chicken : ~allstar_drop_obj(~allstar_droptable_chicken, 1, $tile);
+    case skeleton_unagressive : ~allstar_drop_obj(~allstar_droptable_skeleton, 1, $tile);
+    case slayer_crawling_hand_1 : ~allstar_drop_obj(~allstar_droptable_crawlinghand, 1, $tile);
+    case swamp_cave_bug : ~allstar_drop_obj(~allstar_droptable_cavebug, 1, $tile);
+    case slayer_jelly_1 : ~allstar_drop_obj(~allstar_droptable_jelly, 1, $tile);
     case slayer_abberant_spectre_1 :
-        ~allstar_drop(~allstar_droptable_aberrantspecter, 1, $tile);
-        ~allstar_drop(~allstar_droptable_slayeritem65, 1, $tile);
-        ~allstar_drop(~allstar_droptable_slayeritem75, 1, $tile);
-    case slayer_abyssal : ~allstar_drop(~allstar_droptable_abyssaldemon, 1, $tile);
-    case mourning_dark_beast : ~allstar_drop(~allstar_droptable_darkbeast, 1, $tile);
-    case unicorn : ~allstar_drop(~allstar_droptable_unicorn, 1, $tile);
-    case zamorak_mage : ~allstar_drop(~allstar_droptable_battlemagesara, 1, $tile);
-    case saradomin_mage : ~allstar_drop(~allstar_droptable_battlemagezammy, 1, $tile);
-    case guthix_mage : ~allstar_drop(~allstar_droptable_battlemageguthix, 1, $tile);
-    case giantrat : ~allstar_drop(~allstar_droptable_rat, 1, $tile);
-    case yanille_soldier : ~allstar_drop(~allstar_droptable_soldier, 1, $tile);
-    case ogre : ~allstar_drop(~allstar_droptable_ogre, 1, $tile);
-    case barbarian_woman : ~allstar_drop(~allstar_droptable_barbarian, 1, $tile);
-    case hundred_minion2 : ~allstar_drop(~allstar_droptable_flambeed, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_aberrantspecter, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_slayeritem65, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_slayeritem75, 1, $tile);
+    case slayer_abyssal : ~allstar_drop_obj(~allstar_droptable_abyssaldemon, 1, $tile);
+    case mourning_dark_beast : ~allstar_drop_obj(~allstar_droptable_darkbeast, 1, $tile);
+    case unicorn : ~allstar_drop_obj(~allstar_droptable_unicorn, 1, $tile);
+    case zamorak_mage : ~allstar_drop_obj(~allstar_droptable_battlemagesara, 1, $tile);
+    case saradomin_mage : ~allstar_drop_obj(~allstar_droptable_battlemagezammy, 1, $tile);
+    case guthix_mage : ~allstar_drop_obj(~allstar_droptable_battlemageguthix, 1, $tile);
+    case giantrat : ~allstar_drop_obj(~allstar_droptable_rat, 1, $tile);
+    case yanille_soldier : ~allstar_drop_obj(~allstar_droptable_soldier, 1, $tile);
+    case ogre : ~allstar_drop_obj(~allstar_droptable_ogre, 1, $tile);
+    case barbarian_woman : ~allstar_drop_obj(~allstar_droptable_barbarian, 1, $tile);
+    case hundred_minion2 : ~allstar_drop_obj(~allstar_droptable_flambeed, 1, $tile);
     case jogre :
         // three separate MonsterDropItem blocks roll randomJogre (NH:1341, 1371, 1376)
-        ~allstar_drop(~allstar_droptable_jogre, 1, $tile);
-        ~allstar_drop(~allstar_droptable_jogre, 1, $tile);
-        ~allstar_drop(~allstar_droptable_jogre, 1, $tile);
-    case skeleton_hellhound : ~allstar_drop(~allstar_droptable_skeleton_hellhound, 1, $tile);
-    case black_demon : ~allstar_drop(~allstar_droptable_black_demon, 1, $tile);
-    case icegiant : ~allstar_drop(~allstar_droptable_ice_giant, 1, $tile);
-    case agrith_naar : ~allstar_drop(~allstar_droptable_agrith_naar, 1, $tile);
-    case dagcave_ranged_boss : ~allstar_drop(~allstar_droptable_dagannoth_supreme, 1, $tile);
-    case dagcave_magic_boss : ~allstar_drop(~allstar_droptable_dagannoth_prime, 1, $tile);
-    case dagcave_melee_boss : ~allstar_drop(~allstar_droptable_dagannoth_rex, 1, $tile);
-    case king_dragon : ~allstar_drop(~allstar_droptable_kbd, 1, $tile);
-    case chaosmonk1 : ~allstar_drop(magic_whistle, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_jogre, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_jogre, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_jogre, 1, $tile);
+    case skeleton_hellhound : ~allstar_drop_obj(~allstar_droptable_skeleton_hellhound, 1, $tile);
+    case black_demon : ~allstar_drop_obj(~allstar_droptable_black_demon, 1, $tile);
+    case icegiant : ~allstar_drop_obj(~allstar_droptable_ice_giant, 1, $tile);
+    case agrith_naar : ~allstar_drop_obj(~allstar_droptable_agrith_naar, 1, $tile);
+    case dagcave_ranged_boss : ~allstar_drop_obj(~allstar_droptable_dagannoth_supreme, 1, $tile);
+    case dagcave_magic_boss : ~allstar_drop_obj(~allstar_droptable_dagannoth_prime, 1, $tile);
+    case dagcave_melee_boss : ~allstar_drop_obj(~allstar_droptable_dagannoth_rex, 1, $tile);
+    case king_dragon : ~allstar_drop_obj(~allstar_droptable_kbd, 1, $tile);
+    case chaosmonk1 : ~allstar_drop_obj(magic_whistle, 1, $tile);
     case smoke_devil :
-        ~allstar_drop(~allstar_droptable_slayeritem65, 1, $tile);
-        ~allstar_drop(~allstar_droptable_slayeritem75, 1, $tile);
-    case barrows_giantspider : ~allstar_drop(~allstar_droptable_slayeritem65, 1, $tile);
-    case slayer_abberant_spectre_2 : ~allstar_drop(~allstar_droptable_slayer99item, 1, $tile);
-    case barrows_dharok : ~allstar_drop(~allstar_droptable_dharok, 1, $tile);
-    case barrows_verac : ~allstar_drop(~allstar_droptable_verac, 1, $tile);
-    case barrows_torag : ~allstar_drop(~allstar_droptable_torag, 1, $tile);
-    case barrows_karil : ~allstar_drop(~allstar_droptable_karil, 1, $tile);
-    case barrows_guthan : ~allstar_drop(~allstar_droptable_guthan, 1, $tile);
-    case barrows_ahrim : ~allstar_drop(~allstar_droptable_ahrim, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_slayeritem65, 1, $tile);
+        ~allstar_drop_obj(~allstar_droptable_slayeritem75, 1, $tile);
+    case barrows_giantspider : ~allstar_drop_obj(~allstar_droptable_slayeritem65, 1, $tile);
+    case slayer_abberant_spectre_2 : ~allstar_drop_obj(~allstar_droptable_slayer99item, 1, $tile);
+    case barrows_dharok : ~allstar_drop_obj(~allstar_droptable_dharok, 1, $tile);
+    case barrows_verac : ~allstar_drop_obj(~allstar_droptable_verac, 1, $tile);
+    case barrows_torag : ~allstar_drop_obj(~allstar_droptable_torag, 1, $tile);
+    case barrows_karil : ~allstar_drop_obj(~allstar_droptable_karil, 1, $tile);
+    case barrows_guthan : ~allstar_drop_obj(~allstar_droptable_guthan, 1, $tile);
+    case barrows_ahrim : ~allstar_drop_obj(~allstar_droptable_ahrim, 1, $tile);
 }
 
 // ItemHandler.addItem(item, x, y, amount, killer): shown to the killer, public after 60 cycles,
 // gone after 120. Non-stackable amounts drop as separate items.
-[proc,allstar_drop](namedobj $obj, int $count, coord $tile)
+[proc,allstar_drop_obj](namedobj $obj, int $count, coord $tile)
 if ($obj = null) {
     return;
 }
