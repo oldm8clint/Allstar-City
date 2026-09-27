@@ -34,3 +34,24 @@ if (distance(coord, obj_coord) ! 0 | inv_freespace(inv) < 1) {
     return;
 }
 obj_takeitem(inv);
+
+// itemspawnpoints.java (server loop): every 99 cycles a Zamorak, Saradomin and Guthix cape are added
+// at 3118-3120,9848 (the Edgeville dungeon training room) with no owner, so ItemHandler shows them to
+// everyone from cycle 60 to 120. (ItemHandler never freed the slot of an item nobody picked up, so
+// after about a day of uptime its 5,001-slot table was full and no ground item could appear; the
+// owner chose not to reproduce that.) The spawner is a world script started by the first login.
+[proc,allstar_godcapes_start]
+if (%allstar_godcapes = 0) {
+    %allstar_godcapes = 1;
+    strongqueue(allstar_godcapes, 0, 0);
+}
+
+[queue,allstar_godcapes]
+while (%allstar_godcapes = 1) {
+    world_delay(59);
+    obj_addall(0_48_153_46_56, zamorak_cape, 1, 60);
+    obj_addall(0_48_153_47_56, saradomin_cape, 1, 60);
+    obj_addall(0_48_153_48_56, guthix_cape, 1, 60);
+    world_delay(38);
+}
+

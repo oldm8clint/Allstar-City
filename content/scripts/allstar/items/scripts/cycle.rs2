@@ -7,6 +7,7 @@
 [proc,allstar_items_login]
 ~allstar_login_equipment;
 softtimer(allstar_items_cycle, 1);
+~allstar_godcapes_start;
 
 [softtimer,allstar_items_cycle]
 // L17028
