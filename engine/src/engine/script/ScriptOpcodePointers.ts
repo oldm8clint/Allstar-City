@@ -1035,6 +1035,30 @@ const ScriptOpcodePointers: {
     },
     [ScriptOpcode.DB_LISTALL_WITH_COUNT]: {
         set: ['find_db']
+    },
+
+    // Allstar-City
+    [ScriptOpcode.FINDNAME]: {
+        set: ['active_player'],
+        set2: ['active_player2'],
+        corrupt: ['p_active_player'],
+        corrupt2: ['p_active_player2'],
+        conditional: true
+    },
+    [ScriptOpcode.PLAYERALL]: {
+        set: ['find_player']
+    },
+    [ScriptOpcode.SETSTAFFMODLEVEL]: {
+        require: ['active_player'],
+        require2: ['active_player2']
+    },
+    [ScriptOpcode.P_KICK]: {
+        require: ['active_player'],
+        require2: ['active_player2']
+    },
+    [ScriptOpcode.IPADDRESS]: {
+        require: ['active_player'],
+        require2: ['active_player2']
     }
 };
 

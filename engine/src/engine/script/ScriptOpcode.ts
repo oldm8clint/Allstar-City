@@ -454,7 +454,21 @@ export const enum ScriptOpcode {
     CONSOLE = 10000,
     ERROR,
     GETTIMESPENT, // custom: used to profile script execution (current duration)
-    TIMESPENT // custom: used to profile script execution (record start time)
+    TIMESPENT, // custom: used to profile script execution (record start time)
+
+    // Allstar-City
+    FINDNAME, // custom: find an online player by name
+    PLAYERALL, // custom: iterate every online player with huntnext
+    WORLD_BROADCAST, // custom: game message to every player
+    SETSTAFFMODLEVEL, // custom
+    P_KICK, // custom: disconnect immediately
+    IPADDRESS, // custom
+    NAMELIST_ADD, // custom: persisted name lists (bans, ip bans, macro warnings)
+    NAMELIST_DEL, // custom
+    NAMELIST_HAS, // custom
+    NAMELIST_CLEAR, // custom
+    WORLD_REBOOT, // custom: system update countdown in seconds
+    ALLSTAR_LOG // custom: append a line to data/allstar/logs/<file>.txt
 }
 
 export const ScriptOpcodeMap: Map<string, number> = new Map([
@@ -883,7 +897,21 @@ export const ScriptOpcodeMap: Map<string, number> = new Map([
     ['CONSOLE', ScriptOpcode.CONSOLE],
     ['ERROR', ScriptOpcode.ERROR],
     ['GETTIMESPENT', ScriptOpcode.GETTIMESPENT],
-    ['TIMESPENT', ScriptOpcode.TIMESPENT]
+    ['TIMESPENT', ScriptOpcode.TIMESPENT],
+
+    // Allstar-City
+    ['FINDNAME', ScriptOpcode.FINDNAME],
+    ['PLAYERALL', ScriptOpcode.PLAYERALL],
+    ['WORLD_BROADCAST', ScriptOpcode.WORLD_BROADCAST],
+    ['SETSTAFFMODLEVEL', ScriptOpcode.SETSTAFFMODLEVEL],
+    ['P_KICK', ScriptOpcode.P_KICK],
+    ['IPADDRESS', ScriptOpcode.IPADDRESS],
+    ['NAMELIST_ADD', ScriptOpcode.NAMELIST_ADD],
+    ['NAMELIST_DEL', ScriptOpcode.NAMELIST_DEL],
+    ['NAMELIST_HAS', ScriptOpcode.NAMELIST_HAS],
+    ['NAMELIST_CLEAR', ScriptOpcode.NAMELIST_CLEAR],
+    ['WORLD_REBOOT', ScriptOpcode.WORLD_REBOOT],
+    ['ALLSTAR_LOG', ScriptOpcode.ALLSTAR_LOG]
 ]);
 
 export const ScriptOpcodeNameMap: Map<number, string> = new Map(Array.from(ScriptOpcodeMap.entries()).map(([key, value]) => [value, key]));

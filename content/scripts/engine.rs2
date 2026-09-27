@@ -1077,3 +1077,29 @@
 // [command,inv_totalparam](inv $inv, param param)(int)
 // [command,inv_totalparam_stack](inv $inv, param param)(int)
 // [command,obj_adddelayed]
+
+// ---- Allstar-City engine commands (engine/src/engine/script/handlers/AllstarOps.ts) ----
+// info: Find an online player by name and make them the active player
+[command,findname](string $name)(boolean)
+// info: Find an online player by name and make them the secondary player
+[command,.findname](string $name)(boolean)
+// info: Iterate every online player, use with huntnext
+[command,playerall]
+// info: Send a game message to every online player
+[command,world_broadcast](string $text)
+[command,setstaffmodlevel](int $level)
+[command,.setstaffmodlevel](int $level)
+// info: Disconnect a player immediately
+[command,p_kick]
+[command,.p_kick]
+[command,ipaddress]()(string)
+[command,.ipaddress]()(string)
+// info: Persisted name lists in engine/data/allstar/<list>.txt (bannedusers, bannedips, macrowarn)
+[command,namelist_add](string $list, string $entry)
+[command,namelist_del](string $list, string $entry)
+[command,namelist_has](string $list, string $entry)(boolean)
+[command,namelist_clear](string $list)
+// info: Start the system update countdown, in seconds
+[command,world_reboot](int $seconds)
+// info: Append a line to engine/data/allstar/logs/<file>.txt (Allstar-Scape logs/*.txt)
+[command,allstar_log](string $file, string $line)

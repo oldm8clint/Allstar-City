@@ -57,8 +57,17 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
             player.addSessionLog(LoggerEventType.MODERATOR, 'Ran cheat', cheat);
         }
 
-        // Allstar-City: ::commands are content scripts named [proc,cmd_<command>] and are open to every
+        // Allstar-City: every ::input first runs [proc,cmd__input](string) (flood limit and other
+        // command-wide rules), then [proc,cmd_<command>] with typed arguments. Both are open to every
         // player; each script enforces its own rank requirement with staffmodlevel.
+        const inputHook = ScriptProvider.getByName('[proc,cmd__input]');
+        if (inputHook) {
+            player.executeScript(ScriptRunner.init(inputHook, player, null, [cheat]), false);
+            if (player.loggingOut) {
+                return true;
+            }
+        }
+
         const command = ScriptProvider.getByName(`[proc,cmd_${cmd}]`);
         if (command) {
             const params = this.parseScriptArgs(command, args, rawArgs);
@@ -638,8 +647,17 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
                 break;
             }
 
-            const token = args.shift() ?? '';
-            const raw = rawArgs.shift() ?? '';
+            let token = args.shift() ?? '';
+            let raw = rawArgs.shift() ?? '';
+            if (type === ScriptVarType.INT && token.includes(',')) {
+                // "x,y" pairs, e.g. ::tele 3200,3400
+                const parts = token.split(',');
+                const rawParts = raw.split(',');
+                token = parts[0];
+                raw = rawParts[0];
+                args.unshift(...parts.slice(1));
+                rawArgs.unshift(...rawParts.slice(1));
+            }
 
             try {
                 switch (type) {

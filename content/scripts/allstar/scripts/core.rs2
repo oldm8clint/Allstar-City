@@ -1,0 +1,80 @@
+// Allstar-Scape helpers shared by every Allstar-City system.
+
+// client.addItem: non-stackable items are added one at a time whatever the amount, a free slot is
+// needed even when adding to an existing stack, and stacks stop at 999,999,999 (maxItemAmount).
+[proc,allstar_additem](namedobj $obj, int $count)(boolean)
+if (inv_freespace(inv) < 1) {
+    mes("Not enough space in your inventory.");
+    return (false);
+}
+if (oc_stackable($obj) = false | $count < 1) {
+    $count = 1;
+}
+def_int $total = inv_total(inv, $obj);
+if (calc($total + $count) >= 999999999 | calc($total + $count) < 0) {
+    $count = calc(999999999 - $total);
+}
+if ($count > 0) {
+    inv_add(inv, $obj, $count);
+}
+return (true);
+
+// Command teleports (Player.getNextPlayerMovement): instant, same height, no animation, walk queue
+// reset. Queued so it still happens while the player is busy, as it did in Allstar-Scape.
+[proc,allstar_telejump](int $x, int $z)
+if_close;
+strongqueue*(allstar_telejump, 0)(movecoord(coord, calc($x - coordx(coord)), 0, calc($z - coordz(coord))));
+
+[queue,allstar_telejump](coord $dest)
+p_telejump($dest);
+
+// Teleports that check client.teleblock print this and stop.
+[proc,allstar_teleblocked]()(boolean)
+if (%allstar_teleblock = 1) {
+    mes("A magical force stops you from teleporting.");
+    return (true);
+}
+return (false);
+
+// Allstar-Scape usernames were compared with equalsIgnoreCase.
+[proc,allstar_is_named](string $name)(boolean)
+if (compare(lowercase(displayname), lowercase($name)) = 0) {
+    return (true);
+}
+return (false);
+
+// Hidden points for the "secret commands quest": each foundz[] slot pays out once per account.
+[proc,allstar_hidden_point](int $slot)
+if (testbit(%allstar_found, $slot) = 1) {
+    return;
+}
+%allstar_found = setbit(%allstar_found, $slot);
+%allstar_hiddenpoints = calc(%allstar_hiddenpoints + 1);
+mes("Hidden found");
+mes("You gain a hidden point!");
+
+// Text scrolls: Allstar-Scape's 317 scroll interface 8134 (title 8144, lines 8145, 8147-8195,
+// 12174-12223) is questjournal in 377; see allstar_scroll_lines.
+[proc,allstar_scroll_clear]
+def_int $line = 0;
+while ($line <= 99) {
+    if_settext(enum(int, component, allstar_scroll_lines, $line), "");
+    $line = calc($line + 1);
+}
+
+[proc,allstar_scroll_line](int $line, string $text)
+if ($line >= 0 & $line <= 99) {
+    if_settext(enum(int, component, allstar_scroll_lines, $line), $text);
+}
+
+// sendFrame126(text, child) for a 317 scroll child id
+[proc,allstar_scroll_child](int $child, string $text)
+if ($child = 8144) {
+    if_settext(questjournal:com_3, $text);
+} else if ($child = 8145) {
+    ~allstar_scroll_line(0, $text);
+} else if ($child >= 8147 & $child <= 8195) {
+    ~allstar_scroll_line(calc($child - 8146), $text);
+} else if ($child >= 12174 & $child <= 12223) {
+    ~allstar_scroll_line(calc($child - 12124), $text);
+}

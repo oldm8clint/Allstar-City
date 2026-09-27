@@ -1,0 +1,139 @@
+// Allstar-Scape login and logout (client.run, client.initialize, Player constructor).
+
+// First login: Player.java defaults. Home is 2852,3591; Hitpoints start at 98/14.
+[proc,allstar_new_player]
+if (%allstar_created = 1) {
+    return;
+}
+%allstar_created = 1;
+p_telejump(0_44_56_36_7);
+
+// hitpoints xp 1155 (level 14 on the Allstar curve), current level 98
+stat_advance(hitpoints, calc(1155 - ~allstar_new_player_hp_xp));
+stat_add(hitpoints, calc(98 - stat(hitpoints)), 0);
+healenergy(calc(0 - runenergy));
+
+inv_setslot(worn, ^wearpos_hat, wolfenhat_crimson, 1);
+inv_setslot(worn, ^wearpos_back, wilderness_cape_46, 1);
+inv_setslot(worn, ^wearpos_front, enchanted_onyx_amulet, 1);
+inv_setslot(worn, ^wearpos_torso, wolfenrobetop_crimson, 1);
+inv_setslot(worn, ^wearpos_lhand, zamorakbook_complete, 1);
+inv_setslot(worn, ^wearpos_legs, red_dragonhide_chaps, 1);
+inv_setslot(worn, ^wearpos_hands, wolfengloves_crimson, 1);
+inv_setslot(worn, ^wearpos_feet, wolfenboots_crimson, 1);
+inv_setslot(worn, ^wearpos_rhand, dragon_scimitar, 1);
+
+// playerLook / pHead.. defaults: colours hair 0, torso 1, legs 2, feet 0, skin 0
+setidkit(man_head_spikeyhair, 0);
+setidkit(man_jaw_none, 0);
+setidkit(man_torso_elf, 1);
+setidkit(man_arms_longsleeves2, 1);
+setidkit(man_hands_demon, 1);
+setidkit(man_legs_turnups, 2);
+setidkit(man_feet_demon, 0);
+setidkcolour(4, 0);
+
+// Hitpoints xp given to a brand new Lost City character (level 10) before Allstar's defaults.
+[proc,allstar_new_player_hp_xp]()(int)
+return (583);
+
+// Ranks live in the save (character-rights). The engine staff level is at least the Allstar rank.
+[proc,allstar_login_rights]
+if (%allstar_rights > staffmodlevel) {
+    setstaffmodlevel(%allstar_rights);
+}
+
+// client.run L10863-10890: global login message
+[proc,allstar_login_broadcast]
+if (~allstar_is_named("Skillerzmine") = true | ~allstar_is_named("Fatality") = true | ~allstar_is_named("Mod Mike") = true) {
+    world_broadcast("Co-owner <displayname> has logged in");
+} else if (%allstar_rights = 3) {
+    world_broadcast("Owner & Coder <displayname> has logged in");
+} else if (%allstar_rights = 2) {
+    world_broadcast("Server Administrator <displayname> has logged in");
+} else if (%allstar_rights = 1) {
+    world_broadcast("Moderator <displayname> has logged in");
+} else {
+    world_broadcast("<displayname> has logged in");
+}
+
+// client.initialize L15604-15659: rules scroll, rank messages, welcome interface
+[proc,allstar_welcome]
+~allstar_login_broadcast;
+~allstar_main_help_menu;
+if (%allstar_rights = 0) {
+    mes("Allstar-Scape");
+    mes("Welcome to Allstar-Scape");
+    mes("Info on becoming mod type ::modinfo");
+    mes("Go to forums at allstarscapeforums.smfforfree2.com");
+    mes("Type ::Starter To Begin");
+    mes("Server Created By Mod Allstar");
+} else if (%allstar_rights = 1) {
+    mes("Welcome to Allstar-Scape");
+    mes("To shop go east then up north the trail and you will find the shop's");
+    mes("Latest Update:   ::suggest (your suggestion)");
+    mes("Go to forums at allstarscapeforums.smfforfree2.com");
+    mes("Your a Mod... Respect your moderator status");
+    mes("Server Created By Mod Allstar");
+} else if (%allstar_rights = 2) {
+    mes("Welcome to Allstar-Scape");
+    mes("To shop go east then up north the trail and you will find the shop's");
+    mes("Feel free to spawn w/e u want... NOTHING to other players (cept mods)");
+    mes("Go to forums at allstarscapeforums.smfforfree2.com");
+    mes("Your Account is Admin...Respect your admin status");
+    mes("Server Created By Mod Allstar");
+} else if (%allstar_rights = 3) {
+    mes("Welcome to Allstar-Scape");
+    mes("Do whatever you want");
+    mes("Go Own some Noobs owner");
+    mes("Go to forums at allstarscapeforums.smfforfree2.com");
+    mes("::m to get unlimited money");
+    mes("Server Created By Mod Allstar");
+}
+if (%allstar_rights <= 3) {
+    ~allstar_welcome_screen;
+}
+if (namelist_has("macrowarn", displayname) = true) {
+    mes("You have 1 black mark as you have been caught autoing...");
+    mes("If you are caught autoing again this WILL result in further action being taken");
+    mes("against your account.");
+}
+
+// MainHelpMenu (client L9000): rules scroll, text only for rank 0
+[proc,allstar_main_help_menu]
+if (%allstar_rights > 0) {
+    return;
+}
+~allstar_scroll_clear;
+~allstar_scroll_child(8144, "info");
+~allstar_scroll_child(8145, "How to Become Mod/Admin");
+~allstar_scroll_child(8147, "----");
+~allstar_scroll_child(8148, "1. Respect all other players!");
+~allstar_scroll_child(8149, "2. Respect Owners,Admins and Mods");
+~allstar_scroll_child(8150, "3. Do not start fights with other players");
+~allstar_scroll_child(8151, "   just simply tell an Owner or Admin.");
+~allstar_scroll_child(8152, "4. Help other players if they need help.");
+~allstar_scroll_child(8153, "5. Play on Server alot.");
+~allstar_scroll_child(8154, "5. Higher chance if you register on forums at");
+~allstar_scroll_child(8155, "allstarscapeforums.smfforfree2.com and stay active");
+~allstar_scroll_child(8156, "_____________________________________________________");
+~allstar_scroll_child(8157, "If you follow all of these rules you will be fine");
+~allstar_scroll_child(8158, "Just follow these and you will become a mod or admin");
+~allstar_scroll_child(8159, "");
+if_openmain(questjournal);
+
+// newWelc (client L238). Allstar-Scape showed 317 interface 15944; the text goes on the scroll.
+[proc,allstar_welcome_screen]
+~allstar_scroll_clear;
+~allstar_scroll_child(8144, "@gre@~~~ @gre@A@whi@l@gre@l@whi@s@gre@t@whi@a@gre@r@whi@-@gre@S@whi@c@gre@a@whi@p@gre@e @gre@~~~");
+~allstar_scroll_child(8145, "Server created by - Mod Allstar");
+~allstar_scroll_child(8147, "");
+~allstar_scroll_child(8148, "Reputation: @whi@<tostring(%allstar_reputation)>");
+~allstar_scroll_child(8149, "Latest Update - New PkBox!");
+~allstar_scroll_child(8150, "Have Fun...");
+if_openmain(questjournal);
+
+[proc,allstar_logout]
+if (%allstar_rights = 0) {
+    world_broadcast("<displayname> has logged out");
+}

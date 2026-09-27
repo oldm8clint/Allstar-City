@@ -1,0 +1,65 @@
+// Allstar-Scape character state (characters/<name>.txt and the "moreinfo" file)
+
+// playerRights: 0 player, 1 moderator, 2 server administrator, 3 owner
+[allstar_rights]
+scope=perm
+protect=no
+
+// ::starter / Nature Spirit starter taken
+[allstar_starter]
+scope=perm
+protect=no
+
+[allstar_reputation]
+scope=perm
+protect=no
+
+// Reptimer: set by ::rep and never counted down, so it lasts until logout
+[allstar_reptimer]
+protect=no
+
+[allstar_pkpoints]
+scope=perm
+protect=no
+
+[allstar_kills]
+scope=perm
+protect=no
+
+[allstar_deaths]
+scope=perm
+protect=no
+
+// hidden points from the "secret commands quest"; allstar_found is a bitfield of foundz[]
+[allstar_hiddenpoints]
+scope=perm
+protect=no
+
+[allstar_found]
+scope=perm
+protect=no
+
+// teleblock is never cleared until logout
+[allstar_teleblock]
+protect=no
+
+// actionAmount flood counter: +1 per command, -1 per cycle, over 25 kicks
+[allstar_action_amount]
+protect=no
+
+[allstar_action_clock]
+protect=no
+
+// ::serverpanel toggle, on by default
+[allstar_serverpanel_off]
+protect=no
+
+// playerIsMember (saved, never used by gameplay)
+[allstar_member]
+scope=perm
+protect=no
+
+// set on first login once Allstar-Scape's new player defaults are applied
+[allstar_created]
+scope=perm
+protect=no

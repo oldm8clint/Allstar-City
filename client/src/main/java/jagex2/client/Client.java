@@ -8054,7 +8054,7 @@ public class Client extends GameShell {
 				this.skillLevel[var103] = var104;
 				this.skillBaseLevel[var103] = 1;
 				for (int var106 = 0; var106 < 98; var106++) {
-					if (var105 >= levelExperience[var106]) {
+					if (var105 > levelExperience[var106]) { // Allstar-City: level needs strictly more xp than its threshold
 						this.skillBaseLevel[var103] = var106 + 2;
 					}
 				}
@@ -11212,7 +11212,7 @@ public class Client extends GameShell {
 						var9 = this.varps[var4[var6++]];
 					}
 					if (var8 == 6) {
-						var9 = levelExperience[this.skillBaseLevel[var4[var6++]] - 1];
+						var9 = levelExperience[this.skillBaseLevel[var4[var6++]] - 1] + 1; // Allstar-City: strict thresholds
 					}
 					if (var8 == 7) {
 						var9 = this.varps[var4[var6++]] * 100 / 46875;

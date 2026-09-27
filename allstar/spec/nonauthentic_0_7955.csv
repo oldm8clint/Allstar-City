@@ -1,0 +1,74 @@
+id,item.cfg name,authentic 377 name (Lost City),customization (server-side),effective bonuses A5/D5/S/P,shop price
+3748,Third Age Helmz,Fremennik helm,renamed+3rd-age desc; bonuses like a Berserker helm with +30 str,0/0/0/0/0/43/45/42/-3/44/30/0,500000
+3759,Hp Cape,Fremennik cloak,"renamed ""Hp Cape"", desc ""Congratz...""",0/0/0/0/0/0/0/0/0/0/0/0,198
+3763,Magic Cape,Fremennik cloak,renamed; +20 mag atk/def; name rule => Magic 99 req,0/0/0/20/0/0/0/0/20/0/0/0,198
+3765,Prayer Cape,Fremennik cloak,"renamed; +20 prayer (no req: rule is case-sensitive ""Prayer cape"")",0/0/0/0/0/0/0/0/0/0/0/20,198
+3777,Strength Cape,Fremennik cloak,renamed; +20 str; name rule => Strength 99,0/0/0/0/0/0/0/0/0/0/20/0,198
+3781,Attack Cape,Fremennik cloak,renamed; +20 stab/slash/crush (no req),20/20/20/0/0/0/0/0/0/0/0/0,198
+3783,Defence Cape,Fremennik cloak,renamed; +20 all def; name rule => Defence 100 (unwearable below 100),0/0/0/0/0/20/20/20/20/20/0/0,198
+3787,Thieveing Cape,Fremennik cloak,renamed only,0/0/0/0/0/0/0/0/0/0/0/0,198
+3789,Range Cape,Fremennik cloak,renamed; +20 range; name rule => Ranged 99,0/0/0/0/20/0/0/0/0/0/0/0,198
+4827,Dark Bow,Comp ogre bow,"renamed ""Dark Bow"" (was comp ogre bow): +139 range, name rule => Ranged 99, 1.5M; sold in Range Shop (11)",0/0/0/0/139/0/0/0/0/0/0/0,1500000
+4828,Dark Bow,Comp ogre bow,"cert of 4827, col4 50M",0/0/0/0/0/0/0/0/0/0/0/0,50000000
+6129,Third Age Platebody,Rock-shell plate,renamed Third Age Platebody (rock-shell plate) + custom def bonuses,0/0/0/-20/0/96/108/113/-4/97/0/0,600000
+6130,Third Age Platelegs,Rock-shell legs,renamed Third Age Platelegs (rock-shell legs) + custom bonuses,0/0/0/-25/-2/78/76/83/-5/75/0/0,400000
+6131,Third Age Helm,Spined helm,"renamed Third Age Helm (spined helm) + 43/45/42/-3/44 def, +30 str",0/0/0/0/0/43/45/42/-3/44/30/0,500000
+6384,Fighter Torso,Desert top,renamed Fighter Torso (desert top) + custom bonuses; the ONLY untradable item (drop destroys it),0/0/0/-40/0/62/85/62/-10/67/4/0,136
+6385,Fighter Torso,Desert top,"cert of 6384, same bonuses",0/0/0/-40/0/62/85/62/-10/67/4/0,136
+6541,Mouse Toy,Mouse toy,"desc ""The NEw Generation Of Whips.""; whip-like anims (atk1658), spec 75% 30+rand5",0/0/0/0/0/0/0/0/0/0/0/0,1
+6603,magic staff,Magic staff,"desc ""a nooby staff k.""; +100 magic atk, +10 str; price 1M",0/0/0/100/0/0/0/0/0/0/10/0,1000000
+6889,Mage Book,Mage's book,"renamed ""Mage Book"", desc ""A book.""",0/0/0/0/0/0/0/0/0/0/0/0,200
+7449,Allstar's Hammer,Meat tenderiser,"renamed Allstar's Hammer: all 12 bonuses +150, price 100M, Strength 80 req, maul anims; Allstar's Shop + wishing well",150/150/150/150/150/150/150/150/150/150/150/150,100000000
+7450,Allstar's Hammer,Meat tenderiser,cert of 7449 (100M),0/0/0/0/0/0/0/0/0/0/0/0,100000000
+746,Dark dagger,Dark dagger,"Dark dagger buffed 81/91/79/20/50 att, 60 str; price 10M; spec 100% 40+rand5",81/91/79/20/50/10/40/10/10/10/60/5,10000000
+538,Druid's robe,Druid's robe,"Druid's robe +150 magic atk, +10 def",0/0/0/150/0/10/10/10/10/10/0/0,26
+636,Robe top,Robe top,Robe top +150 magic; 3M,0/0/0/150/0/0/10/10/10/10/0/0,3000000
+662,Hat,Hat,Hat +150 magic,0/0/0/150/0/0/10/10/10/10/0/0,129
+646,Robe bottoms,Robe bottoms,Robe bottoms price 2.5M,0/0/0/0/0/0/0/0/0/0/0/0,2500000
+656,Hat,Hat,Hat price 2M,0/0/0/0/0/0/0/0/0/0/0/0,2000000
+1089,Black plateskirt,Black plateskirt,Black plateskirt 150/150/150 attack,150/150/150/0/0/0/0/0/0/0/0/0,1
+1090,Black plateskirt,Black plateskirt,cert: 150 in all 12 bonuses (see note),150/150/150/150/150/150/150/150/150/150/150/150,1
+1108,Black chainbody,Black chainbody,cert Black chainbody: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1180,Black sq shield,Black sq shield,cert Black sq shield: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1218,Black dagger,Black dagger,cert Black dagger: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1234,Black dagger(p),Black dagger(p),cert Black dagger(p): 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1284,Black sword,Black sword,cert Black sword: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1298,Black longsword,Black longsword,cert Black longsword: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1314,Black 2h sword,Black 2h sword,cert Black 2h: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1328,Black scimitar,Black scimitar,cert Black scimitar: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1342,Black warhammer,Black warhammer,cert Black warhammer: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1368,Black battleaxe,Black battleaxe,cert Black battleaxe: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1427,Black mace,Black mace,cert Black mace: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+4126,Black boots,Black boots,cert Black boots: 150 x12,150/150/150/150/150/150/150/150/150/150/150/150,1
+1077,Black platelegs,Black platelegs,Black platelegs def 0 except range -20,0/0/0/0/0/0/0/0/0/-20/0/0,6520
+1078,Black platelegs,Black platelegs,"cert Black platelegs 20 x4 def, -20 range",0/0/0/0/0/20/20/20/20/-20/0/0,6520
+1125,Black platebody,Black platebody,"Black platebody 20 x4 def, -20 range",0/0/0/0/0/20/20/20/20/-20/0/0,6520
+1151,Black med helm,Black med helm,Black med helm 20/-20,0/0/0/0/0/20/20/20/20/-20/0/0,6520
+1165,Black full helm,Black full helm,Black full helm 20/-20,0/0/0/0/0/20/20/20/20/-20/0/0,6520
+1195,Black kiteshield,Black kiteshield,Black kiteshield 20/-20,0/0/0/0/0/20/20/20/20/-20/0/0,6520
+4125,Black boots,Black boots,Black boots 10 x12,10/10/10/10/10/10/10/10/10/10/10/10,1
+2585,Black platelegs (t),Black platelegs (t),Black platelegs (t): stab attack +500000,500000/0/0/0/0/0/0/0/0/0/0/0,500000
+2589,Black kiteshield (t),Black kiteshield (t),Black kiteshield (t): stab attack +500000,500000/0/0/0/0/0/0/0/0/0/0/0,500000
+3140,Dragon chainbody,Dragon chainbody,"Dragon chainbody: +100 def, att 29/39/29, str 30, prayer 30; price 100M",29/39/29/-15/0/181/193/198/-3/182/30/30,100000000
+1704,Amulet of glory,Amulet of glory,Amulet of glory 10 x12,10/10/10/10/10/10/10/10/10/10/10/10,11681
+1727,Amulet of magic,Amulet of magic,Amulet of magic +10 magic def,0/0/0/10/0/0/0/0/10/0/0/0,676
+6527,Tzhaar-ket-em,Tzhaar-ket-em,Tzhaar-ket-em str 210,0/0/80/-4/0/0/0/0/0/0/210/0,1944272
+6528,Tzhaar-ket-om,Tzhaar-ket-om,"Tzhaar-ket-om crush 222, str 98",12/12/222/-15/0/0/0/0/0/0/98/0,3
+6570,Fire Cape,Fire cape,"Fire cape 12 x12; price 1M (col3=10, col5=80)",12/12/12/12/12/12/12/12/12/12/12/12,1000000
+6575,Onyx ring,Onyx ring,Onyx ring 10 x12,10/10/10/10/10/10/10/10/10/10/10/10,80400
+6577,Onyx necklace,Onyx necklace,Onyx necklace 10 x12 (wearable only if client allows),10/10/10/10/10/10/10/10/10/10/10/10,80400
+7336,Rune kiteshield(h),Rune kiteshield(h),Rune kiteshield(h) 60 x7 + 10 x5; price 217.6M,60/60/60/60/60/60/60/10/10/10/10/10,217600000
+3204,Dragon halberd,Dragon halberd,"Dragon halberd 115/135/129 att, 129 str; 5M",115/135/129/-4/-1/0/4/5/0/0/129/0,5000000
+4151,Abyssal whip,Abyssal whip,Abyssal whip slash 102 / str 52 (authentic 82/82); 4M,0/102/0/0/0/0/0/0/0/0/52/0,4000000
+859,Magic longbow,Magic longbow,Magic longbow range 89 (auth 69),0/0/0/0/89/0/0/0/0/0/0/0,236
+6585,Amulet Of Fury,Amulet of fury,"Amulet of fury def 15/4/4/4/4, str 4 (auth 15x5, str 8); 2M",10/10/10/10/10/15/4/4/4/4/4/5,2000000
+7462,Gloves,Gloves,Barrows gloves 9 x11 + prayer 12,9/9/9/9/9/9/9/9/9/9/9/12,100000
+4716,Dharoks helm,Dharoks helm,Dharok helm odd def spread,0/0/0/-3/-1/65/54/91/11/0/0/0,63377
+4720,Dharoks platebody,Dharoks platebody,"Dharok platebody odd (crush 24 att, mag 37, rng 122)",0/0/24/37/122/122/35/107/-6/90/0/0,165189
+4722,Dharoks platelegs,Dharoks platelegs,Dharok platelegs odd,0/0/0/21/24/85/82/40/-4/92/0/0,162362
+4747,Torags hammers,Torags hammers,Torag hammers only str 80 (atk bonuses on cert 4748),0/0/0/0/0/0/0/0/0/0/80/0,96642
+5554,Rogue mask,Rogue mask,Rogue mask 5 x5 def,0/0/0/0/0/5/5/5/5/5/0/0,292
+3842,Unholy book,Unholy book,Unholy book 5 x12,5/5/5/5/5/5/5/5/5/5/5/5,15000
+3841,Damaged book,Damaged book,"Damaged book 10 x5 att, 5 pray",10/10/10/10/10/0/0/0/0/0/0/5,16048
+1038,Red partyhat,Red partyhat,"party hats 5M (col4); likewise 1040/1042/1044/1046/1048, santa 1050, masks 1053/1055/1057",0/0/0/0/0/0/0/0/0/0/0/0,5000000
+6856,Bobble hat,Bobble hat,bobble/jester/woolly hats+scarves 6856-6863: 1M each,0/0/0/0/0/0/0/0/0/0/0/0,1000000

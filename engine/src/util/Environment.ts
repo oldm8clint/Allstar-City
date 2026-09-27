@@ -51,6 +51,8 @@ export default {
     NODE_DEBUGPROC_CHAR: tryParseString(process.env.NODE_DEBUGPROC_CHAR, '~'),
     // ms per game cycle (authentic: 600, Allstar-Scape: 500)
     NODE_TICKRATE: tryParseInt(process.env.NODE_TICKRATE, 600),
+    // Allstar-Scape xp: whole xp units (2B cap), half xp curve, strict level thresholds
+    NODE_ALLSTAR_XP: tryParseBoolean(process.env.NODE_ALLSTAR_XP, false),
     NODE_WS_ONDEMAND: tryParseBoolean(process.env.NODE_WS_ONDEMAND, false),
     NODE_HOP_TIME: tryParseInt(process.env.NODE_MAX_NPCS, 45000), // 45s
     // limit login attempts

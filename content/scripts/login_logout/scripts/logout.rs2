@@ -1,4 +1,5 @@
 [logout,_]
+~allstar_logout;
 ~set_pk_skull_logout;
 ~set_antifire_logout; // TODO: should be timer
 ~follower_logout;

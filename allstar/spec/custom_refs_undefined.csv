@@ -1,0 +1,300 @@
+id,referenced by,server-side effect,real RS item (RS2 id),OSRS id,conf / notes
+8447,"client.anim-getter, client.equipCheck, client.wear",-,?,,L
+8486,Item.itemSellable=true,sellable,?,,L
+9000,Item.hats,-,?,,L
+9004,Item.body,-,?,,L
+9005,Item.legs,-,?,,L
+9006,Item.hats,-,?,,L
+9007,Item.capes,-,?,,L
+9009,Item.amulets,-,?,,L
+9010,Item.amulets,-,?,,L
+9128,Item.fullMask,-,?,,L
+9200,"Item4.fullHelm, Item4.hats",slot hat(fullhelm),?,,L
+9540,client.deleteItem,"source: item-click: home teleport (2515,3863), consumed",?,,L
+9999,"Item.partyhats, Item.phats",-,?,,L
+10228,client.GetCL/ItemID,req def 5,Steel defender (RS2 8846),8846,H pack-1 alias (code GetCLDefence/GetBlockAnim)
+10229,"client.GetCL/ItemID, client.anim-getter",req def 10,Black defender (RS2 8847),8847,H pack-1 alias (code GetCLDefence/GetBlockAnim)
+10230,client.GetCL/ItemID,req def 20,Mithril defender (RS2 8848),8848,H pack-1 alias (code GetCLDefence/GetBlockAnim)
+10231,client.GetCL/ItemID,req def 30,Adamant defender (RS2 8849),8849,H pack-1 alias (code GetCLDefence/GetBlockAnim)
+10232,client.GetCL/ItemID,req def 40,Rune defender (RS2 8850),8850,H pack-1 alias (code GetCLDefence/GetBlockAnim)
+10261,Item4.hats,slot hat,Black mask (10) (RS2 8901),8901,H pack-1 alias (Item4.hats)
+10262,Item4.hats,slot hat,Black mask (9) (RS2 8903),8903,H pack-1 alias (Item4.hats)
+10263,Item4.hats,slot hat,Black mask (8) (RS2 8905),8905,H pack-1 alias (Item4.hats)
+10264,Item4.hats,slot hat,Black mask (7) (RS2 8907),8907,H pack-1 alias (Item4.hats)
+10265,Item4.hats,slot hat,Black mask (6) (RS2 8909),8909,H pack-1 alias (Item4.hats)
+10266,Item4.hats,slot hat,Black mask (5) (RS2 8911),8911,H pack-1 alias (Item4.hats)
+10267,Item4.hats,slot hat,Black mask (4) (RS2 8913),8913,H pack-1 alias (Item4.hats)
+10268,Item4.hats,slot hat,Black mask (3) (RS2 8915),8915,H pack-1 alias (Item4.hats)
+10269,Item4.hats,slot hat,Black mask (2) (RS2 8917),8917,H pack-1 alias (Item4.hats)
+10270,Item4.hats,slot hat,Black mask (1) (RS2 8919),8919,H pack-1 alias (Item4.hats)
+10271,client.GetCL/ItemID,req sla 100,Black mask (RS2 8921),8921,H pack-1 alias (GetCLSlayer=100)
+10407,"Item4.fullHelm, Item4.hats",slot hat(fullhelm),Lunar helm (RS2 9096),9096,M pack-1 alias (Item4 lists)
+10408,"Item4.body, Item4.platebody",slot chest(plate),Lunar torso (RS2 9097),9097,M pack-1 alias (Item4 lists)
+10409,Item4.legs,slot legs,Lunar legs (RS2 9098),9098,M pack-1 alias (Item4 lists)
+10410,Item4.gloves,slot hands,Lunar gloves (RS2 9099),9099,M pack-1 alias (Item4 lists)
+10412,Item4.capes,slot cape,Lunar cape (RS2 9101),9101,M pack-1 alias (Item4 lists)
+10413,Item4.amulets,slot amulet,Lunar amulet (RS2 9102),9102,M pack-1 alias (Item4 lists)
+10431,"Item.twohanded, client.GetCL/ItemID, client.equipCheck",req ran 65,Rune crossbow (RS2 9185),9185,"H pack-1 alias (GetWepAnim 427, GetCLRanged 65, Item.twohanded)"
+10651,Item4.hats,slot hat,Proselyte sallet (RS2 9672),9672,M pack-1 alias (Item4.hats)
+10652,Item4.platebody,-,Proselyte hauberk (RS2 9674),9674,M pack-1 alias (Item4.platebody)
+10653,Item4.legs,slot legs,Proselyte cuisse (RS2 9676),9676,M pack-1 alias (Item4.legs); =pack-2 14022
+10704,client.GetCL/ItemID,req att 100,Attack cape (RS2 9747),9747,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10705,client.GetCL/ItemID,req att 100,Attack cape(t) (RS2 9748),9748,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10706,"Item4.fullHelm, client.GetCL/ItemID",req att 100,Attack hood (RS2 9749),9749,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10707,client.GetCL/ItemID,req str 100,Strength cape (RS2 9750),9750,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10709,"Item4.fullHelm, client.GetCL/ItemID",req str 66,Strength hood (RS2 9752),9752,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10712,"Item4.fullHelm, client.GetCL/ItemID",req def 100,Defence hood (RS2 9755),9755,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10713,client.GetCL/ItemID,req ran 99,Ranging cape (RS2 9756),9756,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10715,Item4.fullHelm,-,Ranging hood (RS2 9758),9758,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10721,"Item4.fullHelm, client.GetCL/ItemID",req mag 99,Magic hood (RS2 9764),9764,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10724,Item4.fullHelm,-,Runecraft hood (RS2 9767),9767,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10727,Item4.fullHelm,-,Hitpoints hood (RS2 9770),9770,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10730,Item4.fullHelm,-,Agility hood (RS2 9773),9773,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10733,Item4.fullHelm,-,Herblore hood (RS2 9776),9776,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10736,Item4.fullHelm,-,Thieving hood (RS2 9779),9779,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10739,Item4.fullHelm,-,Crafting hood (RS2 9782),9782,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10742,Item4.fullHelm,-,Fletching hood (RS2 9785),9785,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10745,Item4.fullHelm,-,Slayer hood (RS2 9788),9788,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10748,Item4.fullHelm,-,Construct. hood (RS2 9791),9791,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10751,Item4.fullHelm,-,Mining hood (RS2 9794),9794,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10754,Item4.fullHelm,-,Smithing hood (RS2 9797),9797,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10757,Item4.fullHelm,-,Fishing hood (RS2 9800),9800,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10760,Item4.fullHelm,-,Cooking hood (RS2 9803),9803,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10763,Item4.fullHelm,-,Firemaking hood (RS2 9806),9806,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10766,Item4.fullHelm,-,Woodcutting hood (RS2 9809),9809,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10769,Item4.fullHelm,-,Farming hood (RS2 9812),9812,H pack-1 alias (GetCL*/Item4.fullHelm/item.cfg 10717-10718)
+10771,Item4.fullHelm,-,Quest point hood (RS2 9814),9814,H pack-1 alias (Item4.fullHelm)
+11125,"Item4.body, Item4.platebody",slot chest(plate),Bob's red shirt (RS2 10316),10316,M pack-1 alias (Item4.body/platebody)
+11126,"Item4.body, Item4.platebody",slot chest(plate),Bob's blue shirt (RS2 10318),10318,M pack-1 alias (Item4.body/platebody)
+11127,"Item4.body, Item4.platebody",slot chest(plate),Bob's green shirt (RS2 10320),10320,M pack-1 alias (Item4.body/platebody)
+11128,"Item4.body, Item4.platebody",slot chest(plate),Bob's black shirt (RS2 10322),10322,M pack-1 alias (Item4.body/platebody)
+11129,"Item4.body, Item4.platebody",slot chest(plate),Bob's purple shirt (RS2 10324),10324,M pack-1 alias (Item4.body/platebody)
+11134,"Item4.body, Item4.platebody",slot chest(plate),3rd age range top (RS2 10330),10330,H pack-1 alias
+11135,Item4.legs,slot legs,3rd age range legs (RS2 10332),10332,H pack-1 alias
+11136,Item4.hats,slot hat,3rd age range coif (RS2 10334),10334,H pack-1 alias
+11137,Item4.gloves,slot hands,3rd age vambraces (RS2 10336),10336,H pack-1 alias
+11140,Item4.hats,slot hat,3rd age mage hat (RS2 10342),10342,H pack-1 alias
+11141,Item4.amulets,slot amulet,3rd age amulet (RS2 10344),10344,H pack-1 alias
+11143,Item4.platebody,-,3rd age platebody (RS2 10348),10348,H pack-1 alias
+11145,Item4.shields,slot shield,3rd age kiteshield (RS2 10352),10352,H pack-1 alias
+11153,"Item4.gloves, client.GetCL/ItemID",slot hands; req ran 80,Zamorak bracers (RS2 10368),10368,H pack-1 alias (GetCL/Item4 lists)
+11154,"Item4.body, Item4.platebody, client.GetCL/ItemID","slot chest(plate); req def 40,ran 80",Zamorak d'hide body (RS2 10370),10370,H pack-1 alias (GetCL/Item4 lists)
+11155,Item4.legs,slot legs,Zamorak chaps (RS2 10372),10372,H pack-1 alias (GetCL/Item4 lists)
+11156,"Item4.fullHelm, Item4.hats",slot hat(fullhelm),Zamorak coif (RS2 10374),10374,H pack-1 alias (GetCL/Item4 lists)
+11157,Item4.gloves,slot hands,Guthix bracers (RS2 10376),10376,H pack-1 alias (GetCL/Item4 lists)
+11158,"Item4.body, Item4.platebody",slot chest(plate),Guthix d'hide body (RS2 10378),10378,H pack-1 alias (GetCL/Item4 lists)
+11159,Item4.legs,slot legs,Guthix chaps (RS2 10380),10380,H pack-1 alias (GetCL/Item4 lists)
+11160,"Item4.fullHelm, Item4.hats",slot hat(fullhelm),Guthix coif (RS2 10382),10382,H pack-1 alias (GetCL/Item4 lists)
+11161,Item4.gloves,slot hands,Saradomin bracers (RS2 10384),10384,H pack-1 alias (GetCL/Item4 lists)
+11162,"Item4.body, Item4.platebody",slot chest(plate),Saradomin d'hide body (RS2 10386),10386,H pack-1 alias (GetCL/Item4 lists)
+11163,Item4.legs,slot legs,Saradomin chaps (RS2 10388),10388,H pack-1 alias (GetCL/Item4 lists)
+11164,"Item4.fullHelm, Item4.hats",slot hat(fullhelm),Saradomin coif (RS2 10390),10390,H pack-1 alias (GetCL/Item4 lists)
+11168,Item4.hats,slot hat,Sleeping cap (RS2 10398),10398,H pack-1 alias
+11169,"Item4.body, Item4.platebody",slot chest(plate),Black elegant shirt (RS2 10400),10400,H pack-1 alias
+11170,Item4.legs,slot legs,Black elegant legs (RS2 10402),10402,H pack-1 alias
+11171,"Item4.body, Item4.platebody",slot chest(plate),Red elegant shirt (RS2 10404),10404,H pack-1 alias
+11172,Item4.legs,slot legs,Red elegant legs (RS2 10406),10406,H pack-1 alias
+11173,"Item4.body, Item4.platebody",slot chest(plate),Blue elegant shirt (RS2 10408),10408,H pack-1 alias
+11174,Item4.legs,slot legs,Blue elegant legs (RS2 10410),10410,H pack-1 alias
+11175,"Item4.body, Item4.platebody",slot chest(plate),Green elegant shirt (RS2 10412),10412,H pack-1 alias
+11176,Item4.legs,slot legs,Green elegant legs (RS2 10414),10414,H pack-1 alias
+11177,"Item4.body, Item4.platebody",slot chest(plate),Purple elegant shirt (RS2 10416),10416,H pack-1 alias
+11178,Item4.legs,slot legs,Purple elegant legs (RS2 10418),10418,H pack-1 alias
+11179,"Item4.body, Item4.platebody",slot chest(plate),White elegant blouse (RS2 10420),10420,H pack-1 alias
+11180,Item4.legs,slot legs,White elegant skirt (RS2 10422),10422,H pack-1 alias
+11181,"Item4.body, Item4.platebody",slot chest(plate),Red elegant blouse (RS2 10424),10424,H pack-1 alias
+11182,Item4.legs,slot legs,Red elegant skirt (RS2 10426),10426,H pack-1 alias
+11183,"Item4.body, Item4.platebody",slot chest(plate),Blue elegant blouse (RS2 10428),10428,H pack-1 alias
+11184,Item4.legs,slot legs,Blue elegant skirt (RS2 10430),10430,H pack-1 alias
+11185,"Item4.body, Item4.platebody",slot chest(plate),Green elegant blouse (RS2 10432),10432,H pack-1 alias
+11186,Item4.legs,slot legs,Green elegant skirt (RS2 10434),10434,H pack-1 alias
+11187,"Item4.body, Item4.platebody",slot chest(plate),Purple elegant blouse (RS2 10436),10436,H pack-1 alias
+11188,Item4.legs,slot legs,Purple elegant skirt (RS2 10438),10438,H pack-1 alias
+11191,Item4.capes,slot cape,Zamorak crozier (RS2 10444),10444,H pack-1 alias
+11192,"Item2.darkbeast, Item4.capes",slot cape; source: Dark beast (2783) 1/78,Saradomin cloak (RS2 10446),10446,H pack-1 alias
+11193,Item4.capes,slot cape,Guthix cloak (RS2 10448),10448,H pack-1 alias
+11194,Item4.capes,slot cape,Zamorak cloak (RS2 10450),10450,H pack-1 alias
+11198,"Item4.body, Item4.platebody",slot chest(plate),Saradomin robe top (RS2 10458),10458,H pack-1 alias
+11199,"Item4.body, Item4.platebody",slot chest(plate),Zamorak robe top (RS2 10460),10460,H pack-1 alias
+11200,"Item4.body, Item4.platebody",slot chest(plate),Guthix robe top (RS2 10462),10462,H pack-1 alias
+11201,Item4.legs,slot legs,Saradomin robe legs (RS2 10464),10464,H pack-1 alias
+11202,Item4.legs,slot legs,Guthix robe legs (RS2 10466),10466,H pack-1 alias
+11203,Item4.legs,slot legs,Zamorak robe legs (RS2 10468),10468,H pack-1 alias
+11268,Item4.platebody,-,Fighter torso (RS2 10551),10551,M pack-1 alias (Item4.platebody); pack-1 offset drifts to +3370 here
+11273,Item.amulets,-,Penance skirt (RS2 10555),10555,L dead Item.amulets list
+11274,Item.amulets,-,Attacker icon (RS2 10556),10556,L dead Item.amulets list
+11275,Item.amulets,-,Collector icon (RS2 10557),10557,L dead Item.amulets list
+11276,Item.amulets,-,Defender icon (RS2 10558),10558,L dead Item.amulets list
+11370,Item4.capes,slot cape,?,,L
+11371,Item4.capes,slot cape,?,,L
+11372,Item4.capes,slot cape,?,,L
+11444,Item4.amulets,slot amulet,?,,L
+11490,Item4.hats,slot hat,Helm of neitiznot (RS2 10828),10828,"M pack-1 alias (Item4.hats), offset +3370"
+11538,Item.shields,-,?,,L
+11540,Item4.shields,slot shield,?,,L
+11711,Item4.gloves,slot hands,a bracelet (Dragonstone/Combat bracelet region) (RS2 11118),-,L pack-1 alias (Item4.gloves)
+11716,Item4.amulets,slot amulet,Berserker necklace (RS2 11128),11128,"M pack-1 alias (Item4.amulets), +3371"
+11785,Item.twohanded,-,Dark bow (RS2 11235),11235,"M pack-1 alias (dead Item.twohanded), offset +3371"
+11814,Item4.shields,slot shield,Dragonfire shield (RS2 11283),11283,"H pack-1 alias (Item4.shields), +3371"
+11824,"Item4.hats, client.GetCL/ItemID",slot hat; req def 60,Dragon full helm (RS2 11335),11335,"H pack-1 alias (Item4.hats, GetCLDefence 60), +3371"
+11938,Item4.hats,slot hat,Void mage helm (RS2 11663),11663,"M pack-1 alias (Item4.hats / dead Item.amulets), +3371"
+11939,Item4.hats,slot hat,Void ranger helm (RS2 11664),11664,"M pack-1 alias (Item4.hats / dead Item.amulets), +3371"
+11940,Item4.hats,slot hat,Void melee helm (RS2 11665),11665,"M pack-1 alias (Item4.hats / dead Item.amulets), +3371"
+11941,Item.amulets,-,Void seal(8) (RS2 11666),11666,"M pack-1 alias (Item4.hats / dead Item.amulets), +3371"
+11967,Item.itemSellable=true,sellable,Bandos hilt (RS2 11704),11812,"L pack-1 alias (itemSellable), +3371 (hilts; exact hilt uncertain +-1)"
+11968,Item.itemSellable=true,sellable,Saradomin hilt (RS2 11706),11814,"L pack-1 alias (itemSellable), +3371 (hilts; exact hilt uncertain +-1)"
+11969,Item.itemSellable=true,sellable,Zamorak hilt (RS2 11708),11816,"L pack-1 alias (itemSellable), +3371 (hilts; exact hilt uncertain +-1)"
+11977,Item4.body,slot chest,Bandos chestplate (RS2 11724),11832,"H pack-1 alias (Item4.body), +3371"
+11978,Item4.legs,slot legs,Bandos tassets (RS2 11726),11834,H pack-1 alias (Item4.legs)
+11979,Item4.boots,slot feet,Bandos boots (RS2 11728),11836,H pack-1 alias (Item4.boots)
+11981,"Item4.boots, client.GetCL/ItemID",slot feet; req def 60,Dragon boots (RS2 11732),11840,"H pack-1 alias (Item4.boots, GetCLDefence 60)"
+12426,Item.itemSellable=true,sellable,?,,L
+12427,Item.itemSellable=true,sellable,?,,L
+12428,Item.itemSellable=true,sellable,?,,L
+12429,Item.itemSellable=true,sellable,?,,L
+12430,Item.itemSellable=true,sellable,?,,L
+12431,Item.itemSellable=true,sellable,?,,L
+12432,Item.itemSellable=true,sellable,?,,L
+12433,Item.itemSellable=true,sellable,?,,L
+12434,Item.itemSellable=true,sellable,?,,L
+12435,Item.itemSellable=true,sellable,?,,L
+12440,Item4.gloves,slot hands,?,,L
+13591,Item.itemSellable=true,sellable,Void knight top (RS2 8839),8839,M itemSellable override block just before the defenders
+13592,Item.itemSellable=true,sellable,Void knight robe (RS2 8840),8840,M itemSellable override block just before the defenders
+13593,Item.itemSellable=true,sellable,Void knight mace (RS2 8841),8841,M itemSellable override block just before the defenders
+13594,Item.itemSellable=true,sellable,Void knight gloves (RS2 8842),8842,M itemSellable override block just before the defenders
+13603,Item.itemSellable=true,sellable,?,,L
+13606,Item.itemSellable=true,sellable,?,,L
+13611,Item.itemSellable=true,sellable,?,,L
+13662,Item.itemSellable=true,sellable,?,,L
+13663,Item.itemSellable=true,sellable,?,,L
+13669,Item.itemSellable=true,sellable,?,,L
+13676,Item.itemSellable=true,sellable,?,,L
+13700,Item.itemSellable=true,sellable,?,,L
+13733,Item.itemSellable=true,sellable,?,,L
+13749,Item.itemSellable=true,sellable,?,,L
+13764,Item.itemSellable=true,sellable,?,,L
+13776,"Item.itemSellable=true, Item4.fullMask, Item4.hats",slot hat(mask); sellable,Lunar helm (RS2 9096),9096,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13777,"Item.itemSellable=true, Item4.body, Item4.platebody",slot chest(plate); sellable,Lunar torso (RS2 9097),9097,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13778,"Item.itemSellable=true, Item4.legs",slot legs; sellable,Lunar legs (RS2 9098),9098,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13779,"Item.itemSellable=true, Item4.gloves",slot hands; sellable,Lunar gloves (RS2 9099),9099,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13780,"Item.itemSellable=true, Item4.boots",slot feet; sellable,Lunar boots (RS2 9100),9100,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13781,Item.itemSellable=true,sellable,Lunar cape (RS2 9101),9101,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13782,Item.itemSellable=true,sellable,Lunar amulet (RS2 9102),9102,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13784,Item.itemSellable=true,sellable,Lunar ring (RS2 9104),9104,M fits Item4 hat/body/legs/gloves/boots + itemSellable
+13800,Item.itemSellable=true,sellable,Rune crossbow (RS2 9185),9185,M itemSellable override
+13889,Item.itemSellable=true,sellable,?,,L
+13994,Item.itemSellable=true,sellable,?,,L
+13995,Item.itemSellable=true,sellable,?,,L
+13996,Item.itemSellable=true,sellable,?,,L
+14013,client.GetCL/ItemID,req thi 99,?,,L
+14093,"Item.fullHelm, Item.fullMask, Item.hats, Item4.fullMask, Item4.hats, client.addItem, shop62","slot hat(mask); source: shop62 ""Hood Shop"" [561 Shop keeper] stock 100; levelup Runecrafting>=99",Runecraft hood (RS2 9767),9767,H
+14234,Item.capes,-,Hunter cape (RS2 9948),9948,H referenced in Item.capes only (not in item.cfg)
+14235,Item.capes,-,Hunter cape(t) (RS2 9949),9949,H
+14236,"Item.fullHelm, Item.fullMask, Item.hats",-,Hunter hood (RS2 9950),9950,H
+14295,Item.legs,-,Kyatt legs (RS2 10035),10035,M fits Item.java hat/body/legs pattern
+14296,Item.body,-,Kyatt top (RS2 10037),10037,M fits Item.java hat/body/legs pattern
+14297,"Item.fullHelm, Item.fullMask, Item.hats",-,Kyatt hat (RS2 10039),10039,M fits Item.java hat/body/legs pattern
+14298,Item.legs,-,Larupia legs (RS2 10041),10041,M fits Item.java hat/body/legs pattern
+14299,Item.body,-,Larupia top (RS2 10043),10043,M fits Item.java hat/body/legs pattern
+14300,"Item.fullHelm, Item.fullMask, Item.hats",-,Larupia hat (RS2 10045),10045,M fits Item.java hat/body/legs pattern
+14301,Item.legs,-,Graahk legs (RS2 10047),10047,M fits Item.java hat/body/legs pattern
+14302,Item.body,-,Graahk top (RS2 10049),10049,M fits Item.java hat/body/legs pattern
+14303,"Item.fullHelm, Item.fullMask, Item.hats",-,Graahk headdress (RS2 10051),10051,M fits Item.java hat/body/legs pattern
+14304,Item.body,-,Wood camo top (RS2 10053),10053,M fits Item.java hat/body/legs pattern
+14305,Item.legs,-,Wood camo legs (RS2 10055),10055,M fits Item.java hat/body/legs pattern
+14306,Item.body,-,Jungle camo top (RS2 10057),10057,M fits Item.java hat/body/legs pattern
+14308,Item.body,-,Desert camo top (RS2 10061),10061,M fits Item.java hat/body/legs pattern
+14309,Item.legs,-,Desert camo legs (RS2 10063),10063,M fits Item.java hat/body/legs pattern
+14311,Item.legs,-,Polar camo legs (RS2 10067),10067,M fits Item.java hat/body/legs pattern
+14316,Item.itemSellable=true,sellable,?,,L
+14478,Item.itemSellable=true,sellable,?,,L
+14509,"Item.fullHelm, Item.fullMask, Item.hats, Item.itemSellable=true, Item2.Skeleton_Hellhound, Item4.hats, shop65","slot hat; sellable; source: shop65 ""3rd Age Shop"" [558 Gerrant] stock 100; Skeleton hellhound (1575) 1/17",3rd age mage hat (RS2 10342),10342,H
+14510,"Item.amulets, Item4.amulets",slot amulet,3rd age amulet (RS2 10344),10344,H
+14535,"Item.itemSellable=true, Item.legs",sellable,Flared trousers (RS2 10394),10394,H
+14536,Item.itemSellable=true,sellable,Pantaloons (RS2 10396),10396,H
+14538,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Black elegant shirt (RS2 10400),10400,H
+14539,"Item.itemSellable=true, Item.legs",sellable,Black elegant legs (RS2 10402),10402,H
+14540,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Red elegant shirt (RS2 10404),10404,H
+14541,"Item.itemSellable=true, Item.legs",sellable,Red elegant legs (RS2 10406),10406,H
+14542,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Blue elegant shirt (RS2 10408),10408,H
+14543,"Item.itemSellable=true, Item.legs",sellable,Blue elegant legs (RS2 10410),10410,H
+14544,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Green elegant shirt (RS2 10412),10412,H
+14545,"Item.itemSellable=true, Item.legs",sellable,Green elegant legs (RS2 10414),10414,H
+14546,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Purple elegant shirt (RS2 10416),10416,H
+14547,"Item.itemSellable=true, Item.legs",sellable,Purple elegant legs (RS2 10418),10418,H
+14548,"Item.body, Item.itemSellable=true, Item.platebody",sellable,White elegant blouse (RS2 10420),10420,H
+14549,"Item.body, Item.itemSellable=true, Item.legs",sellable,White elegant skirt (RS2 10422),10422,H
+14550,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Red elegant blouse (RS2 10424),10424,H
+14551,"Item.body, Item.itemSellable=true, Item.legs",sellable,Red elegant skirt (RS2 10426),10426,H
+14552,"Item.body, Item.itemSellable=true",sellable,Blue elegant blouse (RS2 10428),10428,H
+14553,"Item.body, Item.itemSellable=true, Item.legs, Item.platebody",sellable,Blue elegant skirt (RS2 10430),10430,H
+14554,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Green elegant blouse (RS2 10432),10432,H
+14555,"Item.body, Item.itemSellable=true, Item.legs, Item.platebody",sellable,Green elegant skirt (RS2 10434),10434,H
+14556,"Item.body, Item.itemSellable=true, Item.platebody",sellable,Purple elegant blouse (RS2 10436),10436,H
+14557,"Item.body, Item.itemSellable=true, Item.legs, Item.platebody",sellable,Purple elegant skirt (RS2 10438),10438,H
+14558,Item.itemSellable=true,sellable,Saradomin crozier (RS2 10440),10440,H
+14559,Item.itemSellable=true,sellable,Guthix crozier (RS2 10442),10442,H
+14560,Item.itemSellable=true,sellable,Zamorak crozier (RS2 10444),10444,H
+14565,"Item.itemSellable=true, Item4.hats, shop53","slot hat; sellable; source: shop53 ""God Shop"" [521 Shop assistant] stock 100",Guthix mitre (RS2 10454),10454,H
+14573,Item.itemSellable=true,sellable,Saradomin stole (RS2 10470),10470,M
+14574,Item.itemSellable=true,sellable,Guthix stole (RS2 10472),10472,M
+14579,Item.itemSellable=true,sellable,?,,L
+14595,"Item.fullHelm, Item.fullMask, Item.hats",-,?,,L
+14634,"Item.fullHelm, Item.fullMask, Item.hats, Item.itemSellable=true",sellable,Healer hat (RS2 10547),10547,H
+14635,"Item.fullHelm, Item.fullMask, Item.hats, Item.itemSellable=true",sellable,Fighter hat (RS2 10548),10548,H
+14636,"Item.fullHelm, Item.fullMask, Item.hats, Item.itemSellable=true",sellable,Runner hat (RS2 10549),10549,H
+14637,"Item.fullHelm, Item.fullMask, Item.hats, Item.itemSellable=true",sellable,Ranger hat (RS2 10550),10550,H
+14639,Item.itemSellable=true,sellable,Runner boots (RS2 10552),10552,H
+14640,Item.itemSellable=true,sellable,Penance gloves (RS2 10553),10553,H
+14641,Item.itemSellable=true,sellable,Penance gloves (RS2 10554),10554,H
+14642,Item.itemSellable=true,sellable,Penance skirt (RS2 10555),10555,H
+14643,"Item4.shields, client.addItem","slot shield; source: key 1543 (Ice giant 111 drop, 1/4) on obj 4119",Attacker icon (RS2 10556),10556,H
+14644,"Item4.shields, client.addItem","slot shield; source: key 1545 (Ice giant 111 drop, 1/4) on obj 4119",Collector icon (RS2 10557),10557,H
+14645,"Item4.shields, client.addItem","slot shield; source: key 1546 (Ice giant 111 drop, 1/4) on obj 4119",Defender icon (RS2 10558),10558,H
+14646,"Item4.shields, client.addItem","slot shield; source: key 1548 (Ice giant 111 drop, 1/4) on obj 4119",Healer icon (RS2 10559),10559,H
+14651,Item4.body,slot chest,Granite body (RS2 10564),10564,M Item4.body
+14668,Item4.boots,slot feet,?,,L
+14715,Item4.fullMask,-,?,,L
+14767,Item.boots,-,?,,L
+14819,shop67,"source: shop67 ""Mod & Admin Shop"" [NO NPC (unreachable)] stock 100",?,,L
+14868,"Item.itemSellable=true, Item4.hats, shop67","slot hat; sellable; source: shop67 ""Mod & Admin Shop"" [NO NPC (unreachable)] stock 100",Silly jester hat (RS2 10836),10836,M fits Item4 hat/body/legs
+14869,"Item.itemSellable=true, Item4.body, shop67","slot chest; sellable; source: shop67 ""Mod & Admin Shop"" [NO NPC (unreachable)] stock 100",Silly jester top (RS2 10837),10837,M fits Item4 hat/body/legs
+14870,"Item.itemSellable=true, Item4.legs, shop67","slot legs; sellable; source: shop67 ""Mod & Admin Shop"" [NO NPC (unreachable)] stock 100",Silly jester tights (RS2 10838),10838,M fits Item4 hat/body/legs
+14871,Item.itemSellable=true,sellable,Silly jester boots (RS2 10839),10839,M fits Item4 hat/body/legs
+14894,Item.body,-,Builder's shirt (RS2 10863),10863,M dead Item.java body/legs/boots lists
+14895,Item.legs,-,Builder's trousers (RS2 10864),10864,M dead Item.java body/legs/boots lists
+14896,Item.boots,-,Builder's boots (RS2 10865),10865,M dead Item.java body/legs/boots lists
+14945,Item.itemSellable=true,sellable,Lumberjack top (RS2 10939),10939,M
+14946,Item.itemSellable=true,sellable,Lumberjack legs (RS2 10940),10940,M
+14947,Item.itemSellable=true,sellable,Lumberjack hat (RS2 10941),10941,M
+15106,Item4.gloves,slot hands,?,,L
+15180,Item.itemSellable=true,sellable,?,,L
+15181,"Item.fullHelm, Item.fullMask, Item.hats, Item.itemSellable=true, Item4.fullMask, Item4.gloves, shop67","slot hands(mask); sellable; source: shop67 ""Mod & Admin Shop"" [NO NPC (unreachable)] stock 100","unknown RS2 11274-11278 item (OSRS-nulled), mask-like (RS2 11278)",-,L Mod&Admin shop; hat/fullMask/gloves lists
+15183,"Item4.fullMask, Item4.gloves, shop67","slot hands(mask); source: shop67 ""Mod & Admin Shop"" [NO NPC (unreachable)] stock 100",Cavalier mask (RS2 11280),11280,L Mod&Admin shop; Item4.fullMask+gloves
+15184,"Item.fullHelm, Item.fullMask, Item.hats",-,Beret mask (RS2 11282),11282,L
+15226,Item.itemSellable=true,sellable,Bronze hasta (RS2 11367),11367,M itemSellable override block
+15227,Item.itemSellable=true,sellable,Iron hasta (RS2 11369),11369,M itemSellable override block
+15228,Item.itemSellable=true,sellable,Steel hasta (RS2 11371),11371,M itemSellable override block
+15229,Item.itemSellable=true,sellable,Mithril hasta (RS2 11373),11373,M itemSellable override block
+15230,Item.itemSellable=true,sellable,Adamant hasta (RS2 11375),11375,M itemSellable override block
+15231,Item.itemSellable=true,sellable,Rune hasta (RS2 11377),11377,M itemSellable override block
+15320,"Item.fullHelm, Item.fullMask, Item.hats, Item.itemSellable=true",sellable,"unknown RS2 11674 (OSRS ""Null"") (RS2 11674)",-,L 15320 is in hat/fullHelm lists; itemSellable override
+15321,Item.itemSellable=true,sellable,"unknown RS2 11675 (OSRS ""Null"") (RS2 11675)",-,L 15320 is in hat/fullHelm lists; itemSellable override
+15322,Item.itemSellable=true,sellable,"unknown RS2 11676 (OSRS ""Null"") (RS2 11676)",-,L 15320 is in hat/fullHelm lists; itemSellable override
+15331,"client.GetCL/ItemID, client.smithBar, client.useItem",-,Godsword blade (RS2 11690),11798,"H code: godsword ""bar"" for smithing (initSmithing(15331), commented out)"
+15332,Item.twohanded,-,Godsword shards 2 & 3 (RS2 11692),11800,M dead Item.twohanded list
+15337,Item.itemSellable=true,sellable,Armadyl hilt (RS2 11702),11810,H
+15338,Item.itemSellable=true,sellable,Bandos hilt (RS2 11704),11812,H
+15339,Item.itemSellable=true,sellable,Saradomin hilt (RS2 11706),11814,H
+15340,Item.itemSellable=true,sellable,Zamorak hilt (RS2 11708),11816,H
+15341,Item.itemSellable=true,sellable,Godsword shard 1 (RS2 11710),11818,H
+15342,Item.itemSellable=true,sellable,Godsword shard 2 (RS2 11712),11820,H
+15343,Item.itemSellable=true,sellable,Godsword shard 3 (RS2 11714),11822,H
+15344,Item.itemSellable=true,sellable,Zamorakian spear (RS2 11716),11824,H
+15351,Item.itemSellable=true,sellable,Saradomin sword (RS2 11730),11838,H
+15368,Item.itemSellable=true,sellable,?,,L
+15369,Item.itemSellable=true,sellable,?,,L
+15370,Item.itemSellable=true,sellable,?,,L
+140103,client.GetCL/ItemID,req thi 99,?,,L
+141001,Item4.capes,slot cape,?,,L

@@ -33,6 +33,7 @@ import VarPlayerType from '#/cache/config/VarPlayerType.js';
 import VarSharedType from '#/cache/config/VarSharedType.js';
 import { CrcBuffer32, makeCrcs } from '#/cache/CrcTable.js';
 import WordEnc from '#/cache/wordenc/WordEnc.js';
+import AllstarLists from '#/engine/AllstarLists.js';
 import { BlockWalk } from '#/engine/entity/BlockWalk.js';
 import { EntityLifeCycle } from '#/engine/entity/EntityLifeCycle.js';
 import { NpcList } from '#/engine/entity/EntityList.js';
@@ -1892,6 +1893,13 @@ class World {
 
             const { username, lowMemory, reconnecting, staffmodlevel, muted_until, members, messageCount } = msg;
             const save = msg.save ?? new Uint8Array();
+
+            // Allstar-City: Allstar-Scape's banned name and IP lists (::banuser, ::ipban)
+            if (AllstarLists.has('bannedusers', username) || AllstarLists.has('bannedips', client.remoteAddress)) {
+                client.send(Uint8Array.from([4]));
+                client.close();
+                return;
+            }
 
             // if (reconnecting && !this.getPlayerByUsername(username)) {
             //     // rejected

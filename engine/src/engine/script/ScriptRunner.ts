@@ -4,6 +4,7 @@ import Npc from '#/engine/entity/Npc.js';
 import Obj from '#/engine/entity/Obj.js';
 import Player from '#/engine/entity/Player.js';
 import { ScriptArgument } from '#/engine/entity/PlayerQueueRequest.js';
+import AllstarOps from '#/engine/script/handlers/AllstarOps.js';
 import CoreOps from '#/engine/script/handlers/CoreOps.js';
 import DbOps from '#/engine/script/handlers/DbOps.js';
 import DebugOps from '#/engine/script/handlers/DebugOps.js';
@@ -52,7 +53,8 @@ export default class ScriptRunner {
         ...NumberOps,
         ...StructOps,
         ...DbOps,
-        ...DebugOps
+        ...DebugOps,
+        ...AllstarOps
     };
 
     /**

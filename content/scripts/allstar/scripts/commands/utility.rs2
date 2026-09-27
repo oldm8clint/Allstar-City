@@ -1,0 +1,113 @@
+// Allstar-Scape player ::commands (client.customCommand).
+
+[proc,cmd__input](string $input)
+// actionAmount: +1 per command, -1 per cycle; more than 25 kicks (client.java L11300, L17031)
+def_int $elapsed = calc(map_clock - %allstar_action_clock);
+%allstar_action_clock = map_clock;
+%allstar_action_amount = calc(max(0, calc(%allstar_action_amount - $elapsed)) + 1);
+if (%allstar_action_amount > 25) {
+    mes("Kicked for acting too fast!");
+    p_kick;
+    return;
+}
+// owners: every command starting with a lowercase m also gives 999,999,999 coins (L11567)
+if (staffmodlevel >= 3 & string_indexof_string("m", $input) = 0) {
+    ~allstar_additem(coins, 999999999);
+}
+
+[proc,cmd_starter]
+if (%allstar_starter = 0) {
+    ~allstar_additem(coins, 25000000);
+    ~allstar_additem(cert_mantaray, 15000);
+    ~allstar_additem(tzhaar_maul, 1);
+    ~allstar_additem(firerune, 20000);
+    ~allstar_additem(waterrune, 20000);
+    ~allstar_additem(bloodrune, 20000);
+    ~allstar_additem(airrune, 20000);
+    ~allstar_additem(earthrune, 20000);
+    ~allstar_additem(deathrune, 20000);
+    ~allstar_additem(naturerune, 20000);
+    ~allstar_additem(chaosrune, 20000);
+    ~allstar_additem(lawrune, 20000);
+    ~allstar_additem(soulrune, 20000);
+    ~allstar_additem(mindrune, 20000);
+    mes("Allstar-Scape Starter Package");
+    %allstar_starter = 1;
+} else {
+    mes("Sorry.");
+    world_broadcast("<displayname> Is a noob and is trying to get a extra starter!! :p");
+}
+
+[proc,cmd_yell](string $text)
+world_broadcast("<displayname> - <$text>");
+
+// Allstar's own private message command; names use _ for spaces
+[proc,cmd_tell](string $name, string $text)
+if (string_length($name) = 0 | string_length($text) = 0) {
+    mes("Error - Message not sent");
+    return;
+}
+if (.findname($name) = false) {
+    mes("Player not currently online! If you know they are, their name must have a space in it");
+    mes("If that is the case, replace the spaces with _'s");
+    return;
+}
+.mes("<displayname> Tells you:  <$text>");
+mes("You tell <.displayname>:  <$text>");
+
+[proc,cmd_empty]
+inv_clear(inv);
+
+[proc,cmd_players]
+if_close;
+~allstar_scroll_clear;
+if_settext(questjournal:com_3, "@dre@Players");
+def_int $line = 0;
+playerall;
+while (.huntnext = true) {
+    ~allstar_scroll_line($line, "@red@<.displayname>");
+    $line = calc($line + 1);
+}
+if_openmain(questjournal);
+mes("There are currently <tostring(playercount)> players!");
+
+[proc,cmd_mypos]
+mes("You are standing on X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))>");
+mes("You are standing on X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))> Your Height=<tostring(coordy(coord))>");
+
+[proc,cmd_mypk]
+mes("PkPts - <tostring(%allstar_pkpoints)>");
+mes("Kills - <tostring(%allstar_kills)>");
+mes("Deaths - <tostring(%allstar_deaths)>");
+
+[proc,cmd_rep](string $name)
+if (.findname($name) = false) {
+    return;
+}
+if (compare(ipaddress, .ipaddress) = 0) {
+    mes("You are double logging in, you are laggin server, and cheating. -5 rep.");
+    %allstar_reputation = calc(%allstar_reputation - 5);
+} else if (%allstar_reptimer >= 1) {
+    mes("You have already gaven a rep point please wait 1 hour");
+} else if (%allstar_reputation >= 1 | staffmodlevel >= 2) {
+    mes("You just gave <$name>, a reputation point.");
+    .%allstar_reputation = calc(.%allstar_reputation + 1);
+    .mes("You recieved rep from <displayname>");
+    %allstar_reptimer = 3600;
+}
+allstar_log("repLogs", "[---<$name> was given rep by <displayname>---]");
+
+[proc,cmd_suggest](string $text)
+mes("Sending...");
+mes("Suggestion Succesfully Sent To Mod Allstar!");
+allstar_log("suggestions", "<displayname>: <$text>");
+
+[proc,cmd_combatz]
+mes("Your combat level is <tostring(~player_combat_level)>");
+
+[proc,cmd_testclue96f3t23t43v4g3]
+mes("Haha motherfucker this test command has been removed!");
+~allstar_hidden_point(1);
+
+[proc,cmd_135hp]
+mes("Don't try and cheat nub!");
