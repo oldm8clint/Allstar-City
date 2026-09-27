@@ -35,6 +35,11 @@ if (%allstar_levelup_box ! null & %allstar_levelup_box ! coord) {
 // The region-load overlays (the ServerPanel 15892 and the player count 6673) were replaced within
 // the same cycle and never showed.
 [proc,allstar_walkable]
+// ::skullz set another walkable interface this cycle, after process() ran
+if (%allstar_walkable = -2) {
+    %allstar_walkable = -1;
+    return;
+}
 def_int $walkable = 1;
 if (~allstar_nonwild(coord) = false) {
     $walkable = 2;
@@ -132,3 +137,4 @@ mes("The Chaos Elemental removes your weapon!");
 // frame 208 with a raw 317 interface id (::skullz): replaced by process() the next cycle
 [proc,allstar_walkable_id](int $id)
 if_openoverlay(enum(int, interface, allstar_interface_ids, $id));
+%allstar_walkable = -2;

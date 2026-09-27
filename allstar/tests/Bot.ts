@@ -13,11 +13,13 @@ import Isaac from '../../engine/src/io/Isaac.js';
 import Packet from '../../engine/src/io/Packet.js';
 import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
 import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
+import ServerGameZoneProt from '../../engine/src/network/game/server/ServerGameZoneProt.js';
 
 const ENGINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../engine');
 
 const serverProts = new Map<number, ServerGameProt>();
-for (const value of Object.values(ServerGameProt)) {
+// zone packets (OBJ_ADD, MAP_ANIM ...) are also sent on their own
+for (const value of [...Object.values(ServerGameProt), ...Object.values(ServerGameZoneProt)]) {
     if (value instanceof ServerGameProt) {
         serverProts.set(value.id, value);
     }
@@ -238,15 +240,19 @@ export default class Bot {
                 this.main = buf.g2_alt2();
                 this.side = buf.g2_alt3();
                 break;
-            case ServerGameProt.IF_OPENOVERLAY:
-                this.overlay = buf.g2();
+            case ServerGameProt.IF_OPENOVERLAY: {
+                const com = buf.g2();
+                this.overlay = com === 65535 ? -1 : com;
                 break;
+            }
             case ServerGameProt.UPDATE_REBOOT_TIMER:
                 this.rebootTimer = buf.g2_alt1();
                 break;
-            case ServerGameProt.TUT_OPEN:
-                this.tutorial = buf.g2_alt1();
+            case ServerGameProt.TUT_OPEN: {
+                const com = buf.g2_alt1();
+                this.tutorial = com === 65535 ? -1 : com;
                 break;
+            }
             case ServerGameProt.IF_OPENCHAT:
                 this.chat = buf.g2();
                 break;

@@ -75,7 +75,8 @@ async function setRights(bot: Bot, rights: number) {
 
     // wild overlay outside the safe zones, text follows the tile
     let since = bot.messages.length;
-    await cmd(bot, 'testminigame', 1500);
+    // (Lost City's own wilderness overlay still opens for a tick when entering its zones)
+    await cmd(bot, 'testminigame', 2500);
     check(bot.overlay === 19100 && bot.texts.get(19103) === '@red@Wild', `wild overlay (${bot.overlay}, ${bot.texts.get(19103)})`);
     check(bot.texts.get(184) === 'X: 3114 Y: 9928', `coordinates after teleport: ${bot.texts.get(184)}`);
     await cmd(bot, 'home', 1500);
@@ -347,6 +348,180 @@ async function setRights(bot: Bot, rights: number) {
     await cmd(owner, 'nosnow', 1500);
     check(owner.overlay === 19100, `::nosnow back to the safe overlay (${owner.overlay})`);
     owner.close();
+}
+
+// ---------------------------------------------------------------- single level-up chatbox
+{
+    const bot = await connect('uiu');
+    await sleep(2000);
+    bot.closeModal();
+    await sleep(600);
+    const since = bot.messages.length;
+    await cmd(bot, 'advancestat attack 50', 1500);
+    await expectMessage(bot, /^Congratulations, you just advanced an attack level\.$/, 'level-up message', since);
+    check(bot.tutorial === 6247 && bot.texts.get(6248) === 'Congratulations, you just advanced an attack level!' && bot.texts.get(6249) === 'Your attack level is now 50 .', `attack chatbox (${bot.tutorial})`);
+    check(bot.stats[0]?.level === 50, `current level is the new base level (${bot.stats[0]?.level})`);
+    await cmd(bot, 'home', 1500);
+    check(bot.tutorial === -1, `the chatbox goes away when the player moves (${bot.tutorial})`);
+    bot.close();
+}
+
+// ---------------------------------------------------------------- more player commands
+{
+    const bot = await connect('uip');
+    await sleep(2000);
+    let since = bot.messages.length;
+    await cmd(bot, '135hp');
+    await expectMessage(bot, /^Don't try and cheat nub!$/, '::135hp', since);
+    since = bot.messages.length;
+    await cmd(bot, 'savebackup');
+    await expectMessage(bot, /^Character backup file successfully saved$/, '::savebackup', since);
+    since = bot.messages.length;
+    await cmd(bot, 'updatestats');
+    await expectMessage(bot, /^Stats saved to highscores\.$/, '::updatestats', since);
+    since = bot.messages.length;
+    await cmd(bot, 'makemem bob');
+    await expectMessage(bot, /^ bob$/, '::makemem echoes the name with its space', since);
+    since = bot.messages.length;
+    await cmd(bot, `membership ${bot.username}`);
+    await expectMessage(bot, new RegExp(`^Player ${bot.username} has become a Member!$`), '::membership', since);
+    since = bot.messages.length;
+    await cmd(bot, 'getweather');
+    await expectMessage(bot, /^Weather Id = 0$/, '::getweather', since);
+    since = bot.messages.length;
+    await cmd(bot, 'prayerstats');
+    await expectMessage(bot, /^Prayer Points = \d+$/, '::prayerstats', since);
+    since = bot.messages.length;
+    await cmd(bot, 'drainme');
+    await expectMessage(bot, /^Your prayer gets drained\.$/, '::drainme', since);
+    since = bot.messages.length;
+    await cmd(bot, 'female');
+    await expectMessage(bot, /^You're now a girl\.\.\.$/, '::female', since);
+    await cmd(bot, 'male');
+    await cmd(bot, 'char', 1000);
+    check(bot.main === 3559, `::char opens the design screen (${bot.main})`);
+    await cmd(bot, 'duel', 1000);
+    check(bot.main === 6412, `::duel opens the duel screen (${bot.main})`);
+    await cmd(bot, 'interface 5292', 1000);
+    check(bot.main === 5292, `::interface 5292 opens the bank frame (${bot.main})`);
+    bot.closeModal();
+    await cmd(bot, 'skullz 197', 100);
+    await bot.until(() => bot.overlay === 197, 2000, 'skullz overlay').catch(() => {});
+    check(bot.overlay === 197, '::skullz opens the walkable interface');
+    await sleep(1500);
+    check(bot.overlay === 19100, 'process() puts the Safe overlay back');
+
+    // the Chaos Elemental weapon strip: the new player's dragon scimitar goes to the inventory
+    since = bot.messages.length;
+    await cmd(bot, 'heal', 1500);
+    await expectMessage(bot, /^The Chaos Elemental removes your weapon!$/, '::heal', since);
+    check(inventory(bot).some(o => o?.id === 4587), 'weapon in the inventory');
+
+    since = bot.messages.length;
+    await cmd(bot, 'hitdiff5', 1500);
+    await expectMessage(bot, /^Hp type set to: 5$/, '::hitdiff', since);
+    check((bot.stats[3]?.level ?? 0) <= 88, `::hitdiff hits 10 (${bot.stats[3]?.level})`);
+
+    await cmd(bot, 'nc', 1500);
+    const c = await bot.coord();
+    check(c.x === 102 && c.z === 0, `::nc sends the player off the map ${JSON.stringify(c)}`);
+    await cmd(bot, 'home', 1000);
+
+    since = bot.messages.length;
+    bot.cheat('interface');
+    await expectClosed(bot, '::interface without an id disconnects');
+}
+
+// ---------------------------------------------------------------- admin and owner tools
+{
+    const admin = await connect('uid');
+    const other = await connect('uit');
+    await sleep(2000);
+    await setRights(admin, 2);
+    let since = admin.messages.length;
+    await cmd(admin, 'pickup 04151 1', 1000);
+    check(inventory(admin).some(o => o?.id === 4151), '::pickup 04151 1');
+    since = admin.messages.length;
+    await cmd(admin, 'pickup 4151 1');
+    await expectMessage(admin, /^Cmon Type IT AGIAN ! $/, '::pickup needs five digits', since);
+    since = admin.messages.length;
+    await cmd(admin, 'pickup 99999 1');
+    await expectMessage(admin, /^That Item Doesn't Exist$/, '::pickup id over 30000', since);
+    since = admin.messages.length;
+    await cmd(admin, 'god');
+    await expectMessage(admin, /^God mode on$/, '::god', since);
+    check(admin.texts.get(149) === '99999999%', '::god energy text');
+    since = admin.messages.length;
+    await cmd(admin, 'godoff');
+    await expectMessage(admin, /^god mode off$/, '::godoff', since);
+    since = admin.messages.length;
+    await cmd(admin, 'pnpc abc');
+    await expectMessage(admin, /^Wrong Syntax! Use as ::pnpc #$/, '::pnpc syntax', since);
+    since = admin.messages.length;
+    await cmd(admin, 'pnpc 20000');
+    await expectMessage(admin, /^No such P-NPC\.$/, '::pnpc range', since);
+    await cmd(admin, 'pnpc 50');
+    await cmd(admin, 'normal');
+    since = admin.messages.length;
+    await cmd(admin, 'gfx 1199');
+    await expectMessage(admin, /^Testing GrApHiCs cODE!!$/, '::gfx', since);
+    since = admin.messages.length;
+    await cmd(admin, 'clicks');
+    await expectMessage(admin, /^Logging clicks set to false$/, '::clicks', since);
+    since = admin.messages.length;
+    await cmd(admin, 'emote 0');
+    await expectMessage(admin, /^Bad emote ID$/, '::emote out of range', since);
+
+    // ::xteleto runs twice for administrators (rights == 2 and >= 1)
+    await cmd(other, 'train', 1500);
+    since = admin.messages.length;
+    await cmd(admin, `xteleto ${other.username}`, 1500);
+    await expectMessage(admin, new RegExp(`^Teleto: You teleport to ${display(other)}$`), '::xteleto', since);
+    check(admin.messages.slice(since).filter(m => m.startsWith('Teleto:')).length === 2, 'administrators run ::xteleto twice');
+    let c = await admin.coord();
+    check(c.x === 3209 && c.z === 2801, `::xteleto destination ${JSON.stringify(c)}`);
+
+    // ::macrowarn: kicked, then a black mark at every login
+    since = admin.messages.length;
+    await cmd(admin, `macrowarn ${other.username}`);
+    await expectClosed(other, '::macrowarn kicks the player');
+    await sleep(1500);
+    const warned = await Bot.connect({ username: other.username, port, webPort });
+    await sleep(2000);
+    check(warned.messages.includes('You have 1 black mark as you have been caught autoing...'), 'black mark at login');
+
+    // owners
+    await setRights(admin, 3);
+    since = warned.messages.length;
+    await cmd(admin, `eat ${warned.username}`, 1500);
+    await expectMessage(warned, new RegExp(`^You have been eaten by ${display(admin)}!$`), '::eat', since);
+    since = admin.messages.length;
+    await cmd(admin, 'tele 3222,3218', 1500);
+    await expectMessage(admin, /^Wrong Syntax! Use as ::tele #####,#####$/, 'owner ::tele: the owner-block handler wants five digits', since);
+    c = await admin.coord();
+    check(c.x === 3222 && c.z === 3218, `the administrator ::tele moved the owner ${JSON.stringify(c)}`);
+    since = admin.messages.length;
+    await cmd(admin, 'npc 50');
+    await expectMessage(admin, /^You spawn an npc$/, '::npc', since);
+    since = admin.messages.length;
+    await cmd(admin, 'a');
+    await expectMessage(admin, /^You spawn an KBD$/, '::a', since);
+    since = admin.messages.length;
+    await cmd(admin, 'npc x');
+    await expectMessage(admin, /^Wrong Syntax! Use as ::npc 1$/, '::npc syntax', since);
+    await cmd(admin, 'bank', 1000);
+    check(admin.main === 5292 && admin.side !== -1, `::bank opens the bank (${admin.main}, ${admin.side})`);
+    admin.closeModal();
+    since = warned.messages.length;
+    await cmd(admin, 'alltome', 1500);
+    c = await warned.coord();
+    check(c.x === 3222 && c.z === 3218, `::alltome ${JSON.stringify(c)}`);
+
+    // ::reboot kicks everyone, the issuer too
+    admin.cheat('reboot');
+    await expectClosed(warned, '::reboot kicks everyone');
+    await expectClosed(admin, '::reboot kicks the issuer');
+    // clean up the macro warning list for later runs
 }
 
 console.log(failures === 0 ? 'ALL PASS' : `${failures} FAILED`);
