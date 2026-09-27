@@ -24,14 +24,13 @@ FRIEND_SERVER=true
 LOGGER_SERVER=true
 EASY_STARTUP=true
 WEBSITE_REGISTRATION=false
-NODE_TICKRATE=500
-NODE_ALLSTAR_XP=true
 WEB_PORT=81
 NODE_PORT=43595
 WEB_MANAGEMENT_PORT=8899
-BUILD_VERIFY=false
-BUILD_VERIFY_PACK=false
 ```
+
+(Allstar-Scape's own settings, the 500 ms cycle, its xp curve and its combat model, are the engine's
+defaults and need no lines here.)
 
 - `EASY_STARTUP` runs the login, friend and logger servers inside the game process.
 - `WEBSITE_REGISTRATION=false`: a new name creates its account (with that password) at its first
