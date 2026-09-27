@@ -1,0 +1,626 @@
+# ALLSTAR-SCAPE — COMMUNITY / FORUM RESEARCH (web)
+Compiled 2026-09-27. Markdown in a .txt file.
+
+## Scope, method, legend
+- Read: the still-live Allstar-Scape SMF forum (allstarscapeforums.smfforfree2.com) — all 18 threads of the "Bugs, glitches etc." board, the News/Recent Updates/Future Updates boards, most General Discussion threads, and ~60 forum keyword searches; Wayback captures of that forum (2008-09) and of Moparscape SMF threads (2010-12); Rune-Server threads (2008-2026); the moparisthebest.com Discourse mirror of old Moparscape posts; YouTube metadata and comments (2008-2013); a few fan sites.
+- Could not read: RuneLocus forum (domain gone, not archived), Sythe (403), the Silabsoft forum (dead), Allstar's Photobucket screenshots (not archived), the original 2008 Moparscape V1 thread (only redirects archived), the AllstarScape Fandom wiki (402).
+- Nothing was downloaded or executed. Section 7 only lists URLs.
+- Everything is paraphrased; no long quotes. Thread titles are given as names.
+- Confidence: [MULTI] = 2 or more independent sources agree; [SINGLE] = one source (can be one thread with several posters); [VAGUE] = indirect, ambiguous, or my inference.
+- Version tags: LIVE-2008 = the original server allstar-scape.no-ip.biz as discussed on its forum (Apr 2008 to ~2010). V1 / V2 / V2.1 / V2.2 / V3 = source releases. Forks are named.
+- YouTube comment dates are approximate (YouTube only shows relative age).
+- [Sxx], [Rxx], [Mxx], [Yxx], [Oxx] = web sources in section 10. [Lx] = the local code inventory in scratchpad/inventory (NOT web; used only to cross-check).
+
+---------------------------------------------------------------------
+
+## 0. Key takeaways
+1. The blood-rune + Telekinetic Grab dupe is the most-cited Allstar exploit. It is described step by step in two separate ~2010 YouTube comments, and later forks list it as fixed. [MULTI]
+2. The staff-zone rare box (the "puppet box") handed out 10 of each rare to anyone who reached or clicked it. This is confirmed by a 2010 hack video that lists the object IDs, a ~2010 comment, and the 2010 HolyPkerz fork's fix list. The IDs match object 10687 in the local v2 source. Ways in that people mention: cheat-client noclip, clicking far on the minimap before the zone walls spawn, and climbing a shop-area ladder to the floor above. [MULTI]
+3. More dupes: trade accept-then-decline timing (June 2008), self-trade through a cheat client (2010), and alching one item over and over (2009; a comment says it only worked on the Allstar source). [MULTI]
+4. Abuse items: the 'perfect' ring (players called them "prings") and the glowing dagger were banned in PK (2009-2010). "Allstar's Hammer" was a renamed meat tenderiser and a fan favourite (90 max hit). [MULTI]
+5. ::noclip was a trap command that autobanned whoever typed it. [MULTI]
+6. Lineage: Allstar said V1 was based on BrettScape V3, but most other people call it a Project Czar derivative. V2.1 and V2.2 ("fixed") were made by purez4life (Moparscape) and posted on Rune-Server in June 2008. A V3 followed in 2009, plus dozens of forks. [MULTI]
+7. The 2008 server had no client of its own. Players were sent to the Silabsoft client, because the Moparscape 3.2 client froze on Silab (508-era) items. [MULTI]
+
+---------------------------------------------------------------------
+
+## 1. BUGS, GLITCHES, DUPES & EXPLOITS
+
+### 1A. Item duplication
+
+1A-1 Blood-rune bank-withdraw stall + Telekinetic Grab — [MULTI]
+- Steps as told around 2010 (OwnerPizza, commenting on a Sept 2009 "allstar-source" dupe video [Y6]):
+  1. Carry law and air runes (the cost of telegrab).
+  2. Drop the item you want to copy.
+  3. Open the bank and withdraw-all on a big stack of blood runes.
+  4. While the withdrawal is still running, keep casting Telekinetic Grab on the dropped item. Each cast gives another copy until the withdrawal finishes.
+  5. Result: a full inventory of the item.
+- A second ~2010 comment (Bulkii [Y7]) gives the same steps, notes telegrab needs 33 Magic, and ties the trick to the Allstar source.
+- Corroboration:
+  - Rune-Server 2014: a player remembers the "blood rune item dupe", and another asks whether the telegrab dupe will still work in a remake [R9].
+  - iScape changelog, 2015: "blood rune lags" are listed among fixed Allstar problems, while telegrab was kept [R8].
+  - HolyPkerz, 2010: stopped telegrab dupes by removing law runes from the server entirely [M1].
+  - Paradise, 2013: lists "Telegrab Dupe" as fixed [R6].
+  - A generic 2017 article (not Allstar-specific) uses 5,000 blood runes and says the withdrawal happens bit by bit over several seconds [O7].
+- Refinement: the stall comes from withdrawing a huge stack. [VAGUE] In the local v2, ::starter gives 20,000 of every rune, including blood, law and air [L1/L3], so every new account had the materials.
+
+1A-2 Telegrab on items you can't pick up — [SINGLE]
+- A ~2011 comment on Robgob's video [Y5] passes on a tip: pickup fails on a spawned or unpickupable ground item, but Telekinetic Grab still takes it.
+- Not found anywhere: the specific "stale telegrab from the right-click menu on PK drops" variant.
+
+1A-3 Trade window accept/decline dupe — [MULTI] that trade dupes existed; [SINGLE] for the exact method
+- 2008-06-07 [S29]: accept the trade, then decline it with the right timing, and the items are duplicated. A second poster confirmed it on 06-17. Staff never answered in the thread.
+- Later fix lists:
+  - HolyPkerz 2010: anti trade dupe [M1].
+  - Paradise 2013: trade dupe fixed, including the cheat-client version [R6].
+  - iScape 2015: all trade bugs fixed [R8].
+- A ~2010 commenter also claims he could steal items in trade without scamming, but gives no method [Y6]. [VAGUE]
+
+1A-4 Self-trade dupe (cheat client) — [SINGLE]
+- Robgob's 2010 video "Hacking Allstar based rsps" [Y5] shows a dupe. His fix includes blocking trades with your own player ID, so the dupe was trading yourself through a cheat client (he says it was Bomb's cheat client).
+- Servers he says it worked on: pkzscapezzz, emov3, cashscape, and afgscape (in the comments).
+
+1A-5 Alch dupe (high-alch one item many times) — [MULTI]
+- Aug 2009 video "silab DUPE" [Y7]: a Silab cheat for alching one item many times. A ~2010 comment says it works only on the Allstar source.
+- Paradise 2013 lists "Alch Dupe" as fixed [R6].
+- Follow-up posts from 2019-2021 on the same thread [R6 p3]:
+  - It only stopped because a client UID check blocked unofficial clients, and the UID can be bypassed.
+  - Robgob: the real fix is to check, in the alch packet handler, that the player actually holds the item.
+- 2008 mod applications promise to warn people about alching [S69]. [VAGUE]
+
+1A-6 Rares box in the Mod/Admin ("staff") zone — [MULTI]
+- Robgob 2010 [Y5]:
+  - Shows how to get into the "puppet box" that was left full of good items.
+  - Lists IDs 10687, 10691, 10692, 10693 and 10695.
+  - Fix: add a player-rights check to the object clicks.
+- ~2010 comment by zpsh1212 [Y6]:
+  - Use a noclip cheat client to walk into the admin-only zone.
+  - Mass-click the chests; each click gives 10 of every rare.
+  - Sell them noted, about 5m each.
+- HolyPkerz 2010 fix list [M1]: the staff-zone rare box was changed so only Mod+ can take the rares.
+- Background:
+  - V1 (May 2008) has a Mod/Admin Zone reached with ::az [R1].
+  - June 2008 forum posts mention ::az and a "Mod/Admin portal" [S69].
+  - A 2014 remake re-added the "puppet box" [R9].
+- Local cross-check [L2]:
+  - Object 10687 ("Puppet torsos") sits at 3285,2770 in the Sophanem Mod zone.
+  - It gives 10 noted of each partyhat colour, the santa hat and each h'ween mask.
+  - Objects 10691-10693 and 10695 also hand out rares but are not placed in the world.
+  - This is exactly Robgob's ID list. It is strong evidence that the local v2 is the same Allstar build these 2009-2010 exploits targeted.
+
+### 1B. Getting into restricted areas / movement glitches
+- Shop-area ladder to the floor above — [SINGLE]
+  - The video is "Allstarscape glitch/dupe" (May 2009, channel "AllstarScapev4") [Y3].
+  - A ~2013 comment sums it up as: go to the shops, then climb a ladder that no object blocks.
+  - Other commenters say they did it many times; Robgob says it is easily fixed.
+- Click far on the minimap before the walls spawn — [SINGLE]
+  - A ~2013 answer, on a May 2009 Allstar dupe video [Y4], to someone asking how to break into the mod zone.
+- Mod area without being mod, "and get rich" — [VAGUE]: a ~2009 comment on an Aug 2008 allstarscape video [Y8].
+- Remembered "glitches to get into staff zones" — [VAGUE]: Rune-Server 2014 [R9].
+- "Glitchers" who walk past walls were a known problem by 2008-05-21 [S69, cool beans' application]. [SINGLE]
+- A glitch for "getting out of skills" (escaping the skill area) was going around on 2008-12-14 [S55]. No details. [SINGLE]
+- Noclip:
+  - Cheat-client noclip is how zpsh1212 got into the admin zone [Y6].
+  - Typing the in-game ::noclip command autobans you [Y6; O1 rules]. [MULTI]
+  - The local v2 has a ::noclip autoban plus an ::nc trap [L1].
+- The "floor above → ::train → past the hedge → admin box" route you already know of:
+  - Nobody describes this exact route anywhere I could reach.
+  - Pieces that fit it [VAGUE/INFERRED]:
+    - the shop-ladder glitch [Y3];
+    - the zone walls are spawned objects that only appear after loading [Y4 comment];
+    - in the local v2, the Training Area's hedge enclosure (object 1116, Menaphos 3200-3230,2780-2810) is right next to the Sophanem Mod zone (3278-3285,2764-2777) [L2];
+    - the Spikey chain objects 9319/9320 move you up or down one floor without moving you sideways [L2];
+    - the dev command goupz/godownz (for the hard-coded "D D 3" account) also changes floor in place [L1].
+- ::fixme — [SINGLE]
+  - On the Feb 2009 video "AllStar-Scape Glitch" [Y2], someone asks how it's done. The answer: type ::fixme, then log out and back in.
+  - What ::fixme does was not found on the web, and it is not in the local commands.md.
+
+### 1C. Minigame exploits
+- Ring of dueling → end of the Godsword minigame with no fighting — [SINGLE thread, 2 posters]
+  - HolyPkerz thread, Sept 2010 [M1]: one player says he can reach the last GS-mini level without killing anything. The author confirms it is the ring of dueling glitch and says he left it in on purpose.
+  - Local v2 [VAGUE link]: rubbing the ring offers teleports to the Jad lair or the abyss rift [L3], and the GS-mini rounds are rune-altar interiors [L1]. That is probably how the ring lands you in a late round.
+- Icon minigame [S14], 2008-04-23 [SINGLE thread]:
+  - Players could barrage or attack through the wall; a second player confirmed it.
+  - Kill-stealing: "massing" (a multi-target spell) an NPC just before it dies gives you the kill and the drop.
+- A Sept 2008 mod application mentions players getting into GS-mini places they shouldn't be [S69]. [VAGUE]
+
+### 1D. PK / combat exploits and abuse
+- PK box edge + Vengeance — [SINGLE thread], 2008-04-28 [S16]
+  - Standing on the edge of the PK line let you hit people outside with vengeance while they couldn't hit you back.
+  - Staff answer: verbal warning, then kick, then ban. Fatality added that staff abusing it should be reported with screenshots.
+- Invisibility — [MULTI]
+  - 2008-06-12 [S35]: wearing armadyl legs makes you invisible.
+  - Other 2008 posts complain about invisible PKers, and about an admin who killed people while invisible and teleported them [S69].
+  - Paradise 2013 lists a "go invisible" glitch as fixed [R6].
+  - Local v2: a Mod-Allstar-only ::hide makes you invisible [L1]. That may explain some staff cases. [VAGUE]
+- Staff teleporting players into the Wilderness and killing them — [SINGLE], 2008-07-31 [S46]
+  - Accounts "D D S P E C" and "D D S P 3 C" teleported players into the wild and killed them for their items. The same post says they were handing out staff ranks.
+  - Possibly related: a 2008 YouTube channel "ddspecs" featuring Mod Allstar and "coder danny" [Y15], and later dds-specz / crayolascape Allstar servers [Y17, Y18]. [VAGUE]
+  - Local v2 hard-codes an account "D D 3" with dev and kick powers [L1]. [VAGUE]
+- 'Perfect' ring / glowing dagger abuse in PK — [MULTI]
+  - 2009-01-29: a player complains about abusers with "prings" [S62].
+  - 2009-01-30: an admin application promises not to "perfect ring" people [S63].
+  - 2010-06-22: an admin application rule — no perfect ring or glowing dagger in PK [S68].
+  - What either item actually did is not described anywhere.
+- Protection prayers — [VAGUE]
+  - The rules of a Hamachi-hosted copy punish "prayer" with a black mark (and "cart" with a 3-day ban) [O1].
+  - Local v2: any protection prayer makes you immune to player melee and range [L3]. That probably explains the rule.
+- NPCs mostly don't fight back on Allstars (iScape 2015 [R8]) [SINGLE]. On 2009-01-02 a player was surprised when monsters suddenly hit back hard (repeated 24s) [S60]. [SINGLE]
+- Shopkeepers could be killed with magic — [VAGUE/MULTI]
+  - A 2014 remake commenter asks to keep the shop killers killable with mage [R9].
+  - Paradise 2013 stopped magic being cast on shopkeepers, and stopped players attacking themselves [R6].
+- Every weapon shows a special-attack bar (Allstar Reborn 2013 [R10]). [SINGLE]
+
+### 1E. Economy / skilling exploits and quirks
+- Fishing with a full inventory still gives XP (just no fish) — 2008-04-20 [S13]. [SINGLE]
+- Levels above 99:
+  - Spamming the skillcape emote boosts a 99 to 100/99, which pushes total level above 1900 (July 2008, [S42]). [SINGLE thread]
+  - 100/99 in Cooking, Smithing and Slayer was explained as normal behaviour inherited from an old Moparscape base [S13].
+  - Local v2: the cape emote gives a +1 boost [L3].
+- Mass-clicking objects for fast XP:
+  - Allstar Reborn 2013 advertises that it removed this [R11].
+  - The Hamachi copy's rules ban mass clicking because it lags the server [O1]. [MULTI]
+- A "cupboard" that gives Crafting XP was suggested as a source of mantas (May/June 2008, [S22]). [SINGLE]
+- Rune platelegs can be smithed at level 1 — [MULTI]
+  - June 2008 [S29]; a player argued it was intended.
+  - iScape 2015 lists it as an original-Allstar requirement bug that it fixed [R8].
+- Sharks and manta rays can't be cooked — [MULTI]: May 2008 [S22]; HolyPkerz 2010 notes regular Allstar couldn't [M1].
+- Money came too easily:
+  - V2.2 reply, 2008-09 [R2]. [SINGLE]
+  - HolyPkerz thread 2010: max cash in under a minute [M1]. [SINGLE]
+- Rares sold noted to a shop at about 5m each [Y6]. [SINGLE] Local v2 has a Rares Shop that buys and sells at 5,000,000 [L npc_item_handlers.md].
+- Repeating ::starter:
+  - A 2011 quote says repeating it gets you kicked or banned [R2 p2]. [SINGLE]
+  - Local v2 instead broadcasts a shaming message [L1].
+- Shop arbitrage (FizzerX 2021 only, [R13]) — [SINGLE; fork-specific]: buy noted mantas cheaply at one ::shops store, unnote them at the bank, and sell to another shop for about 300k each.
+- Barrows armour needed Ranged as well as Defence to wear [M1]. [SINGLE]
+- An "Ogre bow glitch" [M1] is unexplained. [SINGLE] Possible cause [VAGUE]: the local v2 renames the comp ogre bow (4827/4828) to "Dark Bow" with +139 ranged [L custom_items.md].
+
+### 1F. Client, display and map-loading bugs
+- Moparscape 3.2 ("Aaron") client problems — [MULTI]:
+  - It can't trade with many shops and freezes on Silab items (99 capes, god armour).
+  - Fix: use the Silabsoft client [S37, S40, S11].
+- The god armour shop and Clan Wars kicked you out with lag, June 19-21 2008 [S40]. [SINGLE]
+- After switching world/port (the "pkcity" port), the display showed the wrong name, level and XP until the client was restarted [S28]. [SINGLE]
+- Farming XP displayed as 0, with next level at -1 [S25]. [SINGLE]
+- Skillcape problems, Dec 2008 [S57]: the Herblore cape emote is broken, there is no Firemaking emote, and there is no Agility cape. [SINGLE] "Crappy skillcape emotes, as you'd expect from Allstar" [R6].
+- You can't train Defence with a whip [S49]. [SINGLE]
+- Black ground, with players and drops invisible (client-side) [S56]. [SINGLE]
+- Dragon boots examine text is ungrammatical [S26].
+- Stuck on "please wait - loading" — [MULTI]:
+  - after talking to the Fairy (2009-03 [S64]);
+  - after a freeze in the Strength Guild training area (2008-06 [S38]).
+  - Likely cause [VAGUE]: in the local v2, the Fairy (NPC 57) teleports you to TzHaar (2438,5169) and the Strength Guild is underground (3485-3500,9660-9695) [L3], so this is probably map-region loading on those clients.
+- Allstar [Cleaned] 2012 [M5] found:
+  - the DFS equipped into the wrong slot;
+  - null items in shops.
+- Paradise found that high-HP NPCs showed HP on a 100 scale that "rerolled" [R6]. [SINGLE]
+- A fork's own bug: in Allstar Cleaned 1u1, clicking any object opened the deposit box [R3].
+
+### 1G. Stability and security weaknesses
+- A 100k socket buffer caused crashes [R2, R3; Dec 2008]. [MULTI]
+- Capacity claims disagree:
+  - it crashes at 10 players vs. 50 players on a Pentium 4 [M4];
+  - 400 bots, but very laggy [Y13, M4];
+  - "would have crashed at about 50" [R10].
+- No flood protection:
+  - An admin threatened to SYI (connection-flood) leechers [S50].
+  - The server was hit by spam/DoS attacks in Sept 2008 [S51].
+  - Forks later added 1 connection per IP [M1, R6].
+  - Local v2: the per-IP limit never works because of a String == comparison [L3].
+- Accounts or stats reset on disconnect — [MULTI]: FizzerX 2021 [R13], Paradise 2013 (random resets) [R6], a 2023 question to Allstarlegends [R15], and a silab-era memory of rollbacks on disconnect [R23].
+- Cheating was easy:
+  - Allstar was called very easy to cheat with Cheat Engine or dupes [R13, 2021].
+  - Cheat clients existed (Robgob / Bomb's) [Y5], and later forks added client UID checks [R6].
+  - Local v2 logs UID -74352552 as a "XeroScape cheat client" [L3]. That explains the XeroScape name in the source.
+
+### 1H. What forks said they fixed (a useful "known Allstar bugs" checklist)
+- HolyPkerz 2010 [M1]:
+  - anti-SYI (1 connection per IP);
+  - anti trade and telegrab dupe (law runes removed);
+  - ogre bow glitch;
+  - Barrows requirement glitch;
+  - staff-zone rare box limited to Mod+;
+  - sharks and mantas cookable;
+  - main rares removed from shops and monster drops;
+  - meat tenderiser and godswords removed from shops (tenderiser became a rare KBD drop);
+  - skillcapes moved from shops to a chest that only gives capes you've earned;
+  - skills to 130.
+- Paradise 2013 [R6]:
+  - anti-SYI;
+  - saves on crash;
+  - trade dupe, including cheat clients;
+  - "many other dupes";
+  - invisibility glitch;
+  - players attacking themselves;
+  - magic on shopkeepers;
+  - NPC HP reroll;
+  - telegrab dupe;
+  - alch dupe;
+  - random account resets (NOT fixed).
+- iScape 2015 [R8]:
+  - trade bugs, drop glitches, cheat-client exploits and blood-rune lags;
+  - smithing level requirements;
+  - working NPC combat.
+- AllstarScape [Cleaned] 2012 [M5]: bugs and glitches around the home area, shop nulls, DFS slot.
+- Allstar Cleaned 1u1, Dec 2008 [R3]:
+  - removed redundant Item2-4 duplicates and the unused object.cfg / teleport.cfg;
+  - client.java was 1.45 MB;
+  - the 100k buffer was pointed out.
+  - Matches the GitHub v2 file list: client.java is 1,423,870 bytes, with Item/Item2/Item3/Item4 and Teleport.cfg [O5].
+
+---------------------------------------------------------------------
+
+## 2. FEATURES (not obvious from code)
+- Two worlds from 2008-05-21 — [MULTI]:
+  - main world on port 43594 and secondary on 5555, both on allstar-scape.no-ip.biz [S20];
+  - a player called the main one "ownage 1" [S21];
+  - the second port shows up in a stats-display bug as "pkcity" [S28];
+  - "Secondary Server" is listed in the June 2008 updates [S30].
+- Update history:
+  - 2008-04-19 [S12, S3]: home moved; Strength Guild added (99 Strength required, portal at home); more Smithing and Fishing XP.
+  - 2008-06-07 [S30]: Range/Mage Guild, new PK area, secondary server, "Wishing Well".
+  - 2008-04-18 [S10]: guild plans announced.
+  - Dec 2008 [S58]: a new "camp" minigame and a skilling area.
+  - [MULTI] for the guilds.
+- Clan Wars, built by Allstar around June 2008, with team capes. Clans used the team-46 cape because team-17 wasn't available [S34, S32]. [MULTI]
+- Skilling:
+  - ::skill area; buy bones from the shopkeeper there [S31, S36];
+  - ::train for combat [S31];
+  - a cape shop [S57];
+  - you need 99 in a skill to wear its cape (V1, [R1]).
+- Staff tools:
+  - kick / ban / ipban and give-rank commands [S18, R1];
+  - "jail" (2009-2010, [S65, S67]);
+  - Mod/Admin zone through ::az or a portal [S69];
+  - an "admin spell" that staff were expected to know (2008-06-25, [S41]; not explained);
+  - forum warning/ban escalation [S16, S1].
+- PK points:
+  - existed by 2008-06-24 (a player says he helped nn reach 3,000 PK points) [S69]. [SINGLE]
+  - The rewards are never described on the web.
+  - Local v2: 1/2/3 points per kill with partyhat rewards, and ::mypk [L1/L3].
+  - Forks: Futurescape put PK-point rewards in the quest tab [M7]; HolyPkerz added a players list showing PK points [M1].
+- Starter:
+  - ::starter was new in V1, with a new starting outfit; the outfit was red [R1, S17].
+  - V2.2 gave a new starter outfit, an edited ::starter, and a new player-moderator outfit [R2].
+- Vengeance: V1's screenshots include "veng" [S5]. In V2.2, vengeance uses the ice barrage animation [R2]. People remember silab-era servers putting vengeance and teleports in the emotes tab [R23, R6 p3]. [VAGUE] The local v2 maps emote buttons to teleports [L1].
+- Economy and feel:
+  - high XP rates and easy cash were praised [S11, S36];
+  - V2.2 added more money from woodcutting trees [R2];
+  - V2 added herblore ingredients from a chest (a Rune-Server reply says that plus a new home were the only changes from V1) [R2].
+- New in V1 [R1]:
+  - Runecrafting added;
+  - illegal characters in names blocked;
+  - item bonuses and NPC drops redone;
+  - fixes for hoods and torsos, spells hitting only one NPC, and items going into the wrong slot.
+- Forum community [S2]: 413 members, 649 topics, 2,307 posts. The peak was June 2008 (230 topics / 1,028 posts). The most-viewed thread was "Two Different Servers to play on".
+
+---------------------------------------------------------------------
+
+## 3. ITEMS
+- Allstar's Hammer (a renamed meat tenderiser) — [MULTI]
+  - Called the favourite Allstar weapon (2008-10/2009-01, [S53]).
+  - A player's max hit with it was 90, vs 63 with fists (2009-01-01, [S59]).
+  - Listed as clan gear (2008-06 [S34]).
+  - HolyPkerz says regular Allstar sold it (and godswords) in shops [M1].
+  - Local v2: item 7449 named "Allstar's Hammer", dropped by Agrith Naar, and one of the Wishing Well rewards [L3].
+- 'Perfect' ring ("pring") and glowing dagger — [MULTI] for PK abuse [S62, S63, S68]. Their effects are not described on the web. Local item IDs: 773 'perfect' ring and 747 Glowing dagger exist [L4].
+- Rares (partyhats, santa hat, h'ween masks) — [MULTI]
+  - 10 of each from the staff-zone box [Y5, Y6, M1];
+  - "rares" appears among the owner's 2008 screenshot names [S5];
+  - training-area NPCs dropping red phats is remembered (2014 [R9]; joked about in 2023 [R15]).
+- "Icon" items — [VAGUE]
+  - Outfits in June 2008 include a "red icon" and a "yellow icon" [S39].
+  - The Soadrox client lacked the "icon items" [S27].
+  - Local v2: the Icon minigame gives Barbarian Assault icons (Attacker/Collector/Defender/Healer, ids 14643-14646) when Ice giant keys are used on object 4119 [L3]. Red = Attacker and yellow = Collector would fit. (Inference.)
+- Armadyl legs made the wearer invisible [S35]. [SINGLE]
+- V2.2 shops: Barrows gloves added to the PK shops, and Mithril gloves to the pure shop [R2].
+- Owner's April 2008 screenshot names [S5]: starter, outfit, boots, god armour, gold-and-trimmed, rares, PK shop, owner, dbow, sc (skillcapes), veng, emotes, crate, enchanted, Icons, az.
+- Starter equipment from a May 2008 forum tutorial [S17]: hat 3751, cape 1052, amulet 6585, chest 544, shield 13601, legs 542, hands 7462, feet 15352, weapon 4151.
+- Tzhaar mini maul: NOT found on the web. Local v2's ::starter gives a Tzhaar-ket-om (6528) [L1].
+
+---------------------------------------------------------------------
+
+## 4. COMMANDS reported on the web (rank per the source; compare with commands.md)
+| Command | Effect / notes | Rank (web) | Source, date | Conf. |
+|---|---|---|---|---|
+| ::train | teleport to the training area/arena | all | S31 2008-06-09; S44 | MULTI |
+| ::skill | teleport to the skilling area | all | S31 2008-06-09 | SINGLE |
+| ::az | Mod/Admin zone ("admin/mod zone") | staff | R1 2008-05-06; S69 2008-06-01 | MULTI |
+| ::starter | starter package; new in V1; repeating it reportedly gets you kicked or banned | all | R1; R2 (2011 quote) | MULTI |
+| ::pickup | spawn item. Needs a 5-digit zero-padded ID plus amount, e.g. ::pickup 01050 1 | admin/owner | S15, S18, S31 (2008); M5 2012 | MULTI |
+| ::notedbarrows | 1,000 of each Barrows piece, noted | mod | S15 2008-04-27; S18 | MULTI (matches local rights>=1) |
+| ::barrows | believed to spawn Barrows gear; unsure | admin? | S15 2008-05-08 | VAGUE (local ::barrows is a teleport) |
+| ::sweet | spawn kit | "admin" | S15 2008 | SINGLE (local rights>=1) |
+| ::tele | teleport | admin | S18 2008-06-04 | SINGLE |
+| kick / ban / ipban / unban / banuser | moderation | admin | S18; R1 | MULTI |
+| ::givemod / ::giveadmin / ::giveowner | rank changes | owner | R1 2008-05-06 | SINGLE |
+| ::noclip | autobans whoever types it | trap | Y6 ~2010; O1 | MULTI |
+| ::fixme | "say ::fixme then relog" to do the glitch shown in a Feb 2009 video | ? | Y2 ~2009 | SINGLE |
+| ::pure | staff XP cheat (a 2011 applicant promises not to use it) | staff | S69 2011-06-15 | SINGLE |
+| ::mystats | exists in client.java (tutorial says to add new commands above it) | all | S24 2008-05-31 | SINGLE |
+| jail / unjail | staff punishment | mod+ | S65, S67 (2009-2010) | MULTI |
+| ::skillarena | teleport (only in a 2010 mod application) | ? | S67 2010-05-22 | SINGLE |
+| ::shops (shops2) | shop teleport(s) | all | R13 (FizzerX 2021) | SINGLE, fork |
+| ::sweet, ::pure1-4 | seen on other servers | — | S15 | VAGUE |
+Also used by similar-era servers but NOT confirmed for Allstar: ::gsmini, ::staffzone, ::rares, ::rich, ::master, ::mb (Majin Buu Scape PKZ, which borrowed from Allstar, Aug 2008 [R21]).
+
+---------------------------------------------------------------------
+
+## 5. AREAS & MINIGAMES
+- V1 list [R1, 2008-05-06]:
+  - Areas: Home, Train Area, Barrows, Pkbox, Teampk, Skill Area, Mod/Admin Zone (::az).
+  - Minigames: Icon, Enchanted, Godsword.
+- The owner's screenshots [S5] confirm the same areas plus a shop area.
+- Training area/arena [S44]:
+  - Guards were in the original training area (2023 recollection [R15]).
+  - Barbarians or men dropping red phats (2014 [R9]).
+  - Local v2 training area has Barbarian woman x12 and Soldier x8, among others [L1]. [MULTI]
+- Other places mentioned:
+  - Strength Guild and Range/Mage Guild [S12, S30, S10];
+  - new PK area and Wishing Well [S30];
+  - Clan Wars [S34, S32];
+  - a 1v1 area [S72];
+  - "camp" minigame (Dec 2008) [S58];
+  - slayer area, staff zone, GS mini, guilds, Barrows, PK box and Team PK — all shown as "old" areas in RealmScape's 2011 screenshots [M6].
+- Nonwild (safe zone) code: Allstar's own April 2008 tutorial [S9] shows a nonwild coordinate block, e.g. X 2847-2874, Y 9830-9854. A V1-based tutorial [R5] lists more rectangles. Also, NPC 409 at home shouts a welcome line [R4].
+- GS mini details are not on the web, apart from the ring-of-dueling glitch [M1].
+- Icon, Enchanted, Wishing Well and camp: no web description of how they worked. Local v2 describes Icon/Enchanted/Godsword/Wishing Well as "drop-chain minigames" [L3].
+
+---------------------------------------------------------------------
+
+## 6. VERSIONS & FORKS (dated; attribution as given by each source)
+
+### Original line
+- Summer 2007: a co-owner says the server had been running since the previous summer before being revived [S8, 2008-04-22]. [SINGLE]
+- Early 2008:
+  - First V1 release (500+ downloads, per its author).
+  - Forum opened around April 2008 [S2].
+  - Owners/staff mentioned: Mod Allstar (owner); Fatality (co-owner, resigned 2008-06-11 [S33]); Mod Mike and Mod Elve (a forum admin said the three owners were Mike, Elve and Allstar [S43]); Soz R4nged (co-owner / forum mod); nn and O B E Y__M E (admins); Rawr (global mod); Skillerzmine.
+  - Local v2 hard-codes Fatality, Mod Steve, D D 3, Skillerzmine, Soz r4nged, rawr and Mod Mike [L1]. [MULTI for most names]
+- V1 re-release, 2008-05-06, Rune-Server "Allstar-Scape V1 is Back! 400+ Downloads!" [R1]:
+  - Base: BrettScape V3 (credits: Brett 20%, Allstar 80%).
+  - Also posted on Moparscape topic 267539 [M9].
+  - Warns that any other server named allstar-scape is a leech; the real one is allstar-scape.no-ip.biz.
+- V2 ("Allstarscape's") → V2.1 (fixed) → V2.2 (fixed), June 2008 [R2]:
+  - V2.1/V2.2 made by purez4life (Moparscape); posted on Rune-Server by CrazyPanda on 2008-06-20. Credits: Mod Allstar 65%, others 15%, purez4life 20%.
+  - V2.2 changes: grammar fixes; Barrows gloves in PK shops; Mithril gloves in pure shop; faster Thieving/Woodcutting/Herblore; new player-moderator outfit; new starter outfit and ::starter; more money from trees; ice-barrage animation for vengeance.
+  - Replies say Allstar is based on (Project) Czar, and that V2 differs from V1 only by a new home and herblore from a chest [R2].
+- Base attribution — [MULTI] for Czar:
+  - Czar per R2, R3, M8 and StabbingScape "Czar + Allstar" [R28].
+  - BrettScape V3 per Allstar himself [R1].
+  - "Remake of Delta-scape" per a 2011 video [Y11] — an outlier.
+  - Local v2 still has "Pimpscape" leftovers (exception text, save path) [L1].
+- "New allstar scape", Sept 2008: a Sept 2008 poll [S48] refers to a relaunch. Leech copies were running (zakscape, May 2008 [S19]; czarkvnz, Sept 2008 [S50]; roflyscape, June 2008 [S314]).
+- V3.1 source: listed Sept 2008 in a forum source list (tinyurl link) [S47]. [SINGLE]
+- Nov 2008: a video claims "AllstarScape gets shut down by Jagex" and points to a new forum [Y9]. [SINGLE; probably a joke or unverified]
+- Dec 2008: new "camp" minigame and skilling area [S58].
+- 2009-01-24: forum staff say the real Mod Allstar and Mod Mike never used names like "codeka", and that people claiming to be Allstar elsewhere are impostors [S61].
+- 2009-05: YouTube channel "AllstarScapev4" posts a glitch video [Y3] — a "v4" label. [VAGUE]
+- V3, 2009-12-12: an "Allstar-Scape V3" forum by "Mod Allstar" [O4]:
+  - three no-ip hosts, 317 deob, its own 0.19 MB client on uppit;
+  - has not been checked that it is the same person. [SINGLE]
+- Forum owner account: in 2008-09 captures, profile u=1 is "Mod Allstar, Allstar-Scape Owner" [S70]. Today it shows as "YouGothacked!!fuckyou!" with 16,777,215 posts (the 24-bit maximum), which suggests the account was later hijacked or defaced. [VAGUE]
+- 2010-2011: Allstar-named servers with unclear links:
+  - one claims owner MOD ALLSTAR, with a new pk box and lots of shops [Y19];
+  - "allstar-scape back" [Y20];
+  - Lynchscape "Allstar-Scape is BACK" [YouTube QSN3LZ9FcFY, 2011-02-04];
+  - Softkillers "made by Mod Allstar, the famous allstar-scape v2" (2011) [Y11]. [SINGLE each]
+
+### Forks and re-releases (Allstar-based, per their authors)
+- 2008:
+  - TrollCount++ mixed Slipknot shops/bonuses into Allstar [R2].
+  - Majin Buu Scape PKZ (Reapage + Allstar) [R21].
+  - Allstar Cleaned [1u1] by The Reaper X, 2008-12-22 [R3].
+  - crayolascape (owner "danny") [Y18].
+- 2009:
+  - hahascape-pkz (Sept 2009 dupe video) [Y6].
+  - dirty-pkz [Y22].
+  - Pk3pimp V2 (silab allstar) [Y21].
+  - dds-specz [Y17].
+  - Afgscape V4.5, 2009-05, credits Allstar for skills [R20].
+  - Final-revenge, 2009-10, converted Allstar to its own framework [R22].
+  - AllStar Classic (allstarclassic.at.ua), April 2009: accounts wiped and restored, rares price list [O3].
+  - Modorator's AllStar-Scape Server (Hamachi, Silab client) [O2, Y14].
+  - A Hamachi copy (allstarscape.webs.com) whose rules page bans ::noclip, mass clicking, "cart" and "prayer" [O1].
+- 2010:
+  - Three One Seven re-released "Allstar-Scape V1, the first & original" on Moparscape (2010-09-05) with a Silabsoft link; retitled "Can Hold Over 400 Players" [M4, Y12, Y13].
+  - HolyPkerz – AllstarScape Edited by mr_dope (Moparscape topic 456737, 2010-09-15; credits Mod Allstar and KickingJamie) [M1].
+  - Robgob's planned "Allstar X" [Y5].
+- 2011:
+  - Futurescape by xI c E (2011-03-12; hosted 2-3 years; skills to 175, lottery, PK-point exchange, void mini, abyss) [M7].
+  - RealmScape, a HolyPkerz edit by i str pk i (2011-04-05; staffzone command, chillzone, "pring", altars at train/pkbox/teampk; screenshots of old shops/train/barrows/pkbox/GS mini/guilds/slayer/staffzone) [M6].
+  - AllstarScape WebClient by FusionX (2011-10-09; Czar) [M8].
+  - Violescent / Allstar Reborn by TheLetterQArousesMe (started 2011; 2013 threads) [R10, R11, R12].
+- 2012:
+  - AllstarScape [Cleaned] by vV Fant0m Vv (2012-02-18) [M5].
+  - Moparscape download list, May 2012 [M2], also has: Doggie Skill-Scape V2 Allstar; canadascape v3 allstar (blddyboy); AllstarScape v2 Re-Release (bobopobo); Allstar-Scape Version 2.0 [Re-Upload] (zycvel).
+  - Zeroscape 317, Allstar-based (2012) [Y24].
+- 2013: Paradise [Stable Allstar] by Darth Zork (2013-04-18); a commenter says it is really StabbingScape [R6].
+- 2014:
+  - iScape by Paradox68/noelbudo (2014-10 alpha; 2015-04 relaunch) [R7, R8].
+  - Allstar718 / Isrealscape, a 718 remake using NPC/object spawns dumped from the old source (2014-07) [R9].
+  - June 2014 Moparscape list [M3]: FizzerX-Scape [ALLSTAR] (GodexCAB) and Allstar Reborn.
+- 2012-2023: Allstarlegends by Boris — a PI-based remake from 2012, relaunched 2023; the owner says it is not the 2006 base [R15]. It is also called a PI replica that later became "elderscape" [R13].
+- 2021-2023: FizzerX by "Project Czar", 2021-01 — an "updated allstar source" that later got an original source from a player [R13]. FizzerX Remastered by Saradomin317, 2023-10 [R14].
+- Name reuse, NOT the Allstar base:
+  - Allstarscape.net (2013, 562/Torva) [R18];
+  - AllStarScape.org by "Kitt" (2010-2013, 562 → 614 → 728) [R19; YouTube ZZ-eD9eyh1U];
+  - the modern Moparscape "Allstar-Scape" 317 listing [O8].
+
+---------------------------------------------------------------------
+
+## 7. SOURCE / CLIENT MIRRORS (URLs only — not downloaded or tested; most 2008-2012 hosts are dead; old packs include .exe restarters that anti-virus tools flag — do not run)
+Allstar-Scape sources:
+- v2 (exes removed), posted 2026-08-05 in [R16]: https://jvmlab.org/r-s/allstar.scape.v2.zip
+- GitHub v2 mirror (2022-08-29; contains .exe restarters): https://github.com/rsps-james/AllstarScape-v2
+- V1 re-release by Three One Seven (2010): http://www.mediafire.com/?ypbdyufex1dix2b  [M4]
+- V1 (2008): the Rune-Server link is censored (http://*********/1U4YT9) [R1]. Moparscape topic: http://www.moparscape.org/smf/index.php/topic,267539.0.html [M9]
+- V2.2 and V2.1 (2008): censored short links http://*********/7KWYYK and http://*********/UOU8X2 [R2]
+- V3.1 (2008): http://tinyurl.com/8xkud [S47]
+- V3 client (2009): http://uppit.com/v/065hndhk [O4]
+- Allstar.Scape.Package.rar on UppIT (2015, link not visible in the thread) [R17]
+Forks:
+- Allstar Cleaned 1u1 (2008): http://files.filefront.com/Allstar+Cleaned+1u1rar/;12752797;/fileinfo.html  (plus a censored uppit link) [R3]
+- HolyPkerz (2010): http://uppit.com/pvumzp3og63v/HolyPkerz_Allstar_Scape.rar [M1]
+- RealmScape (2011): source http://www.mediafire.com/?27mbyl2dcd877q2 ; client http://www.mediafire.com/?xo7qbflcyclm1g4 and http://www.mediafire.com/?rp58lo5ug2mt12l [M6]
+- Futurescape (2011): http://uppit.com/r4nmsyj46ryg/FS_Source.rar [M7]
+- AllstarScape WebClient (2011): http://uppit.com/y7rxiz1ejxah/WebClient.rar ; cache http://uppit.com/agltj28bat5z/fusionxcache.zip [M8]
+- AllstarScape [Cleaned] (2012): http://uppit.com/z6g6s3ynl4h5 [M5]
+- Paradise (2013): client http://www.mediafire.com/?wdlwxo4lb0bdwxh ; source http://www.mediafire.com/?xdal4g4mno4nbfn [R6]
+- iScape (2014): http://www.iscape.co/iScape.rar and http://www.iscape.co/iScape.zip [R7]
+- FizzerX: https://www.dropbox.com/s/hobokmqw2mhetiy/FizzerX%20Client%201-14-2018.rar?dl=0 [R13]; http://mediafire.com/file/d6ateja2wusxjpn/Play+FizzerX+2023+V2.rar/file and http://mediafire.com/file/ezjddiep4is4hrt/Play+FizzerX+2023.rar/file [R14]
+- Allstar server download (2009 video): http://www.mediafire.com/?2dy4ydxzmt3 [YouTube j44KSfBwsLo]
+- Zeroscape client (2012): http://www.mediafire.com/?5p48qs10lpkbb6x [Y24]
+Clients used with Allstar:
+- Silabsoft web client, 2008 (dead): client.silabsoft.org / http://www.silabsoft.org/client [S11, S27, R2]
+- Silabsoft 317 client: http://www.mediafire.com/download/alzqnn1zmcj/Silabsoft+317+Client.rar (via Moparscape topic 204094) [R24]; http://www.mediafire.com/?27itzabs5i2rkhh (silabclient.rar) and http://www.mediafire.com/?o0kyv2187bp1fm7 [M1]; http://www.easy-share.com/1910238821/Silabsoft.zip [M4]; http://w13.easy-share.com/1700400917.html [O2]
+- Softkillers (Galkon's) client: www.softkillers.net/softkiller-scape_galkons_client.rar [Y11]
+- 2009 web client: http://tobex.info/play.php?server=allstar [YouTube ykE3mDsI1zY]
+- Other clients named in 2008 forum posts: Galkon's Pride, Ice Realm, ZombieScape, Soadrox Scape (no Allstar-specific links) [S6, S27]
+(Cheat-client and "DuperPro" links seen in video descriptions are deliberately left out.)
+
+---------------------------------------------------------------------
+
+## 8. CROSS-CHECK AGAINST THE LOCAL v2 INVENTORY (not web; read-only look at scratchpad/inventory/*.md)
+Web reports that the local v2 code backs up:
+- Mod-zone rare box: object 10687 at 3285,2770 gives 10 noted of each rare, and 10691-10693/10695 also give rares. This matches Robgob 2010 exactly.
+- Puppet boxes also exist in the Strength Guild (10688, str cape (t)/hood) and the Range/Magic Guild (10689).
+- ::az goes to the Sophanem Mod zone.
+- ::noclip autobans, and ::nc is a trap.
+- ::pickup takes a 5-digit ID.
+- ::notedbarrows and ::sweet need rights 1.
+- ::pure is a staff cheat.
+- The ::starter kit contains 20,000 of each rune (blood/law/air — the telegrab dupe materials) and a Tzhaar-ket-om.
+- Protection prayers make you immune in PvP.
+- The IP limit is broken.
+- The Fairy teleports to TzHaar.
+- Item 7449 is Allstar's Hammer.
+- Icon minigame rewards are the BA icons.
+- The Wishing Well costs 70M.
+- Rares Shop sells at 5M.
+- A XeroScape cheat-client UID is logged.
+- Hard-coded staff: Fatality, Mod Steve, D D 3, Skillerzmine, Mod Mike.
+- Emote buttons act as teleports.
+- The training-area hedge is right next to the Mod zone.
+- The Spikey chain moves you one floor up or down in place.
+
+Not found in the local notes: ::fixme, ::skillarena, jail, and how the 'perfect' ring or glowing dagger behave (only the item IDs 773 and 747 are defined).
+
+---------------------------------------------------------------------
+
+## 9. OPEN QUESTIONS / NOT FOUND
+- The exact "floor above via Slayer Tower spiky chain or shop stairs → ::train → past hedge" route: never described in full online. Only the shop-ladder variant [Y3] and the walls-spawn-late trick [Y4] were found. No mention of a Slayer Tower spiky chain, and "hedge" gets no forum hits.
+- The "stale telegrab from the right-click menu" dupe on PK drops: not found (only "telegrab works on items you can't pick up" [Y5]).
+- What ::fixme did [Y2] — check whether the source defines it.
+- What the 'perfect' ring and glowing dagger actually did: only that they were abused in PK and banned by staff rules (2009-2010).
+- Tzhaar mini maul as a special item: not found on the web.
+- How the Icon, Enchanted, camp and Wishing Well minigames worked (only names and dates). What the "admin spell" was.
+- PK-point reward list for the 2008 server: not found.
+- The "cart" rule (3-day ban) on the Hamachi copy [O1]: unexplained.
+- Whether V3 (2009) and Softkillers (2011) were really the same Mod Allstar: unverified.
+- The 2008 Moparscape V1 thread (267539), Allstar's own V2 release thread, and the Silabsoft-forum copy of HolyPkerz (silabsoft.org/smf/topic/26001) could not be read.
+- The owner's 2008 screenshots (i296.photobucket.com/albums/mm161/allstar009/*.jpg: HomeArea, shoparea, SkillArea, train, Barrows, Teampk, pkbox, enchanted, Icons, az, crate, starter, outfit, boots, godarmor, goldandtrimmed, rares, pkshop, owner, dbow, sc, me, veng, emotes, vs) are not archived.
+- Nothing found for: Mod Steve (only in local code), Tico135 in an Allstar context (the web shows Tico135 co-writing the xFire 317 client in 2008 [R26]), XeroScape (web only has "Zeroscape" [Y24]; the local code uses the name for a cheat-client UID), or Pimpscape in an Allstar context (only generic source lists [S23, S47]).
+
+---------------------------------------------------------------------
+
+## 10. SOURCE INDEX
+Allstar-Scape forum (live; topic URL = https://allstarscapeforums.smfforfree2.com/index.php?topic=N.0)
+- S1 board index https://allstarscapeforums.smfforfree2.com/index.php?action=forum
+- S2 stats https://allstarscapeforums.smfforfree2.com/index.php?action=stats
+- S3 Wayback front page 2008-04-20 http://web.archive.org/web/20080420073820/http://allstarscapeforums.smfforfree2.com/
+- S4 t=2 Allstar-Scape (2008-04-14..2009) | S5 t=3 Allstar-Scape Pictures (owner, 2008-04-14) | S6 t=4 Pictures (2008-05..08) | S7 t=6 Server Status (2008-04-14)
+- S8 t=13 Allstar Scape Pwnzz (2008-04) | S9 t=22 Nonwild tutorial (2008-04-14) | S10 t=41 Guilds (2008-04-18) | S11 t=50 allstar-scape (2008-04-19)
+- S12 t=51 Updates in the past few days (2008-04-19) | S13 t=58 Fishing (2008-04/06) | S14 t=70 Killing Glitch (2008-04-23) | S15 t=71 Commands (2008-04..07)
+- S16 t=78 pkbox glitch (2008-04-28) | S17 t=109 starter outfit (2008-05-18) | S18 t=116 Some commands for players (2008-05/06) | S19 t=118 leechers (2008-05-20)
+- S20 t=119 Two Different Servers (2008-05-21) | S21 t=123 1 world (2008-05-21) | S22 t=128 cook glitch (2008-05/06) | S23 t=133 150 sources list (2008-05-25)
+- S24 t=154 Simple Command Adding (2008-05-31) | S25 t=158 Farming XP (2008-05-31) | S26 t=162 D-boots (2008-06-01) | S27 t=181 A Good Client (2008-06)
+- S28 t=193 different server glitches (2008-06-06) | S29 t=198 A few glitches (2008-06-07/17) | S30 t=205 Updates in the past month (2008-06-07) | S31 t=220 Some Questions? (2008-06-09)
+- S32 t=239 HIGHER FORCE clan (2008-06-11/15) | S33 t=241 I Resign (2008-06-11/12) | S34 t=247 illest pkers (2008-06-12) | S35 t=249 Can I get ubanned? (2008-06-12)
+- S36 t=271 Ill tell u how it is! (2008-06..2009-01) | S37 t=287 Screen Freezes (2008-06-15/18) | S38 t=288 Help please (2008-06-16) | S39 t=308 well i need help (2008-06-17; search snippet)
+- S40 t=325 god armor shop / clan wars glitch (2008-06-19/21) | S41 t=368 ADMIN police force (2008-06-25) | S42 t=397 Max total (2008-07) | S43 t=434 How to Make A Server (2008-07-07)
+- S44 t=446 some pics i made myself (2008-07-11) | S45 t=462 a icon minigame? (2008-07-14) | S46 t=488 D D S P E C (2008-07-31) | S47 t=538 Source list (2008-09-01)
+- S48 t=546 new server poll (2008-09-04) | S49 t=550 cant raise defense (2008-09/11) | S50 t=554 ugh lol help plz (2008-09) | S51 t=561 Recent Attacks (2008-09)
+- S52 t=597 Allstar (2008-10-27) | S53 t=599 Favorite wep (2008-10..2009-01) | S54 t=601 Favorite armor (2008-10/11) | S55 t=638 Just a pointer (2008-12-14)
+- S56 t=651 Black ground (2008-12-20) | S57 t=652 skillcape glitch (2008-12) | S58 t=675 camp minigame (2008-12-30) | S59 t=677 need lvl 126 clan (2009-01-01; search snippet)
+- S60 t=678 offline post (2009-01-02) | S61 t=685 MOD ALLSTAR! (2009-01) | S62 t=701 FUTURE MOD HEAD SOLDIER (2009-01-29) | S63 t=702 pk3d owns u admin app (2009-01-30)
+- S64 t=720 FAIRY GLITCH (2009-03-13) | S65 t=744 Qatar application (2009-06-18) | S66 t=763 IP question (2010-04-11) | S67 t=770 beaty girl2 (2010-05-22) | S68 t=774 Mursel (2010-06-22)
+- S69 forum search snippets, URL pattern https://allstarscapeforums.smfforfree2.com/index.php?action=search2;search=TERM :
+  - Sploosh on ::az (2008-06-01);
+  - Natedogga2 on the Mod/Admin portal (2008-06-16);
+  - cool beans on glitchers going past walls (2008-05-21);
+  - djtricky and niklas on invisible PKers (2008-06);
+  - monkey on alching (2008-06-25);
+  - lotr8808 on 3,000 PK points (2008-06-24);
+  - matt on ::pure (2011-06-15);
+  - warboy140 on GS mini (2008-09-17).
+- S70 Wayback t=144 (captured 2009-01-31; u=1 = Mod Allstar) http://web.archive.org/web/20090131092947/http://allstarscapeforums.smfforfree2.com:80/index.php/topic,144.0.html
+- S72 t=410 Allstar (Rawr's application template; 1v1/teampk) (2008-07-05) | S314 t=314 roflyscape (2008-06-18)
+
+Rune-Server
+- R1 https://rune-server.org/threads/allstar-scape-v1-is-back-400-downloads.65077/ (2008-05-06)
+- R2 https://rune-server.org/threads/allstar-scape-fixed-v2-2-source.74181/ (2008-06-20; pages 2-3 to 2012)
+- R3 https://rune-server.org/threads/allstar-the-renovation-allstar-cleaned.108722/ (2008-12-22)
+- R4 https://rune-server.org/threads/basic-coding-tutorials.91994/ (2008-09-14)
+- R5 https://rune-server.org/threads/how-to-make-a-wildy-area-safe-zone.101282/ (2008-10-29)
+- R6 https://rune-server.org/threads/paradise-client-and-source-stable-allstar.483705/ (2013-04-18; page-3 2019-2021)
+- R7 https://rune-server.org/threads/iscape-more-than-just-an-allstar-now-online-alpha-release.572801/ (2014-10-26)
+- R8 https://rune-server.org/threads/iscape-is-back-the-most-stable-lag-free-dupe-free-allstar-ever.590841/ (2015-04-07)
+- R9 https://rune-server.org/threads/old-allstarscape-remake-allstar718-isrealscape.557518/ (2014-07)
+- R10 https://rune-server.org/threads/allstar-allstar-reborn-317-double-xp-weekends-stable.477384/ (2013-03)
+- R11 https://rune-server.org/threads/allstar-reborn-24-7.516923/ (2013-10)
+- R12 https://rune-server.org/threads/oldschool-allstar-violescent-317-dicing-unique-24-7-tons-of-features.465360/ (2013-01)
+- R13 https://rune-server.org/threads/fizzerx-allstar.697191/ (2021-01/02; page-2, page-3)
+- R14 https://rune-server.org/threads/fizzerx-remastered-2009-2023-allstar-nostalgia-open-beta-need-staff-on-24-7.705280/ (2023-10)
+- R15 https://rune-server.org/threads/allstarlegends-oldschool-nostalgia-is-back.704037/ (2023-01)
+- R16 https://rune-server.org/threads/looking-for-the-original-allstar-scape-soruce.708637/ (2026-08)
+- R17 https://rune-server.org/threads/allstar.581234/ (2015-01)
+- R18 https://rune-server.org/threads/allstarscape-net-rsps-is-back.491373/ (2013-06)
+- R19 https://rune-server.org/threads/allstarscape-4-years-old-rsps-is-back-rev-728.521225/ (2013-11)
+- R20 https://rune-server.org/threads/afgscape-v4-5-client-source-d-claws-working-much-more-never-seen-before.142194/ (2009-05)
+- R21 https://rune-server.org/threads/majin-buu-scape-pkz-great-pk-server.85834/ (2008-08)
+- R22 https://rune-server.org/threads/final-revenge-317-ps-nice-features.178158/ (2009-10)
+- R23 https://rune-server.org/threads/silabsoft.673422/ (2018-04)
+- R24 https://rune-server.org/threads/silabsoft-client.620416/ (2016-02)
+- R25 https://rune-server.org/threads/official-rsps-download-list-by-ruin.201195/ (lists Allstar-Scape V2.2 Fixed)
+- R26 https://rune-server.org/threads/xfire-client-v1-open.55899/ (2008-03, Tico135)
+- R28 https://www.rune-server.ee/runescape-development/rs2-server/downloads/186665-317-stabbingscape-v3-source-client-d-claws-spec.html (search snippet only: credits "Czar + Allstar")
+
+Moparscape / moparisthebest
+- M1 https://forum.moparisthebest.com/t/holypkerz-allstarscape-edited/360305.html and page 2 https://forum.moparisthebest.com/t/holypkerz-allstarscape-edited/3603054658.html?page=2 (original SMF topic 456737, 2010-09-15)
+- M2 https://forum.moparisthebest.com/t/download-list-updated-may-12-2012/391723
+- M3 https://forum.moparisthebest.com/t/new-download-list-updated-june-16th-2014/544025.html
+- M4 http://web.archive.org/web/20100910013901/http://www.moparscape.org:80/smf/index.php/topic,455260.0.html and http://web.archive.org/web/20100911171754/http://www.moparscape.org:80/smf/index.php/topic,455260.20.html (2010-09-05/10)
+- M5 http://web.archive.org/web/20120229063201/http://www.moparscape.org:80/smf/index.php/topic,536116.0/all.html (2012-02-18)
+- M6 http://web.archive.org/web/20110512113356/http://www.moparscape.org:80/smf/index.php/topic,485555.0.html (2011-04-05)
+- M7 http://web.archive.org/web/20110513091017/http://www.moparscape.org:80/smf/index.php/topic,481813.0.html (2011-03-12)
+- M8 http://web.archive.org/web/20131114080641/http://www.moparscape.org:80/smf/index.php/topic,520135.0.html (2011-10-09)
+- M9 http://www.moparscape.org/smf/index.php/topic,267539.0.html (2008 V1 thread; only redirects archived)
+
+YouTube (https://www.youtube.com/watch?v=ID; channel, upload date)
+- Y1 cDPj0fzrYvE Allstar Source Glitch - How to Get Partyhats Free (RsGotTalent, 2010-07-18)
+- Y2 RZjWgPDe29M AllStar-Scape Glitch (iRuleScapeOwnage, 2009-02-21) + ::fixme comment
+- Y3 I89BeYHUE10 Allstarscape glitch/dupe (AllstarScapev4, 2009-05-01) + shop-ladder comment
+- Y4 GP-2qEcVZXg How to dupe on a allstar server (2009-05-08) + mod-zone walls comment
+- Y5 3FvX5RqROfs Hacking Allstar based rsps (Robgob, 2010-07-28) + puppet-box IDs and fix + comments
+- Y6 ICnSUm3C8Sw Bot's first bug video on allstar-source: Duping (2009-09-06) + comments by zpsh1212 and OwnerPizza
+- Y7 uUXfXYCwFHs silab DUPE (2009-08-25) + comment by Bulkii
+- Y8 9HpCcatQ4mk allstarscape (2008-08-11) | Y9 qJQls0b8vrQ AllstarScape Rememberance (2008-11-17) | Y10 koiNsrQtoGs (2008-10-13)
+- Y11 p5Y5iGCDHfU softkiller-scape - old allstar-scape v2 (2011-04-07) | Y12 9rqyT7WVgJ8 Allstar-Scape Stability (2010-09-06) | Y13 RZXOSDfhm5I 400+ Players On Allstar-Scape (2010-09-10)
+- Y14 AmsMCMfmEvA AllStar-Scape PK Vid (by Modorator) (2009-03-08) | Y15 VJH4n-Wos1Y allstar (features mod allstar and coder danny) (ddspecs, 2008-07-10) | Y17 X1HTywpymUg How to dupe on dds-specz (2009-07-07)
+- Y18 tiPyfbW7kzM crayolascape 24/7 allstar (2008-11-25) | Y19 1D0DI42ijao RSPS ALLSTAR SCAPE (2010-09-14) | Y20 SXm7EC-ql4c allstar-scape back (2010-09-21)
+- Y21 m003YNYIY00 24/7 silab allstar Pk3pimp V2 (2009-12-10) | Y22 _MdjL1HJm-Q silab sever glitches (2009-05-15); also QSN3LZ9FcFY Lynchscape (2011-02-04) | Y24 v618NJyayzk Zeroscape 317 allstar based (2012-01-10)
+- Also: ZZ-eD9eyh1U AllStarScape.org (2010-09-14); ykE3mDsI1zY allstar webclient (2009-11-07); j44KSfBwsLo allstar server (2009-12-22)
+
+Other
+- O1 http://web.archive.org/web/20130703044929/http://allstarscape.webs.com ; rules http://web.archive.org/web/20210307193704/https://allstarscape.webs.com/rules.htm ; staff http://web.archive.org/web/20210307193703/https://allstarscape.webs.com/staffnames.htm (Hamachi copy, date unknown, ~2009)
+- O2 http://web.archive.org/web/20130703044300/http://allstar-scape-server.webs.com (Modorator, ~2009)
+- O3 http://web.archive.org/web/20090419132523/http://allstarclassic.at.ua:80/ (AllStar Classic, 2009-04)
+- O4 https://allstarscapev3.board-directory.net/t1-server-information (V3, 2009-12-12)
+- O5 https://github.com/rsps-james/AllstarScape-v2 (2022-08-29)
+- O6 https://jvmlab.org/r-s/allstar.scape.v2.zip (posted in R16)
+- O7 https://itstillworks.com/12590690/how-to-dupe-without-trading-ranging-on-a-rsps (2017; generic)
+- O8 https://www.moparscape.org/rsps-list/server/Allstar-Scape (modern name reuse)
+
+Local (not web): L1 scratchpad/inventory/commands.md; L2 objects_buttons.md; L3 npcs_rules.md (+ npc_item_handlers.md, custom_items.md); L4 allstar_items.csv
