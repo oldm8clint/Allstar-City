@@ -13,11 +13,13 @@ import Isaac from '../../engine/src/io/Isaac.js';
 import Packet from '../../engine/src/io/Packet.js';
 import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
 import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
+import ServerGameZoneProt from '../../engine/src/network/game/server/ServerGameZoneProt.js';
 
 const ENGINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../engine');
 
 const serverProts = new Map<number, ServerGameProt>();
-for (const value of Object.values(ServerGameProt)) {
+// zone packets (OBJ_ADD, LOC_ADD_CHANGE, ...) are static members of the ServerGameZoneProt subclass
+for (const value of [...Object.values(ServerGameProt), ...Object.values(ServerGameZoneProt)]) {
     if (value instanceof ServerGameProt) {
         serverProts.set(value.id, value);
     }
@@ -223,17 +225,17 @@ export default class Bot {
                 this.messages.push(buf.gjstr());
                 break;
             case ServerGameProt.IF_SETTEXT: {
-                const com = buf.g2();
+                const com = buf.g2_alt3();
                 this.texts.set(com, buf.gjstr());
                 break;
             }
             case ServerGameProt.IF_OPENMAIN:
-                this.main = buf.g2();
+                this.main = buf.g2_alt3();
                 this.side = -1;
                 break;
             case ServerGameProt.IF_OPENMAIN_SIDE:
-                this.main = buf.g2();
-                this.side = buf.g2();
+                this.main = buf.g2_alt2();
+                this.side = buf.g2_alt3();
                 break;
             case ServerGameProt.IF_OPENCHAT:
                 this.chat = buf.g2();

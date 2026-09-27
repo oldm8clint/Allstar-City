@@ -21,11 +21,10 @@ if (%allstar_drunk_timer > 0) {
 ~allstar_preach_lines;
 ~allstar_drunk_cycle;
 ~allstar_preaching;
-// prayer check (L17844) and healing check (L17853) change the inventory
+// prayer check (L17844) and healing check (L17853). Inventory changes need protected access, so a
+// bite (or a bury that still has to delete its bones) waits while an interface is open.
 if (%allstar_bury_pending > 0 & %allstar_bury_clock < map_clock) {
-    if (p_finduid(uid) = true) {
-        ~allstar_bury_process;
-    }
+    ~allstar_bury_process;
 }
 if (%allstar_eat_pending > 0) {
     if (p_finduid(uid) = true) {

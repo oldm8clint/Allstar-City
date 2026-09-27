@@ -47,10 +47,15 @@ if (%allstar_action_timer = 0 & %allstar_bury_pending = 1) {
     }
 }
 if (%allstar_action_timer = 0 & %allstar_bury_pending = 2) {
-    // deleteItem(prayer[4], prayer[5], whole stack): only if that slot still holds it
+    // deleteItem(prayer[4], prayer[5], whole stack): only if that slot still holds it. Changing the
+    // inventory needs protected access: while an interface is open the bury waits a cycle.
     if (%allstar_bury_obj ! null) {
         if (inv_getobj(inv, %allstar_bury_slot) = %allstar_bury_obj) {
-            inv_delslot(inv, %allstar_bury_slot);
+            if (p_finduid(uid) = true) {
+                inv_delslot(inv, %allstar_bury_slot);
+            } else {
+                return;
+            }
         }
     }
     stat_advance(prayer, %allstar_bury_xp);
