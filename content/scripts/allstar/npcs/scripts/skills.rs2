@@ -1,0 +1,56 @@
+// NPC-click skills: pickpocketing (client.java L19597-19632, rob*() L24715-24753) and the
+// click-fishing spots 233-236 (L19153-19205). Both act at once, without walking to the npc.
+
+// Both use Player.actionTimer, the cooldown shared with other skills (~allstar_action_timer, core.rs2).
+
+// ---- pickpocketing: always succeeds (no failure roll, stun or damage); current Thieving level ----
+
+[opnpc3,al_kharid_warrior] ~allstar_pickpocket(25, 1800, 250, 10, "warrior", "warriors");
+[apnpc3,al_kharid_warrior] ~allstar_pickpocket(25, 1800, 250, 10, "warrior", "warriors");
+[opnpc3,paladin2] ~allstar_pickpocket(50, 8000, 220, 4, "paladin", "paladins");
+[apnpc3,paladin2] ~allstar_pickpocket(50, 8000, 220, 4, "paladin", "paladins");
+// NPC 7 runs robhero(), which robs a "farmer"
+[opnpc3,farmer1] ~allstar_pickpocket(70, 3000, 274, 4, "farmer", "farmers");
+[apnpc3,farmer1] ~allstar_pickpocket(70, 3000, 274, 4, "farmer", "farmers");
+
+[proc,allstar_pickpocket](int $level, int $coins, int $xp, int $timer, string $name, string $plural)
+if (stat(thieving) < $level) {
+    mes("You need <tostring($level)> theiving to pickpocket <$plural>.");
+    return;
+}
+if (~allstar_action_timer > 0) {
+    return;
+}
+// rob*(): message, coins, xp, then turn to the npc
+mes("You pickpocket the <$name>.");
+~allstar_additem(coins, $coins);
+stat_advance(thieving, $xp);
+facesquare(npc_coord);
+~allstar_set_action_timer($timer);
+anim(human_pickpocket, 0);
+
+// ---- click-fishing: one catch per click, no tool, bait or range check ----
+
+[opnpc1,0_41_53_sinisterfishspot] ~allstar_clickfish(40, human_lobster, raw_lobster, 300, "You fish a lobster", "You need a fishing level of 40 to fish lobsters.");
+[apnpc1,0_41_53_sinisterfishspot] ~allstar_clickfish(40, human_lobster, raw_lobster, 300, "You fish a lobster", "You need a fishing level of 40 to fish lobsters.");
+[opnpc1,0_41_53_bigdavefishspot] ~allstar_clickfish(1, human_fishing_casting, raw_shrimp, 150, "You fish a shrimp", "You need a fishing level of 1 to fish shrimp.");
+[apnpc1,0_41_53_bigdavefishspot] ~allstar_clickfish(1, human_fishing_casting, raw_shrimp, 150, "You fish a shrimp", "You need a fishing level of 1 to fish shrimp.");
+[opnpc1,0_41_53_joshuafishspot] ~allstar_clickfish(75, human_harpoon, raw_shark, 500, "You fish a shark", "You need a fishing level of 75 to fish shark.");
+[apnpc1,0_41_53_joshuafishspot] ~allstar_clickfish(75, human_harpoon, raw_shark, 500, "You fish a shark", "You need a fishing level of 75 to fish shark.");
+[opnpc1,0_41_53_compofishspot] ~allstar_clickfish(90, human_harpoon, raw_mantaray, 750, "You fish a manta ray", "You need a fishing level of 90 to fish manta ray.");
+[apnpc1,0_41_53_compofishspot] ~allstar_clickfish(90, human_harpoon, raw_mantaray, 750, "You fish a manta ray", "You need a fishing level of 90 to fish manta ray.");
+
+// XP is $xp times the current Fishing level; a full inventory loses the fish but keeps the XP.
+// The level message is sent even while actionTimer is running.
+[proc,allstar_clickfish](int $level, seq $anim, namedobj $fish, int $xp, string $message, string $refusal)
+if (stat(fishing) >= $level) {
+    if (~allstar_action_timer = 0) {
+        anim($anim, 0);
+        ~allstar_additem($fish, 1);
+        stat_advance(fishing, calc($xp * stat(fishing)));
+        mes($message);
+        ~allstar_set_action_timer(5);
+    }
+    return;
+}
+mes($refusal);

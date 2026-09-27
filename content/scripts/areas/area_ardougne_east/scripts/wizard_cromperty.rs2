@@ -1,14 +1,3 @@
-[opnpc1,ardounge_wizard]
-~chatnpc("<p,neutral>Hello there.|My name is Cromperty.|I am a Wizard, and an inventor.");
-if(%runemysteries = ^runemysteries_complete) {
-@multi3("Two jobs? That's got to be tough.", cromperty_two_jobs, "So what have you invented?", cromperty_what_invented, "Can you teleport me to the Rune Essence?", cromperty_ess);
-} else {
-@multi2("Two jobs? That's got to be tough.", cromperty_two_jobs, "So what have you invented?", cromperty_what_invented);
-}
-
-[opnpc3,ardounge_wizard]
-@teleport_to_essence_mine(^essence_mine_to_cromperty);
-
 [label,cromperty_two_jobs]
 ~chatplayer("<p,neutral>Two jobs? That's got to be tough.");
 ~chatnpc("<p,happy>Not when you combine them it isn't!|I invent MAGIC things!");

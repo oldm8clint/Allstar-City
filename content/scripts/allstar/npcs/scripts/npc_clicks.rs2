@@ -1,0 +1,343 @@
+// Allstar-Scape NPC clicks: packet 155 "first click" (client.java L18900) and packet 17 "second
+// click" (L19354). The 317 client sends 155 for the first npc option and 17 for the third, so they
+// are op1 and op3 here (Talk-to / Bank, Trade, Pickpocket). op2 is Attack (combat). Packet 21 (op4)
+// is not handled and packet 18 (op5) and 57 (item on npc) only print to the console.
+//
+// Timing, as in process(): dialogues open once the player is on the npc's row or column within 2
+// tiles (GoodDistance2), banks open within 2 tiles; teleports, click-fishing, pickpocketing and
+// the starter act at once. Each handler is bound to both the ap and the op trigger so that it also
+// runs when the player is already next to the npc.
+
+// ---- options Allstar-Scape did not handle do nothing (no "Nothing interesting happens.") ----
+[opnpc1,_]
+[opnpc3,_]
+[opnpc4,_]
+[opnpc5,_]
+[opnpcu,_]
+
+// ---- range helpers ----
+
+// GoodDistance2(absX, absY, skillX, skillY, 2): same row or column, within 2 tiles
+[proc,allstar_talkrange]()(boolean)
+def_int $dx = calc(coordx(coord) - coordx(npc_coord));
+def_int $dz = calc(coordz(coord) - coordz(npc_coord));
+if (($dx = 0 & $dz >= -2 & $dz <= 2) | ($dz = 0 & $dx >= -2 & $dx <= 2)) {
+    return (true);
+}
+p_aprange(2);
+return (false);
+
+// NpcWanneTalk = $id; no dialogue when $id is 0
+[proc,allstar_talk](int $id)
+if ($id = 0) {
+    return;
+}
+if (~allstar_talkrange = true) {
+    // ends the interaction: after a p_aprange earlier in the cycle the engine would otherwise keep
+    // it and run this trigger again once the chatbox closes
+    def_npc $npc = npc_type;
+    p_stopaction;
+    ~allstar_npc_dialogue($id, $npc);
+}
+
+// the "isn't interested" messages are sent at the click, without walking
+[proc,allstar_talk_or](int $id, string $refusal)
+if ($id = 0) {
+    mes($refusal);
+    return;
+}
+~allstar_talk($id);
+
+// WanneBank = 2: the bank opens within 2 tiles of the npc
+[label,allstar_bank_range2]
+if (npc_range(coord) > 2) {
+    p_aprange(2);
+    return;
+}
+p_stopaction;
+@allstar_openbank;
+
+// ---- dialogues ----
+[opnpc1,hans] ~allstar_talk(1339);
+[apnpc1,hans] ~allstar_talk(1339);
+[opnpc1,banker1] ~allstar_talk(1);
+[apnpc1,banker1] ~allstar_talk(1);
+[opnpc1,banker2] ~allstar_talk(1);
+[apnpc1,banker2] ~allstar_talk(1);
+[opnpc1,lowe] ~allstar_talk(550);
+[apnpc1,lowe] ~allstar_talk(550);
+[opnpc1,aubury] ~allstar_talk(~allstar_aubury_route);
+[apnpc1,aubury] ~allstar_talk(~allstar_aubury_route);
+[opnpc1,customs_officer] ~allstar_talk(42);
+[apnpc1,customs_officer] ~allstar_talk(42);
+[opnpc1,captain_tobias] ~allstar_talk(40);
+[apnpc1,captain_tobias] ~allstar_talk(40);
+[opnpc1,rcu_zammy_mage1b] ~allstar_talk(2259);
+[apnpc1,rcu_zammy_mage1b] ~allstar_talk(2259);
+[opnpc1,upassmage] ~allstar_talk(4444);
+[apnpc1,upassmage] ~allstar_talk(4444);
+[opnpc1,makeover_mage] ~allstar_talk(14600);
+[apnpc1,makeover_mage] ~allstar_talk(14600);
+[opnpc1,wizard_mizgog] ~allstar_talk(~allstar_mizgog_route);
+[apnpc1,wizard_mizgog] ~allstar_talk(~allstar_mizgog_route);
+[opnpc1,ahoy_disciple] ~allstar_talk_or(~allstar_ghost_route, "The ghost isn't interested in talking at the moment.");
+[apnpc1,ahoy_disciple] ~allstar_talk_or(~allstar_ghost_route, "The ghost isn't interested in talking at the moment.");
+[opnpc1,magearena_runeshop] ~allstar_talk_or(~allstar_clue_route(2, 1, 1, 31), "Lundail ain't in the mood to talk, but he will sell runes for a small price.");
+[apnpc1,magearena_runeshop] ~allstar_talk_or(~allstar_clue_route(2, 1, 1, 31), "Lundail ain't in the mood to talk, but he will sell runes for a small price.");
+[opnpc1,horvik_the_armourer] ~allstar_talk_or(~allstar_horvik_route, "Horvik isn't interested in talking right now...");
+[apnpc1,horvik_the_armourer] ~allstar_talk_or(~allstar_horvik_route, "Horvik isn't interested in talking right now...");
+[opnpc1,cook] ~allstar_talk_or(~allstar_cook_route, "The cook isn't interested in talking right now...");
+[apnpc1,cook] ~allstar_talk_or(~allstar_cook_route, "The cook isn't interested in talking right now...");
+[opnpc1,generalassistant4] ~allstar_talk_or(~allstar_clue_route(1, 1, 4, 31), "The shop assistant isn't interested in talking right now...");
+[apnpc1,generalassistant4] ~allstar_talk_or(~allstar_clue_route(1, 1, 4, 31), "The shop assistant isn't interested in talking right now...");
+[opnpc1,fisher_king] ~allstar_talk_or(~allstar_clue_route(1, 4, 1, 31), "The Fisher King isn't interested in talking right now...");
+[apnpc1,fisher_king] ~allstar_talk_or(~allstar_clue_route(1, 4, 1, 31), "The Fisher King isn't interested in talking right now...");
+[opnpc1,louie_legs] ~allstar_talk_or(~allstar_louie_route, "The shop keeper isn't interested in talking right now...");
+[apnpc1,louie_legs] ~allstar_talk_or(~allstar_louie_route, "The shop keeper isn't interested in talking right now...");
+[opnpc1,thessalia] ~allstar_talk_or(~allstar_clue_route(2, 4, 2, 31), "Thessalia isn't interested in talking right now...");
+[apnpc1,thessalia] ~allstar_talk_or(~allstar_clue_route(2, 4, 2, 31), "Thessalia isn't interested in talking right now...");
+[opnpc1,zaff] ~allstar_talk_or(~allstar_zaff_route, "Zaff isn't interested in talking right now...");
+[apnpc1,zaff] ~allstar_talk_or(~allstar_zaff_route, "Zaff isn't interested in talking right now...");
+
+// Packet 155 read only the low byte of the npc index (misc.HexToInt / 1000), and npcs got their
+// index (slot) in autospawn.cfg order, so a first click on an npc in slot 256 or above ran the
+// handler of the npc in slot & 255:
+// - Wise Old Man 2253 (clue L1/S5/id2 -> dialogue 32, else "This man isn't interested in talking
+//   right now...") sits in slots 302 and 492, which ran slots 46 and 236 (Shop keeper 530 and a
+//   Black Demon): no handler, so talking to them did nothing. The default [opnpc1,_] covers it.
+// - The Zoo keeper at home (slot 299) ran slot 43, Thessalia. Her clue step set NpcWanneTalk with
+//   her own tile, so it only opened next to her; the refusal came at once.
+[opnpc1,zoo_keeper] ~allstar_zoo_keeper;
+[apnpc1,zoo_keeper] ~allstar_zoo_keeper;
+
+[proc,allstar_zoo_keeper]
+if (~allstar_clue_route(2, 4, 2, 31) = 0) {
+    mes("Thessalia isn't interested in talking right now...");
+}
+
+// - TzHaar-Mej-Jal 2617, TzHaar-Hur-Tel 2620, TzHaar-Hur-Koz 2621 and TzHaar-Hur-Lek 2622 are each
+//   spawned twice on one tile (slots 421-426 and 447-452). The first copies ran slots 165, 168, 169
+//   and 170, the fishing spots 236 (shark), 233 (manta ray), 235 and 235 (shrimp), so Talk-to fished
+//   at once; the second copies ran giant rats (slots 191-196): nothing. The copies cannot be told
+//   apart, so the first one clicked becomes the one that fishes. TzHaar-Hur-Koz's Talk-to is a shop
+//   option in the shops port.
+[opnpc1,tzhaar_fightcave_master] ~allstar_tzhaar_fish(236);
+[apnpc1,tzhaar_fightcave_master] ~allstar_tzhaar_fish(236);
+[opnpc1,tzhaar_merchant_equipment] ~allstar_tzhaar_fish(233);
+[apnpc1,tzhaar_merchant_equipment] ~allstar_tzhaar_fish(233);
+[opnpc1,tzhaar_merchant_oreandgem] ~allstar_tzhaar_fish(235);
+[apnpc1,tzhaar_merchant_oreandgem] ~allstar_tzhaar_fish(235);
+
+[proc,allstar_tzhaar_fish](int $spot)
+if (~allstar_first_copy = false) {
+    return;
+}
+if ($spot = 236) {
+    ~allstar_clickfish(75, human_harpoon, raw_shark, 500, "You fish a shark", "You need a fishing level of 75 to fish shark.");
+} else if ($spot = 233) {
+    ~allstar_clickfish(90, human_harpoon, raw_mantaray, 750, "You fish a manta ray", "You need a fishing level of 90 to fish manta ray.");
+} else {
+    ~allstar_clickfish(1, human_fishing_casting, raw_shrimp, 150, "You fish a shrimp", "You need a fishing level of 1 to fish shrimp.");
+}
+
+// whether this npc is the copy whose Talk-to fishes: the first one clicked of those nearby
+[proc,allstar_first_copy]()(boolean)
+if (%allstar_npc_copy = 0) {
+    def_npc_uid $me = npc_uid;
+    def_int $copy = 1;
+    npc_findall(npc_coord, npc_type, 16, 0);
+    while (npc_findnext = true) {
+        if (npc_uid ! $me & %allstar_npc_copy = 1) {
+            $copy = 2;
+        }
+    }
+    if (npc_finduid($me) = false) {
+        return (false);
+    }
+    %allstar_npc_copy = $copy;
+}
+if (%allstar_npc_copy = 1) {
+    return (true);
+}
+return (false);
+
+// clue npc: dialogue $dialogue when the clue is level $level, stage $stage and id $id
+[proc,allstar_clue_route](int $level, int $stage, int $id, int $dialogue)(int)
+if (%allstar_cluelevel = $level & %allstar_cluestage = $stage & %allstar_clueid = $id) {
+    return ($dialogue);
+}
+return (0);
+
+[proc,allstar_aubury_route]()(int)
+if (~allstar_clue_route(2, 2, 1, 31) ! 0) {
+    return (31);
+}
+return (3);
+
+[proc,allstar_louie_route]()(int)
+if (~allstar_clue_route(1, 4, 2, 31) ! 0) {
+    return (31);
+} else if (~allstar_clue_route(2, 1, 5, 31) ! 0) {
+    return (31);
+}
+return (~allstar_clue_route(2, 5, 2, 32));
+
+[proc,allstar_zaff_route]()(int)
+if (~allstar_clue_route(3, 3, 1, 31) ! 0) {
+    return (31);
+}
+return (~allstar_clue_route(3, 5, 5, 32));
+
+[proc,allstar_ghost_route]()(int)
+if (%allstar_q1stage = 2) {
+    return (6889);
+}
+return (0);
+
+// quest 1 "Invisible Armour" (L19225): an else-if chain after the clue check
+[proc,allstar_horvik_route]()(int)
+def_int $stage = %allstar_q1stage;
+def_boolean $materials = false;
+if (inv_total(inv, runite_ore) > 0 & inv_total(inv, palm_leaf) > 0 & inv_total(inv, bow_string) > 0) {
+    $materials = true;
+}
+def_boolean $book = false;
+if (inv_total(inv, magictraining_bookofmagic) > 0) {
+    $book = true;
+}
+def_boolean $seed = false;
+if (inv_total(inv, roving_new_consecration_seed) > 0) {
+    $seed = true;
+}
+if (~allstar_clue_route(1, 1, 1, 31) ! 0) {
+    return (31);
+} else if ($stage = 0) {
+    return (100);
+} else if ($stage = 1 & $materials = false) {
+    return (101);
+} else if ($stage = 2 & $book = false) {
+    return (102);
+} else if ($stage = 3) {
+    return (103);
+} else if ($stage = 4 & $seed = false) {
+    return (104);
+} else if ($stage = 1 & $materials = true) {
+    return (1101);
+} else if ($stage = 2 & $book = true) {
+    return (1102);
+} else if ($stage = 4 & $seed = true) {
+    return (1105);
+}
+return (0);
+
+// quest 2 "Cook's Assistant" (L19256)
+[proc,allstar_cook_route]()(int)
+if (%allstar_q2stage = 0) {
+    return (200);
+} else if (%allstar_q2stage = 1) {
+    if (inv_total(inv, egg) > 0 & inv_total(inv, bucket_milk) > 0 & inv_total(inv, pot_flour) > 0) {
+        return (2001);
+    }
+    return (201);
+}
+return (0);
+
+// quest 3 "Spells Of The Gods" (L19028): independent ifs, the last true one wins
+[proc,allstar_mizgog_route]()(int)
+// process() (L17372) turns stage 6 into 7 on every cycle the Daconia rock is carried
+if (%allstar_q3stage = 6 & inv_total(inv, grandtree_daconiarock) > 0) {
+    %allstar_q3stage = 7;
+}
+def_int $stage = %allstar_q3stage;
+def_int $id = 0;
+if ($stage = 0) {
+    $id = 301;
+}
+if ($stage = 1) {
+    $id = ~allstar_mizgog_item(ikov_staffofarmardyl, 304, 305);
+}
+if ($stage = 2) {
+    $id = ~allstar_mizgog_item(tog_stone, 311, 308);
+}
+if ($stage = 3) {
+    $id = ~allstar_mizgog_item(firework, 312, 313);
+}
+if ($stage = 4) {
+    $id = ~allstar_mizgog_item(heartcrystal, 316, 317);
+}
+if ($stage = 5) {
+    $id = ~allstar_mizgog_item(mourning_mourner_cloak, 321, 322);
+}
+if ($stage >= 6 & inv_total(inv, grandtree_daconiarock) = 0) {
+    $id = 325;
+}
+if ($stage = 7 & inv_total(inv, grandtree_daconiarock) > 0) {
+    $id = 326;
+}
+return ($id);
+
+[proc,allstar_mizgog_item](obj $obj, int $without, int $with)(int)
+if (inv_total(inv, $obj) > 0) {
+    return ($with);
+}
+return ($without);
+
+// ---- banks (section 2.7) ----
+[opnpc3,banker1] @allstar_bank_range2;
+[apnpc3,banker1] @allstar_bank_range2;
+[opnpc3,banker2] @allstar_bank_range2;
+[apnpc3,banker2] @allstar_bank_range2;
+[opnpc3,tzhaar_banker1] @allstar_bank_range2;
+[apnpc3,tzhaar_banker1] @allstar_bank_range2;
+// gnome banker: opened at once; its second option had no handler
+[opnpc1,gnomebanker] @allstar_openbank;
+[apnpc1,gnomebanker] @allstar_openbank;
+[opnpc3,gnomebanker]
+[apnpc3,gnomebanker]
+// TzHaar-Ket-Zuh first click: WanneBank = 3 and openUpBank() at once. The pending WanneBank would
+// reopen the bank near the last clicked npc's tile (skillX/Y), which this click did not update.
+[opnpc1,tzhaar_banker1] @allstar_openbank;
+[apnpc1,tzhaar_banker1] @allstar_openbank;
+
+// ---- teleports (section 2.5): instant, no message, animation or teleblock check ----
+[opnpc1,mm_sleeping_monkey_guard] p_telejump(0_50_53_50_31);
+[apnpc1,mm_sleeping_monkey_guard] p_telejump(0_50_53_50_31);
+[opnpc1,fairy] p_telejump(0_38_80_6_49);
+[apnpc1,fairy] p_telejump(0_38_80_6_49);
+[opnpc1,slayer_master_1] p_telejump(0_37_79_45_61);
+[apnpc1,slayer_master_1] p_telejump(0_37_79_45_61);
+[opnpc4,slayer_master_1]
+[opnpc1,doorman] p_telejump(0_38_80_6_49);
+[apnpc1,doorman] p_telejump(0_38_80_6_49);
+[opnpc1,sigbert_the_adventurer] p_telejump(0_50_53_54_44);
+[apnpc1,sigbert_the_adventurer] p_telejump(0_50_53_54_44);
+[opnpc1,magic_carpet_monkey] p_telejump(1_42_143_27_9);
+[apnpc1,magic_carpet_monkey] p_telejump(1_42_143_27_9);
+
+// ---- Nature Spirit 1051: the one-time starter (section 2.1) ----
+[opnpc1,filliman_tarlock_ns] ~allstar_nature_spirit_starter;
+[apnpc1,filliman_tarlock_ns] ~allstar_nature_spirit_starter;
+
+[proc,allstar_nature_spirit_starter]
+if (%allstar_starter = 0) {
+    ~allstar_additem(coins, 15000000);
+    ~allstar_additem(cert_mantaray, 1500);
+    mes("Get more food from the store owner:zeek");
+    %allstar_starter = 1;
+} else if (%allstar_starter = 1) {
+    mes("Why do you have to be greedy?");
+    world_broadcast("<displayname> is really greedy trying to type ::starter again");
+}
+
+// ---- "Essence" wizards (section 2.6), second click: straight to 3088,3489 at the same height.
+// Essence only matters to the essence-mine exits (stair types 25/26); nothing teleports into the mine.
+[opnpc3,head_wizard] ~allstar_essence_wizard(1);
+[apnpc3,head_wizard] ~allstar_essence_wizard(1);
+[opnpc3,ardounge_wizard] ~allstar_essence_wizard(2);
+[apnpc3,ardounge_wizard] ~allstar_essence_wizard(2);
+[opnpc3,guild_wizard] ~allstar_essence_wizard(3);
+[apnpc3,guild_wizard] ~allstar_essence_wizard(3);
+
+[proc,allstar_essence_wizard](int $essence)
+p_telejump(movecoord(coord, calc(3088 - coordx(coord)), 0, calc(3489 - coordz(coord))));
+%allstar_essence = $essence;

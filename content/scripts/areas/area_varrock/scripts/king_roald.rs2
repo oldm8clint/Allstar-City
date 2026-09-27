@@ -1,11 +1,3 @@
-[opnpc1,king_roald] @roald_dialogue;
-[opnpcu,king_roald]
-if(last_useitem = arravcertificate) {
-    @roald_dialogue;
-}
-~displaymessage(^dm_default);
-
-// copying rsc logic here, no dialogue without both shield pieces or the certificate
 [label,roald_dialogue]
 ~chatplayer("<p,happy>Greetings, your majesty.");
 if(inv_total(inv, arravcertificate) > 0) {

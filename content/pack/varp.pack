@@ -809,3 +809,17 @@
 808=allstar_climb_stage
 809=allstar_current_health
 810=allstar_monster_delay
+811=allstar_npcdialogue_coord
+812=allstar_npctalkto
+813=allstar_travelboat
+814=allstar_traveltime
+815=allstar_q1stage
+816=allstar_q2stage
+817=allstar_q3stage
+818=allstar_totalqp
+819=allstar_cluelevel
+820=allstar_cluestage
+821=allstar_clueid
+822=allstar_debug_npc
+823=allstar_essence
+824=allstar_travel_level

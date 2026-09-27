@@ -1,38 +1,5 @@
 // source: https://www.youtube.com/watch?v=VK_A2Vf9VE8
 
-[opnpc1,thessalia]
-if (%bunny_ears_unlocked = 0 & %scythe_unlocked = 0) { // player has not unlocked bunny_ears or scythe
-    @thessalia_want_to_buy;
-} else if (%bunny_ears_unlocked = 1 & %scythe_unlocked = 1) { // player unlocked both
-    if ((inv_total(inv, bunnyears) >= 1 | inv_total(bank, bunnyears) >= 1 | inv_total(worn, bunnyears) >= 1) &
-        (inv_total(inv, scythe) >= 1 | inv_total(bank, scythe) >= 1 | inv_total(worn, scythe) >= 1)) { // player unlocked both, and has both
-        @thessalia_want_to_buy;
-    } else if (inv_total(inv, bunnyears) >= 1 | inv_total(bank, bunnyears) >= 1 | inv_total(worn, bunnyears) >= 1) { // player unlocked both, but lost scythe
-        ~chatnpc("<p,happy>Do you want to buy any fine clothes? Or would you like your scythe back?");
-        @thessalia_lost_scythe;
-    } else if (inv_total(inv, scythe) >= 1 | inv_total(bank, scythe) >= 1 | inv_total(worn, scythe) >= 1) { // player unlocked both, but lost bunny_ears
-        ~chatnpc("<p,happy>Do you want to buy any fine clothes? Or would you like your bunny ears back?");
-        @thessalia_lost_bunny_ears;
-    } else { // player unlocked both, but lost both
-        ~chatnpc("<p,happy>Do you want to buy any fine clothes? Or would you like your scythe and bunny ears back?");
-        @thessalia_lost_bunny_ears_and_scythe;
-    }
-} else if (%bunny_ears_unlocked = 1 & %scythe_unlocked = 0) { // player unlocked bunny_ears, not scythe
-    if (inv_total(inv, bunnyears) >= 1 | inv_total(bank, bunnyears) >= 1 | inv_total(worn, bunnyears) >= 1) { //player unlocked bunny_ears, and has bunny_ears
-        @thessalia_want_to_buy;
-    } else { // player unlocked bunny_ears, but lost bunny ears
-        ~chatnpc("<p,quiz>Do you want to buy any fine clothes? Or would you like your bunny ears back?");
-        @thessalia_lost_bunny_ears;
-    }
-} else if (%bunny_ears_unlocked = 0 & %scythe_unlocked = 1) { // player unlocked scythe, not bunny_ears
-    if (inv_total(inv, scythe) >= 1 | inv_total(bank, scythe) >= 1 | inv_total(worn, scythe) >= 1) { // player unlocked scythe, and has scythe
-        @thessalia_want_to_buy;
-    } else { // player unlocked scythe, but lost scythe
-        ~chatnpc("<p,happy>Do you want to buy any fine clothes? Or would you like your scythe back?");
-        @thessalia_lost_scythe;
-    }
-}
-
 [label,thessalia_want_to_buy]
 ~chatnpc("<p,quiz>Do you want to buy any fine clothes?");
 @thessalia_what_have_you_got;

@@ -1,15 +1,3 @@
-[opnpc1,wydin]
-if (testbit(%hunt_store_employed, 1) = ^true) {
-    @wydin_employed_chat;
-}
-
-~chatnpc("<p,happy>Welcome to my food store! Would you like to buy anything?");
-if (%hunt = ^hunt_not_started) {
-    @multi3("Yes please.", wydin_open_shop, "No, thank you.", wydin_no, "What can you recommend?", wydin_recommend);
-} else if (%hunt = ^hunt_fetch_rum) {
-    @multi4("Yes please.", wydin_open_shop, "No, thank you.", wydin_no, "What can you recommend?", wydin_recommend, "Can I get a job here?", wydin_job);
-}
-
 [label,wydin_employed_chat]
 ~chatnpc("<p,quiz>Is it nice and tidy round the back now?");
 

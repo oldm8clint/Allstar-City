@@ -1,0 +1,72 @@
+// Allstar-Scape quests: the quest tab used as a welcome note (loadquestinterface, client.java
+// L8528), the quest-complete scroll (showQuestCompleted, L8031) and quest 1's guard gate (L17541).
+// Stages: 0 not started, 1..n in progress, -1 complete. The quest journal (quest()/loadquest) was
+// never reachable: clicking a quest name does nothing.
+
+// Called at login and by the quest dialogues. ~allstar_quest_tab (login.rs2) writes Allstar-Scape's
+// texts and blanks; q4stage ("The Story Of Ramen") is never set, so it is always 0.
+[proc,allstar_loadquestinterface]
+~allstar_quest_tab(%allstar_q1stage, %allstar_q2stage, %allstar_q3stage, 0);
+// quest list entries of the 377 cache that Allstar-Scape's list has no id for; its quest tab
+// showed no stock quest names
+if_settext(questlist:chompybird, "");
+if_settext(questlist:cog, "");
+if_settext(questlist:troll, "");
+if_settext(questlist:rd, "");
+if_settext(questlist:twocats, "");
+if_settext(questlist:wanted, "");
+if_settext(questlist:mourning2, "");
+if_settext(questlist:deal, "");
+if_settext(questlist:agrith, "");
+if_settext(questlist:makinghistory, "");
+if_settext(questlist:ratcatch, "");
+if_settext(questlist:elid, "");
+if_settext(questlist:devious, "");
+if_settext(questlist:handsand, "");
+if_settext(questlist:enakh, "");
+if_settext(questlist:fever, "");
+if_settext(questlist:fairy_farmers, "");
+if_settext(questlist:hundred_main, "");
+if_settext(questlist:myreque_2, "");
+if_settext(questlist:soulbane, "");
+if_settext(questlist:rag, "");
+if_settext(questlist:swansong, "");
+
+// showQuestCompleted: interface 297 with the quest points; no reward model, no jingle
+[proc,allstar_quest_completed](string $name, int $qp)
+%allstar_totalqp = calc(%allstar_totalqp + $qp);
+~allstar_showinterface(questscroll);
+if_settext(questscroll:com_1, "Congratulations!");
+if_settext(questscroll:com_2, "Close Window");
+if_settext(questscroll:com_8, "You are awarded");
+if_settext(questscroll:com_10, "Earned QP:");
+if_settext(questscroll:com_5, "Total QP:");
+if_settext(questscroll:com_3, "You have completed <$name>");
+if_settext(questscroll:com_9, tostring($qp));
+if_settext(questscroll:com_6, tostring(%allstar_totalqp));
+
+// ---- quest 1 guard gate (process() L17541) ----
+// Guard was never set, so guardsdead stayed false: on 2790 or 2791,10216 (any height) in the caves
+// behind the QUEST_1 entrance the player is thrown back to 2790,10214 every cycle. The tiles share
+// one zone (2784-2791, 10216-10223), checked every cycle while the player is in it.
+[zone,0_43_159_32_40] ~allstar_q1_guards_enter;
+[zone,1_43_159_32_40] ~allstar_q1_guards_enter;
+[zone,2_43_159_32_40] ~allstar_q1_guards_enter;
+[zone,3_43_159_32_40] ~allstar_q1_guards_enter;
+
+[proc,allstar_q1_guards_enter]
+softtimer(allstar_q1_guards, 1);
+~allstar_q1_guards;
+
+[softtimer,allstar_q1_guards]
+if (coordx(coord) < 2784 | coordx(coord) > 2791 | coordz(coord) < 10216 | coordz(coord) > 10223) {
+    clearsofttimer(allstar_q1_guards);
+    return;
+}
+~allstar_q1_guards;
+
+[proc,allstar_q1_guards]
+if ((coordx(coord) = 2790 | coordx(coord) = 2791) & coordz(coord) = 10216) {
+    mes("The guards kick you out the way.");
+    ~allstar_telejump(2790, 10214);
+}

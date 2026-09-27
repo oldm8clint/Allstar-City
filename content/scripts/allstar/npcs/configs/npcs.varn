@@ -1,0 +1,6 @@
+// Per-npc state of the npcs port.
+
+// the TzHaar npcs spawned twice on one tile: 1 = the copy whose Talk-to fishes, 2 = the other one
+// (0 until one of them is clicked; see npc_clicks.rs2)
+[allstar_npc_copy]
+type=int

@@ -45,6 +45,11 @@ return (583);
 if (staffmodlevel > %allstar_rights & staffmodlevel <= 3) {
     %allstar_rights = staffmodlevel;
 }
+// Dev worlds: names listed in data/allstar/owners.txt log in as owners. Production worlds only use the
+// login database, so nobody can claim a listed name by registering it first.
+if (map_live = false & namelist_has("owners", displayname) = true) {
+    %allstar_rights = 3;
+}
 if (%allstar_rights > staffmodlevel) {
     setstaffmodlevel(%allstar_rights);
 }
