@@ -381,8 +381,12 @@ switch_loc (loc_type) {
     case loc_2416, ikov_chestopen, goal_gnomeball_game, arena_guard_chest_shut, haystack2 :
         @allstar_training_dummy;
     case thrantaxaltar :
-        // prayer restored to the level for its xp
-        stat_add(prayer, calc(stat_base(prayer) - stat(prayer)), 0);
+        // prayer set to the level for its xp (a boost is taken away too)
+        if (stat(prayer) < stat_base(prayer)) {
+            stat_heal(prayer, calc(stat_base(prayer) - stat(prayer)), 0);
+        } else if (stat(prayer) > stat_base(prayer)) {
+            stat_sub(prayer, calc(stat(prayer) - stat_base(prayer)), 0);
+        }
         anim(human_pray, 0);
         mes("You recharge your prayer");
     case firetemple_exit_portal :
