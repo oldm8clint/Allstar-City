@@ -113,9 +113,10 @@ export function createDefaultWorldConfig(): WorldConfig {
             hopTime: 45000,
             rateLimitAddressLogin: 30,
             rateLimitDeviceLogin: 5,
-            tickrate: 600,
-            allstarXp: false,
-            allstarCombat: false
+            // Allstar-City: Allstar-Scape's 500 ms cycle, xp curve and combat model by default
+            tickrate: 500,
+            allstarXp: true,
+            allstarCombat: true
         },
         login: {
             enabled: false,
@@ -144,9 +145,10 @@ export function createDefaultWorldConfig(): WorldConfig {
         build: {
             verbose: false,
             startup: false,
-            verify: true,
+            // Allstar-City: the content is modified, so the packed data never matches the original cache
+            verify: false,
             verifyFolder: true,
-            verifyPack: true,
+            verifyPack: false,
             liveReload: true,
             srcDir: '../content'
         }
