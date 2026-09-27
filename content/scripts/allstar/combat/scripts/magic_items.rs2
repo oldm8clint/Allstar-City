@@ -1,0 +1,182 @@
+// Allstar-Scape magic on items (client.java packet 237, C:21009-21268) and Telekinetic Grab (packet
+// 181, C:19873). npcs_rules.md section 3.3; allstar/QUIRKS.md Q1/Q2.
+
+[opheldt,magic:highlvl_alchemy] ~allstar_magic_on_item(1178);
+[opheldt,magic:lowlvl_alchemy] ~allstar_magic_on_item(1162);
+[opheldt,magic:enchant_lvl1] ~allstar_magic_on_item(1155);
+[opheldt,magic:enchant_lvl2] ~allstar_magic_on_item(1165);
+[opheldt,magic:enchant_lvl3] ~allstar_magic_on_item(1176);
+[opheldt,magic:enchant_lvl4] ~allstar_magic_on_item(1180);
+[opheldt,magic:enchant_lvl5] ~allstar_magic_on_item(1187);
+[opheldt,magic:superheat_item] ~allstar_magic_on_item(1173);
+
+[proc,allstar_magic_on_item](int $spell)
+def_obj $item = last_item;
+def_int $slot = last_slot;
+// alchvaluez = GetItemShopValue: the item.cfg shop value (last line for the id), 1 when missing
+def_int $value = enum(obj, int, allstar_shop_price, $item);
+if ($spell = 1178) {
+    // High alchemy: takes the nature rune but never the 5 fire runes it checks for
+    if (stat(magic) >= 55) {
+        if (inv_total(inv, naturerune) < 1 | inv_total(inv, firerune) < 5) {
+            mes("You do not have enough runes to cast this spell.");
+        } else {
+            ~allstar_delslot_one($slot);
+            def_boolean $added = ~allstar_additem(coins, $value);
+            stat_advance(magic, calc(65 * stat(magic)));
+            ~allstar_anim_id(712);
+            ~allstar_gfx_id(113, coordx(coord), coordz(coord));
+            ~allstar_rune_del(naturerune, 1);
+        }
+    } else {
+        mes("You need at least 55 Magic to cast High Level Alchemy");
+    }
+} else if ($spell = 1162) {
+    // Low alchemy: any level, a fifth of the value, more xp than high alchemy
+    if (inv_total(inv, naturerune) < 1 | inv_total(inv, firerune) < 3) {
+        mes("You do not have enough runes to cast this spell.");
+    } else {
+        ~allstar_delslot_one($slot);
+        def_boolean $added2 = ~allstar_additem(coins, calc($value / 5));
+        stat_advance(magic, calc(320 * stat(magic)));
+        ~allstar_anim_id(713);
+        ~allstar_gfx_id(5, coordx(coord), coordz(coord));
+        ~allstar_rune_del(naturerune, 1);
+        ~allstar_rune_del(firerune, 3);
+    }
+} else if ($spell = 1155) {
+    ~allstar_enchant($slot, $item, sapphire_ring, ring_of_recoil, sapphire_necklace, necklace_of_minigames_8, strung_sapphire_amulet, amulet_of_magic, 18, "Saphire");
+} else if ($spell = 1165) {
+    ~allstar_enchant($slot, $item, emerald_ring, ring_of_dueling_8, emerald_necklace, magic_emerald_necklace, strung_emerald_amulet, amulet_of_defence, 37, "Emerald");
+} else if ($spell = 1176) {
+    ~allstar_enchant($slot, $item, ruby_ring, ring_of_forging, null, null, strung_ruby_amulet, amulet_of_strength, 59, "Ruby");
+} else if ($spell = 1180) {
+    ~allstar_enchant($slot, $item, diamond_ring, ring_of_life, null, null, strung_diamond_amulet, amulet_of_power, 67, "Diamond");
+} else if ($spell = 1187) {
+    ~allstar_enchant($slot, $item, dragonstone_ring, ring_of_wealth, null, null, strung_dragonstone_amulet, amulet_of_glory, 78, "Dragonstone");
+} else if ($spell = 1173) {
+    ~allstar_superheat($slot, $item);
+}
+
+// deleteItem(item, slot, 1)
+[proc,allstar_delslot_one](int $slot)
+def_obj $obj = inv_getobj(inv, $slot);
+if ($obj ! null) {
+    inv_del(inv, $obj, 1);
+}
+
+// Enchant jewellery: no runes, no level check, no animation; ring, necklace, amulet
+[proc,allstar_enchant](int $slot, obj $item, obj $ring, namedobj $ringto, obj $necklace, namedobj $necklaceto, obj $amulet, namedobj $amuletto, int $xp, string $gem)
+def_boolean $added = false;
+if ($item = $ring & $ring ! null) {
+    ~allstar_delslot_one($slot);
+    $added = ~allstar_additem($ringto, 1);
+} else if ($item = $necklace & $necklace ! null) {
+    ~allstar_delslot_one($slot);
+    $added = ~allstar_additem($necklaceto, 1);
+} else if ($item = $amulet & $amulet ! null) {
+    ~allstar_delslot_one($slot);
+    $added = ~allstar_additem($amuletto, 1);
+} else {
+    mes("This needs to be cast on <$gem> Jewelry");
+    return;
+}
+stat_advance(magic, $xp);
+
+// Superheat Item: no runes, no level check, no animation; iron makes steel whenever 2 coal are there
+[proc,allstar_superheat](int $slot, obj $ore)
+def_boolean $added = false;
+if ($ore = copper_ore & inv_total(inv, tin_ore) >= 1) {
+    ~allstar_delslot_one($slot);
+    inv_del(inv, tin_ore, 1);
+    $added = ~allstar_additem(bronze_bar, 1);
+} else if ($ore = tin_ore & inv_total(inv, copper_ore) >= 1) {
+    ~allstar_delslot_one($slot);
+    inv_del(inv, copper_ore, 1);
+    $added = ~allstar_additem(bronze_bar, 1);
+} else if ($ore = iron_ore) {
+    ~allstar_delslot_one($slot);
+    if (inv_total(inv, coal) < 2) {
+        $added = ~allstar_additem(iron_bar, 1);
+    } else {
+        inv_del(inv, coal, 2);
+        $added = ~allstar_additem(steel_bar, 1);
+    }
+} else if ($ore = silver_ore) {
+    ~allstar_delslot_one($slot);
+    $added = ~allstar_additem(silver_bar, 1);
+} else if ($ore = gold_ore) {
+    ~allstar_delslot_one($slot);
+    $added = ~allstar_additem(gold_bar, 1);
+} else if ($ore = mithril_ore) {
+    if (inv_total(inv, coal) < 4) {
+        mes("You need 4 coal to make a mith bar");
+        return;
+    }
+    ~allstar_delslot_one($slot);
+    inv_del(inv, coal, 4);
+    $added = ~allstar_additem(mithril_bar, 1);
+} else if ($ore = adamantite_ore) {
+    if (inv_total(inv, coal) < 6) {
+        mes("You need 6 coal to make an addy bar");
+        return;
+    }
+    ~allstar_delslot_one($slot);
+    inv_del(inv, coal, 6);
+    $added = ~allstar_additem(adamantite_bar, 1);
+} else if ($ore = runite_ore) {
+    if (inv_total(inv, coal) < 8) {
+        mes("You need 8 coal to make a rune bar");
+        return;
+    }
+    ~allstar_delslot_one($slot);
+    inv_del(inv, coal, 8);
+    $added = ~allstar_additem(runite_bar, 1);
+} else {
+    return;
+}
+stat_advance(magic, 53);
+
+// ---- Telekinetic Grab (packet 181) ----
+// The engine runs this as soon as the packet arrives, whether or not the item is still there
+// (NODE_ALLSTAR_COMBAT): the grab gives max(1, the amount found) of the clicked item and removes the
+// stack it found, from any distance. Level 33 (the message says 21); 1 law + 5 air runes, or an air
+// staff instead of all of them; it then takes 1 law rune and 1 air rune (not 5) whether or not it
+// worked. A grab on an item someone already took still pays out (QUIRKS Q2).
+[queue,allstar_opobjt](coord $tile, namedobj $obj, int $spell)
+if ($spell = 1168) {
+    ~allstar_telegrab($tile, $obj);
+}
+
+[proc,allstar_telegrab](coord $tile, namedobj $obj)
+if (stat(magic) < 33) {
+    mes("You need a magic level of 21 to cast this spell.");
+    return;
+}
+def_boolean $staff = ~allstar_has_air_staff;
+if (inv_total(inv, lawrune) < 1 | (inv_total(inv, airrune) < 5 & $staff = false)) {
+    mes("You do not have enough runes to cast this spell.");
+}
+if ((inv_total(inv, lawrune) >= 1 & inv_total(inv, airrune) >= 5) | $staff = true) {
+    def_int $amount = 0;
+    if (obj_find($tile, $obj) = true) {
+        $amount = obj_count;
+        obj_del;
+    }
+    def_boolean $added = ~allstar_additem($obj, $amount);
+    ~allstar_gfx_id(142, coordx(coord), coordz(coord));
+    ~allstar_anim_id(711);
+    ~allstar_stop_moving;
+    ~allstar_gfx_id(144, coordx($tile), coordz($tile));
+}
+~allstar_rune_del(lawrune, 1);
+if ($staff = false) {
+    ~allstar_rune_del(airrune, 1);
+}
+
+[proc,allstar_has_air_staff]()(boolean)
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+if ($weapon = staff_of_air | $weapon = air_battlestaff | $weapon = mystic_air_staff) {
+    return(true);
+}
+return(false);

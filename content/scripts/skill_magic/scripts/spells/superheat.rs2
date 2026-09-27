@@ -1,5 +1,4 @@
-[opheldt,magic:superheat_item]@magic_spell_superheat(^superheat_item, last_item);
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [label,magic_spell_superheat](int $spell, obj $ore1)
 if_settabactive(^tab_magic); // osrs sets tab back no matter what
 // look for spell in db

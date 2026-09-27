@@ -53,6 +53,10 @@ export default {
     NODE_TICKRATE: tryParseInt(process.env.NODE_TICKRATE, 600),
     // Allstar-Scape xp: whole xp units (2B cap), half xp curve, strict level thresholds
     NODE_ALLSTAR_XP: tryParseBoolean(process.env.NODE_ALLSTAR_XP, false),
+    // Allstar-Scape combat model (engine/src/engine/AllstarCombat.ts): npc.cfg hitpoints, no npc
+    // regen/hunt/engine AI, no-clip npc steps, a per-npc script every cycle, fixed respawns, ground
+    // items public after 60 cycles, and player op 3 is a normal op (Attack) instead of engine follow
+    NODE_ALLSTAR_COMBAT: tryParseBoolean(process.env.NODE_ALLSTAR_COMBAT, false),
     NODE_WS_ONDEMAND: tryParseBoolean(process.env.NODE_WS_ONDEMAND, false),
     NODE_HOP_TIME: tryParseInt(process.env.NODE_MAX_NPCS, 45000), // 45s
     // limit login attempts

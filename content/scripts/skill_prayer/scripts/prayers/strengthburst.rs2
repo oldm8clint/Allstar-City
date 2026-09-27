@@ -1,10 +1,4 @@
-[if_button,prayer:prayer_strengthburst]
-if_close;
-if (p_finduid(uid) = true) {
-    @activate_prayer_strengthburst;
-}
-%prayer1 = %prayer1;
-
+// Allstar-City: the button is Allstar-Scape's (allstar/combat/scripts/prayers.rs2).
 [label,activate_prayer_strengthburst]
 p_clearpendingaction;
 def_dbrow $data = ~get_prayer_data(^prayer_strengthburst);

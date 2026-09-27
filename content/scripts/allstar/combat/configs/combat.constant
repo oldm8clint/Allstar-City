@@ -1,0 +1,10 @@
+// Allstar-City combat constants
+
+// npc_changetype duration that never runs out (Rocks <-> Rock crab swaps are permanent)
+^as_forever = 2000000000
+
+// ground items: removed 120 cycles after the drop (ItemHandler), public after 60 (engine)
+^as_drop_duration = 120
+
+// home, where dead players reappear (client.ApplyDead)
+^as_home = 0_44_56_37_7

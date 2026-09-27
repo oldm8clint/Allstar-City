@@ -1,0 +1,252 @@
+// Allstar-Scape weapon rules (client.java GetWepAnim, GetBlockAnim, CalculateMaxHit, attack speeds).
+
+// The Allstar-Scape item id of an obj the combat code tests (generated enum allstar_obj_id):
+// -1 for nothing, -2 for anything the combat code never tests.
+[proc,allstar_objid](obj $obj)(int)
+if ($obj = null) {
+    return(-1);
+}
+return(enum(obj, int, allstar_obj_id, $obj));
+
+[proc,allstar_weapon]()(int)
+return(~allstar_objid(inv_getobj(worn, ^wearpos_rhand)));
+
+// FightType (C:23903-23953): 1 accurate, 2 aggressive, 3 controlled, 4 defensive. Allstar-Scape set it
+// from the button pressed on its 317 combat tab (client.SendWeapon, obj param allstar_weapon_tab),
+// kept it across weapon swaps and reset it to accurate at login.
+[proc,allstar_fighttype]()(int)
+if (%as_fighttype < 1 | %as_fighttype > 4) {
+    %as_fighttype = 1;
+}
+return(%as_fighttype);
+
+// the attack style button in the tab's order -> FightType (0 = a button with no FightType case)
+[proc,allstar_style_button](int $button)
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+def_int $tab = 5855;
+if ($weapon ! null) {
+    $tab = oc_param($weapon, allstar_weapon_tab);
+}
+def_int $type = 0;
+switch_int ($tab) {
+    // chop/slash/lunge/block (swords, scimitars, everything else), claws
+    case 2423, 7762 : $type = ~allstar_style_pick($button, 1, 2, 3, 4);
+    // stab/lunge/slash/block (daggers), chop/hack/smash/block (axes), spike/impale/smash/block (pickaxes)
+    case 2276, 1698, 5570 : $type = ~allstar_style_pick($button, 1, 2, 2, 4);
+    // flick/lash/deflect (whip): deflect has no case
+    case 12290 : $type = ~allstar_style_pick($button, 1, 3, 0, 0);
+    // jab/swipe/fend (halberd)
+    case 8460 : $type = ~allstar_style_pick($button, 3, 2, 4, 0);
+    // lunge/swipe/pound/block (spear)
+    case 4679 : $type = ~allstar_style_pick($button, 3, 3, 3, 4);
+    // accurate/rapid/longrange (bows, darts)
+    case 1764, 4446 : $type = ~allstar_style_pick($button, 1, 2, 3, 0);
+    // punch/kick/block (unarmed), bash/pound/focus (staves)
+    case 5855, 328 : $type = ~allstar_style_pick($button, 1, 2, 4, 0);
+}
+if ($type > 0) {
+    %as_fighttype = $type;
+}
+
+[proc,allstar_style_pick](int $button, int $a, int $b, int $c, int $d)(int)
+switch_int ($button) {
+    case 0 : return($a);
+    case 1 : return($b);
+    case 2 : return($c);
+    case 3 : return($d);
+}
+return(0);
+
+// The combat tab for the weapon's Allstar-Scape tab, with the special bar where Allstar-Scape drew it
+// (whip, dagger, sword, bow, halberd, axe). Tabs Lost City does not have: the halberd uses the spear
+// tab, the darts the thrown tab.
+[proc,allstar_weapon_tab_attack](obj $obj)
+switch_int (oc_param($obj, allstar_weapon_tab)) {
+    case 12290 : ~weapon_category_tab_attack(combat_whip:preview, combat_whip:name, combat_whip, $obj, combat_whip:specbar_layer);
+    case 1764 : ~weapon_category_tab_attack(combat_bow:preview, combat_bow:name, combat_bow, $obj, combat_bow:specbar_layer);
+    case 328 : ~weapon_category_tab_attack(combat_staff_2:preview, combat_staff_2:name, combat_staff_2, $obj, null);
+    case 4446 : ~weapon_category_tab_attack(combat_thrown:preview, combat_thrown:name, combat_thrown, $obj, combat_thrown:specbar_layer);
+    case 2276 : ~weapon_category_tab_attack(combat_stabsword:preview, combat_stabsword:name, combat_stabsword, $obj, combat_stabsword:specbar_layer);
+    case 5570 : ~weapon_category_tab_attack(combat_pickaxe:preview, combat_pickaxe:name, combat_pickaxe, $obj, combat_pickaxe:specbar_layer);
+    case 1698 : ~weapon_category_tab_attack(combat_axe:preview, combat_axe:name, combat_axe, $obj, combat_axe:specbar_layer);
+    case 8460, 4679 : ~weapon_category_tab_attack(combat_spear:preview, combat_spear:name, combat_spear, $obj, combat_spear:specbar_layer);
+    case 7762 : ~weapon_category_tab_attack(combat_claw:preview, combat_claw:name, combat_claw, $obj, combat_claw:specbar_layer);
+    case default : ~weapon_category_tab_attack(combat_hacksword:preview, combat_hacksword:name, combat_hacksword, $obj, combat_hacksword:specbar_layer);
+}
+
+// playerBonus[10], the strength bonus of everything worn
+[proc,allstar_strength_bonus]()(int)
+def_int $stab;
+def_int $slash;
+def_int $crush;
+def_int $magic;
+def_int $range;
+def_int $stabdef;
+def_int $slashdef;
+def_int $crushdef;
+def_int $magicdef;
+def_int $rangedef;
+def_int $strength;
+def_int $prayer;
+def_int $rangebonus;
+$stab, $slash, $crush, $magic, $range, $stabdef, $slashdef, $crushdef, $magicdef, $rangedef, $strength, $prayer, $rangebonus = ~equip_get_bonuses;
+return($strength);
+
+// client.CalculateMaxHit (C:29387): (Str + StrBonus) / 6.8275.. (accurate/defensive), / 6.6551..
+// (aggressive), / 6.7586.. (controlled); full Dharok adds (max HP - HP) / 2. The strength potion and
+// prayer terms use variables that are never set.
+[proc,allstar_maxhit]()(int)
+def_int $sum = calc(stat(strength) + ~allstar_strength_bonus);
+def_int $max = 0;
+switch_int (~allstar_fighttype) {
+    // x / (198/29), x / (193/29), x / (196/29), as the doubles in client.java
+    case 1, 4 : $max = scale(29, 198, $sum);
+    case 2 : $max = scale(29, 193, $sum);
+    case 3 : $max = scale(29, 196, $sum);
+}
+if (~allstar_full_dharok = true) {
+    $max = calc($max + (stat_base(hitpoints) - stat(hitpoints)) / 2);
+}
+return($max);
+
+[proc,allstar_full_dharok]()(boolean)
+if (~allstar_objid(inv_getobj(worn, ^wearpos_hat)) = 4716 & ~allstar_objid(inv_getobj(worn, ^wearpos_torso)) = 4720
+    & ~allstar_objid(inv_getobj(worn, ^wearpos_legs)) = 4722 & ~allstar_weapon = 4718) {
+    return(true);
+}
+return(false);
+
+// client.GetWepAnim (C:27365), first match wins
+[proc,allstar_weapon_anim]()(seq)
+def_int $wep = ~allstar_weapon;
+if ($wep = -1) {
+    if (~allstar_fighttype = 2) {
+        return(human_unarmedkick);
+    }
+    return(human_unarmedpunch);
+}
+switch_int ($wep) {
+    case 4151, 8447 : return(slayer_abyssal_whip_attack);
+    case 868 : return(human_throw);
+    case 6527 : return(champions_zombie_catcrush);
+    case 6541 : return(slayer_abyssal_whip_attack);
+    case 15156 : return(human_bow);
+    case 1305 : return(seq_451);
+    case 15334, 15336 : return(human_dhsword_slash);
+    case 14915 : return(human_dhsword_chop);
+    case 6739, 1321, 1323, 1325, 1327, 1329, 1333, 4587, 746 : return(seq_451);
+    case 3204, 6818, 3202 : return(human_scythe_sweep);
+    case 15333, 15335 : return(human_dhsword_chop);
+    case 4214, 859, 861, 6724 : return(human_bow);
+    case 4153 : return(slayer_granite_maul_attack);
+    case 6528 : return(dragon_pickaxe_anim);
+    case 5018, 3101 : return(seq_451);
+    case 7449 : return(slayer_granite_maul_attack);
+    case 1377, 1373, 1434 : return(human_rubber_chicken_attack);
+    case 5730 : return(barrows_war_spear_stab);
+    case 4718 : return(barrow_dharok_crush);
+    case 4726 : return(barrows_war_spear_stab);
+    case 4747 : return(barrow_torag_crush);
+    case 4755 : return(barrow_guthan_crush);
+    case 4734 : return(barrows_repeating_crossbow_fire);
+    case 837, 10431 : return(human_crossbow);
+    case 1215, 1231, 5680, 5698 : return(human_blunt_pummel);
+    case 6609, 1307, 1309, 1311, 1313, 1315, 1317, 1319, 7158 : return(human_dhsword_slash);
+    case 1419 : return(human_dhsword_lunge);
+    case 4566 : return(human_rubber_chicken_attack);
+    case default : return(human_stake);
+}
+
+// client.GetBlockAnim(weapon) (C:27728). It is always called with the weapon, so the shield ids in it
+// only match a shield held as a weapon.
+[proc,allstar_block_anim](obj $weapon)(seq)
+switch_int (~allstar_objid($weapon)) {
+    case 4755 : return(barrow_guthan_defend);
+    case 4151, 10229 : return(slayer_abyssal_whip_defend);
+    case 1171, 1185, 1187, 1191, 1201, 2659, 2667, 2675, 3122, 3488, 4156, 6524 : return(human_blunt_block);
+    case 4153, 1419 : return(slayer_granite_maul_defend);
+    case default : return(human_rubber_chicken_block);
+}
+
+// Player.GetPlrBlockAnim (magic NPCs)
+[proc,allstar_plr_block_anim](obj $weapon)(seq)
+switch_int (~allstar_objid($weapon)) {
+    case 4755 : return(barrow_guthan_defend);
+    case 4153 : return(slayer_granite_maul_defend);
+    case default : return(human_rubber_chicken_block);
+}
+
+// NPCHandler.GetNPCBlockAnim (NH:1889)
+[proc,allstar_npc_block_anim](npc $type)(seq)
+switch_npc ($type) {
+    case king_dragon, red_dragon, kalphite_queen : return(kalphite_block);
+    case black_dragon, paladin2, hero, al_kharid_warrior : return(human_blunt_block);
+    case tzhaar_fightcave_swarm_boss : return(lordmagmus_defend);
+    case skeleton_armed : return(null);
+    case blue_dragon : return(dragon_block);
+    case default : return(human_rubber_chicken_block);
+}
+
+// NPCHandler.process death animations (NH:904-961)
+[proc,allstar_npc_death_anim](npc $type)(seq)
+switch_npc ($type) {
+    case cow, cow2, cow2_calf, cow3, cow3_calf : return(cow_death);
+    case chicken : return(chicken_death);
+    case giantrat1 : return(giantrat_death);
+    case zombie_armed : return(spinningwheel);
+    case kalphite_queen : return(kalphite_crackopen);
+    case greater_demon : return(human_smokepuff_tele_disappear);
+    case chaoselemental : return(human_wading_ready);
+    case slayer_abberant_spectre_2 : return(specter_death);
+    case blue_dragon, hellhound, green_dragon, bronze_dragon, iron_dragon, steel_dragon, red_dragon, black_dragon : return(dragon_death);
+    case tzhaar_fightcave_swarm_boss : return(lordmagmus_death);
+    case default : return(macro_sandwich_lady_knockout);
+}
+
+// Bows (client.AttackNPC UseBow): 4214, 861, 859, 6724 and 839-857
+[proc,allstar_is_bow](int $wep)(boolean)
+switch_int ($wep) {
+    case 4214, 861, 859, 6724, 839, 841, 843, 845, 847, 849, 851, 853, 855, 857 : return(true);
+    case default : return(false);
+}
+
+// Weapons that hit NPCs from any distance (AttackNPC); the magic shortbow is not one of them.
+[proc,allstar_pvm_any_range](int $wep)(boolean)
+switch_int ($wep) {
+    case 859, 4214, 6724, 839, 841, 843, 845, 847, 849, 851, 853, 855, 857 : return(true);
+    case default : return(false);
+}
+
+// PkingDelay/LoopAttDelay set by a hit on an NPC: bows 5 or 10, everything else 6 (per-weapon values
+// are overwritten). A hit is allowed once LoopAttDelay has counted down to 1.
+[proc,allstar_pvm_delay](int $wep)(int)
+switch_int ($wep) {
+    case 4214, 859, 6724 : return(10);
+    case 861, 839, 841, 843, 845, 847, 849, 851, 853, 855, 857 : return(5);
+    case default : return(6);
+}
+
+// client.GoodDistance: within d tiles on both axes (no height check)
+[proc,allstar_gooddistance_to](coord $a, coord $b, int $d)(boolean)
+if (abs(calc(coordx($a) - coordx($b))) <= $d & abs(calc(coordz($a) - coordz($b))) <= $d) {
+    return(true);
+}
+return(false);
+
+// client.distanceToPoint: (int) sqrt(dx * dx + dy * dy), no height check
+[proc,allstar_distance](coord $a, coord $b)(int)
+def_int $dx = calc(coordx($a) - coordx($b));
+def_int $dz = calc(coordz($a) - coordz($b));
+def_int $sq = calc($dx * $dx + $dz * $dz);
+def_int $lo = 0;
+def_int $hi = 46340;
+def_int $mid = 0;
+while ($lo < $hi) {
+    $mid = calc(($lo + $hi + 1) / 2);
+    if (calc($mid * $mid) <= $sq) {
+        $lo = $mid;
+    } else {
+        $hi = calc($mid - 1);
+    }
+}
+return($lo);

@@ -1,10 +1,4 @@
-[if_button,magic:varrock_teleport] @magic_teleport(^varrock_teleport);
-[if_button,magic:lumbridge_teleport] @magic_teleport(^lumbridge_teleport);
-[if_button,magic:falador_teleport] @magic_teleport(^falador_teleport);
-[if_button,magic:camelot_teleport] @magic_teleport(^camelot_teleport);
-[if_button,magic:ardougne_teleport] @magic_teleport(^ardougne_teleport);
-[if_button,magic:watchtower_teleport] @magic_teleport(^watchtower_teleport);
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [label,magic_teleport](int $spell)
 if_close;
 if (p_finduid(uid) = true) {

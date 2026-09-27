@@ -1,8 +1,4 @@
-[oploct,magic:air_orb]@magic_spell_charge_orb(^air_orb, loc_type);
-[oploct,magic:water_orb]@magic_spell_charge_orb(^water_orb, loc_type);
-[oploct,magic:earth_orb]@magic_spell_charge_orb(^earth_orb, loc_type);
-[oploct,magic:fire_orb]@magic_spell_charge_orb(^fire_orb, loc_type);
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [label,magic_spell_charge_orb](int $spell, loc $loc)
 // check if they have orb in inv
 if (inv_total(inv, stafforb) < 1) {

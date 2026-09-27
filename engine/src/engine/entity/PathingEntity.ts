@@ -66,6 +66,8 @@ export default abstract class PathingEntity extends Entity {
     targetSubject: TargetSubject = { type: -1, com: -1 };
     apRange: number = 10;
     apRangeCalled: boolean = false;
+    // Allstar-City: the current interaction came from a client click (not p_op* from a script)
+    targetClicked: boolean = false;
 
     // this is only used to hack in the turning after walking on non pathing entity.
     // do not use this for anything else.
@@ -531,13 +533,14 @@ export default abstract class PathingEntity extends Entity {
         }
     }
 
-    setInteraction(_interaction: Interaction, target: Entity, op: TargetOp, com?: number): boolean {
+    setInteraction(interaction: Interaction, target: Entity, op: TargetOp, com?: number): boolean {
         if (!target.isValid(this instanceof Player ? this.hash64 : undefined)) {
             return false;
         }
 
         this.target = target;
         this.targetOp = op;
+        this.targetClicked = interaction === Interaction.ENGINE;
         this.apRange = 10;
         this.apRangeCalled = false;
 
@@ -563,6 +566,7 @@ export default abstract class PathingEntity extends Entity {
     clearInteraction(): void {
         this.target = null;
         this.targetOp = -1;
+        this.targetClicked = false;
         this.targetSubject = { type: -1, com: -1 };
         this.apRange = 10;
         this.apRangeCalled = false;

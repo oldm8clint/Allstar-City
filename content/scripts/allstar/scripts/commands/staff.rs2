@@ -144,7 +144,8 @@ if_settext(controls:com_1, "100%");
 buildappearance(worn);
 
 // ::eat <name> (rights == 3): victim.ApplyDead(), the death routine, then the victim is told and
-// the issuer plays the eat animation. Here the victim takes a hit of all their hitpoints.
+// the issuer plays the eat animation. The death is combat's Allstar-Scape ApplyDead (player_death.rs2),
+// run as the victim's next strong queue.
 [proc,allstar_cmd_eat](string $cmd)
 def_boolean $ok = false;
 def_string $name = "";
@@ -157,7 +158,7 @@ if (.findname($name) = false) {
     ~allstar_crash;
     return;
 }
-.queue(damage_player, 0, .stat(hitpoints));
+.strongqueue(allstar_apply_dead, 0, 0);
 .mes("You have been eaten by <displayname>!");
 ~allstar_anim_id(829);
 

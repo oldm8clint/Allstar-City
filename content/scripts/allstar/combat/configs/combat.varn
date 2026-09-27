@@ -1,0 +1,37 @@
+// Allstar-Scape NPC state (NPC.java fields), reset on every respawn like a new NPC object.
+
+// set once the NPC has run its first cycle (records the spawn tile)
+[asn_init]
+
+// NPCHandler.newNPC makeX/makeY: the spawn tile, used for the random walk box
+[asn_spawn]
+type=coord
+
+// NPC.actionTimer: counts down by 1 every cycle (attack delay, death timers)
+[asn_timer]
+
+// NPC.StartKilling: the player it fights / who started the fight
+[asn_killing]
+type=player_uid
+
+// !NPC.RandomWalk (RandomWalk starts true: 0 = idle / wandering)
+[asn_nowalk]
+
+// NPC.IsUnderAttack
+[asn_attacked]
+
+// NPC.IsClose (Rocks woken up by a nearby player)
+[asn_close]
+
+// death: 0 alive, 1 IsDead (waiting for actionTimer 0), 2 DeadApply (death animation)
+[asn_dead]
+
+// NPC.hitDiff + 1 for the hit waiting for the update (0 = none); only the last one per cycle counts
+[asn_hit]
+
+// hit type of the pending hit (poisondmg)
+[asn_hittype]
+
+// NPC.PoisonDelay / NPC.PoisonClear (0 = never poisoned)
+[asn_poisondelay]
+[asn_poisonclear]

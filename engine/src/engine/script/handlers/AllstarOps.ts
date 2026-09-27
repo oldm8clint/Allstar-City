@@ -1,7 +1,10 @@
 import AllstarLists, { appendLog } from '#/engine/AllstarLists.js';
+import type Npc from '#/engine/entity/Npc.js';
 import type Player from '#/engine/entity/Player.js';
 import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
+import { PlayerStat } from '#/engine/entity/PlayerStat.js';
 import { ScriptOpcode } from '#/engine/script/ScriptOpcode.js';
+import { check, PlayerStatValid } from '#/engine/script/ScriptValidators.js';
 import { ActivePlayer } from '#/engine/script/ScriptPointer.js';
 import { CommandHandlers } from '#/engine/script/ScriptRunner.js';
 import World from '#/engine/World.js';
@@ -78,6 +81,38 @@ const AllstarOps: CommandHandlers = {
     [ScriptOpcode.ALLSTAR_LOG]: state => {
         const [name, line] = state.popStrings(2);
         appendLog(name, line);
+    },
+
+    // Allstar-City combat: Player.DirectionCount counted the cycles since the player last walked
+    [ScriptOpcode.LASTMOVE]: state => {
+        state.pushInt(state.activePlayer.lastMovement);
+    },
+
+    [ScriptOpcode.STAT_XP]: state => {
+        const stat: PlayerStat = check(state.popInt(), PlayerStatValid);
+        state.pushInt(state.activePlayer.stats[stat]);
+    },
+
+    // Allstar-City combat: a click on the target (client packet) rather than a script p_op* continuation
+    [ScriptOpcode.P_OPCLICKED]: state => {
+        state.pushInt(state.activePlayer.targetClicked ? 1 : 0);
+    },
+
+    // Allstar-City combat: what the player is walking to / interacting with (-1 for anything else)
+    // (duck-typed: importing the entity classes here would create an import cycle)
+    [ScriptOpcode.P_TARGETNPC]: state => {
+        const target = state.activePlayer.target as Npc | null;
+        state.pushInt(target && typeof target.nid === 'number' ? target.uid : -1);
+    },
+
+    [ScriptOpcode.P_TARGETPLAYER]: state => {
+        const target = state.activePlayer.target as Player | null;
+        state.pushInt(target && typeof target.hash64 === 'bigint' ? target.uid : -1);
+    },
+
+    // Allstar-City combat: every walk packet reset the attacks (client.java case 98/164/248)
+    [ScriptOpcode.P_MOVECLICKS]: state => {
+        state.pushInt(state.activePlayer.moveClicks);
     },
 
     [ScriptOpcode.WORLD_REBOOT]: state => {

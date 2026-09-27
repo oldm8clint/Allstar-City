@@ -1,0 +1,613 @@
+// Allstar-Scape special attacks: calculateSpecial (C:16756), the weapon helpers maulSpec, hally, DDZ,
+// darkbow and DDSSpecial (C:456-624), SpecDamg/SpecDamgNPC, the delayed second hit (DDS2Damg,
+// C:16974) and the special buttons (C:23465-23507). npcs_rules.md section 3.4.
+//
+// specialAmount is %as_special (0-100, may go negative), usingSpecial is %sa_attack. The Lost City
+// special bar shows them through %sa_energy (0-1000) and %sa_attack.
+
+[proc,allstar_special_bar]
+%sa_energy = max(0, calc(%as_special * 10));
+
+[proc,allstar_spend_special](int $amount)
+%as_special = calc(%as_special - $amount);
+
+// ---- the special bar buttons ----
+// The 317 combat tab is picked from the weapon's name (client.SendWeapon, obj param allstar_weapon_tab):
+// 29063 on the axe tab (1698) fires the dragon battleaxe special, 29113/33033/29163/29138/48023 on the
+// bow, halberd, sword, dagger and whip tabs toggle usingSpecial, the other tabs had no handler.
+// usingSpecial survives a weapon swap.
+[if_button,combat_axe:specbar] @allstar_special_button;
+[if_button,combat_blunt:specbar] @allstar_special_button;
+[if_button,combat_bow:specbar] @allstar_special_button;
+[if_button,combat_claw:specbar] @allstar_special_button;
+[if_button,combat_crossbow:specbar] @allstar_special_button;
+[if_button,combat_hacksword:specbar] @allstar_special_button;
+[if_button,combat_heavysword:specbar] @allstar_special_button;
+[if_button,combat_pickaxe:specbar] @allstar_special_button;
+[if_button,combat_spear:specbar] @allstar_special_button;
+[if_button,combat_spiked:specbar] @allstar_special_button;
+[if_button,combat_stabsword:specbar] @allstar_special_button;
+[if_button,combat_thrown:specbar] @allstar_special_button;
+[if_button,combat_unarmed:specbar] @allstar_special_button;
+[if_button,combat_whip:specbar] @allstar_special_button;
+
+// client.specialAttacks..specialAttacks6: the bar on the whip, dagger, sword, bow, halberd and axe tabs
+[proc,allstar_spec_bar_shown](obj $weapon)(boolean)
+if ($weapon = null) {
+    return(false);
+}
+def_int $tab = oc_param($weapon, allstar_weapon_tab);
+if ($tab = 12290 | $tab = 2276 | $tab = 2423 | $tab = 1764 | $tab = 8460 | $tab = 1698) {
+    return(true);
+}
+return(false);
+
+[label,allstar_special_button]
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+def_int $tab = 5855;
+if ($weapon ! null) {
+    $tab = oc_param($weapon, allstar_weapon_tab);
+}
+if ($tab = 1698) {
+    if (~allstar_weapon = 1377) {
+        if (%as_special <= 99) {
+            mes("You do not have enough special energy left.");
+        } else {
+            ~allstar_anim_id(1670);
+            ~allstar_gfx_id(246, coordx(coord), coordz(coord));
+            ~allstar_spend_special(100);
+        }
+    }
+    ~allstar_special_bar;
+    return;
+}
+if ($tab = 1764 | $tab = 8460 | $tab = 2423 | $tab = 2276 | $tab = 12290) {
+    if (%sa_attack = ^true) {
+        %sa_attack = ^false;
+    } else {
+        %sa_attack = ^true;
+    }
+    ~allstar_special_bar;
+}
+
+// ---- calculateSpecial: cost, animation and specialDamage (returned; 0 when not set) ----
+[proc,allstar_calculate_special]()(int)
+def_int $wep = ~allstar_weapon;
+def_int $damage = 0;
+if ($wep = 4153 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 4153 & %as_special >= 50) {
+    ~allstar_anim_id(1667);
+    ~allstar_maulspec;
+    $damage = calc(30 + randominc(10));
+    ~allstar_spend_special(50);
+}
+if ($wep = 6739 & %as_special >= 100) {
+    ~allstar_anim_id(2876);
+    $damage = randominc(80);
+    ~allstar_spend_special(100);
+}
+if ($wep = 3204 & %as_special <= 99) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 3204 & %as_special >= 100) {
+    ~allstar_anim_id(1667);
+    ~allstar_hally;
+    $damage = calc(35 + randominc(10));
+    ~allstar_spend_special(100);
+}
+// the magic shortbow also fires at 50 energy or less and can drive the energy below 0 (BUG)
+if ($wep = 861 & %as_special <= 50) {
+    ~allstar_anim_id(426);
+    ~allstar_ddz;
+    $damage = calc(20 + randominc(10));
+    ~allstar_spend_special(75);
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 861 & %as_special >= 100) {
+    ~allstar_anim_id(426);
+    ~allstar_ddz;
+    $damage = calc(20 + randominc(10));
+    ~allstar_spend_special(75);
+}
+if ($wep = 15156 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 15156 & %as_special >= 50) {
+    ~allstar_anim_id(426);
+    ~allstar_darkbow;
+    ~allstar_spend_special(50);
+}
+if ($wep = 4214 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 4214 & %as_special >= 50) {
+    ~allstar_anim_id(426);
+    ~allstar_ddz;
+    ~allstar_spend_special(50);
+}
+if ($wep = 5698 & %as_special <= 24) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 5698 & %as_special >= 25) {
+    ~allstar_ddsspecial;
+    ~allstar_spend_special(25);
+}
+if ($wep = 4151 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 4151 & %as_special >= 50) {
+    ~allstar_anim_id(1658);
+    $damage = calc(20 + randominc(10));
+    ~allstar_spend_special(50);
+}
+if ($wep = 1305 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 1305 & %as_special >= 50) {
+    ~allstar_anim_id(451);
+    $damage = calc(18 + randominc(5));
+    ~allstar_spend_special(50);
+}
+if ($wep = 15334 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 15334 & %as_special >= 50) {
+    ~allstar_anim_id(2890);
+    $damage = calc(40 + randominc(5));
+    ~allstar_spend_special(50);
+}
+if ($wep = 15336 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 15336 & %as_special >= 50) {
+    ~allstar_anim_id(1499);
+    ~allstar_gfx_id(437, coordx(coord), coordz(coord));
+    ~allstar_gfx_id(293, coordx(coord), coordz(coord));
+    ~allstar_gfx_id(379, coordx(coord), coordz(coord));
+    mes("Everything starts to burn around you!!");
+    $damage = calc(40 + randominc(5));
+    ~allstar_spend_special(50);
+}
+if ($wep = 14915 & %as_special <= 49) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 14915 & %as_special >= 50) {
+    ~allstar_anim_id(405);
+    $damage = calc(40 + randominc(5));
+    ~allstar_spend_special(50);
+}
+if ($wep = 1434 & %as_special <= 39) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 1434 & %as_special >= 40) {
+    ~allstar_anim_id(1060);
+    $damage = randominc(60);
+    ~allstar_spend_special(40);
+}
+if ($wep = 7158 & %as_special <= 39) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 7158 & %as_special >= 40) {
+    ~allstar_anim_id(3157);
+    $damage = randominc(60);
+    ~allstar_spend_special(40);
+}
+if ($wep = 4587 & %as_special <= 74) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 4587 & %as_special >= 75) {
+    ~allstar_anim_id(451);
+    $damage = calc(30 + randominc(5));
+    ~allstar_spend_special(75);
+}
+if ($wep = 746 & %as_special <= 20) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 746 & %as_special >= 100) {
+    ~allstar_anim_id(451);
+    $damage = calc(40 + randominc(5));
+    ~allstar_spend_special(100);
+}
+if ($wep = 6541 & %as_special <= 74) {
+    mes("You do not have enough special energy left.");
+}
+if ($wep = 6541 & %as_special >= 75) {
+    ~allstar_anim_id(451);
+    $damage = calc(30 + randominc(5));
+    ~allstar_spend_special(75);
+}
+if (~allstar_barrows_weapon($wep) = true & %as_special >= 100) {
+    anim(~allstar_weapon_anim, 0);
+    $damage = calc(10 + randominc(5));
+    ~allstar_spend_special(100);
+}
+return($damage);
+
+[proc,allstar_barrows_weapon](int $wep)(boolean)
+switch_int ($wep) {
+    case 4755, 4734, 4718, 4726, 4747, 47 : return(true);
+    case default : return(false);
+}
+
+// ---- the weapon helpers: NPC branch while attacking an NPC, else the PvP branch ----
+// Each sets DDS2Damg: 2 cycles later a second hit of r(25) on whatever is being attacked then.
+
+[proc,allstar_maulspec]
+if (~allstar_weapon ! 4153) {
+    return;
+}
+if (%as_atknpc ! null) {
+    if (npc_finduid(%as_atknpc) = false) {
+        return;
+    }
+    ~allstar_anim_id(1667);
+    ~allstar_set_action_timer(4);
+    ~allstar_specdamg_npc(30);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_reset_stand;
+    ~allstar_stop_moving;
+    ~allstar_specdamg_npc(30);
+} else if (%as_isattacking = 1) {
+    ~allstar_specdamg(30);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_anim_id(1667);
+    ~allstar_set_action_timer(4);
+    ~allstar_stop_moving;
+}
+
+[proc,allstar_hally]
+if (~allstar_weapon ! 3204) {
+    return;
+}
+if (%as_atknpc ! null) {
+    if (npc_finduid(%as_atknpc) = false) {
+        return;
+    }
+    ~allstar_anim_id(440);
+    ~allstar_set_action_timer(4);
+    ~allstar_specdamg_npc(30);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_reset_stand;
+    ~allstar_stop_moving;
+    ~allstar_specdamg_npc(30);
+} else if (%as_isattacking = 1) {
+    ~allstar_specdamg(30);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_anim_id(440);
+    ~allstar_set_action_timer(4);
+    ~allstar_stop_moving;
+}
+
+// DDZ: only the crystal bow (4214) does anything
+[proc,allstar_ddz]
+if (~allstar_weapon ! 4214) {
+    return;
+}
+if (%as_atknpc ! null) {
+    if (npc_finduid(%as_atknpc) = false) {
+        return;
+    }
+    ~allstar_anim_id(426);
+    ~allstar_set_action_timer(4);
+    ~allstar_specdamg_npc(32);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_reset_stand;
+    ~allstar_stop_moving;
+    ~allstar_specdamg_npc(30);
+} else if (%as_isattacking = 1) {
+    ~allstar_specdamg(32);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_anim_id(462);
+    ~allstar_anim_id(426);
+    ~allstar_set_action_timer(4);
+    ~allstar_stop_moving;
+}
+
+[proc,allstar_darkbow]
+if (~allstar_weapon ! 15156) {
+    return;
+}
+if (%as_atknpc ! null) {
+    if (npc_finduid(%as_atknpc) = false) {
+        return;
+    }
+    ~allstar_anim_id(426);
+    ~allstar_set_action_timer(4);
+    ~allstar_specdamg_npc(45);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_reset_stand;
+    ~allstar_stop_moving;
+    ~allstar_specdamg_npc(45);
+} else if (%as_isattacking = 1) {
+    ~allstar_specdamg(50);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_anim_id(426);
+    ~allstar_set_action_timer(4);
+    ~allstar_stop_moving;
+    ~allstar_specdamg(50);
+}
+
+[proc,allstar_ddsspecial]
+if (~allstar_weapon ! 5698) {
+    return;
+}
+if (%as_atknpc ! null) {
+    if (npc_finduid(%as_atknpc) = false) {
+        return;
+    }
+    ~allstar_anim_id(1062);
+    ~allstar_set_action_timer(4);
+    ~allstar_specdamg_npc(31);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_reset_stand;
+    ~allstar_stop_moving;
+    ~allstar_specdamg_npc(31);
+} else if (%as_isattacking = 1) {
+    ~allstar_specdamg(31);
+    %as_spec2 = calc(map_clock + 2);
+    ~allstar_anim_id(1062);
+    ~allstar_set_action_timer(4);
+    ~allstar_stop_moving;
+}
+
+// SpecDamg(max): r(max) on AttackingOn (.active_player) unless it is dead. The clamp compares the
+// target's hitpoints with the ATTACKER's own last hitDiff (BUG, reproduced). No KillerId, no XP.
+[proc,allstar_specdamg](int $max)
+if (%as_atkplayer = null) {
+    return;
+}
+if (.finduid(%as_atkplayer) = false) {
+    return;
+}
+if (.%as_dead ! 0) {
+    return;
+}
+def_int $damage = randominc($max);
+if (calc(.stat(hitpoints) - %as_lasthit) < 0) {
+    $damage = .stat(hitpoints);
+}
+~.allstar_player_hit($damage, ^hitmark_damage);
+
+// SpecDamgNPC(max): r(max) on the active npc (attacknpc) unless it is dead; it also puts the NPC back
+// in combat with the player. Not counted in Killing[].
+[proc,allstar_specdamg_npc](int $max)
+if (%asn_dead ! 0) {
+    return;
+}
+def_int $damage = randominc($max);
+if (calc(npc_stat(hitpoints) - %as_lasthit) < 0) {
+    $damage = npc_stat(hitpoints);
+}
+~allstar_arm_npc;
+~allstar_npc_hit($damage, ^hitmark_damage);
+
+// C:16974-16981: the second hit of a special, 2 cycles later, on whatever is being attacked then.
+// DDS2Damg stays set until the player attacks something again.
+[proc,allstar_spec2_cycle]
+if (%as_spec2 = 0 | map_clock < %as_spec2) {
+    return;
+}
+if (%as_atknpc ! null) {
+    if (npc_finduid(%as_atknpc) = true) {
+        ~allstar_specdamg_npc(25);
+    }
+    %as_spec2 = 0;
+}
+if (%as_isattacking = 1 & %as_spec2 ! 0) {
+    ~allstar_specdamg(25);
+    %as_spec2 = 0;
+}
+
+// ---- the special blocks inside AttackNPC (C:28895-29110) and Attack (C:24993-25216) ----
+
+// AttackNPC: returns the NPC's hit (the special damage for most weapons). The helpers' own NPC hits
+// are replaced by it, only their delayed second hit is left.
+[proc,allstar_special_npc](int $wep, int $hit)(int)
+def_int $unused = 0;
+if ($wep = 4151 & %as_special >= 50) {
+    ~allstar_gfx_id(341, coordx(npc_coord), coordz(npc_coord));
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 746 & %as_special >= 100) {
+    ~allstar_gfx_id(433, coordx(npc_coord), coordz(npc_coord));
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 15156 & %as_special >= 50) {
+    $unused = ~allstar_calculate_special;
+    ~allstar_darkbow;
+}
+if ($wep = 15156 & %as_special >= 50) {
+    ~allstar_projectile_spec(380);
+    $unused = ~allstar_calculate_special;
+    ~allstar_ddz;
+}
+if ($wep = 1305 & %as_special >= 50) {
+    ~allstar_projectile_spec(248);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 15334 & %as_special >= 50) {
+    ~allstar_projectile_spec(436);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 15336 & %as_special >= 50) {
+    ~allstar_projectile_spec(436);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 14915 & %as_special >= 50) {
+    ~allstar_projectile_spec(282);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 3204 & %as_special >= 100) {
+    ~allstar_projectile_spec(282);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 4587 & %as_special >= 75) {
+    ~allstar_projectile_spec(347);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 6541 & %as_special >= 75) {
+    ~allstar_projectile_spec(347);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 1434 & %as_special >= 40) {
+    ~allstar_projectile_spec(251);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 7158 & %as_special >= 40) {
+    ~allstar_projectile_spec(479);
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 5698 & %as_special >= 25) {
+    ~allstar_projectile_spec(252);
+    ~allstar_projectile_spec(252);
+    $unused = ~allstar_calculate_special;
+    ~allstar_ddsspecial;
+    ~allstar_npc_poison_start;
+}
+if ($wep = 4153 & %as_special >= 50) {
+    ~allstar_projectile_spec(340);
+    $unused = ~allstar_calculate_special;
+    ~allstar_maulspec;
+}
+if ($wep = 6739 & %as_special >= 100) {
+    $hit = ~allstar_calculate_special;
+}
+if ($wep = 861 & %as_special >= 100) {
+    $unused = ~allstar_calculate_special;
+    ~allstar_ddz;
+}
+if (~allstar_barrows_weapon($wep) = true & %as_special >= 100) {
+    ~allstar_projectile_spec(432);
+    $hit = ~allstar_calculate_special;
+}
+%sa_attack = ^false;
+~allstar_special_bar;
+return($hit);
+
+// Attack (PvP): the target's hit was already written before this block, so most specials only cost
+// energy; the helpers' SpecDamg hits replace it. Barrows weapons empty the target's special energy.
+[proc,allstar_special_player](int $wep)
+def_int $unused = 0;
+if ($wep = 4151 & %as_special >= 50) {
+    ~allstar_gfx_id(341, coordx(.coord), coordz(.coord));
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 746 & %as_special >= 100) {
+    ~allstar_gfx_id(433, coordx(.coord), coordz(.coord));
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 15156 & %as_special >= 50) {
+    ~allstar_projectile_spec(380);
+    $unused = ~allstar_calculate_special;
+    ~allstar_darkbow;
+}
+if ($wep = 1305 & %as_special >= 50) {
+    ~allstar_projectile_spec(248);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 15334 & %as_special >= 50) {
+    ~allstar_projectile_spec(436);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 15336 & %as_special >= 50) {
+    ~allstar_projectile_spec(282);
+    ~allstar_projectile_spec(497);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 14915 & %as_special >= 50) {
+    ~allstar_projectile_spec(282);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 3204 & %as_special >= 100) {
+    ~allstar_projectile_spec(282);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 4587 & %as_special >= 75) {
+    ~allstar_projectile_spec(347);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 6541 & %as_special >= 75) {
+    ~allstar_projectile_spec(347);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 1434 & %as_special >= 40) {
+    ~allstar_projectile_spec(251);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 7158 & %as_special >= 40) {
+    ~allstar_projectile_spec(479);
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 5698 & %as_special >= 25) {
+    ~allstar_projectile_spec(252);
+    ~allstar_projectile_spec(252);
+    $unused = ~allstar_calculate_special;
+    ~allstar_ddsspecial;
+    if (.finduid(%as_atkplayer) = true) {
+        ~.allstar_poison_player;
+    }
+}
+if ($wep = 4153 & %as_special >= 50) {
+    ~allstar_projectile_spec(340);
+    $unused = ~allstar_calculate_special;
+    ~allstar_maulspec;
+}
+if ($wep = 6739 & %as_special >= 100) {
+    $unused = ~allstar_calculate_special;
+}
+if ($wep = 3204 & %as_special >= 100) {
+    $unused = ~allstar_calculate_special;
+    ~allstar_hally;
+}
+if ($wep = 861 & %as_special >= 100) {
+    $unused = ~allstar_calculate_special;
+    ~allstar_ddz;
+}
+if (~allstar_barrows_weapon($wep) = true & %as_special >= 100) {
+    ~allstar_projectile_spec(432);
+    $unused = ~allstar_calculate_special;
+    if (.finduid(%as_atkplayer) = true) {
+        .%as_special = 0;
+    }
+}
+%sa_attack = ^false;
+~allstar_special_bar;
+
+// ProjectileSpec -> GraphicsHandler.createSpec: the projectile, and client.specspell sets EVERY online
+// player's actionTimer to 0 (BUG, reproduced). The target (.active_player) is found again afterwards.
+[proc,allstar_projectile_spec](int $gfx)
+def_spotanim $anim = enum(int, spotanim, allstar_spotanim_ids, $gfx);
+if ($anim ! null) {
+    if (%as_atknpc ! null) {
+        if (npc_finduid(%as_atknpc) = true) {
+            projanim_npc(coord, npc_uid, $anim, 43, 31, 51, 95, 16, 64);
+        }
+    } else if (%as_atkplayer ! null) {
+        if (.finduid(%as_atkplayer) = true) {
+            projanim_pl(coord, .uid, $anim, 43, 31, 51, 95, 16, 64);
+        }
+    }
+}
+playerall;
+while (.huntnext = true) {
+    .%allstar_action_timer = map_clock;
+}
+if (%as_atkplayer ! null) {
+    def_boolean $found = .finduid(%as_atkplayer);
+}
+
+// createProjectile towards the npc being attacked (angle 50, 51 -> speed, slope 16, distance 64)
+[proc,allstar_projectile_npc](int $gfx, int $angle, int $speed, int $from, int $to)
+def_spotanim $anim = enum(int, spotanim, allstar_spotanim_ids, $gfx);
+if ($anim ! null) {
+    projanim_npc(coord, npc_uid, $anim, $from, $to, 51, $speed, 16, $angle);
+}
+
+// createProjectile towards the player being attacked (.active_player)
+[proc,allstar_projectile_player](int $gfx, int $angle, int $speed, int $from, int $to)
+def_spotanim $anim = enum(int, spotanim, allstar_spotanim_ids, $gfx);
+if ($anim ! null) {
+    projanim_pl(coord, .uid, $anim, $from, $to, 51, $speed, 16, $angle);
+}

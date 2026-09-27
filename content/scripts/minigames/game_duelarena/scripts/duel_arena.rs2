@@ -289,14 +289,11 @@ if( ~in_duel_arena_challenge_area = true) {
     ~toggle_duel_challenge_off;
 }
 
+// Allstar-City: Allstar-Scape has no dueling; the duel arena keeps the Allstar player options and
+// the Safe/Wild overlay (ui allstar_walkable).
 [proc,toggle_duel_challenge_on]
-if_openoverlay(overlay_duel);
-set_player_op("Challenge", 1, ^false);
-set_player_op(null, 2, ^false);
 
 [proc,toggle_duel_challenge_off]
-if_openoverlay(null);
-set_player_op(null, 1, ^false);
 
 // Messages are taken from a variety of old sources and are always in the same order
 // https://imgur.com/ETH1z4L

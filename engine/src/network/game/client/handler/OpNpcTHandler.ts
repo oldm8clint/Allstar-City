@@ -47,6 +47,10 @@ export default class OpNpcTHandler extends ClientGameMessageHandler<OpNpcT> {
             return false;
         }
 
+        if (player.allstarPacketScript('allstar_opnpct', [npc.uid, spellComId])) {
+            return true;
+        }
+
         player.clearPendingAction();
         player.setInteraction(Interaction.ENGINE, npc, ServerTriggerType.APNPCT, spellComId);
         player.opcalled = true;

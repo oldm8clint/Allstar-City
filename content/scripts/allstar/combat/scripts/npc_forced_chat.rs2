@@ -1,0 +1,81 @@
+// Allstar-Scape NPC overhead chat (NPCHandler.process NH:495-900, npcs_rules.md section 2.7).
+// Runs in the NPC's cycle while it is alive. "2/30" = misc.random2(30) <= 2, "1/30" = random2(30) == 1.
+
+[proc,allstar_npc_forced_chat](npc $type)
+switch_npc ($type) {
+    case cow, cow2, cow2_calf, cow3, cow3_calf :
+        if (random(50) = 0) {
+            npc_say("Moo");
+        }
+    case macro_geni : ~allstar_npc_chat2("Welcome to Allstar-Scape!");
+    case kinglathas : ~allstar_npc_chat2("Mod & Admin Portal Only!");
+    case brother_cedric : ~allstar_npc_chat2("Strength Guild, 99 strength to Enter!");
+    case bearded_dark_wizard : ~allstar_npc_chat2("Range/Magic Guild, 99 Range and Magic to Enter!");
+    case king_percival : ~allstar_npc_chat2("Welcome to the Mod/Admin Zone..Keep up the Good Work!");
+    case newbie_basics_instructor : ~allstar_npc_chat2("You Finally Made It here..Keep up the Good Work!");
+    case bonzo : ~allstar_npc_chat2("Icon Minigame!");
+    case king_roald : ~allstar_npc_chat2("Welcome to Training Made To Own N33bs!");
+    case alfonse_the_waiter : ~allstar_npc_chat2("Enchanted Minigame!");
+    case wise_old_man : ~allstar_npc_chat2("Clan Wars Portal!!");
+    case zeke : ~allstar_npc_chat2("Shittywok Shop!");
+    case ali_the_farmer : ~allstar_npc_chat2("Fishing Portal!");
+    case farming_shopkeeper_1 : ~allstar_npc_chat2("Farming Shop!By seed's for patch's!");
+    case magic_store_owner : ~allstar_npc_chat2("Magic Shop!");
+    case hans : ~allstar_npc_chat2("Welcome to Allstar-Scape's Shopping Area!");
+    case fairy :
+        if (random(30) = 0) {
+            npc_say("Players Online: <tostring(~allstar_players_online)>");
+        }
+    case lowe : ~allstar_npc_chat2("Allstar's Pking Shop!");
+    case farmer_farming : ~allstar_npc_chat2("Shops Here!");
+    case ahoy_ghost_shopkeeper : ~allstar_npc_chat2("Pur3 Sh0p!");
+    case prince_ali_prison : ~allstar_npc_chat2("Barrows Portal!");
+    case macro_frog_princess : ~allstar_npc_chat2("Training Portal!");
+    case zoo_keeper : ~allstar_npc_chat2("Train Your Skills Here!");
+    case dt_bandit_shopkeeper : ~allstar_npc_chat2("God Armor Shop!");
+    case generalshopkeeper2 : ~allstar_npc_chat2("General Storez0r!");
+    case thessalia : ~allstar_npc_chat2("Gloves, Robes, Boots Shop!");
+    case generalshopkeeper6 : ~allstar_npc_chat2("Skillers Shop!");
+    case generalshopkeeper5 : ~allstar_npc_chat2("Helmet Shop!");
+    case merlin2 : ~allstar_npc_chat2("You need the frozen key to get in this portal! Kill the troll for key!");
+    case generalshopkeeper1 : ~allstar_npc_chat2("Allstar's Ownage Shop!");
+    case generalshopkeeper3 : ~allstar_npc_chat2("Silab Member Shop!");
+    case khazard_shopkeeper : ~allstar_npc_chat2("Skill Cape Shop!");
+    case lathas_shopkeeper : ~allstar_npc_chat2("Hood Shop!");
+    case peksa : ~allstar_npc_chat2("Slayer Shop!");
+    case generalassistant5 : ~allstar_npc_chat2("Farming Shop!");
+    case macro_sandwich_lady_npc : ~allstar_npc_chat2("Click the chests for slayer exp ..");
+    case skavidtalker2 : ~allstar_npc_chat2("Et .. Phone .. Home!");
+    case horvik_the_armourer : ~allstar_npc_chat2("Smithin' Shop");
+    case gerrant : ~allstar_npc_chat2("3rd Age Armor Shop");
+    case mm_sleeping_monkey_guard, doorman : ~allstar_npc_chat1("Tele to varrock");
+    case sigbert_the_adventurer : ~allstar_npc_chat1("Tele to tzhaar caves");
+    case elf_overpass_guard : ~allstar_npc_chat1("DO YOU DARE ENTER THE BLACK DRAGONS LAIR?");
+    case regicide_old_camp_tracker : ~allstar_npc_chat1("GO THROUGH THIS DOOR TO TELEPORT TO THE BLACK DRAGON CAVE");
+    case magic_carpet_monkey : ~allstar_npc_chat1("Tele to the monkey training area");
+    case waa_skullball : ~allstar_npc_chat1("Go to www.projectdestiny.co.nr to buy and sell things!");
+    case santa_claus :
+        // misc.random2(50) <= 3; the "Mod Allstar is ONLINE/OFFLINE" branch below it is unreachable
+        if (random(50) < 3) {
+            npc_say("I shoulda never sold that crack! Ho HO HO!!");
+        }
+}
+
+[proc,allstar_npc_chat2](string $text)
+if (random(30) < 2) {
+    npc_say($text);
+}
+
+[proc,allstar_npc_chat1](string $text)
+if (random(30) = 0) {
+    npc_say($text);
+}
+
+// PlayerHandler.getPlayerCount()
+[proc,allstar_players_online]()(int)
+def_int $count = 0;
+playerall;
+while (huntnext = true) {
+    $count = calc($count + 1);
+}
+return($count);

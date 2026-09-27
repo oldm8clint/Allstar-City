@@ -1,0 +1,222 @@
+// Allstar-Scape NPC processing (NPCHandler.process, allstar/spec/npcs_rules.md section 2.3).
+//
+// Allstar-Scape NPCs had no Lost City AI: every cycle NPCHandler ran the routine below for each NPC.
+// The engine (NODE_ALLSTAR_COMBAT, engine/src/engine/AllstarCombat.ts) calls [proc,allstar_npc_cycle]
+// for every active NPC at the start of each cycle, applies pending hits with [proc,allstar_npc_update]
+// after the players have acted, and [proc,allstar_npc_respawn] when a dead NPC comes back.
+
+[proc,allstar_npc_cycle]
+if (%asn_init = 0) {
+    %asn_init = 1;
+    %asn_spawn = npc_coord;
+}
+if (%asn_timer > 0) {
+    %asn_timer = calc(%asn_timer - 1);
+}
+~allstar_npc_poison;
+if (%asn_dead > 0) {
+    ~allstar_npc_dead;
+    return;
+}
+
+def_npc $type = npc_type;
+if ($type = horror_rockcrab_inactive | $type = horror_rockcrab_small_inactive) {
+    ~allstar_npc_rocks;
+} else if (%asn_nowalk = 0) {
+    // misc.random2(10) == 1, and only for spawns with a usable autospawn.cfg box
+    if (random(10) = 0) {
+        ~allstar_npc_wander;
+    }
+} else if (%asn_attacked = 1) {
+    if (~allstar_npc_is_mage($type) = true) {
+        ~allstar_npc_attack_mage;
+    } else {
+        ~allstar_npc_attack;
+    }
+}
+$type = npc_type;
+~allstar_npc_forced_chat($type);
+~allstar_npc_leash($type);
+if ($type = kalphite_queen | $type = tzhaar_fightcave_swarm_boss) {
+    ~allstar_npc_aggression;
+}
+
+// NPCHandler.newNPC after a death: fresh state, and dead Rock crabs come back as Rocks.
+[proc,allstar_npc_respawn]
+if (npc_type = horror_rockcrab) {
+    npc_changetype(horror_rockcrab_inactive, ^as_forever);
+} else if (npc_type = horror_rockcrab_small) {
+    npc_changetype(horror_rockcrab_small_inactive, ^as_forever);
+}
+
+// Random walk (NH:371-391): one step of r(1),r(1) in a random diagonal quadrant, only onto a tile
+// inside the spawn's autospawn.cfg box (IsInRange). No clipping (the engine moves Allstar NPCs freely).
+[proc,allstar_npc_wander]
+def_coord $min = enum(coord, coord, allstar_npc_wander_min, %asn_spawn);
+if ($min = null) {
+    return;
+}
+def_coord $max = enum(coord, coord, allstar_npc_wander_max, %asn_spawn);
+def_int $dx = randominc(1);
+def_int $dz = randominc(1);
+def_int $rnd = random(4);
+if ($rnd = 0) {
+    $dx = calc(0 - $dx);
+    $dz = calc(0 - $dz);
+} else if ($rnd = 1) {
+    $dx = calc(0 - $dx);
+} else if ($rnd = 2) {
+    $dz = calc(0 - $dz);
+}
+if ($dx = 0 & $dz = 0) {
+    return;
+}
+def_int $x = calc(coordx(npc_coord) + $dx);
+def_int $z = calc(coordz(npc_coord) + $dz);
+if ($x > coordx($max) | $x < coordx($min) | $z > coordz($max) | $z < coordz($min)) {
+    return;
+}
+npc_walk(movecoord(npc_coord, $dx, 0, $dz));
+
+// Rocks 1266/1268 (NH:334-370): a player within 2 tiles (any height) wakes them 2 cycles later; they
+// are replaced by the Rock crab (id - 1) at the spawn point with the same max hitpoints.
+[proc,allstar_npc_rocks]
+if (%asn_close = 0) {
+    playerall;
+    while (huntnext = true) {
+        if (%asn_close = 0 & ~allstar_gooddistance_to(npc_coord, coord, 2) = true) {
+            %asn_timer = 2;
+            %asn_close = 1;
+        }
+    }
+}
+if (%asn_timer = 0 & %asn_close = 1) {
+    ~allstar_npc_reset_state;
+    if (npc_type = horror_rockcrab_inactive) {
+        npc_changetype(horror_rockcrab, ^as_forever);
+    } else {
+        npc_changetype(horror_rockcrab_small, ^as_forever);
+    }
+}
+
+// A brand new NPC object (newNPC) as far as the Allstar-Scape fields go.
+[proc,allstar_npc_reset_state]
+%asn_timer = 0;
+%asn_killing = null;
+%asn_nowalk = 0;
+%asn_attacked = 0;
+%asn_close = 0;
+%asn_dead = 0;
+%asn_hit = 0;
+%asn_hittype = 0;
+%asn_poisondelay = 0;
+%asn_poisonclear = 0;
+
+// NH:773-801: an NPC stops fighting (RandomWalk = true) as soon as ANY online player, on any height,
+// is 5 or more tiles away (Euclidean). Only a new attack click, spell or special re-arms it. The
+// second loop excludes the Kalphite Queen but the first one already covered her. (BUG, reproduced.)
+[proc,allstar_npc_leash](npc $type)
+if (%asn_nowalk = 0) {
+    return;
+}
+def_coord $npc = npc_coord;
+playerall;
+while (huntnext = true) {
+    if (~allstar_distance($npc, coord) >= 5) {
+        %asn_nowalk = 0;
+        return;
+    }
+}
+
+// NH:802-830: the Kalphite Queen and TzTok-Jad attack every player within 20 tiles on their level;
+// the last such player in the list becomes the target.
+[proc,allstar_npc_aggression]
+def_coord $npc = npc_coord;
+playerall;
+while (huntnext = true) {
+    if (coordy(coord) = coordy($npc) & ~allstar_distance($npc, coord) <= 20) {
+        %asn_killing = uid;
+        %asn_nowalk = 1;
+        %asn_attacked = 1;
+    }
+}
+
+// NPCHandler.ResetAttackPlayer
+[proc,allstar_npc_reset_attack]
+%asn_attacked = 0;
+%asn_killing = null;
+%asn_nowalk = 0;
+npc_anim(human_ready, 0);
+
+// The one pending hit of this cycle (NPC.appendHitUpdate): HP -= hitDiff once for every player that
+// has the NPC in view (BUG, reproduced: damage is multiplied by the number of viewers); the hitsplat
+// shows the single hit. HP <= 0 marks the NPC dead.
+[proc,allstar_npc_update]
+if (%asn_hit = 0) {
+    return;
+}
+def_int $hit = calc(%asn_hit - 1);
+def_int $type = %asn_hittype;
+%asn_hit = 0;
+%asn_hittype = 0;
+def_int $viewers = ~allstar_npc_viewers;
+if ($hit > 0) {
+    npc_damage($type, $hit);
+    if ($viewers > 1) {
+        npc_statsub(hitpoints, calc($hit * ($viewers - 1)), 0);
+    }
+} else {
+    npc_damage(^hitmark_block, 0);
+}
+if (npc_stat(hitpoints) <= 0 & %asn_dead = 0) {
+    %asn_dead = 1;
+}
+
+// Players that have the NPC in their NPC list: same level, -16..15 tiles on each axis (Player.withinDistance)
+[proc,allstar_npc_viewers]()(int)
+def_coord $npc = npc_coord;
+def_int $count = 0;
+huntall($npc, 16, 0);
+while (huntnext = true) {
+    if (coordy(coord) = coordy($npc)) {
+        def_int $dx = calc(coordx($npc) - coordx(coord));
+        def_int $dz = calc(coordz($npc) - coordz(coord));
+        if ($dx <= 15 & $dx >= -16 & $dz <= 15 & $dz >= -16) {
+            $count = calc($count + 1);
+        }
+    }
+}
+return($count);
+
+// Store a hit for the update (NPC.hitDiff). Within a cycle the last hit written wins.
+[proc,allstar_npc_hit](int $damage, int $type)
+%asn_hit = calc($damage + 1);
+%asn_hittype = $type;
+
+// NPCHandler.PoisonNPC
+[proc,allstar_npc_poison_start]
+%asn_poisonclear = 0;
+%asn_poisondelay = 40;
+
+// NPCHandler.Poison: every 39 cycles 3 + r(15), at most 15 hits. (The 999,999-cycle start value for
+// NPCs that were never poisoned is not ported.)
+[proc,allstar_npc_poison]
+if (%asn_poisondelay <= 0) {
+    return;
+}
+if (%asn_poisondelay <= 1) {
+    ~allstar_npc_hit(calc(3 + randominc(15)), ^hitmark_poison);
+    %asn_poisonclear = calc(%asn_poisonclear + 1);
+    %asn_poisondelay = 40;
+}
+%asn_poisondelay = calc(%asn_poisondelay - 1);
+if (%asn_poisonclear >= 15) {
+    %asn_poisondelay = 0;
+}
+
+// Types that use AttackPlayerMage (NH:395-399)
+[proc,allstar_npc_is_mage](npc $type)(boolean)
+switch_npc ($type) {
+    case slayer_infernal_mage_3, shade_level1, shade_level3, kalphite_queen_dead, black_dragon : return(true);
+    case default : return(false);
+}

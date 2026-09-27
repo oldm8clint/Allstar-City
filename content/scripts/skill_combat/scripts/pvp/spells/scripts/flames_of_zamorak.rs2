@@ -1,6 +1,4 @@
-[opplayert,magic:flames_of_zamorak] ~pvp_flames_of_zamorak;
-[applayert,magic:flames_of_zamorak] ~pvp_flames_of_zamorak;
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [proc,pvp_flames_of_zamorak]
 // look for spell in db
 def_dbrow $spell_data = ~get_spell_data(^flames_of_zamorak);

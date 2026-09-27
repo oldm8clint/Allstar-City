@@ -129,6 +129,7 @@ if (inv_freespace(inv) < 1) {
     ~update_all($weapon);
 }
 mes("The Chaos Elemental removes your weapon!");
+~allstar_poison_player;
 
 // Player.removeequipped (::heal; the Chaos Elemental's special)
 [proc,allstar_removeequipped]

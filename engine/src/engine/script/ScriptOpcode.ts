@@ -468,7 +468,15 @@ export const enum ScriptOpcode {
     NAMELIST_HAS, // custom
     NAMELIST_CLEAR, // custom
     WORLD_REBOOT, // custom: system update countdown in seconds
-    ALLSTAR_LOG // custom: append a line to data/allstar/logs/<file>.txt
+    ALLSTAR_LOG, // custom: append a line to data/allstar/logs/<file>.txt
+
+    // Allstar-City combat
+    LASTMOVE, // custom: cycle after the player's last step (Player.DirectionCount checks)
+    STAT_XP, // custom: a stat's xp (NPCHandler.getLevelForXP for the ring of life)
+    P_OPCLICKED, // custom: the current interaction is a client click, not a p_op* continuation
+    P_TARGETNPC, // custom: uid of the npc the player is interacting with (walking to)
+    P_TARGETPLAYER, // custom: uid of the player the player is interacting with (walking to)
+    P_MOVECLICKS // custom: count of the player's move clicks (Allstar-Scape walk packets reset attacks)
 }
 
 export const ScriptOpcodeMap: Map<string, number> = new Map([
@@ -911,7 +919,15 @@ export const ScriptOpcodeMap: Map<string, number> = new Map([
     ['NAMELIST_HAS', ScriptOpcode.NAMELIST_HAS],
     ['NAMELIST_CLEAR', ScriptOpcode.NAMELIST_CLEAR],
     ['WORLD_REBOOT', ScriptOpcode.WORLD_REBOOT],
-    ['ALLSTAR_LOG', ScriptOpcode.ALLSTAR_LOG]
+    ['ALLSTAR_LOG', ScriptOpcode.ALLSTAR_LOG],
+
+    // Allstar-City combat
+    ['LASTMOVE', ScriptOpcode.LASTMOVE],
+    ['STAT_XP', ScriptOpcode.STAT_XP],
+    ['P_OPCLICKED', ScriptOpcode.P_OPCLICKED],
+    ['P_TARGETNPC', ScriptOpcode.P_TARGETNPC],
+    ['P_TARGETPLAYER', ScriptOpcode.P_TARGETPLAYER],
+    ['P_MOVECLICKS', ScriptOpcode.P_MOVECLICKS]
 ]);
 
 export const ScriptOpcodeNameMap: Map<number, string> = new Map(Array.from(ScriptOpcodeMap.entries()).map(([key, value]) => [value, key]));

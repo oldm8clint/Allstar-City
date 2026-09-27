@@ -162,3 +162,7 @@ Shops: 64 defined (TotalShops 65), 67 generated, 1010 stock slots, 59 NPC shop o
 Id enums: 8086 objs, 3852 npcs, 3997 seqs, 666 spotanims, 391 interfaces
 TextHandler: 368 writes, 355 sent, not text in 377: 332 (combat_staff_2:com_3, graphic), 340 (combat_staff_2:com_11, graphic), 341 (inter_14, no type), 342 (combat_staff_2:com_13, model), 351 (combat_staff_2:com_22, model), 354 (inter_14:com_0, rect), 343 (combat_staff_2:com_14, model), 344 (combat_staff_2:com_15, model), 345 (combat_staff_2:com_16, model), 346 (combat_staff_2:com_17, model), 347 (combat_staff_2:com_18, model), 348 (combat_staff_2:com_19, model), 1336 (magic:com_184, model)
 NPC names: 2650 npc.cfg names; clue rewards: 102 items in 9 pools
+  - combat: item 8447 not defined yet (allstar_item_8447); ~allstar_objid cannot see it
+  - combat: item 10229 not defined yet (allstar_item_10229); ~allstar_objid cannot see it
+  - combat: item 10431 not defined yet (allstar_item_10431); ~allstar_objid cannot see it
+Combat: 181 npc.cfg hitpoints, 37 wandering spawn tiles, 43 drop tables

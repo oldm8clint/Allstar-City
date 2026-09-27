@@ -1,5 +1,4 @@
-[opnpc2,_] @player_combat_start;
-[apnpc2,_] @player_combat_start_ap;
+// Allstar-City: [opnpc2,_]/[apnpc2,_] are Allstar-Scape's attack (allstar/combat/scripts/player_combat.rs2).
 
 [label,player_combat_start_ap]
 def_int $attackrange = ~player_attackrange(inv_getobj(worn, ^wearpos_rhand));

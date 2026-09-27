@@ -1,0 +1,47 @@
+// Allstar-Scape player poison (client.Poison C:9182, PoisonPlayer C:9222, process C:17128-17190).
+// npcs_rules.md section 3.6. (The KBDLair/Dungeon1 damage zones are objects' allstar_zones.)
+
+// PoisonPlayer(): PoisonDelay = 40, PoisonClear = 0; the first hit comes 39 cycles later.
+// %as_poisondelay is the cycle PoisonDelay reaches 1 (0: never poisoned since login).
+[proc,allstar_poison_player]
+%as_poisonclear = 0;
+%as_poisondelay = calc(map_clock + 39);
+
+[proc,.allstar_poison_player]
+.%as_poisonclear = 0;
+.%as_poisondelay = calc(map_clock + 39);
+
+// Poison(): 1 + r(5) (1..6) every 39 cycles with the poison hitsplat, "You start to die of poison".
+// Hitpoints that reach 0 here kill the player at once.
+[proc,allstar_player_poison]
+if (%as_poisondelay = 0 | map_clock < %as_poisondelay) {
+    return;
+}
+def_int $hit = calc(1 + randominc(5));
+mes("You start to die of poison");
+%as_poisondelay = calc(map_clock + 39);
+~allstar_player_hit($hit, ^hitmark_poison);
+~allstar_incombat;
+%as_poisonclear = calc(%as_poisonclear + 1);
+if (calc(stat(hitpoints) - $hit) < 1 & %as_dead = 0) {
+    %as_dead = 2;
+    if (p_finduid(uid) = true) {
+        ~allstar_apply_dead;
+    } else {
+        strongqueue(allstar_apply_dead, 0, 0);
+    }
+}
+
+// After 15 poison hits: "The poison wears off..." every cycle until the player is poisoned again or
+// logs out (PoisonClear is only reset by PoisonPlayer; BUG, reproduced)
+[proc,allstar_poison_wears_off]
+if (%as_poisonclear >= 15) {
+    %as_poisondelay = 0;
+    mes("The poison wears off...");
+}
+
+// process() C:17182: a 1 in 3,000,000 chance every cycle of being sent to 3387,9786
+[proc,allstar_random_event]
+if (random(3000000) = 123) {
+    strongqueue*(allstar_telejump, 0)(movecoord(coord, calc(3387 - coordx(coord)), 0, calc(9786 - coordz(coord))));
+}

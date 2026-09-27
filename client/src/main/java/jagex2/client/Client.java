@@ -9521,13 +9521,13 @@ public class Client extends GameShell {
 				}
 			}
 			if ((var8 & 0x80) != 0) {
-				// DAMAGE
-				int var9 = arg0.g1_alt1();
+				// DAMAGE (Allstar-City: 2-byte damage and hitpoints for NPCs with more than 255 hitpoints)
+				int var9 = arg0.g2();
 				int var10 = arg0.g1_alt1();
 				var7.method353(loopCycle, var9, var10);
 				var7.field1142 = loopCycle + 300;
-				var7.field1143 = arg0.g1();
-				var7.field1144 = arg0.g1_alt3();
+				var7.field1143 = arg0.g2();
+				var7.field1144 = arg0.g2();
 			}
 			if ((var8 & 0x4) != 0) {
 				// SPOTANIM
@@ -9582,13 +9582,13 @@ public class Client extends GameShell {
 				}
 			}
 			if ((var8 & 0x10) != 0) {
-				// DAMAGE2
-				int var15 = arg0.g1_alt3();
+				// DAMAGE2 (Allstar-City: 2-byte damage and hitpoints)
+				int var15 = arg0.g2();
 				int var16 = arg0.g1_alt3();
 				var7.method353(loopCycle, var15, var16);
 				var7.field1142 = loopCycle + 300;
-				var7.field1143 = arg0.g1();
-				var7.field1144 = arg0.g1_alt2();
+				var7.field1143 = arg0.g2();
+				var7.field1144 = arg0.g2();
 			}
 		}
 	}
