@@ -1,0 +1,218 @@
+// Allstar-Scape NPC attacks (NPCHandler.AttackPlayer / AttackPlayerMage, npcs_rules.md section 2.4).
+// No accuracy roll, no player defence, protection prayers do nothing against NPCs.
+
+// NPCHandler.newNPC: MaxHit = floor(MaxHP / 100), at least 1
+[proc,allstar_npc_maxhit]()(int)
+return(max(1, calc(npc_basestat(hitpoints) / 100)));
+
+// NPCHandler.AttackPlayer (NH:2047): the NPC steps towards its target, then hits when adjacent.
+[proc,allstar_npc_attack]
+if (finduid(%asn_killing) = false) {
+    ~allstar_npc_reset_attack;
+    return;
+}
+// Player.DirectionCount < 2: a target that moved during the last 2 cycles is neither chased nor hit
+if (lastmove >= calc(map_clock - 1)) {
+    return;
+}
+def_npc $type = npc_type;
+def_coord $target = coord;
+def_int $hp = stat(hitpoints);
+def_int $hit = randominc(~allstar_npc_maxhit);
+def_coord $npc = npc_coord;
+if ($type ! chaoselemental & $type ! slayer_infernal_mage_3) {
+    $npc = ~allstar_npc_follow_step($target);
+}
+if (~allstar_gooddistance_to($npc, $target, 1) = false & $type ! chaoselemental) {
+    return;
+}
+if (%asn_timer ! 0) {
+    return;
+}
+if (~allstar_ringoflife_npc($hp) = true) {
+    return;
+}
+if ($hp <= 0) {
+    // players[Player].IsDead
+    ~allstar_npc_reset_attack;
+    return;
+}
+def_seq $anim = human_stake;
+if ($type = cow | $type = cow2 | $type = cow2_calf | $type = cow3 | $type = cow3_calf) {
+    $anim = cow_attack;
+} else if ($type = chicken) {
+    $anim = chicken_attack;
+} else if ($type = giantrat1) {
+    $anim = giantrat_attack;
+} else if ($type = hero) {
+    $anim = seq_451;
+    $hit = calc(4 + randominc(9));
+} else if ($type = deserttreasure_mummy_1) {
+    $anim = human_unarmedpunch;
+    $hit = calc(4 + randominc(18));
+} else if ($type = paladin2) {
+    $anim = seq_451;
+    $hit = calc(4 + randominc(8));
+} else if ($type = king_dragon) {
+    $anim = dragon_head_attack;
+} else if ($type = al_kharid_warrior) {
+    $anim = seq_451;
+    $hit = calc(4 + randominc(2));
+} else if ($type = red_dragon | $type = black_dragon | $type = blue_dragon | $type = green_dragon | $type = bronze_dragon | $type = iron_dragon) {
+    $anim = dragon_attack;
+} else if ($type = kalphite_queen) {
+    $anim = kalphite_attack_mandibles;
+    $hit = calc(4 + randominc(35));
+} else if ($type = barrows_dharok) {
+    $anim = barrow_dharok_crush;
+    $hit = calc(4 + randominc(15));
+} else if ($type = barrows_guthan) {
+    $anim = barrows_war_spear_stab;
+    $hit = calc(4 + randominc(15));
+} else if ($type = barrows_torag) {
+    $anim = barrow_torag_crush;
+    $hit = calc(4 + randominc(15));
+} else if ($type = barrows_verac) {
+    $anim = barrow_guthan_crush;
+    $hit = calc(4 + randominc(15));
+} else if ($type = greater_demon) {
+    $anim = demon_attack;
+} else if ($type = lesser_demon) {
+    $anim = demon_attack;
+    $hit = calc(4 + randominc(13));
+} else if ($type = tzhaar_fightcave_swarm_boss & randominc(2) = 1) {
+    $anim = lordmagmus_attack;
+    $hit = calc(4 + randominc(25));
+} else if ($type = tzhaar_fightcave_swarm_boss & randominc(3) = 2) {
+    $anim = lordmagmus_smash;
+    spotanim_map(tzhaar_rock_smash, $target, 0, 0);
+    $hit = calc(4 + randominc(30));
+} else if ($type = tzhaar_fightcave_swarm_boss & randominc(5) = 3) {
+    $anim = lordmagmus_fire;
+    spotanim_map(tzhaar_rock_smash, $target, 0, 0);
+    $hit = calc(4 + randominc(35));
+} else if ($type = chaoselemental) {
+    // randomremoveschaos() = {1, 2, 2, 2}: 1 in 4 takes the weapon off on the player's next cycle
+    if (random(4) = 0) {
+        ~allstar_removeequipped;
+    }
+} else if ($type = tzhaar_fightcave_swarm_boss) {
+    $anim = lordmagmus_fire;
+    $hit = calc(4 + randominc(25));
+}
+// 64 Ice spider, 752 Lesser demon and everything else use 0x326 (806) and r(MaxHit)
+npc_anim($anim, 0);
+anim(~allstar_block_anim(inv_getobj(worn, ^wearpos_rhand)), 0);
+~allstar_player_hit(min($hit, $hp), ^hitmark_damage);
+%asn_timer = 7;
+
+// NPCHandler.AttackPlayerMage (NH:2219): hits from any distance, never moves.
+[proc,allstar_npc_attack_mage]
+if (finduid(%asn_killing) = false) {
+    ~allstar_npc_reset_attack;
+    return;
+}
+if (lastmove >= calc(map_clock - 1)) {
+    return;
+}
+if (%asn_timer ! 0) {
+    return;
+}
+def_int $hp = stat(hitpoints);
+if (~allstar_ringoflife_npc($hp) = true) {
+    return;
+}
+if ($hp <= 0) {
+    ~allstar_npc_reset_attack;
+    return;
+}
+def_npc $type = npc_type;
+def_int $hit = 0;
+if ($type = slayer_infernal_mage_3) {
+    spotanim_map(ice_barrage_impact, coord, 0, 0);
+    $hit = calc(6 + randominc(43));
+} else if ($type = zq_mainzombie3) {
+    $hit = calc(8 + randominc(20));
+} else if ($type = shade_level1) {
+    spotanim_map(ice_blitz_impact, coord, 0, 0);
+    $hit = calc(2 + randominc(19));
+} else if ($type = shade_level3) {
+    spotanim_map(ice_barrage_travel, npc_coord, 0, 0);
+    spotanim_map(ice_burst_impact, coord, 0, 0);
+    $hit = calc(4 + randominc(35));
+} else if ($type = kalphite_queen_dead) {
+    spotanim_map(chaoselemental_spotanim_madness_impact, coord, 0, 0);
+    $hit = calc(2 + randominc(88));
+} else if ($type = black_dragon) {
+    spotanim_map(nezik_flamestrike, coord, 0, 0);
+    $hit = calc(2 + randominc(96));
+}
+npc_anim(human_caststrike, 0);
+// setPlrAnimation(GetPlrBlockAnim(weapon)) changed the player's stand animation; played once here
+anim(~allstar_plr_block_anim(inv_getobj(worn, ^wearpos_rhand)), 0);
+~allstar_player_hit(min($hit, $hp), ^hitmark_damage);
+%asn_timer = 7;
+
+// Ring of life in NPC attacks: HP <= (int)(maxHP / 10 + 0.5) with maxHP from NPCHandler's own
+// getLevelForXP (the authentic curve up to 135, not the players' half curve) -> SafeMyLife instead of a hit.
+[proc,allstar_ringoflife_npc](int $hp)(boolean)
+if (inv_getobj(worn, ^wearpos_ring) ! ring_of_life) {
+    return(false);
+}
+def_int $maxhp = ~allstar_npc_levelforxp(stat_xp(hitpoints));
+if ($hp <= calc(($maxhp * 10 + 50) / 100)) {
+    %as_saveme = 1;
+    return(true);
+}
+return(false);
+
+// NPCHandler.getLevelForXP: points += floor(lvl + 300 * 2^(lvl / 7)), first lvl with points / 4 >= xp, max 135
+[proc,allstar_npc_levelforxp](int $xp)(int)
+def_int $lvl = 1;
+while ($lvl <= 135) {
+    if (enum(int, int, allstar_rs_xp, $lvl) >= $xp) {
+        return($lvl);
+    }
+    $lvl = calc($lvl + 1);
+}
+return(0);
+
+// NPCHandler.FollowPlayerCB: one step towards the tile next to the target (south/north side first),
+// by sign on both axes, no clipping. Returns where the NPC will be.
+[proc,allstar_npc_follow_step](coord $target)(coord)
+def_coord $npc = npc_coord;
+def_int $nx = coordx($npc);
+def_int $nz = coordz($npc);
+def_int $px = coordx($target);
+def_int $pz = coordz($target);
+def_int $mx = 0;
+def_int $mz = 0;
+if ($pz < $nz) {
+    $mx = ~allstar_getmove($nx, $px);
+    $mz = ~allstar_getmove($nz, calc($pz + 1));
+} else if ($pz > $nz) {
+    $mx = ~allstar_getmove($nx, $px);
+    $mz = ~allstar_getmove($nz, calc($pz - 1));
+} else if ($px < $nx) {
+    $mx = ~allstar_getmove($nx, calc($px + 1));
+    $mz = ~allstar_getmove($nz, $pz);
+} else if ($px > $nx) {
+    $mx = ~allstar_getmove($nx, calc($px - 1));
+    $mz = ~allstar_getmove($nz, $pz);
+}
+if ($mx = 0 & $mz = 0) {
+    return($npc);
+}
+def_coord $next = movecoord($npc, $mx, 0, $mz);
+npc_walk($next);
+return($next);
+
+// NPCHandler.GetMove
+[proc,allstar_getmove](int $from, int $to)(int)
+if ($from = $to) {
+    return(0);
+}
+if ($from < $to) {
+    return(1);
+}
+return(-1);

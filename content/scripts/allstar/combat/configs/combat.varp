@@ -1,0 +1,147 @@
+// Allstar-Scape player combat state (client.java fields). Nothing here is saved: Allstar-Scape kept
+// these in memory only (special energy starts at 100, teleblock lasts until logout, ...).
+// protect=no: NPC routines and other players write them (hits, SafeMyLife, KillerId, ...).
+
+// attacknpc / IsAttackingNPC: the NPC being attacked
+[as_atknpc]
+type=npc_uid
+protect=no
+
+// walking up to the NPC / player after a click on it (the next trigger is the arrival, not a click)
+[as_approach]
+type=npc_uid
+protect=no
+
+[as_approachp]
+type=player_uid
+protect=no
+
+// p_moveclicks already handled: every walk packet resets the attacks
+[as_moveclicks]
+protect=no
+
+// AttackingOn / IsAttacking: the player being attacked (AttackingOn is also set in a safe zone)
+[as_atkplayer]
+type=player_uid
+protect=no
+
+[as_isattacking]
+protect=no
+
+// LoopAttDelay: the cycle from which the next hit is allowed (the counter reached 1)
+[as_loopatt]
+protect=no
+
+// PkingDelay: the cycle from which Attack() may run again (the counter reached 0)
+[as_pking]
+protect=no
+
+// specialAmount (0-100) and its regeneration counter; usingSpecial is %sa_attack
+[as_special]
+protect=no
+
+[as_specdelay]
+protect=no
+
+// FightType: 1 accurate, 2 aggressive, 3 controlled, 4 defensive
+[as_fighttype]
+protect=no
+
+// hitDiff + 1 waiting for the update (0 = none) and its hitsplat type; the last hit of a cycle wins
+[as_phit]
+protect=no
+
+[as_phittype]
+protect=no
+
+// KillerId (null = the player itself): owner of the death drop and who gets the pk points
+[as_killer]
+type=player_uid
+protect=no
+
+// KillerId = shooter + 10 after a magic shortbow hit (nobody)
+[as_killerbow]
+protect=no
+
+// hitDiff as a field: the last hit written to the player, never cleared except by death
+[as_lasthit]
+protect=no
+
+// PoisonDelay (0 = not poisoned) / PoisonClear
+[as_poisondelay]
+protect=no
+
+[as_poisonclear]
+protect=no
+
+// the active prayer's drain interval (PrayerDrain) and countdown (PrayerTimer)
+[as_praydrain]
+protect=no
+
+[as_praytimer]
+protect=no
+
+// prayer flags (bits 0-14) and DrainPray (bit 15); Noprayer
+[as_prayers]
+protect=no
+
+[as_noprayer]
+protect=no
+
+// protectMelee/protectRange/protectMage (meleeOn 1, rangeOn 2, mageOn 4)
+[as_protect]
+protect=no
+
+// EntangleDelay: walking is refused until this cycle (entangle and the ancient spells)
+[as_entangle]
+protect=no
+
+// heals waiting for the update: playerLevel[3] += x (kept only with a hit update) and NewHP += x
+// (lost with a hit update)
+[as_pheal]
+protect=no
+
+[as_pnewhp]
+protect=no
+
+// Inair: lifted by the staff levitate spell
+[as_inair]
+protect=no
+
+// mageTimer: the cycle the next PvP spell may be cast
+[as_mageclock]
+protect=no
+
+// DDS2Damg: cycle of the second special hit (0 = none), and its target (npc or player)
+[as_spec2]
+protect=no
+
+[as_spec2npc]
+type=npc_uid
+protect=no
+
+[as_spec2player]
+type=player_uid
+protect=no
+
+// lastKill: name of the last player killed (no pk points for the same victim twice in a row)
+[as_lastkill]
+type=string
+protect=no
+
+// SafeMyLife: the ring of life is about to save the player
+[as_saveme]
+protect=no
+
+// ring of life teleport cycle (0 = none)
+[as_ringtele]
+protect=no
+
+// IsDead: killed, death not applied yet
+[as_dead]
+protect=no
+
+// spellbook: 0 modern, 2 ancient (client.emotes)
+[as_spellbook]
+protect=no
+

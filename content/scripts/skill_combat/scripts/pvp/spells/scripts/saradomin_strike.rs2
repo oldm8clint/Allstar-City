@@ -1,6 +1,4 @@
-[opplayert,magic:saradomin_strike] ~pvp_saradomin_strike;
-[applayert,magic:saradomin_strike] ~pvp_saradomin_strike;
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [proc,pvp_saradomin_strike]
 def_dbrow $spell_data = ~get_spell_data(^saradomin_strike);
 if (~pvp_combat_spell_checks($spell_data) = false) {

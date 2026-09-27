@@ -89,6 +89,8 @@ if (p_finduid(uid) = true) {
 
 [proc,set_attackstyle](int $style)
 if_close;
+// Allstar-City: FightType from the button (allstar/combat/scripts/weapons.rs2)
+~allstar_style_button($style);
 if (p_finduid(uid) = true) {
     p_clearpendingaction;
     %com_mode = $style;
@@ -118,6 +120,9 @@ if ($obj = null | (map_members = ^false & oc_members($obj) = true)) {
     ~weapon_category_tab_attack_unarmed($obj);
     return;
 }
+// Allstar-City: the tab is Allstar-Scape's SendWeapon choice (obj param allstar_weapon_tab)
+~allstar_weapon_tab_attack($obj);
+return;
 switch_category (oc_category($obj)) {
     // melee
     case weapon_2h_sword : ~weapon_category_tab_attack(combat_heavysword:preview, combat_heavysword:name, combat_heavysword, $obj, combat_heavysword:specbar_layer);
@@ -145,7 +150,9 @@ switch_category (oc_category($obj)) {
 if_setobject($component1, $obj, 200);
 if_settext($component2, "<oc_name($obj)>");
 if ($specbar_layer ! null) {
-    if (oc_param($obj, specwep) = ^true) {
+    // Allstar-City: Allstar-Scape drew the special bar on the whip, dagger, sword, bow, halberd and axe
+    // tabs whatever the weapon (allstar/combat/scripts/specials.rs2)
+    if (~allstar_spec_bar_shown($obj) = true) {
         if_sethide($specbar_layer, false);
     } else {
         if_sethide($specbar_layer, true);

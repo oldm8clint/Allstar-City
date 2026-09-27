@@ -1,7 +1,4 @@
-[if_button,magic:bones_to_bananas] @magic_spell_convert_bones(^bones_to_bananas); //bones to bananas
-
-
-// handles converting bones to bananas. will handle bones to peaches later on too.
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [label,magic_spell_convert_bones](int $spell)
 if (p_finduid(uid) = true) {
     // look for spell in db

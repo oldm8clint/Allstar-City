@@ -1,0 +1,43 @@
+// Developer-only helpers for the combat bot tests (::~name, dev worlds with staff level 4 only).
+
+// state of the NPCs around the player
+[debugproc,asnpc](int $range)
+npc_huntall(coord, $range, 0);
+while (npc_findnext = true) {
+    mes("asnpc <npc_name> <tostring(coordx(npc_coord))>,<tostring(coordz(npc_coord))> hp=<tostring(npc_stat(hitpoints))>/<tostring(npc_basestat(hitpoints))> timer=<tostring(%asn_timer)> nowalk=<tostring(%asn_nowalk)> attacked=<tostring(%asn_attacked)> dead=<tostring(%asn_dead)> max=<tostring(~allstar_npc_maxhit)>");
+}
+
+// the player's combat state
+[debugproc,asme]
+mes("asme clock=<tostring(map_clock)> lastmove=<tostring(lastmove)> moveclicks=<tostring(%as_moveclicks)>/<tostring(p_moveclicks)> pking=<tostring(%as_pking)> attacking=<tostring(%as_isattacking)> prayers=<tostring(%as_prayers)> protect=<tostring(%as_protect)> drain=<tostring(%as_praydrain)> poison=<tostring(%as_poisondelay)>/<tostring(%as_poisonclear)> hp=<tostring(stat(hitpoints))> loopatt=<tostring(%as_loopatt)> special=<tostring(%as_special)> fight=<tostring(~allstar_fighttype)> maxhit=<tostring(~allstar_maxhit)>");
+mes("asme2 sb=<tostring(%as_spellbook)> wep=<tostring(~allstar_weapon)> mage=<tostring(%as_mageclock)> entangle=<tostring(%as_entangle)> tb=<tostring(%allstar_teleblock)> usespec=<tostring(%sa_attack)> sa=<tostring(%sa_energy)>");
+if (busy = true) {
+    mes("asme busy");
+}
+if (~allstar_nonwild(coord) = true) {
+    mes("asme safe");
+} else {
+    mes("asme wild");
+}
+
+[debugproc,ashp](int $hp)
+if ($hp < stat(hitpoints)) {
+    stat_sub(hitpoints, calc(stat(hitpoints) - $hp), 0);
+} else {
+    stat_add(hitpoints, calc($hp - stat(hitpoints)), 0);
+}
+
+[debugproc,astele](int $x, int $z)
+~allstar_telejump($x, $z);
+
+// every online player and where they are
+[debugproc,asplayers]
+playerall;
+while (huntnext = true) {
+    mes("asplayer <displayname> <tostring(coordx(coord))>,<tostring(coordz(coord))>,<tostring(coordy(coord))>");
+}
+
+// the ancient spellbook without the Ancient staff (Lost City's Desert Treasure check blocks wielding it)
+[debugproc,asancient]
+%as_spellbook = 2;
+if_settab(inter_267, ^tab_magic);

@@ -43,6 +43,10 @@ export default class OpPlayerTHandler extends ClientGameMessageHandler<OpPlayerT
             return false;
         }
 
+        if (player.allstarPacketScript('allstar_opplayert', [other.uid, spellComId])) {
+            return true;
+        }
+
         player.clearPendingAction();
         player.setInteraction(Interaction.ENGINE, other, ServerTriggerType.APPLAYERT, spellComId);
         player.opcalled = true;

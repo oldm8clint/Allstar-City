@@ -1,6 +1,4 @@
-[opplayert,magic:claws_of_guthix] ~pvp_claws_of_guthix;
-[applayert,magic:claws_of_guthix] ~pvp_claws_of_guthix;
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [proc,pvp_claws_of_guthix]
 // look for spell in db
 def_dbrow $spell_data = ~get_spell_data(^claws_of_guthix);

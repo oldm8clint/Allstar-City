@@ -2,8 +2,8 @@
 // L9279), run every cycle by client.process() (allstar/spec/objects_buttons.md section 3.14).
 //
 // They use currentHealth, a second hitpoints pool nothing else touched (filled from the Hitpoints
-// level at login); the Hitpoints stat only showed the hit. When the pool reached 0 the player lost
-// every carried item and every worn item that fitted in the inventory, and was sent away.
+// level at login); every hit also goes through the normal hit update. When the pool reached 0 the
+// player lost every carried item and every worn item that fitted in the inventory, and was sent away.
 
 // For the login script: client.process() checked the zones every cycle for everyone, so a player who
 // logs in inside one is hit from the start.
@@ -55,15 +55,13 @@ if (~allstar_zone_kbd(coord) = false & ~allstar_zone_dungeon(coord) = false & %a
     clearsofttimer(allstar_zones);
 }
 
-// currentHealth -= hitDiff, with the hit splat. The Hitpoints stat is left as it was.
+// currentHealth -= hitDiff, and hitDiff is an ordinary hit: the update takes it off the real
+// hitpoints too (NewHP = HP - hitDiff), so the player can also die the normal way (combat's
+// allstar_player_hit); inCombat.
 [proc,allstar_zone_hit](int $damage)
 %allstar_current_health = max(0, calc(%allstar_current_health - $damage));
-def_int $shown = min($damage, stat(hitpoints));
-if ($shown > 0) {
-    // hitmark type 1 (red), then the Hitpoints level is put back
-    damage(uid, 1, $damage);
-    stat_add(hitpoints, $shown, 0);
-}
+~allstar_player_hit($damage, ^hitmark_damage);
+~allstar_incombat;
 
 [proc,allstar_zone_death](int $x, int $z)
 if (%allstar_current_health ! 0) {
@@ -84,3 +82,8 @@ inv_clear(inv);
 ~allstar_obj_tele($x, $z, coordy(coord));
 mes("Oh dear you are dead!");
 %allstar_current_health = 99;
+// hitDiff = 0: the hit still waiting for the update shows as 0
+%as_lasthit = 0;
+if (%as_phit > 0) {
+    %as_phit = 1;
+}

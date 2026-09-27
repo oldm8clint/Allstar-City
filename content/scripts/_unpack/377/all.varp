@@ -467,6 +467,8 @@ scope=perm
 [sa_energy]
 scope=perm
 transmit=yes
+// Allstar-City: written by the unprotected per-cycle combat routine (special energy regen)
+protect=no
 
 [sa_attack]
 protect=no

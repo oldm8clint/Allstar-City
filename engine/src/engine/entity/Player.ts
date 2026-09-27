@@ -367,6 +367,7 @@ export default class Player extends PathingEntity {
     refreshModal = false;
     refreshModalClose = false;
     requestModalClose = false;
+    moveClicks = 0; // Allstar-City combat: move clicks received (script command p_moveclicks)
 
     protect: boolean = false; // whether protected access is available
     activeScript: ScriptState | null = null;
@@ -978,15 +979,40 @@ export default class Player extends PathingEntity {
         this.closeModal();
     }
 
+    // Allstar-City combat (NODE_ALLSTAR_COMBAT): Allstar-Scape handled the spell packets at once and from
+    // any distance (telegrab even on items that were gone), so the spell handlers run [queue,name]
+    // this tick instead of starting an interaction.
+    allstarPacketScript(name: string, args: ScriptArgument[]): boolean {
+        if (!Environment.NODE_ALLSTAR_COMBAT) {
+            return false;
+        }
+        const script = ScriptProvider.getByName(`[queue,${name}]`);
+        if (!script) {
+            return false;
+        }
+        this.clearPendingAction();
+        this.enqueueScript(script, PlayerQueueType.ENGINE, 0, args);
+        return true;
+    }
+
     hasInteraction() {
         if (!this.target) {
             return false;
         }
         // The follow interaction doesn't do anything
-        if (this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3) {
+        if (this.isFollowOp()) {
             return false;
         }
         return true;
+    }
+
+    // Player op 3 is the engine's follow. Allstar-City puts Allstar-Scape's "Attack" on op 3, so with
+    // NODE_ALLSTAR_COMBAT every player op is an ordinary scripted op.
+    isFollowOp() {
+        if (Environment.NODE_ALLSTAR_COMBAT) {
+            return false;
+        }
+        return this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3;
     }
 
     getOpTrigger() {
@@ -1062,7 +1088,7 @@ export default class Player extends PathingEntity {
             return;
         }
 
-        if (this.isLastWaypoint() && (this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3)) {
+        if (this.isLastWaypoint() && this.isFollowOp()) {
             this.queueWaypoint(this.target.followX, this.target.followZ);
             return;
         }
@@ -1255,7 +1281,7 @@ export default class Player extends PathingEntity {
         this.followZ = this.lastStepZ;
         this.nextTarget = null;
 
-        const followOp = this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3;
+        const followOp = this.isFollowOp();
 
         let interacted = false;
 

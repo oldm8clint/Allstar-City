@@ -331,7 +331,8 @@ export default class Zone {
         obj.lastChange = -1;
 
         // If the obj is not tradeable, or it's members in an f2p world, or it's already revealed, then skip
-        if (!objType.tradeable || (objType.members && !Environment.node.members) || obj.reveal === -1) {
+        // (Allstar-City: every Allstar-Scape ground item became public, tradeable or not)
+        if ((!Environment.NODE_ALLSTAR_COMBAT && (!objType.tradeable || (objType.members && !Environment.node.members))) || obj.reveal === -1) {
             obj.reveal = -1;
             return;
         }

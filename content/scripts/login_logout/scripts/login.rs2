@@ -18,6 +18,7 @@ if (%tutorial < ^tutorial_complete) {
 }
 ~allstar_levelup_login;
 ~allstar_login_rights;
+~allstar_combat_login;
 // loadquestinterface (allstar/npcs/scripts/quests.rs2)
 ~allstar_loadquestinterface;
 ~allstar_weather_login;
