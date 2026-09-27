@@ -142,6 +142,7 @@ await sleep(1500);
 
 // world edits (client.NewObjects / Deleteobjects / Deletewalls)
 check(locsAt(2856, 3598, 0).some(l => l.id === 7324), 'home fishing portal 7324 placed at 2856,3598');
+check(locsAt(2854, 3597, 0).some(l => l.id === 61), 'home prayer altar 61 at 2854,3597 (owner: the source typed 2854,3957)');
 check([0, 1].every(level => locsAt(3285, 2770, level).some(l => l.id === 10687 && l.shape === 10 && l.angle === 3)), 'mod zone party box 10687 on levels 0 and 1 (face -1 -> angle 3)');
 check([2, 3].every(level => !locsAt(3285, 2770, level).some(l => l.id === 10687)), 'no floating party box on the floorless levels 2 and 3');
 check(!locsAt(2856, 3598, 1).some(l => l.id === 7324), 'other Allstar objects only on level 0 (no home fishing portal on level 1)');
