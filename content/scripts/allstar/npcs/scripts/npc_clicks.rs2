@@ -99,11 +99,21 @@ p_stopaction;
 [opnpc1,zaff] ~allstar_talk_or(~allstar_zaff_route, "Zaff isn't interested in talking right now...");
 [apnpc1,zaff] ~allstar_talk_or(~allstar_zaff_route, "Zaff isn't interested in talking right now...");
 
-// Wise Old Man 2253 (clue L1/S5/id2 -> dialogue 32, else "This man isn't interested in talking
-// right now..."): packet 155 read only the low byte of the npc index (misc.HexToInt / 1000) and
-// both Wise Old Men of autospawn.cfg sit in npc slots 302 and 492, so their clicks ran the handler
-// of slots 46 and 236 (Shop keeper 530 and a Black Demon), which have none. Talking to them did
-// nothing. The default [opnpc1,_] covers it.
+// Packet 155 read only the low byte of the npc index (misc.HexToInt / 1000), and npcs got their
+// index (slot) in autospawn.cfg order, so a first click on an npc in slot 256 or above ran the
+// handler of the npc in slot & 255:
+// - Wise Old Man 2253 (clue L1/S5/id2 -> dialogue 32, else "This man isn't interested in talking
+//   right now...") sits in slots 302 and 492, which ran slots 46 and 236 (Shop keeper 530 and a
+//   Black Demon): no handler, so talking to them did nothing. The default [opnpc1,_] covers it.
+// - The Zoo keeper at home (slot 299) ran slot 43, Thessalia. Her clue step set NpcWanneTalk with
+//   her own tile, so it only opened next to her; the refusal came at once.
+[opnpc1,zoo_keeper] ~allstar_zoo_keeper;
+[apnpc1,zoo_keeper] ~allstar_zoo_keeper;
+
+[proc,allstar_zoo_keeper]
+if (~allstar_clue_route(2, 4, 2, 31) = 0) {
+    mes("Thessalia isn't interested in talking right now...");
+}
 
 // clue npc: dialogue $dialogue when the clue is level $level, stage $stage and id $id
 [proc,allstar_clue_route](int $level, int $stage, int $id, int $dialogue)(int)

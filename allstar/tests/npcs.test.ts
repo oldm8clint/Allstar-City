@@ -73,6 +73,22 @@ async function approach(bot: Bot, npc: string, dx = 0, dz = -1): Promise<number>
     return nid(bot, npc);
 }
 
+// op on the npc from each side in turn until the expected message arrives (a side can be a wall)
+async function act(bot: Bot, npc: string, op: number, expect: RegExp): Promise<number> {
+    for (const [dx, dz] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
+        const id = await approach(bot, npc, dx, dz);
+        const since = bot.messages.length;
+        bot.opNpc(op, id);
+        try {
+            await bot.waitForMessage(expect, 3000, since);
+            return id;
+        } catch {
+            // try the next side
+        }
+    }
+    throw new Error(`no ${expect} from ${npc}`);
+}
+
 async function give(bot: Bot, name: string, obj: number, n = 1) {
     const before = count(bot, obj);
     bot.cheat(`give ${name} ${n}`);
@@ -253,18 +269,15 @@ async function darkMage(bot: Bot) {
 
 async function pickpocket(bot: Bot) {
     await tele(bot, 3291, 3175);
-    const id = await approach(bot, 'al_kharid_warrior');
-    let since = bot.messages.length;
-    bot.opNpc(3, id);
-    await bot.waitForMessage(/^You need 25 theiving to pickpocket warriors\.$/, 5000, since);
+    const id = await act(bot, 'al_kharid_warrior', 3, /^You need 25 theiving to pickpocket warriors\.$/);
     check(true, 'warrior level check');
     await command(bot, 'setstat thieving 25');
     const coins = count(bot, 995);
-    since = bot.messages.length;
+    let since = bot.messages.length;
     bot.opNpc(3, id);
     await bot.waitForMessage(/^You pickpocket the warrior\.$/, 5000, since);
     await sleep(600);
-    check(count(bot, 995) === coins + 1800, `warrior gives 1800 coins (${count(bot, 995) - coins}) ${JSON.stringify(bot.messages.slice(since))} ${JSON.stringify(inv(bot))} ${[...bot.invs.keys()]}`);
+    check(count(bot, 995) === coins + 1800, `warrior gives 1800 coins (${count(bot, 995) - coins})`);
     since = bot.messages.length;
     bot.opNpc(3, id);
     const extra = await nothingFor(bot, 1500, since);
@@ -274,30 +287,21 @@ async function pickpocket(bot: Bot) {
 async function paladin(bot: Bot) {
     await tele(bot, 3300, 3177);
     await command(bot, 'setstat thieving 50');
-    const id = await approach(bot, 'paladin2');
+    await sleep(4000); // the warrior's actionTimer
     const coins = count(bot, 995);
-    const since = bot.messages.length;
-    await sleep(4000); // warrior timer
-    bot.opNpc(3, id);
-    await bot.waitForMessage(/^You pickpocket the paladin\.$/, 5000, since);
+    await act(bot, 'paladin2', 3, /^You pickpocket the paladin\.$/);
     await sleep(600);
     check(count(bot, 995) === coins + 8000, 'paladin gives 8000 coins');
 }
 
 async function fishing(bot: Bot) {
     await tele(bot, 2576, 3880);
-    let id = await approach(bot, '0_41_53_bigdavefishspot');
     const shrimps = count(bot, 317);
-    let since = bot.messages.length;
-    bot.opNpc(1, id);
-    await bot.waitForMessage(/^You fish a shrimp$/, 5000, since);
+    await act(bot, '0_41_53_bigdavefishspot', 1, /^You fish a shrimp$/);
     await sleep(600);
     check(count(bot, 317) === shrimps + 1, 'click-fishing gives a shrimp');
     await tele(bot, 2560, 3890);
-    id = await approach(bot, '0_41_53_compofishspot');
-    since = bot.messages.length;
-    bot.opNpc(1, id);
-    await bot.waitForMessage(/^You need a fishing level of 90 to fish manta ray\.$/, 5000, since);
+    await act(bot, '0_41_53_compofishspot', 1, /^You need a fishing level of 90 to fish manta ray\.$/);
     check(true, 'manta ray level message');
 }
 
@@ -328,6 +332,13 @@ async function nothing(bot: Bot) {
     bot.opNpc(1, wom);
     const got2 = await nothingFor(bot, 3000, since2);
     check(bot.chat === -1 && got2.length === 0, `Wise Old Man Talk-to does nothing (${JSON.stringify(got2)})`);
+    // the Zoo keeper's click ran Thessalia's handler
+    await setvar(bot, 'allstar_cluelevel', 0);
+    const keeper = await approach(bot, 'zoo_keeper');
+    const since3 = bot.messages.length;
+    bot.opNpc(1, keeper);
+    await bot.waitForMessage(/^Thessalia isn't interested in talking right now\.\.\.$/, 5000, since3);
+    check(true, 'Zoo keeper Talk-to gives Thessalia\'s refusal');
 }
 
 async function starter(bot: Bot) {
