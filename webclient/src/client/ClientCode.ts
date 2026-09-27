@@ -69,7 +69,9 @@ export const enum ClientCode {
     CC_REPORT_RULE10 = 610,
     CC_REPORT_RULE11 = 611,
     CC_REPORT_RULE12 = 612,
-    CC_MOD_MUTE = 613,
+    // Allstar-City: 377 has a 13th rule and moved the moderator mute option to 620
+    CC_REPORT_RULE13 = 613,
+    CC_MOD_MUTE = 620,
 
     //// welcome_screen/welcome_screen2
     CC_LAST_LOGIN_INFO = 650, // has recovery questions

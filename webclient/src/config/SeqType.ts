@@ -25,8 +25,9 @@ export default class SeqType {
     static list: SeqType[] = [];
 
     numFrames: number = 0;
-    frames: Int16Array | null = null;
-    iframes: Int16Array | null = null;
+    // Allstar-City: Int32Array, 377 has more than 32767 anim frames
+    frames: Int32Array | null = null;
+    iframes: Int32Array | null = null;
     delay: Int16Array | null = null;
     loops: number = -1;
     walkmerge: Int32Array | null = null;
@@ -37,7 +38,7 @@ export default class SeqType {
     maxloops: number = 99;
     preanim_move: number = -1;
     postanim_move: number = -1;
-    duplicatebehaviour: number = -1;
+    duplicatebehaviour: number = 2; // Allstar-City: 377 default (RESETLOOP)
 
     static init(config: JagFile): void {
         const dat: Packet = new Packet(config.read('seq.dat'));
@@ -84,8 +85,8 @@ export default class SeqType {
 
             if (code === 1) {
                 this.numFrames = dat.g1();
-                this.frames = new Int16Array(this.numFrames);
-                this.iframes = new Int16Array(this.numFrames);
+                this.frames = new Int32Array(this.numFrames);
+                this.iframes = new Int32Array(this.numFrames);
                 this.delay = new Int16Array(this.numFrames);
 
                 for (let i: number = 0; i < this.numFrames; i++) {
@@ -136,10 +137,10 @@ export default class SeqType {
         if (this.numFrames === 0) {
             this.numFrames = 1;
 
-            this.frames = new Int16Array(1);
+            this.frames = new Int32Array(1);
             this.frames[0] = -1;
 
-            this.iframes = new Int16Array(1);
+            this.iframes = new Int32Array(1);
             this.iframes[0] = -1;
 
             this.delay = new Int16Array(1);

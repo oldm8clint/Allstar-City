@@ -33,7 +33,7 @@ export default class MapSpotAnim extends ModelSource {
         }
 
         for (this.animCycle += delta; this.animCycle > this.type.seq.getDelay(this.animFrame); ) {
-            this.animCycle -= this.type.seq.getDelay(this.animFrame) + 1;
+            this.animCycle -= this.type.seq.getDelay(this.animFrame); // Allstar-City: 377 timing (289: + 1)
             this.animFrame++;
 
             if (this.animFrame >= this.type.seq.numFrames) {

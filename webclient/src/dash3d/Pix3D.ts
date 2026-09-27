@@ -283,7 +283,11 @@ export default class Pix3D extends Pix2D {
                 const intG: number = (g * 256.0) | 0;
                 const intB: number = (b * 256.0) | 0;
                 const rgb: number = (intR << 16) + (intG << 8) + intB;
-                this.colourTable[offset++] = this.gammaCorrect(rgb, randomBrightness);
+                let corrected: number = this.gammaCorrect(rgb, randomBrightness);
+                if (corrected === 0) {
+                    corrected = 1; // 377: 0 is transparent
+                }
+                this.colourTable[offset++] = corrected;
             }
         }
 
@@ -302,6 +306,9 @@ export default class Pix3D extends Pix2D {
                 }
 
                 texturePalette[i] = this.gammaCorrect(palette[i], randomBrightness);
+                if ((texturePalette[i] & 0xf8f8ff) === 0 && i !== 0) {
+                    texturePalette[i] = 1; // as the Java clients: dark texels are not transparent
+                }
             }
         }
 

@@ -112,6 +112,7 @@ export default class ObjType {
             obj.desc = "Login to a members' server to use this object.";
             obj.op = null;
             obj.iop = null;
+            obj.team = 0; // Allstar-City: 377
         }
 
         return obj;

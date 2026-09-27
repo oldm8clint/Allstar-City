@@ -71,6 +71,9 @@ export default class Model extends ModelSource {
     labelFaces: (Int32Array | null)[] | null = null;
 
     sharedPointNormal: (PointNormal | null)[] | null = null;
+    // Allstar-City: 377 relights shared-light models with their own ambient and contrast (289 used 64/768)
+    shareAmbient: number = -1;
+    shareScale: number = -1;
 
     maxY: number = 0;
     minX: number = 0;
@@ -873,6 +876,9 @@ export default class Model extends ModelSource {
         model.faceTextureM = src.faceTextureM;
         model.faceTextureN = src.faceTextureN;
 
+        model.shareAmbient = src.shareAmbient; // Allstar-City: 377
+        model.shareScale = src.shareScale;
+
         model.minY = src.minY;
         model.maxY = src.maxY;
         model.radius = src.radius;
@@ -1540,6 +1546,8 @@ export default class Model extends ModelSource {
         if (doNotShareLight) {
             this.light(ambient, scale, x, y, z);
         } else {
+            this.shareAmbient = ambient;
+            this.shareScale = scale;
             this.sharedPointNormal = new TypedArray1d(this.numPoints, null);
 
             for (let v: number = 0; v < this.numPoints; v++) {

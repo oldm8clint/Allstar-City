@@ -82,7 +82,7 @@ export default class ClientProj extends ModelSource {
             this.animCycle += delta;
 
             while (this.animCycle > this.spotanim.seq.getDelay(this.animFrame)) {
-                this.animCycle -= this.spotanim.seq.getDelay(this.animFrame) + 1;
+                this.animCycle -= this.spotanim.seq.getDelay(this.animFrame); // Allstar-City: 377 timing (289: + 1)
                 this.animFrame++;
                 if (this.animFrame >= this.spotanim.seq.numFrames) {
                     this.animFrame = 0;

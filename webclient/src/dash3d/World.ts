@@ -604,26 +604,35 @@ export default class World {
                         if (wall.model2 && wall.model2.pointNormal) {
                             this.shareLightLoc(level, tileX, tileZ, 1, 1, wall.model2 as Model);
                             this.modelShareLight(wall.model1 as Model, wall.model2 as Model, 0, 0, 0, false);
-                            (wall.model2 as Model).light(ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
+                            World.relight(wall.model2 as Model, ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
                         }
-                        (wall.model1 as Model).light(ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
+                        World.relight(wall.model1 as Model, ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
                     }
 
                     for (let i: number = 0; i < tile.spriteCount; i++) {
                         const sprite: Sprite | null = tile.sprites[i];
                         if (sprite && sprite.model && sprite.model.pointNormal) {
                             this.shareLightLoc(level, tileX, tileZ, sprite.maxTileX + 1 - sprite.minTileX, sprite.maxTileZ - sprite.minTileZ + 1, sprite.model as Model);
-                            (sprite.model as Model).light(ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
+                            World.relight(sprite.model as Model, ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
                         }
                     }
 
                     const decor: GroundDecor | null = tile.groundDecor;
                     if (decor && decor.model && decor.model.pointNormal) {
                         this.shareLightGd(level, tileX, tileZ, decor.model as Model);
-                        (decor.model as Model).light(ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
+                        World.relight(decor.model as Model, ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
                     }
                 }
             }
+        }
+    }
+
+    // Allstar-City: 377 lights each shared-light model with the ambient and contrast it was built with
+    private static relight(model: Model, ambient: number, attenuation: number, lightSrcX: number, lightSrcY: number, lightSrcZ: number): void {
+        if (model.shareAmbient !== -1) {
+            model.light(model.shareAmbient, model.shareScale, lightSrcX, lightSrcY, lightSrcZ);
+        } else {
+            model.light(ambient, attenuation, lightSrcX, lightSrcY, lightSrcZ);
         }
     }
 

@@ -13,7 +13,8 @@ export const enum ReportAbuseReason {
     ENCOURAGING_BREAK_RULES,  // 8
     MISUSE_CUSTOMER_SUPPORT,  // 9
     ADVERTISING_WEBSITE,  // 10
-    REAL_WORLD_TRADING  // 11
+    REAL_WORLD_TRADING,  // 11
+    PERSONAL_DETAILS // 12, Allstar-City: the 377 report abuse interface has 13 rules
 }
 
 export default class ReportAbuse extends ClientGameMessage {

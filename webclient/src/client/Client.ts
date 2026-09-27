@@ -252,8 +252,9 @@ export class Client extends GameShell {
     private minimap: Pix32 | null = null;
     private compass: Pix32 | null = null;
     private mapedge: Pix32 | null = null;
-    private mapscene: (Pix8 | null)[] = new TypedArray1d(50, null);
-    private mapfunction: (Pix32 | null)[] = new TypedArray1d(50, null);
+    // Allstar-City: 377 has 72 mapscenes and 70 mapfunctions
+    private mapscene: (Pix8 | null)[] = new TypedArray1d(100, null);
+    private mapfunction: (Pix32 | null)[] = new TypedArray1d(100, null);
     private hitmarks: (Pix32 | null)[] = new TypedArray1d(20, null);
     // Allstar-City: player head icon bits -> 377 sprites (headicons_pk, headicons_prayer, headicons_hint,
     // overlay_multiway). Bits 0-7 are the 289 layout the content uses; 8-13 are 377's extra prayer icons.
@@ -459,6 +460,12 @@ export class Client extends GameShell {
     private overChatComId: number = 0;
     private overMainComId: number = 0;
     private overSideComId: number = 0;
+    // Allstar-City: 377 tooltip components (type 8) show after the mouse rests on them for 100 cycles
+    private lastTooltipComId: number = 0;
+    private tooltipMainComId: number = 0;
+    private tooltipSideComId: number = 0;
+    private tooltipChatComId: number = 0;
+    private tooltipCycle: number = 0;
     private activeIcon: number = 3;
     private sideIcon: number[] = [
         -1, -1, -1,
@@ -1026,7 +1033,7 @@ export class Client extends GameShell {
             this.mapedge.trim();
 
             try {
-                for (let i: number = 0; i < 50; i++) {
+                for (let i: number = 0; i < 100; i++) {
                     this.mapscene[i] = Pix8.depack(media, 'mapscene', i);
                 }
             } catch (_e) {
@@ -1034,7 +1041,7 @@ export class Client extends GameShell {
             }
 
             try {
-                for (let i: number = 0; i < 50; i++) {
+                for (let i: number = 0; i < 100; i++) {
                     this.mapfunction[i] = Pix32.depack(media, 'mapfunction', i);
                 }
             } catch (_e) {
@@ -1183,7 +1190,7 @@ export class Client extends GameShell {
             const randB: number = ((Math.random() * 21.0) | 0) - 10;
             const rand: number = ((Math.random() * 41.0) | 0) - 20;
 
-            for (let i: number = 0; i < 50; i++) {
+            for (let i: number = 0; i < 100; i++) {
                 if (this.mapfunction[i]) {
                     this.mapfunction[i]?.rgbAdjust(randR + rand, randG + rand, randB + rand);
                 }
@@ -1914,6 +1921,12 @@ export class Client extends GameShell {
                 this.locChanges = new LinkList();
                 this.friendServerStatus = 0;
                 this.friendCount = 0;
+                // Allstar-City: 377 resets every open interface on login
+                IfType.unload(this.tutComId);
+                IfType.unload(this.chatModalId);
+                IfType.unload(this.mainModalId);
+                IfType.unload(this.sideModalId);
+                IfType.unload(this.mainOverlayId);
                 this.tutComId = -1;
                 this.chatModalId = -1;
                 this.mainModalId = -1;
@@ -2390,6 +2403,25 @@ export class Client extends GameShell {
             this.scrollCycle++;
         }
 
+        // Allstar-City: 377 tooltip delay
+        if (this.tooltipChatComId === 0 && this.tooltipSideComId === 0 && this.tooltipMainComId === 0) {
+            if (this.tooltipCycle > 0) {
+                this.tooltipCycle--;
+            }
+        } else if (this.tooltipCycle < 100) {
+            this.tooltipCycle++;
+
+            if (this.tooltipCycle === 100) {
+                if (this.tooltipChatComId !== 0) {
+                    this.redrawChat = true;
+                }
+
+                if (this.tooltipSideComId !== 0) {
+                    this.redrawSide = true;
+                }
+            }
+        }
+
         if (this.sceneState === 2) {
             this.followCamera();
         }
@@ -2570,6 +2602,7 @@ export class Client extends GameShell {
 
         this.addPrivateChatOptions();
         this.lastOverComId = 0;
+        this.lastTooltipComId = 0;
 
         if (this.mouseX > 4 && this.mouseY > 4 && this.mouseX < 516 && this.mouseY < 338) {
             if (this.mainModalId === -1) {
@@ -2583,13 +2616,18 @@ export class Client extends GameShell {
             this.overMainComId = this.lastOverComId;
         }
 
+        if (this.lastTooltipComId !== this.tooltipMainComId) {
+            this.tooltipMainComId = this.lastTooltipComId;
+        }
+
         this.lastOverComId = 0;
+        this.lastTooltipComId = 0;
 
         if (this.mouseX > 553 && this.mouseY > 205 && this.mouseX < 743 && this.mouseY < 466) {
             if (this.sideModalId !== -1) {
-                this.addComponentOptions(IfType.list[this.sideModalId], this.mouseX, this.mouseY, 553, 205, 0);
+                this.addComponentOptions(IfType.list[this.sideModalId], this.mouseX, this.mouseY, 553, 205, 0, 1);
             } else if (this.sideIcon[this.activeIcon] !== -1) {
-                this.addComponentOptions(IfType.list[this.sideIcon[this.activeIcon]], this.mouseX, this.mouseY, 553, 205, 0);
+                this.addComponentOptions(IfType.list[this.sideIcon[this.activeIcon]], this.mouseX, this.mouseY, 553, 205, 0, 1);
             }
         }
 
@@ -2598,11 +2636,17 @@ export class Client extends GameShell {
             this.overSideComId = this.lastOverComId;
         }
 
+        if (this.lastTooltipComId !== this.tooltipSideComId) {
+            this.redrawSide = true;
+            this.tooltipSideComId = this.lastTooltipComId;
+        }
+
         this.lastOverComId = 0;
+        this.lastTooltipComId = 0;
 
         if (this.mouseX > 17 && this.mouseY > 357 && this.mouseX < 496 && this.mouseY < 453) {
             if (this.chatModalId !== -1) {
-                this.addComponentOptions(IfType.list[this.chatModalId], this.mouseX, this.mouseY, 17, 357, 0);
+                this.addComponentOptions(IfType.list[this.chatModalId], this.mouseX, this.mouseY, 17, 357, 0, 2);
             } else if (this.mouseY < 434 && this.mouseX < 426) {
                 this.addChatOptions(this.mouseX - 17, this.mouseY - 357);
             }
@@ -2611,6 +2655,11 @@ export class Client extends GameShell {
         if (this.chatModalId !== -1 && this.lastOverComId !== this.overChatComId) {
             this.redrawChat = true;
             this.overChatComId = this.lastOverComId;
+        }
+
+        if (this.chatModalId !== -1 && this.lastTooltipComId !== this.tooltipChatComId) {
+            this.redrawChat = true;
+            this.tooltipChatComId = this.lastTooltipComId;
         }
 
         let sorted: boolean = false;
@@ -3815,13 +3864,14 @@ export class Client extends GameShell {
             seq = SeqType.list[e.secondaryAnim];
             e.secondaryAnimCycle++;
 
+            // Allstar-City: 377 timing, a frame lasts its delay (289 reset the cycle to 0: one tick longer)
             if (e.secondaryAnimFrame < seq.numFrames && e.secondaryAnimCycle > seq.getDelay(e.secondaryAnimFrame)) {
-                e.secondaryAnimCycle = 0;
+                e.secondaryAnimCycle = 1;
                 e.secondaryAnimFrame++;
             }
 
             if (e.secondaryAnimFrame >= seq.numFrames) {
-                e.secondaryAnimCycle = 0;
+                e.secondaryAnimCycle = 1;
                 e.secondaryAnimFrame = 0;
             }
         }
@@ -3996,7 +4046,7 @@ export class Client extends GameShell {
             this.chatInterface.scrollPos = this.chatScrollHeight - this.chatScrollPos - 77;
 
             if (this.mouseX > 448 && this.mouseX < 560 && this.mouseY > 332) {
-                this.doScrollbar(this.mouseX - 17, this.mouseY - 357, this.chatScrollHeight, 77, false, 463, 0, this.chatInterface);
+                this.doScrollbar(this.mouseX - 17, this.mouseY - 357, this.chatScrollHeight, 77, 0, 463, 0, this.chatInterface);
             }
 
             let offset: number = this.chatScrollHeight - this.chatInterface.scrollPos - 77;
@@ -4375,9 +4425,14 @@ export class Client extends GameShell {
     private addNpcs(alwaysontop: boolean): void {
         for (let i: number = 0; i < this.npcCount; i++) {
             const npc: ClientNpc | null = this.npc[this.npcIds[i]];
-            const typecode: number = ((this.npcIds[i] << 14) + 0x20000000) | 0;
+            let typecode: number = ((this.npcIds[i] << 14) + 0x20000000) | 0;
 
             if (!npc || !npc.isReady() || npc.type?.alwaysontop !== alwaysontop) {
+                continue;
+            }
+
+            // Allstar-City: 377 does not add hidden multinpcs, and npcs with active=no cannot be clicked
+            if (npc.type && npc.type.multinpc !== null && npc.type.getMultiNpc() === null) {
                 continue;
             }
 
@@ -4394,6 +4449,10 @@ export class Client extends GameShell {
                 }
 
                 this.tileLastOccupiedCycle[x][z] = this.sceneCycle;
+            }
+
+            if (npc.type && !npc.type.active) {
+                typecode = (typecode + 0x80000000) | 0;
             }
 
             this.world?.addDynamic(this.minusedlevel, npc.x, this.getAvH(npc.x, npc.z, this.minusedlevel), npc.z, npc, typecode, npc.yaw, (npc.size - 1) * 64 + 60, npc.needsForwardDrawPadding);
@@ -4634,6 +4693,14 @@ export class Client extends GameShell {
                 continue;
             }
 
+            // Allstar-City: 377 draws nothing over a hidden multinpc
+            if (index >= this.playerCount) {
+                const type = (entity as ClientNpc).type;
+                if (type && type.multinpc !== null && type.getMultiNpc() === null) {
+                    continue;
+                }
+            }
+
             if (index >= this.playerCount) {
                 const npc = (entity as ClientNpc).type;
 
@@ -4664,7 +4731,7 @@ export class Client extends GameShell {
                         for (let icon: number = 0; icon < 16; icon++) {
                             if ((player.headicons & (0x1 << icon)) !== 0) {
                                 this.headicons[icon]?.plotSprite(this.projectX - 12, this.projectY - y);
-                                y -= 25;
+                                y += 25; // Allstar-City: 377 stacks head icons upwards
                             }
                         }
                     }
@@ -4862,46 +4929,36 @@ export class Client extends GameShell {
     }
 
     // todo: order
+    // Allstar-City: 377 animates textures 17, 24, 34 and 40 (289: 17 and 24)
+    private static readonly ANIMATED_TEXTURES: number[] = [17, 24, 34, 40];
+
     private textureRunAnims(cycle: number): void {
-        if (!Client.lowMem) {
-            if (Pix3D.texCycle[17] >= cycle) {
-                const texture: Pix8 | null = Pix3D.textures[17];
-                if (!texture) {
-                    return;
-                }
+        if (Client.lowMem) {
+            return;
+        }
 
-                const bottom: number = texture.wi * texture.hi - 1;
-                const adjustment: number = texture.wi * this.worldUpdateNum * 2;
-
-                const src: Int8Array = texture.data;
-                const dst: Int8Array = this.textureBuffer;
-                for (let i: number = 0; i <= bottom; i++) {
-                    dst[i] = src[(i - adjustment) & bottom];
-                }
-
-                texture.data = dst;
-                this.textureBuffer = src;
-                Pix3D.pushTexture(17);
+        for (const id of Client.ANIMATED_TEXTURES) {
+            if (Pix3D.texCycle[id] < cycle) {
+                continue;
             }
 
-            if (Pix3D.texCycle[24] >= cycle) {
-                const texture: Pix8 | null = Pix3D.textures[24];
-                if (!texture) {
-                    return;
-                }
-                const bottom: number = texture.wi * texture.hi - 1;
-                const adjustment: number = texture.wi * this.worldUpdateNum * 2;
-
-                const src: Int8Array = texture.data;
-                const dst: Int8Array = this.textureBuffer;
-                for (let i: number = 0; i <= bottom; i++) {
-                    dst[i] = src[(i - adjustment) & bottom];
-                }
-
-                texture.data = dst;
-                this.textureBuffer = src;
-                Pix3D.pushTexture(24);
+            const texture: Pix8 | null = Pix3D.textures[id];
+            if (!texture) {
+                continue;
             }
+
+            const bottom: number = texture.wi * texture.hi - 1;
+            const adjustment: number = texture.wi * this.worldUpdateNum * 2;
+
+            const src: Int8Array = texture.data;
+            const dst: Int8Array = this.textureBuffer;
+            for (let i: number = 0; i <= bottom; i++) {
+                dst[i] = src[(i - adjustment) & bottom];
+            }
+
+            texture.data = dst;
+            this.textureBuffer = src;
+            Pix3D.pushTexture(id);
         }
     }
 
@@ -5659,9 +5716,9 @@ export class Client extends GameShell {
                 forceapproach = ((forceapproach << angle) & 0xf) + (forceapproach >> (4 - angle));
             }
 
-            this.tryMove(this.localPlayer.routeX[0], this.localPlayer.routeZ[0], x, z, false, width, height, 0, 0, forceapproach, 2);
+            this.tryMove(this.localPlayer.routeX[0], this.localPlayer.routeZ[0], x, z, true, width, height, 0, 0, forceapproach, 2); // Allstar-City: 377 tries the nearest tile
         } else {
-            this.tryMove(this.localPlayer.routeX[0], this.localPlayer.routeZ[0], x, z, false, 0, 0, angle, shape + 1, 0, 2);
+            this.tryMove(this.localPlayer.routeX[0], this.localPlayer.routeZ[0], x, z, true, 0, 0, angle, shape + 1, 0, 2); // Allstar-City: 377 tries the nearest tile
         }
 
         this.crossX = this.mouseClickX;
@@ -5842,31 +5899,59 @@ export class Client extends GameShell {
         this.tryMoveNearest = 0;
 
         if (!arrived) {
-            if (tryNearest) {
-                let min: number = 100;
-                for (let padding: number = 1; padding < 2; padding++) {
-                    for (let px: number = dx - padding; px <= dx + padding; px++) {
-                        for (let pz: number = dz - padding; pz <= dz + padding; pz++) {
-                            const index: number = CollisionMap.index(px, pz);
-                            if (px >= 0 && pz >= 0 && px < BuildArea.SIZE && pz < BuildArea.SIZE && this.distMap[index] < min) {
-                                min = this.distMap[index];
-                                x = px;
-                                z = pz;
-                                this.tryMoveNearest = 1;
-                                arrived = true;
-                            }
-                        }
+            // Allstar-City: 377 walks to the reachable tile closest to the target within 10 tiles
+            // (289 only looked at the 8 tiles around it)
+            if (!tryNearest) {
+                return false;
+            }
+
+            let bestDistance: number = 1000;
+            let bestCost: number = 100;
+            const radius: number = 10;
+            for (let px: number = dx - radius; px <= dx + radius; px++) {
+                for (let pz: number = dz - radius; pz <= dz + radius; pz++) {
+                    if (px < 0 || pz < 0 || px >= BuildArea.SIZE || pz >= BuildArea.SIZE) {
+                        continue;
                     }
 
-                    if (arrived) {
-                        break;
+                    const index: number = CollisionMap.index(px, pz);
+                    if (this.distMap[index] >= 100) {
+                        continue;
+                    }
+
+                    let deltaX: number = 0;
+                    if (px < dx) {
+                        deltaX = dx - px;
+                    } else if (px > dx + locWidth - 1) {
+                        deltaX = px - (dx + locWidth - 1);
+                    }
+
+                    let deltaZ: number = 0;
+                    if (pz < dz) {
+                        deltaZ = dz - pz;
+                    } else if (pz > dz + locLength - 1) {
+                        deltaZ = pz - (dz + locLength - 1);
+                    }
+
+                    const distance: number = deltaX * deltaX + deltaZ * deltaZ;
+                    if (distance < bestDistance || (distance === bestDistance && this.distMap[index] < bestCost)) {
+                        bestDistance = distance;
+                        bestCost = this.distMap[index];
+                        x = px;
+                        z = pz;
                     }
                 }
             }
 
-            if (!arrived) {
+            if (bestDistance === 1000) {
                 return false;
             }
+
+            if (x === srcX && z === srcZ) {
+                return false;
+            }
+
+            this.tryMoveNearest = 1;
         }
 
         length = 0;
@@ -5998,13 +6083,18 @@ export class Client extends GameShell {
                 this.ifAnimReset(comId);
 
                 if (this.sideModalId !== -1) {
+                    IfType.unload(this.sideModalId);
                     this.sideModalId = -1;
                     this.redrawSide = true;
                     this.redrawIcons = true;
                 }
 
+                if (this.chatModalId !== comId) {
+                    IfType.unload(this.chatModalId);
+                }
                 this.chatModalId = comId;
                 this.redrawChat = true;
+                IfType.unload(this.mainModalId);
                 this.mainModalId = -1;
                 this.resumedPauseButton = false;
 
@@ -6017,6 +6107,7 @@ export class Client extends GameShell {
                 const sideComId: number = this.in.g2();
 
                 if (this.chatModalId !== -1) {
+                    IfType.unload(this.chatModalId);
                     this.chatModalId = -1;
                     this.redrawChat = true;
                 }
@@ -6026,6 +6117,12 @@ export class Client extends GameShell {
                     this.redrawChat = true;
                 }
 
+                if (this.mainModalId !== mainComId) {
+                    IfType.unload(this.mainModalId);
+                }
+                if (this.sideModalId !== sideComId) {
+                    IfType.unload(this.sideModalId);
+                }
                 this.mainModalId = mainComId;
                 this.sideModalId = sideComId;
                 this.redrawSide = true;
@@ -6038,12 +6135,14 @@ export class Client extends GameShell {
 
             if (this.ptype === ServerProt.IF_CLOSE) {
                 if (this.sideModalId !== -1) {
+                    IfType.unload(this.sideModalId);
                     this.sideModalId = -1;
                     this.redrawSide = true;
                     this.redrawIcons = true;
                 }
 
                 if (this.chatModalId !== -1) {
+                    IfType.unload(this.chatModalId);
                     this.chatModalId = -1;
                     this.redrawChat = true;
                 }
@@ -6053,6 +6152,7 @@ export class Client extends GameShell {
                     this.redrawChat = true;
                 }
 
+                IfType.unload(this.mainModalId);
                 this.mainModalId = -1;
                 this.resumedPauseButton = false;
 
@@ -6065,6 +6165,9 @@ export class Client extends GameShell {
                 const icon: number = this.in.g1();
                 if (comId === 65535) {
                     comId = -1;
+                }
+                if (this.sideIcon[icon] !== comId) {
+                    IfType.unload(this.sideIcon[icon]);
                 }
                 this.sideIcon[icon] = comId;
 
@@ -6080,12 +6183,14 @@ export class Client extends GameShell {
                 this.ifAnimReset(comId);
 
                 if (this.sideModalId !== -1) {
+                    IfType.unload(this.sideModalId);
                     this.sideModalId = -1;
                     this.redrawSide = true;
                     this.redrawIcons = true;
                 }
 
                 if (this.chatModalId !== -1) {
+                    IfType.unload(this.chatModalId);
                     this.chatModalId = -1;
                     this.redrawChat = true;
                 }
@@ -6095,6 +6200,9 @@ export class Client extends GameShell {
                     this.redrawChat = true;
                 }
 
+                if (this.mainModalId !== comId) {
+                    IfType.unload(this.mainModalId);
+                }
                 this.mainModalId = comId;
                 this.resumedPauseButton = false;
 
@@ -6107,6 +6215,7 @@ export class Client extends GameShell {
                 this.ifAnimReset(comId);
 
                 if (this.chatModalId !== -1) {
+                    IfType.unload(this.chatModalId);
                     this.chatModalId = -1;
                     this.redrawChat = true;
                 }
@@ -6116,9 +6225,13 @@ export class Client extends GameShell {
                     this.redrawChat = true;
                 }
 
+                if (this.sideModalId !== comId) {
+                    IfType.unload(this.sideModalId);
+                }
                 this.sideModalId = comId;
                 this.redrawSide = true;
                 this.redrawIcons = true;
+                IfType.unload(this.mainModalId);
                 this.mainModalId = -1;
                 this.resumedPauseButton = false;
 
@@ -6140,6 +6253,9 @@ export class Client extends GameShell {
                 const comId: number = this.in.g2b();
                 if (comId >= 0) {
                     this.ifAnimReset(comId);
+                }
+                if (this.mainOverlayId !== comId) {
+                    IfType.unload(this.mainOverlayId);
                 }
                 this.mainOverlayId = comId;
 
@@ -6174,6 +6290,13 @@ export class Client extends GameShell {
                 const comId: number = this.in.g2();
                 const objId: number = this.in.g2();
                 const zoom: number = this.in.g2();
+
+                if (objId === 65535) {
+                    // Allstar-City: as the Java clients, clears the model
+                    IfType.list[comId].model1Type = 0;
+                    this.ptype = -1;
+                    return true;
+                }
 
                 const type: ObjType = ObjType.list(objId);
                 IfType.list[comId].model1Type = 4;
@@ -6232,12 +6355,14 @@ export class Client extends GameShell {
                 this.ifAnimReset(comId);
 
                 if (this.sideModalId !== -1) {
+                    IfType.unload(this.sideModalId);
                     this.sideModalId = -1;
                     this.redrawSide = true;
                     this.redrawIcons = true;
                 }
 
                 if (this.chatModalId !== -1) {
+                    IfType.unload(this.chatModalId);
                     this.chatModalId = -1;
                     this.redrawChat = true;
                 }
@@ -6247,6 +6372,9 @@ export class Client extends GameShell {
                     this.redrawChat = true;
                 }
 
+                if (this.mainModalId !== comId) {
+                    IfType.unload(this.mainModalId);
+                }
                 this.mainModalId = comId;
                 this.resumedPauseButton = false;
 
@@ -6259,8 +6387,9 @@ export class Client extends GameShell {
                 const seqId: number = this.in.g2b();
 
                 const com: IfType = IfType.list[comId];
-                com.modelAnim = seqId;
-                if (seqId === -1) {
+                // Allstar-City: 377 restarts the animation whenever it changes
+                if (com.modelAnim !== seqId || seqId === -1) {
+                    com.modelAnim = seqId;
                     com.animFrame = 0;
                     com.animCycle = 0;
                 }
@@ -6362,7 +6491,11 @@ export class Client extends GameShell {
             }
 
             if (this.ptype === ServerProt.TUT_OPEN) {
-                this.tutComId = this.in.g2b();
+                const comId: number = this.in.g2b();
+                if (this.tutComId !== comId) {
+                    IfType.unload(this.tutComId);
+                }
+                this.tutComId = comId;
                 this.redrawChat = true;
 
                 this.ptype = -1;
@@ -6574,6 +6707,22 @@ export class Client extends GameShell {
 
                     if (!ignored && this.chatDisabled === 0) {
                         this.addChat(8, 'wishes to duel with you.', player);
+                    }
+                } else if (message.endsWith(':chalreq:')) {
+                    // as both Java clients: "name:text:chalreq:"
+                    const player: string = message.substring(0, message.indexOf(':'));
+                    const username = JString.toUserhash(player);
+
+                    let ignored: boolean = false;
+                    for (let i: number = 0; i < this.ignoreCount; i++) {
+                        if (this.ignoreUserhash[i] === username) {
+                            ignored = true;
+                            break;
+                        }
+                    }
+
+                    if (!ignored && this.chatDisabled === 0) {
+                        this.addChat(8, message.substring(message.indexOf(':') + 1, message.length - 9), player);
                     }
                 } else {
                     this.addChat(0, message, '');
@@ -7152,7 +7301,15 @@ export class Client extends GameShell {
                 const loops: number = this.in.g1();
                 const delay: number = this.in.g2();
 
-                if (this.waveEnabled && !Client.lowMem && this.waveCount < 50) {
+                if (delay === 65535) {
+                    // Allstar-City: 377 plays these at once, even with sound effects off
+                    if (this.waveCount < 50) {
+                        this.waveIds[this.waveCount] = soundId;
+                        this.waveLoops[this.waveCount] = loops;
+                        this.waveDelay[this.waveCount] = 0;
+                        this.waveCount++;
+                    }
+                } else if (this.waveEnabled && !Client.lowMem && this.waveCount < 50) {
                     this.waveIds[this.waveCount] = soundId;
                     this.waveLoops[this.waveCount] = loops;
                     this.waveDelay[this.waveCount] = delay + JagFX.delays[soundId];
@@ -7337,7 +7494,7 @@ export class Client extends GameShell {
                 } else if (layer == 1) {
                     const decor = this.world.getDecor(this.minusedlevel, z, x);
                     if (decor) {
-                        decor.model = new ClientLocAnim((decor.typecode >> 14) & 0x7fff, 4, 0, heightSW, heightNE, heightNE, heightNW, seq, false);
+                        decor.model = new ClientLocAnim((decor.typecode >> 14) & 0x7fff, 4, 0, heightSW, heightSE, heightNE, heightNW, seq, false);
                     }
                 } else if (layer == 2) {
                     const sprite = this.world.getScene(this.minusedlevel, x, z);
@@ -7400,7 +7557,7 @@ export class Client extends GameShell {
             const angle: number = buf.g1();
             const startpos: number = buf.g1();
 
-            if (x >= 0 && z >= 0 && x < BuildArea.SIZE && z < BuildArea.SIZE && x2 >= 0 && z2 >= 0 && x2 < BuildArea.SIZE && z2 < BuildArea.SIZE) {
+            if (x >= 0 && z >= 0 && x < BuildArea.SIZE && z < BuildArea.SIZE && x2 >= 0 && z2 >= 0 && x2 < BuildArea.SIZE && z2 < BuildArea.SIZE && spotanim !== 65535) {
                 x = x * 128 + 64;
                 z = z * 128 + 64;
                 x2 = x2 * 128 + 64;
@@ -7974,10 +8131,7 @@ export class Client extends GameShell {
                 seqId = -1;
             }
 
-            if (seqId === player.primaryAnim) {
-                player.primaryAnimLoop = 0;
-            }
-
+            // Allstar-City: 377 leaves replays to duplicatebehaviour (289 always reset the loop count here)
             const delay: number = buf.g1();
             if (player.primaryAnim === seqId && seqId !== -1) {
                 const restartMode = SeqType.list[seqId].duplicatebehaviour;
@@ -8013,7 +8167,13 @@ export class Client extends GameShell {
             player.chatEffect = 0;
             player.chatTimer = 150;
 
-            if (player.name) {
+            // as both Java clients: only '~' messages (and the local player's) go to the chat box
+            if (player.chatMessage.charAt(0) === '~') {
+                player.chatMessage = player.chatMessage.substring(1);
+                if (player.name) {
+                    this.addChat(2, player.chatMessage, player.name);
+                }
+            } else if (player === this.localPlayer && player.name) {
                 this.addChat(2, player.chatMessage, player.name);
             }
         }
@@ -8301,10 +8461,7 @@ export class Client extends GameShell {
                     anim = -1;
                 }
 
-                if (anim === npc.primaryAnim) {
-                    npc.primaryAnimLoop = 0;
-                }
-
+                // Allstar-City: 377 leaves replays to duplicatebehaviour (289 always reset the loop count here)
                 const delay: number = buf.g1();
                 if (npc.primaryAnim === anim && anim !== -1) {
                     const restartMode = SeqType.list[anim].duplicatebehaviour;
@@ -8845,13 +9002,15 @@ export class Client extends GameShell {
 
         if (action === MiniMenuAction.OP_NPC6) {
             const npc: ClientNpc | null = this.npc[a];
-            if (npc && npc.type) {
+            // Allstar-City: 377 examines the npc a multinpc currently shows
+            const type: NpcType | null = npc && npc.type ? npc.type.getMultiNpc() : null;
+            if (npc && type) {
                 let examine: string;
 
-                if (!npc.type.desc) {
-                    examine = "It's a " + npc.type.name + '.';
+                if (!type.desc) {
+                    examine = "It's a " + type.name + '.';
                 } else {
-                    examine = npc.type.desc;
+                    examine = type.desc;
                 }
 
                 this.addChat(0, examine, '');
@@ -9480,7 +9639,7 @@ export class Client extends GameShell {
 
                     this.menuOption[this.menuNumEntries] = 'Examine @cya@' + loc.name;
                     this.menuAction[this.menuNumEntries] = MiniMenuAction.OP_LOC6;
-                    this.menuParamA[this.menuNumEntries] = typecode;
+                    this.menuParamA[this.menuNumEntries] = loc.id << 14; // the multiloc variant
                     this.menuParamB[this.menuNumEntries] = x;
                     this.menuParamC[this.menuNumEntries] = z;
                     this.menuNumEntries++;
@@ -9592,8 +9751,14 @@ export class Client extends GameShell {
         }
     }
 
-    private addNpcOptions(npc: NpcType, a: number, b: number, c: number): void {
+    private addNpcOptions(type: NpcType, a: number, b: number, c: number): void {
         if (this.menuNumEntries >= 400) {
+            return;
+        }
+
+        // Allstar-City: 377 multinpcs show the options of the npc they currently are; active=no has none
+        const npc: NpcType | null = type.getMultiNpc();
+        if (!npc || !npc.active) {
             return;
         }
 
@@ -9769,7 +9934,7 @@ export class Client extends GameShell {
     }
 
     // todo: order
-    private addComponentOptions(com: IfType, mouseX: number, mouseY: number, x: number, y: number, scrollPosition: number): void {
+    private addComponentOptions(com: IfType, mouseX: number, mouseY: number, x: number, y: number, scrollPosition: number, area: number = 0): void {
         if (com.type !== 0 || !com.children || com.hide || mouseX < x || mouseY < y || mouseX > x + com.width || mouseY > y + com.height || !com.childX || !com.childY) {
             return;
         }
@@ -9791,11 +9956,15 @@ export class Client extends GameShell {
                 }
             }
 
+            if (child.type === ComponentType.TYPE_TOOLTIP && mouseX >= childX && mouseY >= childY && mouseX < childX + child.width && mouseY < childY + child.height) {
+                this.lastTooltipComId = child.id;
+            }
+
             if (child.type === 0) {
-                this.addComponentOptions(child, mouseX, mouseY, childX, childY, child.scrollPos);
+                this.addComponentOptions(child, mouseX, mouseY, childX, childY, child.scrollPos, area);
 
                 if (child.scrollHeight > child.height) {
-                    this.doScrollbar(mouseX, mouseY, child.scrollHeight, child.height, true, childX + child.width, childY, child);
+                    this.doScrollbar(mouseX, mouseY, child.scrollHeight, child.height, area, childX + child.width, childY, child);
                 }
             } else if (child.type === 2) {
                 let slot: number = 0;
@@ -10402,6 +10571,46 @@ export class Client extends GameShell {
                         slot++;
                     }
                 }
+            } else if (child.type === ComponentType.TYPE_TOOLTIP && this.tooltipCycle === 100 && (child.id === this.tooltipChatComId || child.id === this.tooltipSideComId || child.id === this.tooltipMainComId)) {
+                // Allstar-City: 377 tooltip box
+                const font: PixFont | null = this.p12;
+                if (!font || !child.text) {
+                    continue;
+                }
+
+                const lines: string[] = child.text.split('\\n');
+                let boxWidth: number = 0;
+                let boxHeight: number = 0;
+                for (const line of lines) {
+                    const width: number = font.stringWid(line);
+                    if (width > boxWidth) {
+                        boxWidth = width;
+                    }
+                    boxHeight += font.height + 1;
+                }
+                boxWidth += 6;
+                boxHeight += 7;
+
+                let boxX: number = childX + child.width - 5 - boxWidth;
+                let boxY: number = childY + child.height + 5;
+                if (boxX < childX + 5) {
+                    boxX = childX + 5;
+                }
+                if (boxX + boxWidth > x + com.width) {
+                    boxX = x + com.width - boxWidth;
+                }
+                if (boxY + boxHeight > y + com.height) {
+                    boxY = y + com.height - boxHeight;
+                }
+
+                Pix2D.fillRect(boxX, boxY, boxWidth, boxHeight, 0xffffa0);
+                Pix2D.drawRect(boxX, boxY, boxWidth, boxHeight, Colour.BLACK);
+
+                let lineY: number = boxY + font.height + 2;
+                for (const line of lines) {
+                    font.drawStringTag(line, boxX + 3, lineY, Colour.BLACK, false);
+                    lineY += font.height + 1;
+                }
             }
         }
 
@@ -10432,7 +10641,8 @@ export class Client extends GameShell {
         return ' ' + s;
     }
 
-    private doScrollbar(x: number, y: number, scrollableHeight: number, height: number, redraw: boolean, left: number, top: number, com: IfType): void {
+    // Allstar-City: redrawArea as 377 (0 main: none, 1 sidebar, 2 chatbox); 289 always redrew the sidebar
+    private doScrollbar(x: number, y: number, scrollableHeight: number, height: number, redrawArea: number, left: number, top: number, com: IfType): void {
         if (this.scrollGrabbed) {
             this.scrollInputPadding = 32;
         } else {
@@ -10444,15 +10654,11 @@ export class Client extends GameShell {
         if (x >= left && x < left + 16 && y >= top && y < top + 16) {
             com.scrollPos -= this.scrollCycle * 4;
 
-            if (redraw) {
-                this.redrawSide = true;
-            }
+            this.redrawScrollArea(redrawArea);
         } else if (x >= left && x < left + 16 && y >= top + height - 16 && y < top + height) {
             com.scrollPos += this.scrollCycle * 4;
 
-            if (redraw) {
-                this.redrawSide = true;
-            }
+            this.redrawScrollArea(redrawArea);
         } else if (x >= left - this.scrollInputPadding && x < left + this.scrollInputPadding + 16 && y >= top + 16 && y < top + height - 16 && this.scrollCycle > 0) {
             let gripSize: number = (((height - 32) * height) / scrollableHeight) | 0;
             if (gripSize < 8) {
@@ -10464,11 +10670,17 @@ export class Client extends GameShell {
 
             com.scrollPos = (((scrollableHeight - height) * gripY) / maxY) | 0;
 
-            if (redraw) {
-                this.redrawSide = true;
-            }
+            this.redrawScrollArea(redrawArea);
 
             this.scrollGrabbed = true;
+        }
+    }
+
+    private redrawScrollArea(area: number): void {
+        if (area === 1) {
+            this.redrawSide = true;
+        } else if (area === 2) {
+            this.redrawChat = true;
         }
     }
 
@@ -10703,7 +10915,8 @@ export class Client extends GameShell {
 
         for (let i: number = 0; i < parent.children.length && parent.children[i] !== -1; i++) {
             const child: IfType = IfType.list[parent.children[i]];
-            if (child.type === 1) {
+            if (child.type === 0) {
+                // Allstar-City: 377 animates models inside nested layers (289 checked type 1)
                 updated ||= this.animateInterface(child.id, delta);
             }
 
@@ -10722,7 +10935,7 @@ export class Client extends GameShell {
                     child.animCycle += delta;
 
                     while (child.animCycle > type.getDelay(child.animFrame)) {
-                        child.animCycle -= type.getDelay(child.animFrame) + 1;
+                        child.animCycle -= type.getDelay(child.animFrame); // Allstar-City: 377 timing (289: + 1)
                         child.animFrame++;
 
                         if (child.animFrame >= type.numFrames) {
@@ -10886,12 +11099,15 @@ export class Client extends GameShell {
                 com.text = '';
                 com.buttonType = 0;
             } else {
-                if (this.friendNodeId[clientCode] === 0) {
+                // Allstar-City: 377 text ("World1", worlds 200+ are "Classic")
+                const world: number = this.friendNodeId[clientCode];
+                const colour: string = world === Client.nodeId ? '@gre@' : '@yel@';
+                if (world === 0) {
                     com.text = '@red@Offline';
-                } else if (this.friendNodeId[clientCode] === Client.nodeId) {
-                    com.text = '@gre@World-' + (this.friendNodeId[clientCode] - 9);
+                } else if (world < 200) {
+                    com.text = colour + 'World' + (world - 9);
                 } else {
-                    com.text = '@yel@World-' + (this.friendNodeId[clientCode] - 9);
+                    com.text = colour + 'Classic' + (world - 219);
                 }
 
                 com.buttonType = 1;
@@ -10961,7 +11177,7 @@ export class Client extends GameShell {
                 model.calculateNormals(64, 850, -30, -50, -30, true);
 
                 if (this.localPlayer) {
-                    const frames: Int16Array | null = SeqType.list[this.localPlayer.readyanim].frames;
+                    const frames: Int32Array | null = SeqType.list[this.localPlayer.readyanim].frames;
                     if (frames) {
                         model.animate(frames[0]);
                     }
@@ -11095,6 +11311,7 @@ export class Client extends GameShell {
         this.out.p1Enc(ClientProt.CLOSE_MODAL);
 
         if (this.sideModalId !== -1) {
+            IfType.unload(this.sideModalId);
             this.sideModalId = -1;
             this.redrawSide = true;
             this.resumedPauseButton = false;
@@ -11102,11 +11319,13 @@ export class Client extends GameShell {
         }
 
         if (this.chatModalId !== -1) {
+            IfType.unload(this.chatModalId);
             this.chatModalId = -1;
             this.redrawChat = true;
             this.resumedPauseButton = false;
         }
 
+        IfType.unload(this.mainModalId);
         this.mainModalId = -1;
     }
 
@@ -11218,7 +11437,7 @@ export class Client extends GameShell {
             return true;
         } else if (clientCode === ClientCode.CC_MOD_MUTE) {
             this.reportAbuseMuteOption = !this.reportAbuseMuteOption;
-        } else if (clientCode >= ClientCode.CC_REPORT_RULE1 && clientCode <= ClientCode.CC_REPORT_RULE12) {
+        } else if (clientCode >= ClientCode.CC_REPORT_RULE1 && clientCode <= ClientCode.CC_REPORT_RULE13) {
             this.closeModal();
 
             if (this.reportAbuseInput.length > 0) {

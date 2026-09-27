@@ -49,7 +49,7 @@ export default class ClientNpc extends ClientEntity {
                 temp.labelVertices = null;
 
                 if (spot.resizeh != 128 || spot.resizev != 128) {
-                    temp.resize(spot.resizev, spot.resizeh, spot.resizeh);
+                    temp.resize(spot.resizeh, spot.resizev, spot.resizeh);
                 }
 
                 temp.calculateNormals(spot.ambient + 64, spot.contrast + 850, -30, -50, -30, true);
