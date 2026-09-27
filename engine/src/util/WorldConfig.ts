@@ -37,6 +37,8 @@ export interface WorldConfig {
         tickrate: number;
         // Allstar-City: Allstar-Scape xp (whole xp units, half xp curve, strict level thresholds)
         allstarXp: boolean;
+        // Allstar-City: Allstar-Scape combat model (engine/src/engine/AllstarCombat.ts)
+        allstarCombat: boolean;
     };
     login: {
         enabled: boolean;
@@ -112,7 +114,8 @@ export function createDefaultWorldConfig(): WorldConfig {
             rateLimitAddressLogin: 30,
             rateLimitDeviceLogin: 5,
             tickrate: 600,
-            allstarXp: false
+            allstarXp: false,
+            allstarCombat: false
         },
         login: {
             enabled: false,
@@ -254,6 +257,7 @@ function migrateFromLegacyEnv(defaults: WorldConfig, env: Record<string, string>
     config.node.rateLimitDeviceLogin = tryParseInt(env.NODE_RATELIMIT_DEVICE_LOGIN, config.node.rateLimitDeviceLogin);
     config.node.tickrate = tryParseInt(env.NODE_TICKRATE, config.node.tickrate);
     config.node.allstarXp = tryParseBoolean(env.NODE_ALLSTAR_XP, config.node.allstarXp);
+    config.node.allstarCombat = tryParseBoolean(env.NODE_ALLSTAR_COMBAT, config.node.allstarCombat);
 
     config.login.enabled = tryParseBoolean(env.LOGIN_SERVER, config.login.enabled);
     config.login.host = tryParseString(env.LOGIN_HOST, config.login.host);

@@ -275,15 +275,17 @@ export class NpcInfoDamage implements InfoMessage {
         private readonly baseHitpoints: number
     ) {}
 
+    // Allstar-City: damage and hitpoints are 2 bytes so NPCs can have more than 255 hitpoints
+    // (Allstar-Scape NPCs have up to 5000); the web client reads them with g2.
     encode(buf: Packet): void {
-        buf.p1(this.damage);
+        buf.p2(this.damage);
         buf.p1(this.damageType);
-        buf.p1(this.currentHitpoints);
-        buf.p1(this.baseHitpoints);
+        buf.p2(this.currentHitpoints);
+        buf.p2(this.baseHitpoints);
     }
 
     test(): number {
-        return 4;
+        return 7;
     }
 
     persists(): boolean {

@@ -8464,13 +8464,14 @@ export class Client extends GameShell {
             const mask: number = buf.g1();
 
             if ((mask & NpcUpdate.HITMARK2) !== 0) {
-                const damage = buf.g1();
+                // Allstar-City: 2-byte damage and hitpoints (NPCs with more than 255 hitpoints)
+                const damage = buf.g2();
                 const damageType = buf.g1();
 
                 npc.addHitmark(Client.loopCycle, damageType, damage);
                 npc.combatCycle = Client.loopCycle + 400;
-                npc.health = buf.g1();
-                npc.totalHealth = buf.g1();
+                npc.health = buf.g2();
+                npc.totalHealth = buf.g2();
             }
 
             if ((mask & NpcUpdate.ANIM) !== 0) {
@@ -8515,13 +8516,14 @@ export class Client extends GameShell {
             }
 
             if ((mask & NpcUpdate.HITMARK) !== 0) {
-                const damage = buf.g1();
+                // Allstar-City: 2-byte damage and hitpoints (NPCs with more than 255 hitpoints)
+                const damage = buf.g2();
                 const damageType = buf.g1();
 
                 npc.addHitmark(Client.loopCycle, damageType, damage);
                 npc.combatCycle = Client.loopCycle + 400;
-                npc.health = buf.g1();
-                npc.totalHealth = buf.g1();
+                npc.health = buf.g2();
+                npc.totalHealth = buf.g2();
             }
 
             if ((mask & NpcUpdate.CHANGETYPE) !== 0) {

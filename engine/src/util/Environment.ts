@@ -12,6 +12,7 @@ export default {
     // (the Allstar-City gameplay branches) still compiles. New code should use the structured config.
     NODE_TICKRATE: config.node.tickrate,
     NODE_ALLSTAR_XP: config.node.allstarXp,
+    NODE_ALLSTAR_COMBAT: config.node.allstarCombat,
     NODE_DEBUG: config.node.debug,
     NODE_DEBUG_PROFILE: config.node.debugProfile,
     NODE_PRODUCTION: config.node.production,
