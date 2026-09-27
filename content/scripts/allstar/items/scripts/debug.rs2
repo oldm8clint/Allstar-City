@@ -20,6 +20,10 @@ stat_sub(hitpoints, $amount, 0);
 // requirements (Armadyl helmet, fire cape, glory, Allstar's Hammer, Bandos chestplate, dragonfire
 // shield, Armadyl legs, the 100 gauntlets, dragon boots, 'perfect' ring, dragon arrows).
 [debugproc,ownerkit]
+if (p_finduid(uid) = false) {
+    mes("Close what you have open, then type ::~ownerkit again.");
+    return;
+}
 def_int $id = 7956;
 def_namedobj $obj = null;
 while ($id < 16000) {
@@ -61,9 +65,7 @@ inv_setslot(worn, ^wearpos_feet, allstar_item_15352, 1);
 inv_setslot(worn, ^wearpos_ring, perfect_ruby_ring, 1);
 inv_setslot(worn, ^wearpos_quiver, allstar_item_15145, 1000);
 ~allstar_wield_anims(hundred_hammer);
-if (p_finduid(uid) = true) {
-    ~allstar_equipment_changed($previous);
-}
+~allstar_equipment_changed($previous);
 mes("Owner kit: every custom item and the rares are in your bank; best gear equipped.");
 
 [proc,allstar_ownerkit_bank](namedobj $obj)
