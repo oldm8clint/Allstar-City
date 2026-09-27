@@ -11,19 +11,68 @@ return(enum(obj, int, allstar_obj_id, $obj));
 [proc,allstar_weapon]()(int)
 return(~allstar_objid(inv_getobj(worn, ^wearpos_rhand)));
 
-// FightType from the combat tab: 1 accurate, 2 aggressive, 3 controlled, 4 defensive. Ranged and magic
-// styles have no Allstar-Scape button, so they keep the last melee choice (default accurate).
+// FightType (C:23903-23953): 1 accurate, 2 aggressive, 3 controlled, 4 defensive. Allstar-Scape set it
+// from the button pressed on its 317 combat tab (client.SendWeapon, obj param allstar_weapon_tab),
+// kept it across weapon swaps and reset it to accurate at login.
 [proc,allstar_fighttype]()(int)
-switch_int (%damagestyle) {
-    case ^style_melee_accurate : %as_fighttype = 1;
-    case ^style_melee_aggressive : %as_fighttype = 2;
-    case ^style_melee_controlled : %as_fighttype = 3;
-    case ^style_melee_defensive : %as_fighttype = 4;
-}
 if (%as_fighttype < 1 | %as_fighttype > 4) {
     %as_fighttype = 1;
 }
 return(%as_fighttype);
+
+// the attack style button in the tab's order -> FightType (0 = a button with no FightType case)
+[proc,allstar_style_button](int $button)
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+def_int $tab = 5855;
+if ($weapon ! null) {
+    $tab = oc_param($weapon, allstar_weapon_tab);
+}
+def_int $type = 0;
+switch_int ($tab) {
+    // chop/slash/lunge/block (swords, scimitars, everything else), claws
+    case 2423, 7762 : $type = ~allstar_style_pick($button, 1, 2, 3, 4);
+    // stab/lunge/slash/block (daggers), chop/hack/smash/block (axes), spike/impale/smash/block (pickaxes)
+    case 2276, 1698, 5570 : $type = ~allstar_style_pick($button, 1, 2, 2, 4);
+    // flick/lash/deflect (whip): deflect has no case
+    case 12290 : $type = ~allstar_style_pick($button, 1, 3, 0, 0);
+    // jab/swipe/fend (halberd)
+    case 8460 : $type = ~allstar_style_pick($button, 3, 2, 4, 0);
+    // lunge/swipe/pound/block (spear)
+    case 4679 : $type = ~allstar_style_pick($button, 3, 3, 3, 4);
+    // accurate/rapid/longrange (bows, darts)
+    case 1764, 4446 : $type = ~allstar_style_pick($button, 1, 2, 3, 0);
+    // punch/kick/block (unarmed), bash/pound/focus (staves)
+    case 5855, 328 : $type = ~allstar_style_pick($button, 1, 2, 4, 0);
+}
+if ($type > 0) {
+    %as_fighttype = $type;
+}
+
+[proc,allstar_style_pick](int $button, int $a, int $b, int $c, int $d)(int)
+switch_int ($button) {
+    case 0 : return($a);
+    case 1 : return($b);
+    case 2 : return($c);
+    case 3 : return($d);
+}
+return(0);
+
+// The combat tab for the weapon's Allstar-Scape tab, with the special bar where Allstar-Scape drew it
+// (whip, dagger, sword, bow, halberd, axe). Tabs Lost City does not have: the halberd uses the spear
+// tab, the darts the thrown tab.
+[proc,allstar_weapon_tab_attack](obj $obj)
+switch_int (oc_param($obj, allstar_weapon_tab)) {
+    case 12290 : ~weapon_category_tab_attack(combat_whip:preview, combat_whip:name, combat_whip, $obj, combat_whip:specbar_layer);
+    case 1764 : ~weapon_category_tab_attack(combat_bow:preview, combat_bow:name, combat_bow, $obj, combat_bow:specbar_layer);
+    case 328 : ~weapon_category_tab_attack(combat_staff_2:preview, combat_staff_2:name, combat_staff_2, $obj, null);
+    case 4446 : ~weapon_category_tab_attack(combat_thrown:preview, combat_thrown:name, combat_thrown, $obj, combat_thrown:specbar_layer);
+    case 2276 : ~weapon_category_tab_attack(combat_stabsword:preview, combat_stabsword:name, combat_stabsword, $obj, combat_stabsword:specbar_layer);
+    case 5570 : ~weapon_category_tab_attack(combat_pickaxe:preview, combat_pickaxe:name, combat_pickaxe, $obj, combat_pickaxe:specbar_layer);
+    case 1698 : ~weapon_category_tab_attack(combat_axe:preview, combat_axe:name, combat_axe, $obj, combat_axe:specbar_layer);
+    case 8460, 4679 : ~weapon_category_tab_attack(combat_spear:preview, combat_spear:name, combat_spear, $obj, combat_spear:specbar_layer);
+    case 7762 : ~weapon_category_tab_attack(combat_claw:preview, combat_claw:name, combat_claw, $obj, combat_claw:specbar_layer);
+    case default : ~weapon_category_tab_attack(combat_hacksword:preview, combat_hacksword:name, combat_hacksword, $obj, combat_hacksword:specbar_layer);
+}
 
 // playerBonus[10], the strength bonus of everything worn
 [proc,allstar_strength_bonus]()(int)

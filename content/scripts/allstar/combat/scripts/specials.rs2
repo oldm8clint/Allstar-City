@@ -12,7 +12,7 @@
 %as_special = calc(%as_special - $amount);
 
 // ---- the special bar buttons ----
-// The 317 combat tab is picked from the weapon's name (client.SendWeapon, enum allstar_weapon_tab):
+// The 317 combat tab is picked from the weapon's name (client.SendWeapon, obj param allstar_weapon_tab):
 // 29063 on the axe tab (1698) fires the dragon battleaxe special, 29113/33033/29163/29138/48023 on the
 // bow, halberd, sword, dagger and whip tabs toggle usingSpecial, the other tabs had no handler.
 // usingSpecial survives a weapon swap.
@@ -31,11 +31,22 @@
 [if_button,combat_unarmed:specbar] @allstar_special_button;
 [if_button,combat_whip:specbar] @allstar_special_button;
 
+// client.specialAttacks..specialAttacks6: the bar on the whip, dagger, sword, bow, halberd and axe tabs
+[proc,allstar_spec_bar_shown](obj $weapon)(boolean)
+if ($weapon = null) {
+    return(false);
+}
+def_int $tab = oc_param($weapon, allstar_weapon_tab);
+if ($tab = 12290 | $tab = 2276 | $tab = 2423 | $tab = 1764 | $tab = 8460 | $tab = 1698) {
+    return(true);
+}
+return(false);
+
 [label,allstar_special_button]
 def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
 def_int $tab = 5855;
 if ($weapon ! null) {
-    $tab = enum(obj, int, allstar_weapon_tab, $weapon);
+    $tab = oc_param($weapon, allstar_weapon_tab);
 }
 if ($tab = 1698) {
     if (~allstar_weapon = 1377) {

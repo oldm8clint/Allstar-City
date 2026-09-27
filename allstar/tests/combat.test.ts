@@ -448,6 +448,128 @@ async function pvpMagic() {
     await b.logout();
 }
 
+async function wield(bot: Bot, name: string, id: number) {
+    bot.cheat(`give ${name} 1`);
+    await bot.until(() => slotOf(bot, id) !== -1, 3000, `give ${name}`);
+    bot.opHeld(2, id, slotOf(bot, id), 3214);
+    await bot.until(() => (bot.invs.get(1688) ?? [])[3]?.id === id, 3000, `wield ${name}`);
+    await sleep(600);
+}
+
+async function specState(bot: Bot): Promise<{ special: number; using: number }> {
+    const [line] = await debug(bot, '~asme', /^asme clock/);
+    const [line2] = bot.messages.slice(-3).filter(m => m.startsWith('asme2'));
+    return { special: Number(/special=(-?\d+)/.exec(line ?? '')?.[1] ?? -1), using: Number(/usespec=(\d+)/.exec(line2 ?? '')?.[1] ?? -1) };
+}
+
+// ---- special attacks on an NPC: the whip's 20..30 for 50 energy, the DDS's second hit 2 cycles later ----
+async function specials() {
+    const bot = await login('spec');
+    await wield(bot, 'abyssal_whip', 4151);
+    bot.cheat('train');
+    await bot.until(() => bot.self.x === 3209 && bot.self.z === 2801, 5000, '::train');
+    await sleep(1500);
+    const soldiers = [...bot.npcs.values()].filter(n => n.type === 35).sort((a, b) => b.z - a.z || a.x - b.x);
+    const soldier = soldiers[0];
+    await walkTo(bot, soldier.x + 1, soldier.z);
+    bot.ifButton(com('combat_whip:specbar'));
+    await sleep(600);
+    let state = await specState(bot);
+    check(state.using === 1, 'the whip special bar toggles usingSpecial');
+    const hits = soldier.hits.length;
+    bot.opNpc(2, soldier.nid);
+    await bot.until(() => soldier.hits.length > hits, 4000, 'whip special hit');
+    const hit = soldier.hits[hits].damage;
+    await sleep(600);
+    state = await specState(bot);
+    check(hit >= 20 && hit <= 30, `the whip special hits 20..30 (${hit})`);
+    // (+1 energy every 4 cycles since)
+    check(state.special >= 50 && state.special <= 51 && state.using === 0, `it costs 50 energy and turns itself off (${state.special}, ${state.using})`);
+    await walkTo(bot, soldier.x + 1, soldier.z + 1);
+
+    // DDS: the special hit is the normal roll, plus r(25) two cycles later
+    await wield(bot, 'dragon_dagger_p++', 5698);
+    await sleep(3000);
+    const second = soldiers[1];
+    await walkTo(bot, second.x + 1, second.z);
+    bot.ifButton(com('combat_stabsword:specbar'));
+    await sleep(600);
+    const before = second.hits.length;
+    bot.opNpc(2, second.nid);
+    await bot.until(() => second.hits.length >= before + 2, 5000, 'DDS special hits');
+    const [first, extra] = second.hits.slice(before, before + 2);
+    check(extra.at - first.at > 700 && extra.at - first.at < 1300, `the second hit comes 2 cycles later (${extra.at - first.at} ms)`);
+    check(extra.damage <= 25, `the second hit is r(25) (${extra.damage})`);
+    await bot.logout();
+}
+
+// ---- FightType from the Allstar-Scape tab buttons: max hit (Str + bonus) / 6.83 accurate, / 6.66 aggressive ----
+async function styles() {
+    const bot = await login('style');
+    await wield(bot, 'dragon_scimitar', 4587);
+    const fight = async () => {
+        const [line] = await debug(bot, '~asme', /^asme clock/);
+        return { type: Number(/fight=(\d+)/.exec(line ?? '')?.[1] ?? -1), max: Number(/maxhit=(\d+)/.exec(line ?? '')?.[1] ?? -1) };
+    };
+    bot.ifButton(com('combat_hacksword:hack0'));
+    await sleep(600);
+    const accurate = await fight();
+    bot.ifButton(com('combat_hacksword:hack1'));
+    await sleep(600);
+    const aggressive = await fight();
+    bot.ifButton(com('combat_hacksword:hack2'));
+    await sleep(600);
+    const controlled = await fight();
+    bot.ifButton(com('combat_hacksword:hack3'));
+    await sleep(600);
+    const defensive = await fight();
+    check(accurate.type === 1 && aggressive.type === 2 && controlled.type === 3 && defensive.type === 4, `the sword tab buttons set FightType 1/2/3/4 (${accurate.type}/${aggressive.type}/${controlled.type}/${defensive.type})`);
+    check(aggressive.max >= accurate.max && accurate.max === defensive.max, `aggressive hits at least as hard (${accurate.max}/${aggressive.max}/${controlled.max}/${defensive.max})`);
+    await bot.logout();
+}
+
+// ---- prayers: Protect from Melee drains a point at once, then one every 14 cycles; turning it off stops it ----
+async function prayer() {
+    const bot = await login('pray');
+    await sleep(600);
+    const start = bot.stats[5]?.level ?? 0;
+    const t0 = Date.now();
+    bot.ifButton(com('prayer:prayer_protectfrommelee'));
+    await bot.until(() => (bot.stats[5]?.level ?? 0) === start - 1, 2000, 'first prayer point');
+    const first = Date.now() - t0;
+    await bot.until(() => (bot.stats[5]?.level ?? 0) === start - 2, 9000, 'second prayer point');
+    const second = Date.now() - t0;
+    check(first < 1300, `the first point drains at once (${first} ms)`);
+    check(second - first > 6600 && second - first < 7600, `then one every 14 cycles (${second - first} ms)`);
+    bot.ifButton(com('prayer:prayer_protectfrommelee'));
+    await sleep(8000);
+    check((bot.stats[5]?.level ?? 0) === start - 2, `no drain once it is off (${bot.stats[5]?.level})`);
+    await bot.logout();
+}
+
+// ---- poison: a DDS hit poisons; 39 cycles later 1..6 with the poison splat and the message ----
+async function poison() {
+    const a = await login('psna');
+    const b = await login('psnb');
+    await wield(a, 'dragon_dagger_p++', 5698);
+    await tele(a, 3222, 3219);
+    await tele(b, 3222, 3220);
+    await a.until(() => a.playerByName(b.username) !== undefined, 5000, 'target');
+    const hits = b.myHits.length;
+    a.opPlayer(3, a.playerByName(b.username)!.pid);
+    await b.until(() => b.myHits.length > hits, 5000, 'DDS hit');
+    const poisoned = b.myHits[hits].at;
+    await walkTo(a, 3222, 3217);
+    const since = b.messages.length;
+    await b.waitForMessage(/^You start to die of poison$/, 25000, since);
+    await sleep(600);
+    const hit = b.myHits.filter(h => h.at > poisoned + 1000).pop();
+    check(hit !== undefined && hit.type === 2 && hit.damage >= 1 && hit.damage <= 6, `a poison splat of 1..6 (${hit?.damage}, type ${hit?.type})`);
+    check(hit !== undefined && hit.at - poisoned > 18800 && hit.at - poisoned < 20300, `39 cycles after the poisoning hit (${hit ? hit.at - poisoned : -1} ms)`);
+    await a.logout();
+    await b.logout();
+}
+
 const scenarios: [string, () => Promise<void>][] = [
     ['train', trainingArea],
     ['moving', movingPlayer],
@@ -455,7 +577,11 @@ const scenarios: [string, () => Promise<void>][] = [
     ['pvp', pvp],
     ['pvpdeath', pvpDeath],
     ['magic', magic],
-    ['pvpmagic', pvpMagic]
+    ['pvpmagic', pvpMagic],
+    ['specials', specials],
+    ['styles', styles],
+    ['prayer', prayer],
+    ['poison', poison]
 ];
 for (const [name, run] of scenarios) {
     if (only && only !== name) {
