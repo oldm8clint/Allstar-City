@@ -261,14 +261,30 @@ text = await message(/cannot sell/, () => bot.invButton(2, 1623, slotOf(inv(), 1
 check(text === 'You cannot sell Uncut sapphire in this store.', `emptied default slot: ${text}`);
 await closeShop();
 
-// ---------------------------------------------------------------- live restock (real clock)
+// ---------------------------------------------------------------- two players, live restock
 await cmd('~shopreset 57');
 await setInventory([['coins', 1000000]]);
 await openShop('generalshopkeeper5', 3, 'Helmet Shop');
 const helm = view()[0];
 check(helm?.id === 7534 && helm?.count === 50, `helmet shop slot 0 ${JSON.stringify(helm)}`);
+
+// a second player with the same shop open sees the purchase (UpdatePlayerShop)
+const other = await Bot.connect({ username: `shoq${Date.now() % 100000}`, port: PORT, webPort: WEB_PORT });
+other.cheat('shops');
+await sleep(2000);
+other.cheat('~shopnpc generalshopkeeper5');
+await sleep(700);
+const since = other.messages.length;
+other.cheat('getvar allstar_shop_testnpc');
+const uid = Number((await other.waitForMessage(/^get allstar_shop_testnpc: /, 5000, since)).split(': ')[1]);
+other.opNpc(3, uid & 0xffff);
+await other.until(() => other.invs.get(SHOP)?.[0]?.count === 50, 15000, 'second player opened the helmet shop');
+
 bot.invButton(2, 7534, 0, SHOP);
 await bot.until(() => view()[0]?.count === 49, 5000, 'bought helm');
+await other.until(() => other.invs.get(SHOP)?.[0]?.count === 49, 5000, 'other player sees 49');
+check(other.invs.get(SHOP)?.[0]?.count === 49, 'the other player sees the purchase');
+other.close();
 const boughtAt = Date.now();
 await bot.until(() => view()[0]?.count === 50, 40000, 'live restock after 60 cycles');
 const seconds = (Date.now() - boughtAt) / 1000;
