@@ -1,0 +1,538 @@
+// Allstar-Scape clue scrolls (client.java clue() L8206, newclue/givereward L8163, cluereward L8086,
+// dig() L35601, Clues.java). Three levels (scrolls 2681-2683) of five stages; the step of a stage
+// is picked by clueid, rolled 1-5 again on every new stage. Steps are digs with the spade on an
+// exact tile, or talking to an npc (dialogues 31 and 32).
+//
+// The object steps (search drawers 348 at 2611,3323, crates 356 at 2424,3081 and 357 at 2757,2951)
+// were handled on objectClick2, but those objects only have a first option, so they could never
+// be searched: those trails were stuck, as were the steps of npcs that were never spawned.
+
+// ---- scrolls and spade: packet 122 runs CheckForSkillUse3 (no case: the message) and then
+// buryBones(), which re-adds the item and deletes the clicked slot ----
+
+[opheld1,trail_clue_easy_simple005] ~allstar_clue_read(1, trail_clue_easy_simple005, last_slot);
+[opheld1,trail_clue_easy_simple006] ~allstar_clue_read(2, trail_clue_easy_simple006, last_slot);
+[opheld1,trail_clue_easy_simple007] ~allstar_clue_read(3, trail_clue_easy_simple007, last_slot);
+
+[proc,allstar_clue_read](int $level, namedobj $scroll, int $slot)
+mes("Nothing interesting is happening.");
+~allstar_clue;
+%allstar_cluelevel = $level;
+~allstar_additem($scroll, 1);
+// on a first read newclue() has just deleted the clicked scroll, so the copy usually lands in
+// that slot and is deleted here
+~allstar_delslot($scroll, $slot);
+
+[opheld1,spade]
+def_int $slot = last_slot;
+mes("Nothing interesting is happening.");
+if (%allstar_cluelevel > 0) {
+    ~allstar_dig;
+}
+// with a full inventory the spade is lost
+~allstar_additem(spade, 1);
+~allstar_delslot(spade, $slot);
+
+// deleteItem(id, slot, 1): only when the slot still holds the item
+[proc,allstar_delslot](obj $obj, int $slot)
+if (inv_getobj(inv, $slot) = $obj) {
+    inv_delslot(inv, $slot);
+}
+
+// ---- state ----
+
+// newclue(): a new random id, the next stage, and one of each scroll deleted
+[proc,allstar_newclue]
+%allstar_clueid = calc(random(5) + 1);
+%allstar_cluestage = calc(%allstar_cluestage + 1);
+inv_del(inv, trail_clue_easy_simple005, 1);
+inv_del(inv, trail_clue_easy_simple006, 1);
+inv_del(inv, trail_clue_easy_simple007, 1);
+
+// givereward(level): cluereward() then one scroll of that level deleted
+[proc,allstar_givereward](int $level)
+if ($level = 1) {
+    ~allstar_cluereward(allstar_clue_clue1, allstar_clue_nonclue1, allstar_clue_runes1);
+    inv_del(inv, trail_clue_easy_simple005, 1);
+} else if ($level = 2) {
+    ~allstar_cluereward(allstar_clue_clue2, allstar_clue_nonclue2, allstar_clue_runes2);
+    inv_del(inv, trail_clue_easy_simple006, 1);
+} else if ($level = 3) {
+    ~allstar_cluereward(allstar_clue_clue3, allstar_clue_nonclue3, allstar_clue_runes3);
+    inv_del(inv, trail_clue_easy_simple007, 1);
+}
+
+[proc,allstar_clue_roll](enum $pool)(namedobj)
+return (enum(int, namedobj, $pool, random(enum_getoutputcount($pool))));
+
+// two rolls of the clue pool, two of the non-clue pool and 500 of one rune type; a full
+// inventory loses them. The reward scroll lists them and the clue state resets.
+[proc,allstar_cluereward](enum $clue, enum $nonclue, enum $runes)
+def_namedobj $item1 = ~allstar_clue_roll($clue);
+def_namedobj $item2 = ~allstar_clue_roll($clue);
+def_namedobj $item3 = ~allstar_clue_roll($nonclue);
+def_namedobj $item4 = ~allstar_clue_roll($nonclue);
+def_namedobj $item5 = ~allstar_clue_roll($runes);
+~allstar_scroll_child(8144, "@dre@Clue Scroll");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Congratz, you have completed the treasure trail!");
+// 8146 is not cleared by clearQuestInterface, so "Reward:" stays on later scrolls
+if_settext(questjournal:com_5, "@dbl@Reward:");
+~allstar_scroll_child(8147, ~allstar_clue_reward_line($item1, 1));
+~allstar_scroll_child(8148, ~allstar_clue_reward_line($item2, 1));
+~allstar_scroll_child(8149, ~allstar_clue_reward_line($item3, 1));
+~allstar_scroll_child(8150, ~allstar_clue_reward_line($item4, 1));
+~allstar_scroll_child(8151, ~allstar_clue_reward_line($item5, 500));
+~allstar_additem($item1, 1);
+~allstar_additem($item2, 1);
+~allstar_additem($item3, 1);
+~allstar_additem($item4, 1);
+~allstar_additem($item5, 500);
+if_openmain(questjournal);
+%allstar_cluelevel = 0;
+%allstar_clueid = 0;
+%allstar_cluestage = 0;
+
+[proc,allstar_clue_reward_line](namedobj $obj, int $count)(string)
+return ("@dbl@<enum(namedobj, string, allstar_clue_item_name, $obj)>@dre@ (<tostring($count)>)@dbl@");
+
+// ---- hints ----
+
+[proc,allstar_sendclue1](int $x, int $z)
+~allstar_scroll_child(8144, "@dre@Clue Scroll");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Coordinates of next clue");
+~allstar_scroll_child(8147, "@dbl@X Coordinate:@dre@ <tostring($x)>@dbl@");
+~allstar_scroll_child(8148, "@dbl@Y Coordinate:@dre@ <tostring($z)>@dbl@");
+~allstar_scroll_child(8149, "@dbl@@dre@ GOOD LUCK! @dbl@");
+if_openmain(questjournal);
+
+[proc,allstar_sendclue3](string $line1, string $line2)
+~allstar_scroll_child(8144, "@dre@Clue Scroll");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Coordinates of next clue");
+~allstar_scroll_child(8147, "@dbl@@dre@<$line1>@dbl@");
+~allstar_scroll_child(8148, "@dbl@@dre@<$line2>@dbl@");
+~allstar_scroll_child(8149, "@dbl@@dre@ GOOD LUCK! @dbl@");
+if_openmain(questjournal);
+
+// clue(): a fresh scroll first rolls stage 1 and shows no hint (the level is still 0). Hints use
+// the level of the scroll read before, and level 2 stage 1 has a second set of hints that
+// overwrites the first while stage 2 has none (dialogues_quests.md 6.4).
+[proc,allstar_clue]
+if (%allstar_cluelevel = 0 | %allstar_clueid = 0 | %allstar_cluestage = 0) {
+    ~allstar_newclue;
+}
+def_int $stage = %allstar_cluestage;
+def_int $id = %allstar_clueid;
+if (%allstar_cluelevel = 1) {
+    if ($stage = 1) {
+        if ($id = 2) {
+            ~allstar_sendclue1(3211, 3688);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue3("Head to the crossroad located", "south of the haunted house");
+        }
+        if ($id = 5) {
+            ~allstar_sendclue1(2684, 3286);
+        }
+    }
+    if ($stage = 2) {
+        if ($id = 1) {
+            ~allstar_sendclue1(3191, 3363);
+        }
+        if ($id = 2) {
+            ~allstar_sendclue3("The old anvil would be a very", "good place to check...");
+        }
+        if ($id = 3) {
+            ~allstar_sendclue3("Search the drawers of a house containing", "a sink in East Ardougne");
+        }
+        if ($id = 4) {
+            ~allstar_sendclue3("Search the boxes in castle wars", "for your next clue.");
+        }
+        if ($id = 5) {
+            ~allstar_sendclue1(3008, 3889);
+        }
+    }
+    if ($stage = 3) {
+        if ($id = 1) {
+            ~allstar_sendclue3("Your next clue lies where the ghost of", "Camelot lives...");
+        }
+        if ($id = 2) {
+            ~allstar_sendclue1(2966, 3381);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(3008, 3889);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(2658, 3338);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue3("A dolmen is always a good place to check", "when doing treasure trails.");
+        }
+    }
+    if ($stage = 4) {
+        if ($id = 3) {
+            ~allstar_sendclue1(3235, 3294);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(3258, 3243);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue3("Try and check outside of the", "castle in Lumbridge.");
+        }
+    }
+    if ($stage = 5) {
+        if ($id = 1) {
+            ~allstar_sendclue3("Try and check outside of the", "castle in Lumbridge.");
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(3141, 3425);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(3098, 3405);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue1(3113, 3961);
+        }
+    }
+}
+if (%allstar_cluelevel = 2) {
+    if ($stage = 1) {
+        if ($id = 2) {
+            ~allstar_sendclue1(3211, 3688);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(3157, 3961);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue3("Read the sign up in the dangerous", "mountains...");
+        }
+        if ($id = 2) {
+            ~allstar_sendclue1(3288, 3886);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(2884, 3160);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(2802, 2976);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue3("Search the crates at the south west", "of Karamja island, above the thick jungle.");
+        }
+    }
+    if ($stage = 3) {
+        if ($id = 1) {
+            ~allstar_sendclue1(2599, 3176);
+        }
+        if ($id = 2) {
+            ~allstar_sendclue1(2619, 3499);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue3("At the end of the track.", ".......");
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(2757, 3477);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue3("The left flower patch", "contains 4 flowers and your next clue.");
+        }
+    }
+    if ($stage = 4) {
+        if ($id = 1) {
+            ~allstar_sendclue1(3058, 3353);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(3288, 3465);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(3314, 3719);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue3("The abandoned outpost near the poisonous", "spiders holds your final clue.");
+        }
+    }
+    if ($stage = 5) {
+        if ($id = 1) {
+            ~allstar_sendclue3("The gypsy tent is the location of your", "final reward.");
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(3113, 3961);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue3("A dolmen is always a good place to check", "when doing treasure trails.");
+        }
+        if ($id = 5) {
+            ~allstar_sendclue3("The table full of bandages contains the", "final reward.");
+        }
+    }
+}
+if (%allstar_cluelevel = 3) {
+    if ($stage = 1) {
+        if ($id = 1) {
+            ~allstar_sendclue3("Go to the skeletons at the dead ship.", "!!!..........!!!");
+        }
+        if ($id = 2) {
+            ~allstar_sendclue1(3211, 3688);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(3211, 3688);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue3("Your next clue lies where the ghost of", "Camelot lives...");
+        }
+        if ($id = 5) {
+            ~allstar_sendclue3("The hut that lies in the wilderness", "is your next destination");
+        }
+    }
+    if ($stage = 2) {
+        if ($id = 1) {
+            ~allstar_sendclue3("The pillars of stone in the north eastern coast", "is a good place to go.");
+        }
+        if ($id = 2) {
+            ~allstar_sendclue1(3092, 3963);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue3("Just south of the lava snake lies", "your next clue...");
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(3211, 3688);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue1(3047, 10342);
+        }
+    }
+    if ($stage = 3) {
+        if ($id = 2) {
+            ~allstar_sendclue1(3211, 3688);
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(2961, 3251);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue1(2988, 3434);
+        }
+        if ($id = 5) {
+            ~allstar_sendclue1(3105, 3959);
+        }
+    }
+    if ($stage = 4) {
+        if ($id = 1) {
+            ~allstar_sendclue3("The teleport lever is the way to your", "next and final clue");
+        }
+        if ($id = 2) {
+            ~allstar_sendclue3("Head to the gateway to the garden of the house", "in south-west Ardougne.");
+        }
+        if ($id = 3) {
+            ~allstar_sendclue1(2599, 3271);
+        }
+        if ($id = 4) {
+            ~allstar_sendclue3("Find the sheltered altar in deep wilderness", "for your final clue...");
+        }
+        if ($id = 5) {
+            ~allstar_sendclue1(2952, 3790);
+        }
+    }
+    if ($stage = 5) {
+        if ($id = 1) {
+            ~allstar_sendclue1(2352, 3294);
+        }
+        if ($id = 2) {
+            ~allstar_sendclue3("Go to the skeletons at the dead ship.", "!!!..........!!!");
+        }
+        if ($id = 3) {
+            ~allstar_sendclue3("At the end of the track.", ".......");
+        }
+        if ($id = 4) {
+            ~allstar_sendclue3("Read the sign up in the dangerous", "mountains...");
+        }
+    }
+}
+
+// ---- dig() ----
+
+// the exact tile, any height
+[proc,allstar_at](int $x, int $z)(boolean)
+if (coordx(coord) = $x & coordz(coord) = $z) {
+    return (true);
+}
+return (false);
+
+// "You find another clue!": a scroll of $scroll's level is added and newclue() runs
+[proc,allstar_dig_found](namedobj $scroll)
+mes("You find another clue!");
+~allstar_additem($scroll, 1);
+~allstar_newclue;
+
+[proc,allstar_dig_reward](namedobj $scroll, int $level)
+mes("Congratulations you have completed the treasure trail!");
+inv_del(inv, $scroll, 1);
+~allstar_givereward($level);
+
+[proc,allstar_dig]
+mes("Dig working - cheezy");
+def_int $stage = %allstar_cluestage;
+def_int $id = %allstar_clueid;
+if (%allstar_cluelevel = 1) {
+    mes("Clue level 1 found.");
+    if ($stage = 1) {
+        mes("Clue stage 1 found.");
+        if ($id = 2 & ~allstar_at(3213, 3684) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 3 & ~allstar_at(3110, 3295) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 5 & ~allstar_at(2684, 3286) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        }
+    } else if ($stage = 2) {
+        mes("Clue stage 2 found.");
+        if ($id = 1 & ~allstar_at(3191, 3363) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 2 & ~allstar_at(2947, 3450) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 5 & ~allstar_at(3008, 3889) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        }
+    } else if ($stage = 3) {
+        if ($id = 1 & ~allstar_at(2424, 3081) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 2 & ~allstar_at(2966, 3381) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 3 & ~allstar_at(3008, 3889) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 4 & ~allstar_at(2658, 3338) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 5 & ~allstar_at(3226, 3368) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        }
+    } else if ($stage = 4) {
+        mes("Clue stage 4 found.");
+        if ($id = 3 & ~allstar_at(3235, 3294) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 4 & ~allstar_at(3258, 3243) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        } else if ($id = 5 & ~allstar_at(3225, 3218) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple005);
+        }
+    } else if ($stage = 5) {
+        if ($id = 1 & ~allstar_at(3225, 3218) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple005, 1);
+        } else if ($id = 3 & ~allstar_at(3141, 3425) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple005, 1);
+        } else if ($id = 4 & ~allstar_at(3098, 3405) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple005, 1);
+        } else if ($id = 5 & ~allstar_at(3113, 3961) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple005, 1);
+        }
+    }
+} else if (%allstar_cluelevel = 2) {
+    mes("Clue level 2 found.");
+    if ($stage = 1) {
+        if ($id = 2 & ~allstar_at(3213, 3686) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 3 & ~allstar_at(3157, 3961) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 4 & ~allstar_at(2839, 3596) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        }
+    } else if ($stage = 2) {
+        if ($id = 2 & ~allstar_at(3288, 3886) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 3 & ~allstar_at(2884, 3160) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 4 & ~allstar_at(2802, 2976) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 5 & ~allstar_at(2839, 3596) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        }
+    } else if ($stage = 3) {
+        if ($id = 1 & ~allstar_at(2599, 3176) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 2 & ~allstar_at(2619, 3499) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 3 & ~allstar_at(2601, 3490) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 4 & ~allstar_at(2757, 3477) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 5 & ~allstar_at(2987, 3388) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        }
+    } else if ($stage = 4) {
+        if ($id = 1 & ~allstar_at(3058, 3353) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 3 & ~allstar_at(3288, 3465) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 4 & ~allstar_at(3314, 3719) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 5 & ~allstar_at(3311, 3768) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        }
+    } else if ($stage = 5) {
+        if ($id = 1 & ~allstar_at(3203, 3424) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple006, 2);
+        } else if ($id = 3 & ~allstar_at(3113, 3961) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple006, 2);
+        } else if ($id = 4 & ~allstar_at(3225, 3218) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple006, 2);
+        } else if ($id = 5 & ~allstar_at(2424, 3078) = true) {
+            ~allstar_dig_reward(trail_clue_easy_simple006, 2);
+        }
+    }
+} else if (%allstar_cluelevel = 3) {
+    mes("Clue level 3 found.");
+    if ($stage = 1) {
+        if ($id = 1 & ~allstar_at(3022, 3952) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 2 & ~allstar_at(3211, 3685) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 3 & ~allstar_at(3211, 3685) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 4 & ~allstar_at(2774, 3515) = true) {
+            // gives a level 2 scroll
+            ~allstar_dig_found(trail_clue_easy_simple006);
+        } else if ($id = 5 & ~allstar_at(3191, 3963) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        }
+    } else if ($stage = 2) {
+        if ($id = 1 & ~allstar_at(3280, 3955) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 2 & ~allstar_at(3092, 3963) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 3 & ~allstar_at(3065, 3904) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 4 & ~allstar_at(3213, 3687) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 5 & ~allstar_at(3047, 10342) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        }
+    } else if ($stage = 3) {
+        if ($id = 2 & ~allstar_at(3213, 3687) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 3 & ~allstar_at(2961, 3251) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 4 & ~allstar_at(2988, 3434) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 5 & ~allstar_at(3105, 3959) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        }
+    } else if ($stage = 4) {
+        if ($id = 1 & ~allstar_at(3153, 3923) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 2 & ~allstar_at(2569, 3278) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 3 & ~allstar_at(2599, 3271) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 4 & ~allstar_at(2958, 3820) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        } else if ($id = 5 & ~allstar_at(2952, 3790) = true) {
+            ~allstar_dig_found(trail_clue_easy_simple007);
+        }
+    } else if ($stage = 5) {
+        // the braces make every stage 5 dig a reward; the message needs id 1 on its tile
+        if ($id = 1 & ~allstar_at(2352, 3294) = true) {
+            mes("Congratulations you have completed the treasure trail!");
+        }
+        inv_del(inv, trail_clue_easy_simple007, 1);
+        ~allstar_givereward(3);
+    }
+}

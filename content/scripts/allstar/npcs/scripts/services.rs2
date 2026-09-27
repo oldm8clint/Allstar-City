@@ -1,0 +1,74 @@
+// What NPC dialogues open: the bank, the PIN settings screen, the make-over screen and the free
+// boat trips.
+
+// openUpBank(): interface 5292 with the inventory side. There is no PIN system.
+[label,allstar_openbank]
+@openbank;
+
+// the same from a dialogue option (labels cannot be jumped to from procs); the strong queue
+// closes the chatbox and opens the bank in the same cycle
+[proc,allstar_openbank_queued]
+strongqueue(allstar_openbank, 0, 0);
+
+[queue,allstar_openbank]
+@allstar_openbank;
+
+// openUpPinSettings(): interface 14924 with static text only. The seventh line was sent to
+// component 14044 instead of 15044, so it stays empty. The sendFrame171 calls on 15074/15077/
+// 15081 are not repeated: those ids are music tracks in this cache.
+[proc,allstar_open_pin_settings]
+if_settext(bankpin_settings:com_113, "Customers are reminded");
+if_settext(bankpin_settings:com_114, "that they should NEVER");
+if_settext(bankpin_settings:com_115, "tell anyone their Bank");
+if_settext(bankpin_settings:com_116, "PINs or passwords, nor");
+if_settext(bankpin_settings:com_117, "should they ever enter");
+if_settext(bankpin_settings:com_118, "their PINs on any website");
+if_settext(inter_180:com_49, "from.");
+if_settext(bankpin_settings:com_120, "");
+if_settext(bankpin_settings:com_121, "Have you read the PIN");
+if_settext(bankpin_settings:com_122, "Frequently Asked");
+if_settext(bankpin_settings:com_123, "Questions on the");
+if_settext(bankpin_settings:com_124, "Website?");
+if_settext(bankpin_settings:com_175, "No PIN set");
+if_settext(bankpin_settings:com_177, "3 days");
+if_sethide(bankpin_settings:com_237, true);
+if_openmain(bankpin_settings);
+
+// Make-over mage, dialogue 14604: the character design screen 3559 (packet 101 applies it)
+[proc,allstar_open_makeover]
+allowdesign(true);
+if_openmain(player_kit);
+
+// ---- boat trips (dialogues 41/43): free, 29 cycles in the void at 9999,9999 ----
+
+[proc,allstar_board_ship](int $boat)
+%allstar_travelboat = $boat;
+%allstar_traveltime = 30;
+strongqueue(allstar_boat_trip, 1, 0);
+
+// process(): traveltime drops by 1 every cycle; at 1 or less travel() lands the player, else the
+// player is moved to 9999,9999 and shown the ship interface (sendFrame248(3281, 3213)) again.
+[queue,allstar_boat_trip]
+while (%allstar_travelboat ! 0) {
+    %allstar_traveltime = calc(%allstar_traveltime - 1);
+    if (%allstar_traveltime <= 1) {
+        ~allstar_boat_arrive;
+        return;
+    }
+    p_telejump(movecoord(coord, calc(9999 - coordx(coord)), 0, calc(9999 - coordz(coord))));
+    if_openmain_side(ship_journey, inventory);
+    p_delay(0);
+}
+
+// travel(1) Karamja / travel(2) Port Sarim; the height is kept
+[proc,allstar_boat_arrive]
+if (%allstar_travelboat = 1) {
+    p_telejump(movecoord(coord, calc(2956 - coordx(coord)), 0, calc(3146 - coordz(coord))));
+    mes("The boat arrives at Karamja.");
+} else {
+    p_telejump(movecoord(coord, calc(3029 - coordx(coord)), 0, calc(3217 - coordz(coord))));
+    mes("The boat arrives at Port Sarim.");
+}
+%allstar_travelboat = 0;
+%allstar_traveltime = 0;
+if_close;

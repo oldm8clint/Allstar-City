@@ -1,18 +1,3 @@
-[opnpc1,bonzo]
-if(%fishingcompo = ^fishingcompo_started) {
-    if(%hemenster_comp_stage = ^hemenster_comp_paidfee) {
-        ~chatplayer("<p,neutral>I'll enter the competition please.");
-        ~bonzo_set_places;
-        return;
-    }
-    @bonzo_waiting_entry;
-} 
-if(%fishingcompo = ^fishingcompo_in_comp | %fishingcompo = ^fishingcompo_garlic_comp) {
-    @bonzo_howdoing;
-} else {
-    @bonzo_champ;
-}
-
 [label,bonzo_waiting_entry]
 ~chatnpc("<p,happy>Roll up, roll up!");
 ~chatnpc("<p,happy>Enter the great Hemenster fishing competition!");

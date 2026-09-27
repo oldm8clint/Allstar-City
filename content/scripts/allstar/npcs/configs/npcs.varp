@@ -1,0 +1,78 @@
+// Allstar-Scape NPC dialogue, quest and clue scroll state (client.java / Player.java fields).
+
+// ---- dialogue engine (Player.java L1436-1439), reset on login like the Java fields ----
+
+// NpcDialogue: the dialogue case UpdateNPCChat renders. Walking resets it to 0; several branches
+// leave it set after closing the chatbox, which decides the option-1 hijack (dialogue.rs2).
+[allstar_npcdialogue]
+protect=no
+
+// where the player stood when NpcDialogue was last set (a move means the player walked)
+[allstar_npcdialogue_coord]
+type=coord
+protect=no
+
+// NpcTalkTo: npc type whose name and chathead the chatbox shows
+[allstar_npctalkto]
+type=npc
+protect=no
+
+// client.duelring: set by the Ring of dueling menu, read by option buttons 9157/9158
+[allstar_duelring]
+protect=no
+
+// Player.OptionObject: 2466 while the team-select portal menu is up (0 stands for -1)
+[allstar_optionobject]
+protect=no
+
+// client.JunaTele: 1 or 2 while Juna's menu is up (0 stands for -1)
+[allstar_junatele]
+protect=no
+
+// Player.actionTimer, shared by pickpocketing, click-fishing and other skills: the map_clock at
+// which it reaches 0 (it drops by 1 every cycle)
+[allstar_actiontimer]
+protect=no
+
+// ---- boat trips (client.travelboat1/2, traveltime), not saved ----
+[allstar_travelboat]
+protect=no
+
+[allstar_traveltime]
+protect=no
+
+// ---- quests (moreinfo [QUESTS]); 0 not started, 1..n in progress, -1 complete ----
+[allstar_q1stage]
+scope=perm
+protect=no
+
+[allstar_q2stage]
+scope=perm
+protect=no
+
+[allstar_q3stage]
+scope=perm
+protect=no
+
+// character-questpoints (totalqp)
+[allstar_totalqp]
+scope=perm
+protect=no
+
+// ---- clue scrolls (moreinfo [MOREINFO] character-cluelevel/-cluestage/-clueid) ----
+[allstar_cluelevel]
+scope=perm
+protect=no
+
+[allstar_cluestage]
+scope=perm
+protect=no
+
+[allstar_clueid]
+scope=perm
+protect=no
+
+// ---- development only: nearest npc found by ::~npcnid, read back with ::getvar ----
+[allstar_debug_npc]
+type=npc_uid
+protect=no

@@ -410,4 +410,3 @@ p_delay(1);
 ~chatnpc("<p,neutral>Please come down into the grotto, we have much to discuss.");
 
 [opnpc1,filliman_tarlock_spirit] @filliman_spirit_dialogue;
-[opnpc1,filliman_tarlock_ns] @filliman_ns_dialogue;

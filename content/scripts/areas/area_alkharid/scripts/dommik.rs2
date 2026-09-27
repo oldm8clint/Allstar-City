@@ -1,5 +1,3 @@
-[opnpc1,dommik] @crafting_shop_talk;
-
 [opnpc3,dommik]
 if(map_members = ^true) {
     ~openshop(craftingshop2, 650, 1000, 20, "Dommiks Crafting Store.");

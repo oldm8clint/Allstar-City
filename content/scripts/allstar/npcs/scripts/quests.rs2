@@ -1,0 +1,153 @@
+// Allstar-Scape quests: the quest tab used as a welcome note (loadquestinterface, client.java
+// L8528), the quest-complete scroll (showQuestCompleted, L8031) and quest 1's guard gate (L17541).
+// Stages: 0 not started, 1..n in progress, -1 complete. The quest journal (quest()/loadquest) was
+// never reachable: clicking a quest name does nothing.
+
+// Called at login (from ~update_questlist) and by the quest dialogues.
+[proc,allstar_loadquestinterface]
+if_settext(questlist:com_1, "@red@Allstar-Scape");
+if_settext(questlist:com_24, "@whi@Info");
+if_settext(questlist:com_43, "");
+if (%allstar_q1stage = -1) {
+    if_settext(questlist:fortress, "@gre@Invisible Armour");
+}
+if (%allstar_q1stage >= 1) {
+    if_settext(questlist:fortress, "@yel@Invisible Armour");
+}
+if (%allstar_q1stage = 0) {
+    if_settext(questlist:fortress, "@whi@Thank you for choosing");
+}
+// quest 2 never shows its own name
+if (%allstar_q2stage = -1 | %allstar_q2stage >= 1) {
+    if_settext(questlist:cook, "@red@Allstar-Scape");
+}
+if (%allstar_q2stage = 0) {
+    if_settext(questlist:cook, "@yel@Allstar-Scape");
+}
+if (%allstar_q3stage = -1) {
+    if_settext(questlist:demon, "@gre@Spells Of The Gods");
+}
+if (%allstar_q3stage >= 1) {
+    if_settext(questlist:demon, "@yel@Spells Of The Gods");
+}
+if (%allstar_q3stage = 0) {
+    if_settext(questlist:demon, "@whi@We hope you have a great");
+}
+// quest 4 "The Story Of Ramen": q4stage is never set, so it is always 0
+if_settext(questlist:doric, "@whi@Good time on our server =)");
+if_settext(questlist:dragon, "");
+if_settext(questlist:haunted, "          - Mod Allstar");
+if_settext(questlist:gobdip, "");
+if_settext(questlist:imp, "");
+if_settext(questlist:squire, "");
+if_settext(questlist:hunt, "");
+if_settext(questlist:prince, "");
+if_settext(questlist:priest, "");
+if_settext(questlist:romeojuliet, "");
+if_settext(questlist:runemysteries, "");
+if_settext(questlist:sheep, "");
+if_settext(questlist:blackarmgang, "");
+if_settext(questlist:vampire, "");
+if_settext(questlist:hetty, "");
+// members quests
+if_settext(questlist:dwarfrock, "");
+if_settext(questlist:biohazard, "");
+if_settext(questlist:creatureoffenkenstrain, "");
+if_settext(questlist:death, "");
+if_settext(questlist:deserttreasure, "");
+if_settext(questlist:itexam, "");
+if_settext(questlist:druid, "");
+if_settext(questlist:mcannon, "");
+if_settext(questlist:eadgar, "");
+if_settext(questlist:elemental_workshop, "");
+if_settext(questlist:crest, "");
+if_settext(questlist:feud, "");
+if_settext(questlist:arena, "");
+if_settext(questlist:fishingcompo, "");
+if_settext(questlist:forget, "");
+if_settext(questlist:viking, "");
+if_settext(questlist:garden, "");
+if_settext(questlist:fluffs, "");
+if_settext(questlist:ahoy, "");
+if_settext(questlist:giantdwarf, "");
+if_settext(questlist:golem, "");
+if_settext(questlist:grandtree, "");
+if_settext(questlist:hauntedmine, "");
+if_settext(questlist:hazeelcult, "");
+if_settext(questlist:hero, "");
+if_settext(questlist:grail, "");
+if_settext(questlist:horror, "");
+if_settext(questlist:ics_little, "");
+if_settext(questlist:routequest, "");
+if_settext(questlist:junglepotion, "");
+if_settext(questlist:legends, "");
+if_settext(questlist:zanaris, "");
+if_settext(questlist:lost_tribe, "");
+if_settext(questlist:arthur, "");
+if_settext(questlist:mm, "");
+if_settext(questlist:drunkmonk, "");
+if_settext(questlist:mdaughter, "");
+if_settext(questlist:mourning, "");
+if_settext(questlist:murder, "");
+if_settext(questlist:druidspirit, "");
+if_settext(questlist:itgronigen, "");
+if_settext(questlist:onesmallfavour, "");
+if_settext(questlist:elena, "");
+if_settext(questlist:priestperil, "");
+if_settext(questlist:regicide, "");
+if_settext(questlist:roving_elves, "");
+if_settext(questlist:scorpcatcher, "");
+if_settext(questlist:seaslug, "");
+if_settext(questlist:mortton, "");
+if_settext(questlist:sheepherder, "");
+if_settext(questlist:zombiequeen, "");
+if_settext(questlist:tbwt, "");
+if_settext(questlist:tog, "");
+if_settext(questlist:ikov, "");
+if_settext(questlist:misc, "");
+if_settext(questlist:desertrescue, "");
+if_settext(questlist:tree, "");
+if_settext(questlist:totem, "");
+if_settext(questlist:troll_love, "");
+if_settext(questlist:upass, "");
+if_settext(questlist:itwatchtower, "");
+if_settext(questlist:waterfall, "");
+if_settext(questlist:ball, "");
+if_settext(questlist:zogre, "");
+// quest list entries of the 377 cache that Allstar-Scape's list has no id for; its quest tab
+// showed no stock quest names
+if_settext(questlist:chompybird, "");
+if_settext(questlist:cog, "");
+if_settext(questlist:troll, "");
+if_settext(questlist:rd, "");
+if_settext(questlist:twocats, "");
+if_settext(questlist:wanted, "");
+if_settext(questlist:mourning2, "");
+if_settext(questlist:deal, "");
+if_settext(questlist:agrith, "");
+if_settext(questlist:makinghistory, "");
+if_settext(questlist:ratcatch, "");
+if_settext(questlist:elid, "");
+if_settext(questlist:devious, "");
+if_settext(questlist:handsand, "");
+if_settext(questlist:enakh, "");
+if_settext(questlist:fever, "");
+if_settext(questlist:fairy_farmers, "");
+if_settext(questlist:hundred_main, "");
+if_settext(questlist:myreque_2, "");
+if_settext(questlist:soulbane, "");
+if_settext(questlist:rag, "");
+if_settext(questlist:swansong, "");
+
+// showQuestCompleted: interface 297 with the quest points; no reward model, no jingle
+[proc,allstar_quest_completed](string $name, int $qp)
+%allstar_totalqp = calc(%allstar_totalqp + $qp);
+if_openmain(questscroll);
+if_settext(questscroll:com_1, "Congratulations!");
+if_settext(questscroll:com_2, "Close Window");
+if_settext(questscroll:com_8, "You are awarded");
+if_settext(questscroll:com_10, "Earned QP:");
+if_settext(questscroll:com_5, "Total QP:");
+if_settext(questscroll:com_3, "You have completed <$name>");
+if_settext(questscroll:com_9, tostring($qp));
+if_settext(questscroll:com_6, tostring(%allstar_totalqp));

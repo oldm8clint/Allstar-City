@@ -1,0 +1,291 @@
+// Allstar-Scape dialogue engine.
+//
+// client.java keeps the dialogue as state: an NPC click sets NpcWanneTalk, process() turns it into
+// NpcDialogue (with NpcTalkTo, the npc type shown) once in range, and UpdateNPCChat (L32265) renders
+// NpcDialogue once. "Click here to continue" is packet 40 (L18166) and the two options of the
+// option box are buttons 9157/9158 (L23997); both act on NpcDialogue, not on what the chatbox shows.
+// A rendered follow-up dialogue appears on the next cycle.
+//
+// The 377 cache keeps the 317 chatbox component ids, so every text goes to the same component:
+//   4882 npcchat1: head 4883, name 4884, line 4885, and 4886, the "Click here to continue" line.
+//        Allstar-Scape wrote second lines to 4886, so they become the continue button, and the
+//        client keeps that text for every later one-line NPC chat of the session.
+//   4900 npcchat4: head 4901, name 4902, lines 4903-4906 (no talking animation)
+//   973  chat2:    player head 974, name 975, lines 976-977 (976 is blanked before every render)
+//   2459 multi2:   title 2460, options 2461 (button 9157) and 2462 (button 9158)
+//
+// Other systems open Allstar-Scape option boxes with ~allstar_selectoption so the shared option
+// chain (and its NpcDialogue == 0 hijack, dialogues_quests.md 4.4) applies to them too.
+
+// ---- state ----
+
+[proc,allstar_dialogue_set](int $id)
+%allstar_npcdialogue = $id;
+%allstar_npcdialogue_coord = coord;
+
+// NpcDialogue as the option and continue handlers read it. Walking (packets 98/164/248) reset it
+// to 0; a player standing elsewhere than where it was last set has walked.
+[proc,allstar_npcdialogue]()(int)
+if (%allstar_npcdialogue ! 0 & %allstar_npcdialogue_coord ! coord) {
+    %allstar_npcdialogue = 0;
+}
+return (%allstar_npcdialogue);
+
+// GetNpcName(NpcTalkTo): the raw npc.cfg name, underscores included
+[proc,allstar_npc_header]()(string)
+return (enum(npc, string, allstar_npc_name, ~allstar_npc_talkto));
+
+// GetNPCID returns 1 when no npc stands on the tile
+[proc,allstar_npc_talkto]()(npc)
+if (%allstar_npctalkto = null) {
+    return (man);
+}
+return (%allstar_npctalkto);
+
+// ---- chatbox templates ----
+
+// NPC-chat 4882 with the talk animation 591 on the head
+[proc,allstar_chat_4882](string $line)
+if_setnpchead(npcchat1:com_0, ~allstar_npc_talkto);
+if_setanim(npcchat1:com_0, chatneu4);
+if_settext(npcchat1:com_1, ~allstar_npc_header);
+if_settext(npcchat1:com_2, $line);
+if_openchat(npcchat1);
+
+// NPC-chat 4882 that also writes 4886, the continue line
+[proc,allstar_chat_4882_2](string $line, string $continue)
+if_settext(npcchat1:com_3, $continue);
+~allstar_chat_4882($line);
+
+// NPC-chat 4900: four lines, head without animation
+[proc,allstar_chat_4900](string $line1, string $line2, string $line3, string $line4)
+if_setnpchead(npcchat4:com_0, ~allstar_npc_talkto);
+if_setanim(npcchat4:com_0, null);
+if_settext(npcchat4:com_1, ~allstar_npc_header);
+if_settext(npcchat4:com_2, $line1);
+if_settext(npcchat4:com_3, $line2);
+if_settext(npcchat4:com_4, $line3);
+if_settext(npcchat4:com_5, $line4);
+if_openchat(npcchat4);
+
+// PLAYER-chat 973. sendFrame200(615, 974) had its arguments swapped, so the head never animates.
+[proc,allstar_chat_973](string $line)
+if_settext(chat2:com_2, $line);
+~allstar_chat_973_open;
+
+[proc,allstar_chat_973_open]
+if_setplayerhead(chat2:com_0);
+if_setanim(chat2:com_0, null);
+if_settext(chat2:com_1, displayname);
+if_openchat(chat2);
+
+// 2-OPTION 2459 as UpdateNPCChat sends it: sendFrame171 hides 2465 and shows 2468
+[proc,allstar_menu_2459](string $title, string $option1, string $option2)
+if_sethide(multi2:com_5, true);
+if_sethide(multi2:com_8, false);
+if_settext(multi2:com_0, $title);
+if_settext(multi2:com_1, $option1);
+if_settext(multi2:com_2, $option2);
+if_openchat(multi2);
+
+// client.selectoption (L10219): the same box, plus a third string written to 2463, a sword graphic
+// of the 2-option box, so it never shows. Callers set %allstar_duelring / %allstar_optionobject /
+// %allstar_junatele first; the answer is handled by the option chain below.
+[proc,allstar_selectoption](string $question, string $s1, string $s2, string $s3)
+if_sethide(multi2:com_5, true);
+if_sethide(multi2:com_8, false);
+if_settext(multi2:com_0, $question);
+if_settext(multi2:com_1, $s1);
+if_settext(multi2:com_2, $s2);
+if_settext(multi2:com_3, $s3);
+if_openchat(multi2);
+~allstar_dialogue_run(2);
+
+// ---- the loop ----
+
+// NpcWanneTalk reached its npc: render dialogue $id for $npc and run the chat until it closes.
+[proc,allstar_npc_dialogue](int $id, npc $npc)
+%allstar_npctalkto = $npc;
+~allstar_dialogue_set($id);
+~allstar_dialogue_run(~allstar_dialogue_render);
+
+// $shown is what the chatbox shows: 0 nothing, 1 a chat with a continue line, 2 the option box.
+// A click acts on NpcDialogue; when nothing new is rendered the old chatbox stays up.
+[proc,allstar_dialogue_run](int $shown)
+while ($shown ! 0) {
+    if ($shown = 2) {
+        if_addresumebutton(multi2:com_1);
+        if_addresumebutton(multi2:com_2);
+    }
+    p_pausebutton;
+    if ($shown = 2) {
+        if (last_com = multi2:com_1) {
+            $shown = ~allstar_option1($shown);
+        } else {
+            $shown = ~allstar_option2($shown);
+        }
+    } else {
+        $shown = ~allstar_continue($shown);
+    }
+}
+
+// NpcDialogueSend = false: the new dialogue renders on the next cycle
+[proc,allstar_dialogue_next](int $id, int $shown)(int)
+~allstar_dialogue_set($id);
+p_delay(0);
+def_int $rendered = ~allstar_dialogue_render;
+if ($rendered = 0) {
+    return ($shown);
+}
+return ($rendered);
+
+[proc,allstar_dialogue_close]()(int)
+~allstar_dialogue_set(0);
+if_close;
+return (0);
+
+// ---- packet 40, "Click here to continue" ----
+
+[proc,allstar_continue](int $shown)(int)
+def_int $id = ~allstar_npcdialogue;
+switch_int ($id) {
+    case 1, 3, 5, 40, 42, 2259, 2260, 301, 305, 308, 309, 313, 314, 317, 318, 319, 322, 323, 14600, 14602, 550, 1339 :
+        return (~allstar_dialogue_next(calc($id + 1), $shown));
+    case 6, 300, 303, 304, 307, 310, 311, 312, 315, 316, 320, 321, 324, 325, 326, 14604 :
+        return (~allstar_dialogue_close);
+    // the branches below close the chatbox but leave NpcDialogue set
+    case 31 :
+        ~allstar_newclue;
+        if_close;
+        return (0);
+    case 32 :
+        ~allstar_givereward(%allstar_cluelevel);
+        if_close;
+        return (0);
+    case 100, 101 :
+        %allstar_q1stage = 1;
+        ~allstar_loadquestinterface;
+        if_close;
+        return (0);
+    case 102, 1101 :
+        %allstar_q1stage = 2;
+        ~allstar_loadquestinterface;
+        if_close;
+        return (0);
+    case 103, 104 :
+        if_close;
+        return (0);
+    // re-sent and left open: every continue click repeats it until the player walks away
+    case 1102 :
+        ~allstar_chat_4882_2("Thanks giving me the Mage Book, now all I need", "is the Consecration seed to add the power to the armour.");
+        %allstar_q1stage = 3;
+        ~allstar_loadquestinterface;
+        return (1);
+    case default :
+        return (~allstar_dialogue_close);
+}
+
+// ---- button 9157, option 1 ----
+
+[proc,allstar_option1](int $shown)(int)
+def_int $id = ~allstar_npcdialogue;
+if ($id = 2) {
+    ~allstar_dialogue_set(0);
+    ~allstar_openbank_queued;
+    return (0);
+} else if ($id = 4) {
+    ~allstar_dialogue_set(0);
+    ~allstar_shop_open(2);
+    return (0);
+} else if ($id = 41 | $id = 43) {
+    ~allstar_dialogue_set(0);
+    if_close;
+    mes("You board the ship.");
+    ~allstar_board_ship(calc(($id - 39) / 2));
+    return (0);
+} else if ($id = 302) {
+    %allstar_q3stage = 1;
+    return (~allstar_dialogue_next(303, $shown));
+} else if ($id = 306) {
+    return (~allstar_dialogue_next(307, $shown));
+} else if ($id = 0) {
+    // the option-1 hijack: Hans' menu replaces every option box opened while NpcDialogue is 0
+    if_settext(npcchat1:com_2, "Mmk thanks for reading!");
+    if_close;
+    return (~allstar_dialogue_next(1340, 0));
+} else if ($id = 14601) {
+    return (~allstar_dialogue_next(14602, $shown));
+} else if ($id = 14603) {
+    return (~allstar_dialogue_next(14604, $shown));
+} else if ($id = 2260) {
+    // the option box stays up
+    ~allstar_dialogue_set(0);
+    mes("You teleport to the abyss.");
+    p_telejump(movecoord(coord, calc(3040 - coordx(coord)), 0, calc(4842 - coordz(coord))));
+    return ($shown);
+} else if (%allstar_duelring = 1) {
+    p_telejump(0_44_149_21_45);
+    mes("You teleport to the TzTok-Jad's lair");
+    mes("As you materialize, you feel the air around you grow hot");
+    %allstar_duelring = 0;
+    if_close;
+    return (0);
+} else if (%allstar_optionobject = 2466) {
+    mes("Welcome to Saradomin's team!");
+    p_telejump(movecoord(coord, calc(2387 - coordx(coord)), 0, calc(3116 - coordz(coord))));
+    %allstar_optionobject = 0;
+    if_close;
+    return (0);
+} else if (%allstar_junatele = 1 | %allstar_junatele = 2) {
+    if_close;
+    if (%allstar_junatele = 1) {
+        p_telejump(movecoord(coord, calc(3253 - coordx(coord)), 0, 0));
+    } else {
+        p_telejump(movecoord(coord, calc(3251 - coordx(coord)), 0, 0));
+    }
+    %allstar_junatele = 0;
+    return (0);
+}
+// no branch: nothing happens and the box stays up
+return ($shown);
+
+// ---- button 9158, option 2 ----
+
+[proc,allstar_option2](int $shown)(int)
+def_int $id = ~allstar_npcdialogue;
+if ($id = 2) {
+    ~allstar_dialogue_set(0);
+    ~allstar_open_pin_settings;
+    $shown = 0;
+} else if ($id = 4) {
+    $shown = ~allstar_dialogue_next(5, $shown);
+} else if ($id = 41 | $id = 43 | $id = 2260 | $id = 305 | $id = 14601 | $id = 14603) {
+    $shown = ~allstar_dialogue_close;
+} else if ($id = 1340) {
+    ~allstar_dialogue_set(0);
+    if_settext(npcchat1:com_2, "Fine, you suck!");
+    if_close;
+    $shown = 0;
+} else if ($id = 302) {
+    $shown = ~allstar_dialogue_next(300, $shown);
+} else if (%allstar_duelring = 1) {
+    // duelring is not reset here
+    p_telejump(0_47_75_32_40);
+    mes("You teleport to the abyssal rift");
+    mes("You can feel the magical aura in the air");
+    if_close;
+    $shown = 0;
+} else if (%allstar_optionobject = 2466) {
+    mes("Welcome to Zamorak's team!");
+    p_telejump(movecoord(coord, calc(2412 - coordx(coord)), 0, calc(3091 - coordz(coord))));
+    %allstar_optionobject = 0;
+    if_close;
+    $shown = 0;
+}
+// checked separately from the chain above
+if (%allstar_junatele = 1 | %allstar_junatele = 2) {
+    ~allstar_chat_973("Ya ma.");
+    %allstar_junatele = 0;
+    $shown = 1;
+}
+return ($shown);

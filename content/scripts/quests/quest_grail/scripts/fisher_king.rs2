@@ -1,7 +1,3 @@
-[opnpc1,fisher_king]
-~chatnpc("<p,happy>Ah! You got inside at last!|You spent all that time fumbling around outside,|I thought you'd never make it here.");
-@multi3("How did you know what I have been doing?", fisher_king_how, "I seek the Holy Grail.", fisher_king_grail, "You don't look too well.", fisher_king_well);
-
 [label,fisher_king_how]
 ~chatplayer("<p,confused>How did you know what I have been doing?");
 ~chatnpc("<p,neutral>Oh, I can see what is happening in my realm.|I have sent clues to help you get here,|such as the fisherman, and the crone.");

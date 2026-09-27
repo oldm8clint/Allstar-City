@@ -1,9 +1,3 @@
-[opnpc1,makeover_mage]
-// https://youtu.be/Jo7pLNCeS_Y?si=jePemLxbhlJYZRid&t=214, try to find a source for 2004 (probably something before Sept 2005)
-~chatnpc("<p,happy>Hello there! I am known as the make-over mage! I have spent many years researching magics that can change your physical appearance!");
-~chatnpc("<p,happy>I can alter your physical form for a small fee of only 3000 gold coins! Would you like me to perform my magics upon you?");
-@multi3("Tell me more about this 'make-over'.", makeover_mage_tell_more, "Sure. Do it.", makeover_mage_sure, "No thanks.", makeover_mage_no);
-
 [label,makeover_mage_tell_more]
 ~chatplayer("<p,quiz>Tell me more about this 'make-over'.");
 ~chatnpc("<p,happy>Why, of course! Basically, and I will try and explain this so that you will understand it correctly,");

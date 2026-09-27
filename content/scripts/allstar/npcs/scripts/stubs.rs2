@@ -1,0 +1,5 @@
+// Stand-ins for procs owned by other workstreams, so this branch builds on its own.
+// DELETE THIS FILE when merging port/shops: it defines the real [proc,allstar_shop_open](int).
+
+// openUpShop(shop): used by Aubury's "Yes please!" (dialogue 4, shop 2 "Gold & Trimmed Armor")
+[proc,allstar_shop_open](int $shop)

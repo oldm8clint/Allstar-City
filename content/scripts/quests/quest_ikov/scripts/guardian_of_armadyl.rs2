@@ -1,32 +1,3 @@
-[opnpc1,_guardian_of_armadyl]
-if(%ikov = ^ikov_helping_armadyl) {
-    ~chatnpc("<p,neutral>Have you killed Lucien?");
-    if(~obj_gettotal(ikov_pendantofarmardyl) = 0) {
-        ~chatplayer("<p,sad>Not yet, I've lost the pendant you gave me!");
-        ~chatnpc("<p,sad>Hurry friend! Time is against us!");
-        inv_add(inv, ikov_pendantofarmardyl, 1);
-        ~objbox(ikov_pendantofarmardyl, "The guardian has given you a pendant.", 250, 0, 0);
-        return;
-    }
-    ~chatplayer("<p,neutral>Not yet.");
-    ~chatnpc("<p,sad>Hurry friend! Time is against us!");
-    return;
-}
-if(inv_total(inv, ikov_staffofarmardyl) > 0) { 
-    ~chatnpc("<p,angry>Halt! You will not leave here with the Staff of Armadyl!");
-    npc_setmode(opplayer2);
-    return;
-}
-if(%ikov = ^ikov_completed_lucien | inv_total(worn, ikov_pendantoflucien) > 0 | ~obj_gettotal(ikov_staffofarmardyl) > 0) {
-    ~chatnpc("<p,angry>Thou is a foul agent of Lucien! Such an agent must die!");
-    npc_setmode(opplayer2);
-    return;
-}
-if(%ikov = ^ikov_paid_winelda) {
-    ~chatnpc("<p,neutral>Thou hast ventured deep into the tunnels, you have reached the temple of our master. It is many ages since a pilgrim has come here.");
-    @multi3("I seek the Staff of Armadyl.", armadyl_staffofarma, "Out of my way fool!", armadyl_fool, "What are your kind and what are you doing here?", armadyl_what_kind);
-}
-
 [label,armadyl_staffofarma]
 ~chatplayer("<p,neutral>I seek the Staff of Armadyl.");
 ~chatnpc("<p,neutral>We are the guardians of the staff, our fathers were guardians and our fathers' fathers before that. Why dost thou seek it?");

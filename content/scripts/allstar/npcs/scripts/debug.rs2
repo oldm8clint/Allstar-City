@@ -1,0 +1,11 @@
+// Development helper for allstar/tests (debugprocs only run on non-production worlds):
+// ::~npcnid <npc> stores the nearest such npc in %allstar_debug_npc; ::getvar reads it back
+// (the low 16 bits are the npc index the client sends with its npc options).
+[debugproc,npcnid](npc $npc)
+npc_findall(coord, $npc, 15, 0);
+while (npc_findnext = true) {
+    %allstar_debug_npc = npc_uid;
+    mes("npcnid <tostring(coordx(npc_coord))>,<tostring(coordz(npc_coord))>");
+    return;
+}
+mes("npcnid none");

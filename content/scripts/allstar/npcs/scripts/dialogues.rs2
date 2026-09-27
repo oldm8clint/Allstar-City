@@ -1,0 +1,273 @@
+// UpdateNPCChat (client.java L32265-33124): renders NpcDialogue and runs its side effects.
+// Returns what the chatbox shows (0 nothing, 1 a chat, 2 the option box). Dead cases that nothing
+// can reach (7, 254, 1001, 1002, 1694, 1964, 9292, 11021, 11022) are not ported.
+[proc,allstar_dialogue_render]()(int)
+// every render starts with sendFrame126("", 976)
+if_settext(chat2:com_2, "");
+switch_int (%allstar_npcdialogue) {
+    // bankers 494/495 and the bank booth
+    case 1 :
+        ~allstar_chat_4882("Good day, how can I help you?");
+        return (1);
+    case 2 :
+        ~allstar_menu_2459("What would you like to say?", "I'd like to access my bank account, please.", "I'd like to check my PIN settings.");
+        return (2);
+    // Aubury 553
+    case 3 :
+        ~allstar_chat_4882("Do you want to buy some runes?");
+        return (1);
+    case 4 :
+        ~allstar_menu_2459("Select an Option", "Yes please!", "Oh it's a rune shop. No thank you, then.");
+        return (2);
+    case 5 :
+        ~allstar_chat_973("Oh it's a rune shop. No thank you, then.");
+        return (1);
+    case 6 :
+        ~allstar_chat_4882_2("Well, if you find somone who does want runes, please", "send them my way.");
+        return (1);
+    // Hans 0
+    case 1339 :
+        ~allstar_chat_4882_2("Welcome To Mod Allstarscape !!", "Click here to Get shot by Hans");
+        return (1);
+    case 1340 :
+        ~allstar_menu_2459("Select an Option", "Yea i wanna go own n00bs!", "Nah im really scared!");
+        return (2);
+    // clue scroll npcs
+    case 31 :
+        ~allstar_chat_4882("Heres your next clue, goodluck");
+        return (1);
+    case 32 :
+        ~allstar_chat_4882("Congratulations! Heres your last reward!");
+        ~allstar_givereward(%allstar_cluelevel);
+        return (1);
+    // Captain Tobias 376 / Customs officer 380
+    case 40 :
+        ~allstar_chat_4900("", "Do you want to go on a trip to Karjama?", "It's free.", "");
+        return (1);
+    case 41, 43 :
+        ~allstar_menu_2459("Select an Option", "Yes, please", "No, Thank you.");
+        return (2);
+    case 42 :
+        ~allstar_chat_4900("", "Do you want to go on a trip to Port Sarim?", "It's free.", "");
+        return (1);
+    // Lowe 550: the line goes to 977, chat2's second line; 976 was just blanked
+    case 550 :
+        if_settext(chat2:com_3, "Ok, where can I find the Consecration seed?");
+        ~allstar_chat_973_open;
+        return (1);
+    // Horvik 549, quest 1 "Invisible Armour"
+    case 100 :
+        ~allstar_chat_4882_2("Hey I need help with making some invisible armour...", "and you're gonna help me.");
+        %allstar_q1stage = 1;
+        return (1);
+    case 101 :
+        ~allstar_chat_4882_2("I'll add the list of materials I need to your", "quest log, as I'm too busy to talk.");
+        %allstar_q1stage = 1;
+        return (1);
+    case 102 :
+        ~allstar_chat_4882("Why are you still here...go get the materials");
+        %allstar_q1stage = 2;
+        return (1);
+    case 103 :
+        ~allstar_chat_4882("Get me the Consecration seed please!");
+        return (1);
+    case 104 :
+        ~allstar_chat_4882("You lost it?!?! Go get it again man.");
+        %allstar_q1stage = 3;
+        return (1);
+    case 1101 :
+        ~allstar_chat_4882_2("Thanks for getting me these, I've updated", "your quest log for my next request.");
+        %allstar_q1stage = 2;
+        inv_del(inv, runite_ore, 1);
+        inv_del(inv, palm_leaf, 1);
+        inv_del(inv, bow_string, 1);
+        return (1);
+    case 1102 :
+        ~allstar_chat_4882_2("Thanks giving me the Mage Book, now all I need", "is the Consecration seed to add the power to the armour.");
+        %allstar_q1stage = 3;
+        inv_del(inv, magictraining_bookofmagic, 1);
+        return (1);
+    case 1105 :
+        return (~allstar_render_1105);
+    // Dark mage 1001
+    case 4444 :
+        ~allstar_chat_4882("Welcome to the Thieving Area :)");
+        return (1);
+    // Cook 278, quest 2 "Cook's Assistant"
+    case 200 :
+        return (~allstar_render_200);
+    case 201 :
+        ~allstar_chat_4882("Come back when you have the ingredients.");
+        return (1);
+    case 2001 :
+        return (~allstar_render_2001);
+    // Make-over mage 599
+    case 14600 :
+        return (~allstar_render_14600);
+    case 14601 :
+        ~allstar_menu_2459("Select an Option", "Sure", "Nope");
+        return (2);
+    case 14602 :
+        ~allstar_chat_4900("", "Ok that'll be 10000 coins", "", "");
+        return (1);
+    case 14603 :
+        ~allstar_menu_2459("Select an Option", "Ok", "Gay...");
+        return (2);
+    case 14604 :
+        if (inv_total(inv, coins) >= 10000) {
+            inv_del(inv, coins, 10000);
+            ~allstar_open_makeover;
+            %allstar_npcdialogue = 0;
+            return (0);
+        }
+        ~allstar_chat_4900("", "You got no money, bitch,", "come back when you got some.", "");
+        return (1);
+    // Wizard Mizgog 706, quest 3 "Spells Of The Gods"
+    case 300 :
+        ~allstar_chat_4900("", "Oh ok if you to tell me ok.", "", "");
+        return (1);
+    case 301 :
+        ~allstar_chat_4900("", "Hi there, you don't happen to of seen a staff", "with a pink orb, have you?", "");
+        return (1);
+    case 302 :
+        ~allstar_menu_2459("Select an Option", "No but maybe I can help?", "Nope");
+        return (2);
+    case 303 :
+        ~allstar_chat_4900("", "You will? Well I think it's located in a", "dungeon to the east of Ardougne, try there.", "");
+        return (1);
+    case 304 :
+        ~allstar_chat_4900("", "Go get the staff of Armadyl!", "", "");
+        return (1);
+    case 305 :
+        ~allstar_chat_4900("", "Thanks! Now you'll need to get me", "the magic stone, which Kalrag owns.", "");
+        %allstar_q3stage = 2;
+        return (1);
+    case 306 :
+        ~allstar_menu_2459("Select an Option", "Where is Kalrag?", "Ok bye.");
+        return (2);
+    case 307 :
+        ~allstar_chat_4900("", "Kalrag can be found in Lumbridge Swamp,", "good luck <displayname>!", "");
+        return (1);
+    case 308 :
+        ~allstar_chat_4900("", "Ok good, you have the magic stone,", "now you'll need to make a firework...", "");
+        %allstar_q3stage = 3;
+        return (1);
+    case 309 :
+        ~allstar_chat_4900("", "To do this get a gnome bowl and use it", "with a fire to create an item named fire...", "");
+        return (1);
+    case 310 :
+        ~allstar_chat_4900("", "Then you'll need to use that with the magic", "stone to make a firework and then return to me", "");
+        return (1);
+    case 311 :
+        ~allstar_chat_4900("", "Go get the magic stone bitch!", "", "");
+        return (1);
+    case 312 :
+        ~allstar_chat_4900("", "You forgot to go get the firework.", "", "");
+        return (1);
+    case 313 :
+        ~allstar_chat_4900("", "Good you got it, aiightz now you need", "to go to level 40+ wilderness where the...", "");
+        %allstar_q3stage = 4;
+        return (1);
+    case 314 :
+        ~allstar_chat_4900("", "abberant spectors are, and light the", "firework on the red circle to spawn the...", "");
+        return (1);
+    case 315 :
+        ~allstar_chat_4900("", "heart crystal which you'll need later...", "Good luck!", "");
+        return (1);
+    case 316 :
+        ~allstar_chat_4900("", "Good luck getting the heart crystal!", "", "");
+        return (1);
+    case 317 :
+        ~allstar_chat_4900("", "Great! You got the crystal! Now all that needs", "doing is getting your disguise for when you...", "");
+        %allstar_q3stage = 5;
+        return (1);
+    case 318 :
+        ~allstar_chat_4900("", "sneak into the mage guild, to do that", "you'll need to head to Camelot Castle, then...", "");
+        return (1);
+    case 319 :
+        ~allstar_chat_4900("", "head into the North East section of the garden,", "and into the shelter, and then drop the...", "");
+        return (1);
+    case 320 :
+        ~allstar_chat_4900("", "heart crystal on the red circle to spawn the", "Infernal Mage, kill him and take the disguise!", "");
+        return (1);
+    case 321 :
+        ~allstar_chat_4900("", "Come back with the disguise in your inventory...", "", "");
+        return (1);
+    case 322 :
+        ~allstar_chat_4900("", "Good, you have the diguise, now all you need to do", "is put it on the disguise and...", "");
+        %allstar_q3stage = 6;
+        return (1);
+    case 323 :
+        ~allstar_chat_4900("", "head to the Mage Guild located in Yanille.", "Go in wearing the disguise and look for the", "");
+        return (1);
+    case 324 :
+        ~allstar_chat_4900("", "daconia rock, which is needed to complete the staff", "and return to me for you reward.", "");
+        return (1);
+    case 325 :
+        ~allstar_chat_4900("", "Go get the rock bitch!", "", "");
+        %allstar_q3stage = 6;
+        return (1);
+    case 326 :
+        ~allstar_chat_4900("", "Thanks so much! I'll now give you the", "power of the Gods and your reward!", "");
+        %allstar_q3stage = -1;
+        ~allstar_quest_completed("Spells Of The Gods", 4);
+        stat_advance(magic, 1000000);
+        ~allstar_additem(white_magic_staff, 1);
+        mes("You are rewarded 1 million magic experience!");
+        mes("You can now use all 3 god spells! (Level 99 magic needed)");
+        return (1);
+    // Mage of Zamorak 2259
+    case 2259 :
+        ~allstar_chat_4900("", "Hello, would you like me to tele you to the abyss?", "", "");
+        return (1);
+    case 2260 :
+        ~allstar_menu_2459("Select an Option", "Hell yeah!", "No thanks.");
+        return (2);
+    // Ghost Disciple 1686: a Scythe every time it renders
+    case 6889 :
+        ~allstar_chat_4882("Happy Halloween from Mod Allstarscape v3!");
+        ~allstar_additem(scythe, 1);
+        return (1);
+}
+// no case: nothing is rendered and the chatbox keeps what it shows
+return (0);
+
+// case 1105 has its break inside "if (q1stage == 4)", so it otherwise falls into case 200
+[proc,allstar_render_1105]()(int)
+if (%allstar_q1stage ! 4) {
+    return (~allstar_render_200);
+}
+~allstar_chat_4882_2("Thanks for helping me with this project,", "heres your Mother.. i freshly fucked her =0, also look out for more of this armour...");
+~allstar_quest_completed("Invisible Armour", 3);
+%allstar_q1stage = -1;
+~allstar_additem(drill_helm, 1);
+mes("Quest complete!");
+~allstar_loadquestinterface;
+inv_del(inv, roving_new_consecration_seed, 1);
+return (1);
+
+[proc,allstar_render_200]()(int)
+~allstar_chat_4882("Yo, I'll add what I need to your quest log");
+%allstar_q2stage = 1;
+~allstar_loadquestinterface;
+return (1);
+
+// case 2001 falls into case 14600 unless q2stage == 1
+[proc,allstar_render_2001]()(int)
+if (%allstar_q2stage ! 1) {
+    return (~allstar_render_14600);
+}
+~allstar_chat_4882("Thanks for getting me the ingredients!");
+~allstar_quest_completed("Cook's Assistant", 2);
+%allstar_q2stage = -1;
+~allstar_additem(gauntlets_of_cooking, 1);
+mes("Quest complete!");
+~allstar_loadquestinterface;
+inv_del(inv, bucket_milk, 1);
+inv_del(inv, egg, 1);
+inv_del(inv, pot_flour, 1);
+return (1);
+
+[proc,allstar_render_14600]()(int)
+~allstar_chat_4900("", "Yo you want a make over?", "", "");
+return (1);

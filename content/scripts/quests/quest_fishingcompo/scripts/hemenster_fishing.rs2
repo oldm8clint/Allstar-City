@@ -1,22 +1,3 @@
-[opnpc1,0_41_53_compofishspot] @attempt_fish_hemenster;
-[opnpc1,0_41_53_sinisterfishspot] @attempt_fish_hemenster;
-
-[opnpc1,0_41_53_bigdavefishspot] 
-if(~in_hemenster_comp = false) {
-    return;
-}
-if(npc_find(coord, bigdave, 5, 0) = true) {
-    @bigdave_dialogue;
-}
-
-[opnpc1,0_41_53_joshuafishspot]
-if(~in_hemenster_comp = false) {
-    return;
-}
-if(npc_find(coord, joshua, 5, 0) = true) {
-    @joshua_dialogue;
-}
-
 [proc,get_hemenster_bait]()(namedobj)
 if(inv_total(inv, red_vine_worm) > 0) {
     return (red_vine_worm);

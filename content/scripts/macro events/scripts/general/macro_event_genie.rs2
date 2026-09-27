@@ -50,26 +50,3 @@ npc_delay(2);
 npc_anim(emote_wave, 20);
 npc_delay(2);
 ~macro_event_disappear;
-
-[opnpc1,macro_geni]
-if (uid ! %npc_macro_event_target) {
-    // https://youtu.be/qNQYgiNMBes?t=134
-    if (.finduid(%npc_macro_event_target) = true) {
-        ~chatnpc("<p,sad>Sorry, but I'm trying to talk to <.displayname>.|However, <.text_gender("he", "she")> appears to be ignoring me..."); 
-        return;
-    }
-    ~chatnpc("<p,sad>Sorry, but I'm trying to talk to another player.|However, they appear to be ignoring me...");
-    return;
-}
-if (%npc_int = ^genie_happy) {
-    ~chatnpc("<p,neutral>Have a nice day, <text_gender("master", "mistress")>.");
-    return;
-}
-%npc_int = ^genie_happy;
-%macro_event = ^no_macro_event;
-inv_add(inv, macro_genilamp, 1);
-// delays are taken from this video: https://youtu.be/EN4c2hV65Qk?list=PLn23LiLYLb1Y3P9S9qZbijcJihiD416jT
-npc_queue(6, 0, 2);
-npc_settimer(0);
-// 2005 https://imgur.com/jrofzN2
-~chatnpc("<p,neutral>Ah, so you are there <text_gender("master", "mistress")>. I'm so glad you|summoned me. Please take this lamp, and make your|wish!");

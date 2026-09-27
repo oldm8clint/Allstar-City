@@ -1,6 +1,4 @@
 // guessing, you can't talk to him directly in rsc
-[opnpc1,doorman] mes("The Door man does not appear interested in talking.");
-
 [label,door_man_chat]
 ~chatnpc("<p,neutral>You cannot pass through this door without paying the trading tax.");
 ~chatplayer("<p,quiz>What do I need to pay?");
