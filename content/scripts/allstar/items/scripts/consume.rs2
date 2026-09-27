@@ -7,6 +7,13 @@
 
 [proc,allstar_item_first_click](obj $obj, int $slot)
 switch_obj ($obj) {
+    // Home Teletab (Silabs): the tab goes, anim 1816, teleport to 2515,3863 (height kept, no teleblock
+    // or wilderness check) and an overhead text
+    case allstar_item_9540 :
+        inv_del(inv, allstar_item_9540, 1);
+        ~allstar_anim_id(1816);
+        ~allstar_telejump(2515, 3863);
+        say("You teleport to home");
     // toy horseys: anim + overhead text, not consumed
     case horsey_brown :
         anim(human_playhorsey_brown, 0);
