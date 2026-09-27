@@ -1,0 +1,46 @@
+// The fifth player option (client.run L10951: "Kick" for staff and the name D D 3), packet 39
+// (C:20822). Rank 0 (only D D 3 sees the option) shows the player's stats; a moderator kicks the
+// player and logs it; administrators and owners kick with an "Admin:" message.
+// (Lost City's Castle Wars "take from" option was here.)
+[opplayer5,_]
+if (%allstar_rights = 0) {
+    ~allstar_stats_menu;
+} else if (%allstar_rights = 1) {
+    allstar_log("kicklogs", "<displayname> kicked <.displayname>");
+    ~allstar_kicknick(.displayname);
+    world_broadcast("Mod: Player Kicked: <.displayname>");
+} else {
+    ~allstar_kicknick(.displayname);
+    world_broadcast("Admin: Player Kicked: <.displayname>");
+}
+
+// StatsMenu (C:8916): the other player's pk record and current levels
+[proc,allstar_stats_menu]
+~allstar_scroll_child(8144, "@dre@Stats");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "<.displayname> @dre@Stats");
+~allstar_scroll_child(8148, "@blu@Pk Points: @yel@<tostring(.%allstar_pkpoints)>");
+~allstar_scroll_child(8149, "@blu@Kills: @yel@<tostring(.%allstar_kills)>");
+~allstar_scroll_child(8150, "@blu@Deaths: @yel@<tostring(.%allstar_deaths)>");
+~allstar_scroll_child(8151, "@dbl@@dbl@Attack Level is:<tostring(.stat(attack))>");
+~allstar_scroll_child(8152, "@dbl@@dbl@Strength Level is:<tostring(.stat(strength))>");
+~allstar_scroll_child(8153, "@dbl@@dbl@Defence Level is:<tostring(.stat(defence))>");
+~allstar_scroll_child(8154, "@dbl@@dbl@Hitpoints Level is:<tostring(.stat(hitpoints))>");
+~allstar_scroll_child(8155, "@dbl@@dbl@Prayer Level is:<tostring(.stat(prayer))>");
+~allstar_scroll_child(8156, "@dbl@@dbl@Magic Level is:<tostring(.stat(magic))>");
+~allstar_scroll_child(8157, "@dbl@@dbl@Range Level is:<tostring(.stat(ranged))>");
+~allstar_scroll_child(8158, "@dbl@@dbl@Runecraft Level is:<tostring(.stat(runecraft))>");
+~allstar_scroll_child(8159, "@dbl@@dbl@Herblore Level is:<tostring(.stat(herblore))>");
+~allstar_scroll_child(8160, "@dbl@@dbl@Theiving Level is:<tostring(.stat(thieving))>");
+~allstar_scroll_child(8161, "@dbl@@dbl@Agility Level is:<tostring(.stat(agility))>");
+~allstar_scroll_child(8162, "@dbl@@dbl@Crafting Level is:<tostring(.stat(crafting))>");
+~allstar_scroll_child(8163, "@dbl@@dbl@Fletching Level is:<tostring(.stat(fletching))>");
+~allstar_scroll_child(8164, "@dbl@@dbl@Slayer Level is:<tostring(.stat(slayer))>");
+~allstar_scroll_child(8165, "@dbl@@dbl@Mining Level is:<tostring(.stat(mining))>");
+~allstar_scroll_child(8166, "@dbl@@dbl@Smithing Level is:<tostring(.stat(smithing))>");
+~allstar_scroll_child(8167, "@dbl@@dbl@Fishing Level is:<tostring(.stat(fishing))>");
+~allstar_scroll_child(8168, "@dbl@@dbl@Cooking Level is:<tostring(.stat(cooking))>");
+~allstar_scroll_child(8169, "@dbl@@dbl@Firemaking Level is:<tostring(.stat(firemaking))>");
+~allstar_scroll_child(8170, "@dbl@@dbl@Woodcutting Level is:<tostring(.stat(woodcutting))>");
+~allstar_scroll_child(8171, "@dbl@@dbl@Farming Level is:<tostring(.stat(farming))>");
+~allstar_show_scroll;

@@ -1,6 +1,6 @@
 import Bot from './Bot.js';
 const check = (ok: boolean, what: string) => console.log(ok ? 'PASS' : 'FAIL', what);
-const bot = await Bot.connect({ username: `new${Date.now() % 100000}` });
+const bot = await Bot.connect({ username: `new${Date.now() % 100000}`, port: Number(process.env.ALLSTAR_PORT) || undefined, webPort: Number(process.env.ALLSTAR_WEB_PORT) || undefined });
 await new Promise(r => setTimeout(r, 2500));
 const c = await bot.coord();
 check(c.x === 2852 && c.z === 3591 && c.level === 0, `new player at home ${JSON.stringify(c)}`);

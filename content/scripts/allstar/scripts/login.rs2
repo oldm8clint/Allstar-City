@@ -57,10 +57,11 @@ if (~allstar_is_named("Skillerzmine") = true | ~allstar_is_named("Fatality") = t
     world_broadcast("<displayname> has logged in");
 }
 
-// client.initialize L15604-15659: rules scroll, rank messages, welcome interface
+// client.initialize (L15507-15733) after the tabs: the rules scroll, the rank messages and the
+// welcome screen, the logout tab, update(), TextHandler and the bank title. The login broadcast
+// (sent in client.run) reaches the chat box at the next cycle, after these messages.
 [proc,allstar_welcome]
-~allstar_login_broadcast;
-~allstar_main_help_menu;
+~allstar_help_main;
 if (%allstar_rights = 0) {
     mes("Allstar-Scape");
     mes("Welcome to Allstar-Scape");
@@ -68,6 +69,7 @@ if (%allstar_rights = 0) {
     mes("Go to forums at allstarscapeforums.smfforfree2.com");
     mes("Type ::Starter To Begin");
     mes("Server Created By Mod Allstar");
+    ~allstar_welcome_screen;
 } else if (%allstar_rights = 1) {
     mes("Welcome to Allstar-Scape");
     mes("To shop go east then up north the trail and you will find the shop's");
@@ -75,6 +77,7 @@ if (%allstar_rights = 0) {
     mes("Go to forums at allstarscapeforums.smfforfree2.com");
     mes("Your a Mod... Respect your moderator status");
     mes("Server Created By Mod Allstar");
+    ~allstar_welcome_screen;
 } else if (%allstar_rights = 2) {
     mes("Welcome to Allstar-Scape");
     mes("To shop go east then up north the trail and you will find the shop's");
@@ -82,6 +85,7 @@ if (%allstar_rights = 0) {
     mes("Go to forums at allstarscapeforums.smfforfree2.com");
     mes("Your Account is Admin...Respect your admin status");
     mes("Server Created By Mod Allstar");
+    ~allstar_welcome_screen;
 } else if (%allstar_rights = 3) {
     mes("Welcome to Allstar-Scape");
     mes("Do whatever you want");
@@ -89,49 +93,176 @@ if (%allstar_rights = 0) {
     mes("Go to forums at allstarscapeforums.smfforfree2.com");
     mes("::m to get unlimited money");
     mes("Server Created By Mod Allstar");
-}
-if (%allstar_rights <= 3) {
     ~allstar_welcome_screen;
 }
+// L15663: a one-time wipe for one account
+if (~allstar_is_named("Motherload11") = true & %allstar_hasset = 0) {
+    inv_clear(bank);
+    inv_clear(inv);
+    mes("Your bank has been reset for abusing dupe/spawn bugs");
+    mes("The only reason you're not banned is cos you're my friend");
+    mes("So don't abuse any item bugs or expect the same to happen (H) - xero");
+    %allstar_hasset = 1;
+}
+// the logout tab
+if_settext(logout:com_0, "Allstar-Scape");
+if_settext(logout:com_1, "");
+if_settext(logout:com_2, "");
 if (namelist_has("macrowarn", displayname) = true) {
     mes("You have 1 black mark as you have been caught autoing...");
     mes("If you are caught autoing again this WILL result in further action being taken");
     mes("against your account.");
 }
+// update(): the Yes emote label (blanked again by TextHandler) and the logout button
+if_settext(controls:com_32, "@blu@Home");
+if_settext(logout:try_logout, "Log Out.. Come Back!");
+~allstar_texthandler;
+if_settext(bank_main:com_90, "@whi@The Official Bank Of <displayname>");
+// appendPos, every cycle over the controls tab's weight display (see allstar_process)
+if_settext(controls:com_35, "Your coordinates");
 
-// MainHelpMenu (client L9000): rules scroll, text only for rank 0
-[proc,allstar_main_help_menu]
-if (%allstar_rights > 0) {
-    return;
-}
-~allstar_scroll_clear;
-~allstar_scroll_child(8144, "info");
-~allstar_scroll_child(8145, "How to Become Mod/Admin");
-~allstar_scroll_child(8147, "----");
-~allstar_scroll_child(8148, "1. Respect all other players!");
-~allstar_scroll_child(8149, "2. Respect Owners,Admins and Mods");
-~allstar_scroll_child(8150, "3. Do not start fights with other players");
-~allstar_scroll_child(8151, "   just simply tell an Owner or Admin.");
-~allstar_scroll_child(8152, "4. Help other players if they need help.");
-~allstar_scroll_child(8153, "5. Play on Server alot.");
-~allstar_scroll_child(8154, "5. Higher chance if you register on forums at");
-~allstar_scroll_child(8155, "allstarscapeforums.smfforfree2.com and stay active");
-~allstar_scroll_child(8156, "_____________________________________________________");
-~allstar_scroll_child(8157, "If you follow all of these rules you will be fine");
-~allstar_scroll_child(8158, "Just follow these and you will become a mod or admin");
-~allstar_scroll_child(8159, "");
-if_openmain(questjournal);
-
-// newWelc (client L238). Allstar-Scape showed 317 interface 15944; the text goes on the scroll.
+// newWelc (client L238): 317 interface 15944 is the Mage Training Arena shop screen (inter_339),
+// its texts replaced.
 [proc,allstar_welcome_screen]
-~allstar_scroll_clear;
-~allstar_scroll_child(8144, "@gre@~~~ @gre@A@whi@l@gre@l@whi@s@gre@t@whi@a@gre@r@whi@-@gre@S@whi@c@gre@a@whi@p@gre@e @gre@~~~");
-~allstar_scroll_child(8145, "Server created by - Mod Allstar");
-~allstar_scroll_child(8147, "");
-~allstar_scroll_child(8148, "Reputation: @whi@<tostring(%allstar_reputation)>");
-~allstar_scroll_child(8149, "Latest Update - New PkBox!");
-~allstar_scroll_child(8150, "Have Fun...");
-if_openmain(questjournal);
+if_settext(inter_339:com_5, "@gre@~~~ @gre@A@whi@l@gre@l@whi@s@gre@t@whi@a@gre@r@whi@-@gre@S@whi@c@gre@a@whi@p@gre@e @gre@~~~");
+if_settext(inter_339:com_15, "");
+if_settext(inter_339:com_16, "");
+if_settext(inter_339:com_14, "Server created by - Mod Allstar");
+if_settext(inter_339:com_6, "");
+if_settext(inter_339:com_7, "Reputation: @whi@<tostring(%allstar_reputation)>");
+if_settext(inter_339:com_8, "Latest Update - New PkBox!");
+if_settext(inter_339:com_9, "Have Fun...");
+if_settext(inter_339:com_10, "");
+if_settext(inter_339:com_11, "");
+if_settext(inter_339:com_12, "");
+if_settext(inter_339:com_13, "");
+~allstar_showinterface(inter_339);
+
+// loadquestinterface (client L8528): the quest tab, a welcome note. Quest stages: 0 not started,
+// -1 complete, else in progress. Clicking the lines does nothing.
+[proc,allstar_quest_tab](int $q1, int $q2, int $q3, int $q4)
+if_settext(questlist:com_1, "@red@Allstar-Scape");
+if_settext(questlist:com_24, "@whi@Info");
+if_settext(questlist:com_43, "");
+if ($q1 = -1) {
+    if_settext(questlist:fortress, "@gre@Invisible Armour");
+}
+if ($q1 >= 1) {
+    if_settext(questlist:fortress, "@yel@Invisible Armour");
+}
+if ($q1 = 0) {
+    if_settext(questlist:fortress, "@whi@Thank you for choosing");
+}
+if ($q2 = -1 | $q2 >= 1) {
+    if_settext(questlist:cook, "@red@Allstar-Scape");
+}
+if ($q2 = 0) {
+    if_settext(questlist:cook, "@yel@Allstar-Scape");
+}
+if ($q3 = -1) {
+    if_settext(questlist:demon, "@gre@Spells Of The Gods");
+}
+if ($q3 >= 1) {
+    if_settext(questlist:demon, "@yel@Spells Of The Gods");
+}
+if ($q3 = 0) {
+    if_settext(questlist:demon, "@whi@We hope you have a great");
+}
+if ($q4 = -1) {
+    if_settext(questlist:doric, "@gre@The Story Of Ramen");
+}
+if ($q4 >= 1) {
+    if_settext(questlist:doric, "@yel@The Story Of Ramen");
+}
+if ($q4 = 0) {
+    if_settext(questlist:doric, "@whi@Good time on our server =)");
+}
+if_settext(questlist:dragon, "");
+if_settext(questlist:haunted, "          - Mod Allstar");
+if_settext(questlist:gobdip, "");
+if_settext(questlist:imp, "");
+if_settext(questlist:squire, "");
+if_settext(questlist:hunt, "");
+if_settext(questlist:prince, "");
+if_settext(questlist:priest, "");
+if_settext(questlist:romeojuliet, "");
+if_settext(questlist:runemysteries, "");
+if_settext(questlist:sheep, "");
+if_settext(questlist:blackarmgang, "");
+if_settext(questlist:vampire, "");
+if_settext(questlist:hetty, "");
+if_settext(questlist:dwarfrock, "");
+if_settext(questlist:biohazard, "");
+if_settext(questlist:creatureoffenkenstrain, "");
+if_settext(questlist:death, "");
+if_settext(questlist:deserttreasure, "");
+if_settext(questlist:itexam, "");
+if_settext(questlist:druid, "");
+if_settext(questlist:mcannon, "");
+if_settext(questlist:eadgar, "");
+if_settext(questlist:elemental_workshop, "");
+if_settext(questlist:crest, "");
+if_settext(questlist:feud, "");
+if_settext(questlist:arena, "");
+if_settext(questlist:fishingcompo, "");
+if_settext(questlist:forget, "");
+if_settext(questlist:viking, "");
+if_settext(questlist:garden, "");
+if_settext(questlist:fluffs, "");
+if_settext(questlist:ahoy, "");
+if_settext(questlist:giantdwarf, "");
+if_settext(questlist:golem, "");
+if_settext(questlist:grandtree, "");
+if_settext(questlist:hauntedmine, "");
+if_settext(questlist:hazeelcult, "");
+if_settext(questlist:hero, "");
+if_settext(questlist:grail, "");
+if_settext(questlist:horror, "");
+if_settext(questlist:ics_little, "");
+if_settext(questlist:routequest, "");
+if_settext(questlist:junglepotion, "");
+if_settext(questlist:legends, "");
+if_settext(questlist:zanaris, "");
+if_settext(questlist:lost_tribe, "");
+if_settext(questlist:arthur, "");
+if_settext(questlist:mm, "");
+if_settext(questlist:drunkmonk, "");
+if_settext(questlist:mdaughter, "");
+if_settext(questlist:mourning, "");
+if_settext(questlist:murder, "");
+if_settext(questlist:druidspirit, "");
+if_settext(questlist:itgronigen, "");
+if_settext(questlist:onesmallfavour, "");
+if_settext(questlist:elena, "");
+if_settext(questlist:priestperil, "");
+if_settext(questlist:regicide, "");
+if_settext(questlist:roving_elves, "");
+if_settext(questlist:scorpcatcher, "");
+if_settext(questlist:seaslug, "");
+if_settext(questlist:mortton, "");
+if_settext(questlist:sheepherder, "");
+if_settext(questlist:zombiequeen, "");
+if_settext(questlist:tbwt, "");
+if_settext(questlist:tog, "");
+if_settext(questlist:ikov, "");
+if_settext(questlist:misc, "");
+if_settext(questlist:desertrescue, "");
+if_settext(questlist:tree, "");
+if_settext(questlist:totem, "");
+if_settext(questlist:troll_love, "");
+if_settext(questlist:upass, "");
+if_settext(questlist:itwatchtower, "");
+if_settext(questlist:waterfall, "");
+if_settext(questlist:ball, "");
+if_settext(questlist:zogre, "");
+
+// PlayerHandler.kickNick left over from ::kick, ::banuser or ::macrowarn of a player who was not
+// online: this name is kicked
+[proc,allstar_kicknick_login]
+if (string_length(%allstar_kicknick) > 0 & compare(lowercase(%allstar_kicknick), lowercase(displayname)) = 0) {
+    %allstar_kicknick = "";
+    p_kick;
+}
 
 [proc,allstar_logout]
 if (%allstar_rights = 0) {

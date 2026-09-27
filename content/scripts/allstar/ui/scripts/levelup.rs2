@@ -1,0 +1,301 @@
+// Level-ups: client.addSkillXP (C:14014) and client.levelup(skill) (C:5067).
+//
+// addSkillXP calls levelup once per xp gain that raises the level (however many levels) and first
+// sets the skill's current level to the new base level, so boosts and drains are lost. Attack,
+// Strength, Defence, Hitpoints, Ranged, Prayer and Magic open their level-up chatbox (317 ids are
+// the 377 levelup_* interfaces) and play graphic 199 with its x and y swapped (stillgfx takes y
+// first), so it lands on the tile mirrored across the x = y diagonal (BUG); the other skills only
+// send the chat message. No jingle, fireworks or unlock messages.
+//
+// The chatbox never held the player up: its "Click here to continue" did nothing (dialogue 0 has
+// no case in packet 40) and it went away when the player walked. On 377 it is the sticky chat
+// interface (tut_open), which does not make the player busy, closed when the player moves.
+//
+// The engine runs advancestat when the player is free (no interface open), so every level gained
+// since the last announcement is announced then, in skill order; levels at login are the baseline.
+//
+// Reaching 99 gives the skill's cape items, a message and a broadcast to everyone. The capes are
+// Allstar-Scape custom items (ids 14073-14138, from the customitems workstream, named
+// allstar_item_<id>); the lines granting them are commented out below until those objs exist.
+
+[advancestat,attack] ~allstar_levelups;
+[advancestat,defence] ~allstar_levelups;
+[advancestat,strength] ~allstar_levelups;
+[advancestat,hitpoints] ~allstar_levelups;
+[advancestat,ranged] ~allstar_levelups;
+[advancestat,prayer] ~allstar_levelups;
+[advancestat,magic] ~allstar_levelups;
+[advancestat,cooking] ~allstar_levelups;
+[advancestat,woodcutting] ~allstar_levelups;
+[advancestat,fletching] ~allstar_levelups;
+[advancestat,fishing] ~allstar_levelups;
+[advancestat,firemaking] ~allstar_levelups;
+[advancestat,crafting] ~allstar_levelups;
+[advancestat,smithing] ~allstar_levelups;
+[advancestat,mining] ~allstar_levelups;
+[advancestat,herblore] ~allstar_levelups;
+[advancestat,agility] ~allstar_levelups;
+[advancestat,thieving] ~allstar_levelups;
+[advancestat,slayer] ~allstar_levelups;
+[advancestat,farming] ~allstar_levelups;
+[advancestat,runecraft] ~allstar_levelups;
+
+[proc,allstar_levelups]
+def_int $i = 0;
+def_stat $stat = null;
+def_int $base = 0;
+while ($i <= 20) {
+    $stat = enum(int, stat, allstar_skills, $i);
+    $base = stat_base($stat);
+    if ($base > ~allstar_known_level($i)) {
+        ~allstar_set_known_level($i, $base);
+        ~allstar_levelup($stat);
+    }
+    $i = calc($i + 1);
+}
+
+// every base level at login, so only levels gained this session are announced
+[proc,allstar_levelup_login]
+def_int $i = 0;
+while ($i <= 20) {
+    ~allstar_set_known_level($i, stat_base(enum(int, stat, allstar_skills, $i)));
+    $i = calc($i + 1);
+}
+
+// seven bits per skill, four skills per varp
+[proc,allstar_known_level](int $i)(int)
+def_int $bit = calc(modulo($i, 4) * 7);
+switch_int (calc($i / 4)) {
+    case 0 : return (getbit_range(%allstar_levels0, $bit, calc($bit + 6)));
+    case 1 : return (getbit_range(%allstar_levels1, $bit, calc($bit + 6)));
+    case 2 : return (getbit_range(%allstar_levels2, $bit, calc($bit + 6)));
+    case 3 : return (getbit_range(%allstar_levels3, $bit, calc($bit + 6)));
+    case 4 : return (getbit_range(%allstar_levels4, $bit, calc($bit + 6)));
+    case 5 : return (getbit_range(%allstar_levels5, $bit, calc($bit + 6)));
+}
+return (0);
+
+[proc,allstar_set_known_level](int $i, int $level)
+def_int $bit = calc(modulo($i, 4) * 7);
+switch_int (calc($i / 4)) {
+    case 0 : %allstar_levels0 = setbit_range_toint(%allstar_levels0, $level, $bit, calc($bit + 6));
+    case 1 : %allstar_levels1 = setbit_range_toint(%allstar_levels1, $level, $bit, calc($bit + 6));
+    case 2 : %allstar_levels2 = setbit_range_toint(%allstar_levels2, $level, $bit, calc($bit + 6));
+    case 3 : %allstar_levels3 = setbit_range_toint(%allstar_levels3, $level, $bit, calc($bit + 6));
+    case 4 : %allstar_levels4 = setbit_range_toint(%allstar_levels4, $level, $bit, calc($bit + 6));
+    case 5 : %allstar_levels5 = setbit_range_toint(%allstar_levels5, $level, $bit, calc($bit + 6));
+}
+
+[proc,allstar_levelup](stat $stat)
+def_int $base = stat_base($stat);
+def_int $current = stat($stat);
+if ($current < $base) {
+    stat_add($stat, calc($base - $current), 0);
+} else if ($current > $base) {
+    stat_sub($stat, calc($current - $base), 0);
+}
+def_int $level = stat($stat);
+switch_stat ($stat) {
+    case attack :
+        ~allstar_levelup_box(levelup_attack, levelup_attack:line1, levelup_attack:line2, "Congratulations, you just advanced an attack level!", "Your attack level is now <tostring($level)> .");
+        mes("Congratulations, you just advanced an attack level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14073, 1);
+            // ~allstar_additem(allstar_item_14074, 1);
+            // ~allstar_additem(allstar_item_14075, 1);
+            mes("Congratulations, you just recived Attack skill capes and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> attack!");
+        }
+    case strength :
+        ~allstar_levelup_box(levelup_strength, levelup_strength:line1, levelup_strength:line2, "Congratulations, you just advanced a strength level!", "Your strength level is now <tostring($level)> .");
+        mes("Congratulations, you just advanced a strength level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14076, 1);
+            // ~allstar_additem(allstar_item_14077, 1);
+            // ~allstar_additem(allstar_item_14078, 1);
+            mes("Congratulations, you just recived Strength skill capes and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> strength!");
+        }
+    case defence :
+        ~allstar_levelup_box(levelup_defence, levelup_defence:line1, levelup_defence:line2, "Congratulations, you just advanced a defence level!", "Your defence level is now <tostring($level)> .");
+        mes("Congratulations, you just advanced a defence level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14079, 1);
+            // ~allstar_additem(allstar_item_14080, 1);
+            // ~allstar_additem(allstar_item_14081, 1);
+            mes("Congratulations, you just recived the Defence skill cape and hood!");
+            // the broadcast prints the Strength level (playerLevel[2], BUG)
+            world_broadcast("<displayname> has just gotten <tostring(stat(strength))> defence!");
+        }
+    case hitpoints :
+        ~allstar_levelup_box(levelup_hitpoints, levelup_hitpoints:line1, levelup_hitpoints:line2, "Congratulations, you just advanced a hitpoints level!", "Your hitpoints level is now <tostring($level)> .");
+        mes("Congratulations, you just advanced a hitpoints level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14094, 1);
+            // ~allstar_additem(allstar_item_14095, 1);
+            // ~allstar_additem(allstar_item_14096, 1);
+            mes("Congratulations, you just recived Hitpoints skill capes and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> hitpoints!");
+        }
+    case ranged :
+        ~allstar_levelup_box(levelup_ranged, levelup_ranged:line1, levelup_ranged:line2, "Congratulations, you just advanced a ranged level!", "Your ranged level is now <tostring($level)> .");
+        mes("Congratulations, you just advanced a ranging level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14082, 1);
+            // ~allstar_additem(allstar_item_14083, 1);
+            // ~allstar_additem(allstar_item_14084, 1);
+            mes("Congratulations, you just recived the Range skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> ranged!");
+        }
+    case prayer :
+        ~allstar_levelup_box(levelup_prayer, levelup_prayer:line1, levelup_prayer:line2, "Congratulations, you just advanced a prayer level!", "Your prayer level is now <tostring($level)> .");
+        mes("Congratulations, you just advanced a prayer level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14085, 1);
+            // ~allstar_additem(allstar_item_14086, 1);
+            // ~allstar_additem(allstar_item_14087, 1);
+            mes("Congratulations, you just recived the Prayer skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> prayer!");
+        }
+    case magic :
+        ~allstar_levelup_box(levelup_magic, levelup_magic:line1, levelup_magic:line2, "Congratulations, you just advanced a magic level!", "Your magic level is now <tostring($level)> .");
+        mes("Congratulations, you just advanced a magic level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14088, 1);
+            // addItem(14089, 5): not stackable, so one
+            // ~allstar_additem(allstar_item_14089, 5);
+            mes("Congratulations, you just recived the Mage skill cape");
+            world_broadcast("<displayname> has just gotten <tostring($level)> magic!");
+        }
+    case cooking :
+        mes("Congratulations, you just advanced a cooking level.");
+        if ($level >= 99) {
+            ~allstar_additem(coins, 10000000);
+            // ~allstar_additem(allstar_item_14128, 1);
+            mes("Congratulations, you just recived the cooking skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> cooking!");
+        }
+    case woodcutting :
+        mes("Congratulations, you just advanced a woodcutting level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14133, 1);
+            // ~allstar_additem(allstar_item_14134, 1);
+            // ~allstar_additem(allstar_item_14135, 1);
+            mes("Congratulations, you just recived the woodcutting skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> woodcutting!");
+        }
+    case fletching :
+        mes("Congratulations, you just advanced a fletching level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14109, 1);
+            // ~allstar_additem(allstar_item_14111, 1);
+            mes("Congratulations, you just recived the fletching skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> fletching!");
+        }
+    case fishing :
+        mes("Congratulations, you just advanced a fishing level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14124, 1);
+            // ~allstar_additem(allstar_item_14125, 1);
+            // ~allstar_additem(allstar_item_14126, 1);
+            ~allstar_additem(coins, 10000000);
+            mes("Congratulations, you just recived the fishing skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> fishing!");
+        }
+    case firemaking :
+        mes("Congratulations, you just advanced a fire making level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14130, 1);
+            // ~allstar_additem(allstar_item_14131, 1);
+            // ~allstar_additem(allstar_item_14132, 1);
+            mes("Congratulations, you just recived the firemaking skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> firemaking!");
+        }
+    case crafting :
+        mes("Congratulations, you just advanced a crafting level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14106, 1);
+            // ~allstar_additem(allstar_item_14107, 1);
+            // ~allstar_additem(allstar_item_14108, 1);
+            mes("Congratulations, you just recived the crafting skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> crafting!");
+        }
+    case smithing :
+        mes("Congratulations, you just advanced a smithing level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14121, 1);
+            // ~allstar_additem(allstar_item_14122, 1);
+            // ~allstar_additem(allstar_item_14123, 1);
+            mes("Congratulations, you just recived the smithing skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> smithing!");
+        }
+    case mining :
+        mes("Congratulations, you just advanced a mining level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14118, 1);
+            // ~allstar_additem(allstar_item_14119, 1);
+            // ~allstar_additem(allstar_item_14120, 1);
+            mes("Congratulations, you just recived the mining skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> mining!");
+        }
+    case herblore :
+        mes("Congratulations, you just advanced a herblore level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14100, 1);
+            // ~allstar_additem(allstar_item_14101, 1);
+            // ~allstar_additem(allstar_item_14102, 1);
+            mes("Congratulations, you just recived the herblore skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> herblore!");
+        }
+    case agility :
+        mes("Congratulations, you just advanced an agility level.");
+        if ($level >= 99) {
+            mes("Congratulations, there is no agility skillcape");
+            world_broadcast("<displayname> has just gotten <tostring($level)> agility!");
+        }
+    case thieving :
+        mes("Congratulations, you just advanced a thieving level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14103, 1);
+            // ~allstar_additem(allstar_item_14104, 1);
+            // ~allstar_additem(allstar_item_14105, 1);
+            mes("Congratulations, you just recived the Thieveing skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> thieveing!");
+        }
+    case slayer :
+        mes("Congratulations, you just advanced a slayer level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14112, 1);
+            // ~allstar_additem(allstar_item_14113, 1);
+            // ~allstar_additem(allstar_item_14114, 1);
+            mes("Congratulations, you just recived the Slayer skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> Slayer!");
+        }
+    case farming :
+        mes("Congratulations, you just advanced a farming level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14136, 1);
+            // ~allstar_additem(allstar_item_14137, 1);
+            // ~allstar_additem(allstar_item_14138, 1);
+            mes("Congratulations, you just recived the Farming skill cape and hood!");
+            world_broadcast("<displayname> has just gotten <tostring($level)> Farming!");
+        }
+    case runecraft :
+        mes("Congratulations, you just advanced a runecrafting level.");
+        if ($level >= 99) {
+            // ~allstar_additem(allstar_item_14091, 1);
+            // ~allstar_additem(allstar_item_14092, 1);
+            // item.cfg has no 14093
+            // ~allstar_additem(allstar_item_14093, 1);
+            mes("Congratulations, you just recived the runecrafting skill cape and hood");
+            world_broadcast("<displayname> has just gotten <tostring($level)> runecrafting!");
+        }
+}
+
+// sendFrame164(chatbox), stillgfx(199, absX, absY), the two lines
+[proc,allstar_levelup_box](interface $chatbox, component $line1, component $line2, string $title, string $body)
+tut_open($chatbox);
+%allstar_levelup_box = coord;
+~allstar_stillgfx(levelup_anim, coordz(coord), coordx(coord));
+if_settext($line1, $title);
+if_settext($line2, $body);

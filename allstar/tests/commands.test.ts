@@ -1,7 +1,7 @@
 // Commands vertical slice: teleports, starter, info.
 import Bot from './Bot.js';
 
-const bot = await Bot.connect({ username: `cmd${Date.now() % 100000}` });
+const bot = await Bot.connect({ username: `cmd${Date.now() % 100000}`, port: Number(process.env.ALLSTAR_PORT) || undefined, webPort: Number(process.env.ALLSTAR_WEB_PORT) || undefined });
 const check = (ok: boolean, what: string) => console.log(ok ? 'PASS' : 'FAIL', what);
 
 let since = bot.messages.length;
@@ -33,7 +33,9 @@ check(true, '::mypos');
 since = bot.messages.length;
 bot.cheat('players');
 await bot.waitForMessage(/There are currently \d+ players!/, 5000, since);
-check(bot.main !== -1, `::players opened interface ${bot.main}`);
+// the interface opens at the end of the tick, after the message
+await bot.until(() => bot.main === 8134, 3000, 'player list').catch(() => {});
+check(bot.main === 8134, `::players opened interface ${bot.main}`);
 
 since = bot.messages.length;
 bot.cheat('shops');

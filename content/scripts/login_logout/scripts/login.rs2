@@ -12,7 +12,15 @@ if (%option_brightness = 0) {
 minimap_toggle(0); //reset minimap state on login
 
 ~allstar_new_player;
+// Allstar-Scape has no tutorial: Lost City content that checks the progress sees it done
+if (%tutorial < ^tutorial_complete) {
+    %tutorial = ^tutorial_complete;
+}
+~allstar_levelup_login;
 ~allstar_login_rights;
+// loadquestinterface: the quest stages belong to the quests (npcs workstream); 0 = not started
+~allstar_quest_tab(0, 0, 0, 0);
+~allstar_weather_login;
 
 // right-click options on other players (client.run L10923-10957)
 set_player_op("@whi@T@gre@r@whi@a@gre@d@whi@e @whi@w@gre@i@whi@t@gre@h", 4, ^false);
@@ -31,12 +39,15 @@ if (%allstar_rights > 0 | ~allstar_is_named("D D 3") = true) {
 ~initalltabs;
 ~update_all(inv_getobj(worn, ^wearpos_rhand));
 ~allstar_welcome;
+~allstar_login_broadcast;
+// client.process() every cycle: the HUD overlays and texts
+softtimer(allstar_process, 1);
+~allstar_kicknick_login;
 
 [proc,initalltabs]
 ~update_weapon_category(inv_getobj(worn, ^wearpos_rhand));
 if_settab(stats, ^tab_skills);
 if_settab(questlist, ^tab_quest_journal);
-~update_questlist;
 
 inv_transmit(inv, inventory:inv);
 inv_transmit(worn, wornitems:worn);
