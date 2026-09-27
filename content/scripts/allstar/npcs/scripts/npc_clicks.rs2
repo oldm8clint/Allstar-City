@@ -272,3 +272,16 @@ if (%allstar_starter = 0) {
     mes("Why do you have to be greedy?");
     world_broadcast("<displayname> is really greedy trying to type ::starter again");
 }
+
+// ---- "Essence" wizards (section 2.6), second click: straight to 3088,3489 at the same height.
+// Essence only matters to the essence-mine exits (stair types 25/26); nothing teleports into the mine.
+[opnpc3,head_wizard] ~allstar_essence_wizard(1);
+[apnpc3,head_wizard] ~allstar_essence_wizard(1);
+[opnpc3,ardounge_wizard] ~allstar_essence_wizard(2);
+[apnpc3,ardounge_wizard] ~allstar_essence_wizard(2);
+[opnpc3,guild_wizard] ~allstar_essence_wizard(3);
+[apnpc3,guild_wizard] ~allstar_essence_wizard(3);
+
+[proc,allstar_essence_wizard](int $essence)
+p_telejump(movecoord(coord, calc(3088 - coordx(coord)), 0, calc(3489 - coordz(coord))));
+%allstar_essence = $essence;

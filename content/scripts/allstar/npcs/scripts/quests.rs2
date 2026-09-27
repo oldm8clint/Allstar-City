@@ -3,117 +3,10 @@
 // Stages: 0 not started, 1..n in progress, -1 complete. The quest journal (quest()/loadquest) was
 // never reachable: clicking a quest name does nothing.
 
-// Called at login (from ~update_questlist) and by the quest dialogues.
+// Called at login and by the quest dialogues. ~allstar_quest_tab (login.rs2) writes Allstar-Scape's
+// texts and blanks; q4stage ("The Story Of Ramen") is never set, so it is always 0.
 [proc,allstar_loadquestinterface]
-if_settext(questlist:com_1, "@red@Allstar-Scape");
-if_settext(questlist:com_24, "@whi@Info");
-if_settext(questlist:com_43, "");
-if (%allstar_q1stage = -1) {
-    if_settext(questlist:fortress, "@gre@Invisible Armour");
-}
-if (%allstar_q1stage >= 1) {
-    if_settext(questlist:fortress, "@yel@Invisible Armour");
-}
-if (%allstar_q1stage = 0) {
-    if_settext(questlist:fortress, "@whi@Thank you for choosing");
-}
-// quest 2 never shows its own name
-if (%allstar_q2stage = -1 | %allstar_q2stage >= 1) {
-    if_settext(questlist:cook, "@red@Allstar-Scape");
-}
-if (%allstar_q2stage = 0) {
-    if_settext(questlist:cook, "@yel@Allstar-Scape");
-}
-if (%allstar_q3stage = -1) {
-    if_settext(questlist:demon, "@gre@Spells Of The Gods");
-}
-if (%allstar_q3stage >= 1) {
-    if_settext(questlist:demon, "@yel@Spells Of The Gods");
-}
-if (%allstar_q3stage = 0) {
-    if_settext(questlist:demon, "@whi@We hope you have a great");
-}
-// quest 4 "The Story Of Ramen": q4stage is never set, so it is always 0
-if_settext(questlist:doric, "@whi@Good time on our server =)");
-if_settext(questlist:dragon, "");
-if_settext(questlist:haunted, "          - Mod Allstar");
-if_settext(questlist:gobdip, "");
-if_settext(questlist:imp, "");
-if_settext(questlist:squire, "");
-if_settext(questlist:hunt, "");
-if_settext(questlist:prince, "");
-if_settext(questlist:priest, "");
-if_settext(questlist:romeojuliet, "");
-if_settext(questlist:runemysteries, "");
-if_settext(questlist:sheep, "");
-if_settext(questlist:blackarmgang, "");
-if_settext(questlist:vampire, "");
-if_settext(questlist:hetty, "");
-// members quests
-if_settext(questlist:dwarfrock, "");
-if_settext(questlist:biohazard, "");
-if_settext(questlist:creatureoffenkenstrain, "");
-if_settext(questlist:death, "");
-if_settext(questlist:deserttreasure, "");
-if_settext(questlist:itexam, "");
-if_settext(questlist:druid, "");
-if_settext(questlist:mcannon, "");
-if_settext(questlist:eadgar, "");
-if_settext(questlist:elemental_workshop, "");
-if_settext(questlist:crest, "");
-if_settext(questlist:feud, "");
-if_settext(questlist:arena, "");
-if_settext(questlist:fishingcompo, "");
-if_settext(questlist:forget, "");
-if_settext(questlist:viking, "");
-if_settext(questlist:garden, "");
-if_settext(questlist:fluffs, "");
-if_settext(questlist:ahoy, "");
-if_settext(questlist:giantdwarf, "");
-if_settext(questlist:golem, "");
-if_settext(questlist:grandtree, "");
-if_settext(questlist:hauntedmine, "");
-if_settext(questlist:hazeelcult, "");
-if_settext(questlist:hero, "");
-if_settext(questlist:grail, "");
-if_settext(questlist:horror, "");
-if_settext(questlist:ics_little, "");
-if_settext(questlist:routequest, "");
-if_settext(questlist:junglepotion, "");
-if_settext(questlist:legends, "");
-if_settext(questlist:zanaris, "");
-if_settext(questlist:lost_tribe, "");
-if_settext(questlist:arthur, "");
-if_settext(questlist:mm, "");
-if_settext(questlist:drunkmonk, "");
-if_settext(questlist:mdaughter, "");
-if_settext(questlist:mourning, "");
-if_settext(questlist:murder, "");
-if_settext(questlist:druidspirit, "");
-if_settext(questlist:itgronigen, "");
-if_settext(questlist:onesmallfavour, "");
-if_settext(questlist:elena, "");
-if_settext(questlist:priestperil, "");
-if_settext(questlist:regicide, "");
-if_settext(questlist:roving_elves, "");
-if_settext(questlist:scorpcatcher, "");
-if_settext(questlist:seaslug, "");
-if_settext(questlist:mortton, "");
-if_settext(questlist:sheepherder, "");
-if_settext(questlist:zombiequeen, "");
-if_settext(questlist:tbwt, "");
-if_settext(questlist:tog, "");
-if_settext(questlist:ikov, "");
-if_settext(questlist:misc, "");
-if_settext(questlist:desertrescue, "");
-if_settext(questlist:tree, "");
-if_settext(questlist:totem, "");
-if_settext(questlist:troll_love, "");
-if_settext(questlist:upass, "");
-if_settext(questlist:itwatchtower, "");
-if_settext(questlist:waterfall, "");
-if_settext(questlist:ball, "");
-if_settext(questlist:zogre, "");
+~allstar_quest_tab(%allstar_q1stage, %allstar_q2stage, %allstar_q3stage, 0);
 // quest list entries of the 377 cache that Allstar-Scape's list has no id for; its quest tab
 // showed no stock quest names
 if_settext(questlist:chompybird, "");
@@ -142,7 +35,7 @@ if_settext(questlist:swansong, "");
 // showQuestCompleted: interface 297 with the quest points; no reward model, no jingle
 [proc,allstar_quest_completed](string $name, int $qp)
 %allstar_totalqp = calc(%allstar_totalqp + $qp);
-if_openmain(questscroll);
+~allstar_showinterface(questscroll);
 if_settext(questscroll:com_1, "Congratulations!");
 if_settext(questscroll:com_2, "Close Window");
 if_settext(questscroll:com_8, "You are awarded");
@@ -151,3 +44,29 @@ if_settext(questscroll:com_5, "Total QP:");
 if_settext(questscroll:com_3, "You have completed <$name>");
 if_settext(questscroll:com_9, tostring($qp));
 if_settext(questscroll:com_6, tostring(%allstar_totalqp));
+
+// ---- quest 1 guard gate (process() L17541) ----
+// Guard was never set, so guardsdead stayed false: on 2790 or 2791,10216 (any height) in the caves
+// behind the QUEST_1 entrance the player is thrown back to 2790,10214 every cycle. The tiles share
+// one zone (2784-2791, 10216-10223), checked every cycle while the player is in it.
+[zone,0_43_159_32_40] ~allstar_q1_guards_enter;
+[zone,1_43_159_32_40] ~allstar_q1_guards_enter;
+[zone,2_43_159_32_40] ~allstar_q1_guards_enter;
+[zone,3_43_159_32_40] ~allstar_q1_guards_enter;
+
+[proc,allstar_q1_guards_enter]
+softtimer(allstar_q1_guards, 1);
+~allstar_q1_guards;
+
+[softtimer,allstar_q1_guards]
+if (coordx(coord) < 2784 | coordx(coord) > 2791 | coordz(coord) < 10216 | coordz(coord) > 10223) {
+    clearsofttimer(allstar_q1_guards);
+    return;
+}
+~allstar_q1_guards;
+
+[proc,allstar_q1_guards]
+if ((coordx(coord) = 2790 | coordx(coord) = 2791) & coordz(coord) = 10216) {
+    mes("The guards kick you out the way.");
+    ~allstar_telejump(2790, 10214);
+}

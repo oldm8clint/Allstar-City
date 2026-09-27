@@ -88,7 +88,7 @@ if_settext(questjournal:com_5, "@dbl@Reward:");
 ~allstar_additem($item3, 1);
 ~allstar_additem($item4, 1);
 ~allstar_additem($item5, 500);
-if_openmain(questjournal);
+~allstar_showinterface(questjournal);
 %allstar_cluelevel = 0;
 %allstar_clueid = 0;
 %allstar_cluestage = 0;
@@ -105,7 +105,7 @@ return ("@dbl@<enum(namedobj, string, allstar_clue_item_name, $obj)>@dre@ (<tost
 ~allstar_scroll_child(8147, "@dbl@X Coordinate:@dre@ <tostring($x)>@dbl@");
 ~allstar_scroll_child(8148, "@dbl@Y Coordinate:@dre@ <tostring($z)>@dbl@");
 ~allstar_scroll_child(8149, "@dbl@@dre@ GOOD LUCK! @dbl@");
-if_openmain(questjournal);
+~allstar_showinterface(questjournal);
 
 [proc,allstar_sendclue3](string $line1, string $line2)
 ~allstar_scroll_child(8144, "@dre@Clue Scroll");
@@ -114,7 +114,7 @@ if_openmain(questjournal);
 ~allstar_scroll_child(8147, "@dbl@@dre@<$line1>@dbl@");
 ~allstar_scroll_child(8148, "@dbl@@dre@<$line2>@dbl@");
 ~allstar_scroll_child(8149, "@dbl@@dre@ GOOD LUCK! @dbl@");
-if_openmain(questjournal);
+~allstar_showinterface(questjournal);
 
 // clue(): a fresh scroll first rolls stage 1 and shows no hint (the level is still 0). Hints use
 // the level of the scroll read before, and level 2 stage 1 has a second set of hints that

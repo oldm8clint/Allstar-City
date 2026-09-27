@@ -2,28 +2,6 @@
 // boats, make-over, quests and clue scrolls. Run against a server on NODE_PORT 43612 / WEB_PORT 8112:
 //   cd engine && npx tsx ../allstar/tests/npcs.test.ts
 import Bot from './Bot.js';
-import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
-import type Packet from '../../engine/src/io/Packet.js';
-
-// Bot.ts reads these three packets with plain g2(); the engine writes the component ids with the
-// alt encodings (IfSetTextEncoder, IfOpenMainEncoder, IfOpenMainSideEncoder).
-type Handler = (this: Bot, prot: ServerGameProt, buf: Packet, length: number) => void;
-const proto = Bot.prototype as unknown as { handle: Handler };
-const handle = proto.handle;
-proto.handle = function (prot, buf, length) {
-    if (prot === ServerGameProt.IF_SETTEXT) {
-        const com = buf.g2_alt3();
-        this.texts.set(com, buf.gjstr());
-    } else if (prot === ServerGameProt.IF_OPENMAIN) {
-        this.main = buf.g2_alt3();
-        this.side = -1;
-    } else if (prot === ServerGameProt.IF_OPENMAIN_SIDE) {
-        this.main = buf.g2_alt2();
-        this.side = buf.g2_alt3();
-    } else {
-        handle.call(this, prot, buf, length);
-    }
-};
 
 const PORT = Number(process.env.BOT_PORT ?? 43612);
 const WEB = Number(process.env.BOT_WEB ?? 8112);
@@ -426,6 +404,9 @@ async function boat(bot: Bot) {
     c = await coord(bot);
     check(c.x === 2956 && c.z === 3146, `boat arrives at Karamja -> ${JSON.stringify(c)}`);
     check(secs > 13 && secs < 16.5, `trip takes 29 cycles (${secs.toFixed(1)} s)`);
+    // the inventory still updates after the ship interface closed
+    await give(bot, 'tinderbox', 590);
+    check(count(bot, 590) === 1, 'inventory transmits after the trip');
 }
 
 async function horvik(bot: Bot) {
@@ -516,11 +497,42 @@ async function clues(bot: Bot) {
     check(msgs.length === 1 && msgs[0] === 'Nothing interesting is happening.', `spade without a trail ${JSON.stringify(msgs)}`);
 }
 
+async function essence(bot: Bot) {
+    await tele(bot, 2852, 3579);
+    const wizard = await spawn(bot, 'guild_wizard');
+    bot.opNpc(3, wizard);
+    await sleep(2000);
+    const c = await coord(bot);
+    check(c.x === 3088 && c.z === 3489 && c.level === 0, `Wizard Distentor Teleport -> ${JSON.stringify(c)}`);
+    check((await getvar(bot, 'allstar_essence')) === 3, 'Essence 3');
+}
+
+async function gnomeBanker(bot: Bot) {
+    await tele(bot, 2852, 3577);
+    const banker = await spawn(bot, 'gnomebanker');
+    bot.opNpc(1, banker);
+    try {
+        await bot.until(() => bot.main === 5292, 5000, 'gnome bank');
+        check(true, 'gnome banker Talk-to opens the bank at once');
+    } catch {
+        check(false, `gnome banker (main ${bot.main})`);
+    }
+}
+
+async function guards(bot: Bot) {
+    const since = bot.messages.length;
+    await tele(bot, 2790, 10216);
+    await bot.waitForMessage(/^The guards kick you out the way\.$/, 5000, since);
+    await sleep(900);
+    const c = await coord(bot);
+    check(c.x === 2790 && c.z === 10214, `quest 1 guards throw the player back -> ${JSON.stringify(c)}`);
+}
+
 const bot = await connect('npc');
 await sleep(1500);
 const tests: Record<string, (bot: Bot) => Promise<void>> = {
     quests, hans, hijack, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
-    starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, clues
+    starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, clues, essence, gnomeBanker, guards
 };
 // ONLY=hans,bankers runs a subset
 const only = process.env.ONLY?.split(',');

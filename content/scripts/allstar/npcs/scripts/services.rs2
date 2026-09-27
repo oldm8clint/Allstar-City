@@ -5,13 +5,10 @@
 [label,allstar_openbank]
 @openbank;
 
-// the same from a dialogue option (labels cannot be jumped to from procs); the strong queue
-// closes the chatbox and opens the bank in the same cycle
+// the same from a dialogue option (labels cannot be jumped to from procs): [queue,allstar_openbank]
+// (commands/owner.rs2, ::bank) closes the chatbox and opens the bank in the same cycle
 [proc,allstar_openbank_queued]
 strongqueue(allstar_openbank, 0, 0);
-
-[queue,allstar_openbank]
-@allstar_openbank;
 
 // openUpPinSettings(): interface 14924 with static text only. The seventh line was sent to
 // component 14044 instead of 15044, so it stays empty. The sendFrame171 calls on 15074/15077/
@@ -32,12 +29,12 @@ if_settext(bankpin_settings:com_124, "Website?");
 if_settext(bankpin_settings:com_175, "No PIN set");
 if_settext(bankpin_settings:com_177, "3 days");
 if_sethide(bankpin_settings:com_237, true);
-if_openmain(bankpin_settings);
+~allstar_showinterface(bankpin_settings);
 
 // Make-over mage, dialogue 14604: the character design screen 3559 (packet 101 applies it)
 [proc,allstar_open_makeover]
+~allstar_showinterface(player_kit);
 allowdesign(true);
-if_openmain(player_kit);
 
 // ---- boat trips (dialogues 41/43): free, 29 cycles in the void at 9999,9999 ----
 

@@ -1,16 +1,7 @@
 // NPC-click skills: pickpocketing (client.java L19597-19632, rob*() L24715-24753) and the
 // click-fishing spots 233-236 (L19153-19205). Both act at once, without walking to the npc.
 
-// ---- actionTimer (Player.actionTimer): drops by 1 every cycle, shared by many skills ----
-
-[proc,allstar_actiontimer_ready]()(boolean)
-if (map_clock >= %allstar_actiontimer) {
-    return (true);
-}
-return (false);
-
-[proc,allstar_set_actiontimer](int $cycles)
-%allstar_actiontimer = calc(map_clock + $cycles);
+// Both use Player.actionTimer, the cooldown shared with other skills (~allstar_action_timer, core.rs2).
 
 // ---- pickpocketing: always succeeds (no failure roll, stun or damage); current Thieving level ----
 
@@ -27,7 +18,7 @@ if (stat(thieving) < $level) {
     mes("You need <tostring($level)> theiving to pickpocket <$plural>.");
     return;
 }
-if (~allstar_actiontimer_ready = false) {
+if (~allstar_action_timer > 0) {
     return;
 }
 // rob*(): message, coins, xp, then turn to the npc
@@ -35,7 +26,7 @@ mes("You pickpocket the <$name>.");
 ~allstar_additem(coins, $coins);
 stat_advance(thieving, $xp);
 facesquare(npc_coord);
-~allstar_set_actiontimer($timer);
+~allstar_set_action_timer($timer);
 anim(human_pickpocket, 0);
 
 // ---- click-fishing: one catch per click, no tool, bait or range check ----
@@ -53,12 +44,12 @@ anim(human_pickpocket, 0);
 // The level message is sent even while actionTimer is running.
 [proc,allstar_clickfish](int $level, seq $anim, namedobj $fish, int $xp, string $message, string $refusal)
 if (stat(fishing) >= $level) {
-    if (~allstar_actiontimer_ready = true) {
+    if (~allstar_action_timer = 0) {
         anim($anim, 0);
         ~allstar_additem($fish, 1);
         stat_advance(fishing, calc($xp * stat(fishing)));
         mes($message);
-        ~allstar_set_actiontimer(5);
+        ~allstar_set_action_timer(5);
     }
     return;
 }

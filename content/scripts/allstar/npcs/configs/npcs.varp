@@ -29,9 +29,9 @@ protect=no
 [allstar_junatele]
 protect=no
 
-// Player.actionTimer, shared by pickpocketing, click-fishing and other skills: the map_clock at
-// which it reaches 0 (it drops by 1 every cycle)
-[allstar_actiontimer]
+// client.Essence (1-3): which wizard sent the player to 3088,3489; only the essence-mine exits
+// (stair types 25/26) read it
+[allstar_essence]
 protect=no
 
 // ---- boat trips (client.travelboat1/2, traveltime), not saved ----
