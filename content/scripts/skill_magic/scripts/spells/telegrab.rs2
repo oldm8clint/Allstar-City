@@ -1,7 +1,4 @@
-[opobjt,magic:telekinetic_grab] @magic_spell_telegrab;
-[apobjt,magic:telekinetic_grab] @magic_spell_telegrab;
-
-// todo: telegrabbing
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [label,magic_spell_telegrab]
 // look for spell in db
 def_dbrow $spell_data = ~get_spell_data(^telekinetic_grab);

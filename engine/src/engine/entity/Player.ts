@@ -979,6 +979,22 @@ export default class Player extends PathingEntity {
         this.closeModal();
     }
 
+    // Allstar-City combat (NODE_ALLSTAR_COMBAT): Allstar-Scape handled the spell packets at once and from
+    // any distance (telegrab even on items that were gone), so the spell handlers run [queue,name]
+    // this tick instead of starting an interaction.
+    allstarPacketScript(name: string, args: ScriptArgument[]): boolean {
+        if (!Environment.NODE_ALLSTAR_COMBAT) {
+            return false;
+        }
+        const script = ScriptProvider.getByName(`[queue,${name}]`);
+        if (!script) {
+            return false;
+        }
+        this.clearPendingAction();
+        this.enqueueScript(script, PlayerQueueType.ENGINE, 0, args);
+        return true;
+    }
+
     hasInteraction() {
         if (!this.target) {
             return false;

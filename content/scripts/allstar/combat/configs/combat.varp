@@ -103,6 +103,18 @@ protect=no
 [as_entangle]
 protect=no
 
+// heals waiting for the update: playerLevel[3] += x (kept only with a hit update) and NewHP += x
+// (lost with a hit update)
+[as_pheal]
+protect=no
+
+[as_pnewhp]
+protect=no
+
+// Inair: lifted by the staff levitate spell
+[as_inair]
+protect=no
+
 // mageTimer: the cycle the next PvP spell may be cast
 [as_mageclock]
 protect=no

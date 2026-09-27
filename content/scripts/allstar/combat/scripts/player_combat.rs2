@@ -55,9 +55,7 @@ if (p_moveclicks ! %as_moveclicks) {
 ~allstar_reset_attack_npc;
 %as_approachp = null;
 if (%as_entangle > map_clock) {
-    if (p_finduid(uid) = true) {
-        p_telejump(coord);
-    }
+    ~allstar_stop_moving;
     mes("A magical force stops you from moving!");
 }
 
@@ -65,7 +63,19 @@ if (%as_entangle > map_clock) {
 // every player after the players have acted (NODE_ALLSTAR_COMBAT).
 [proc,allstar_player_update]
 if (%as_phit = 0) {
+    // NewHP += heal (the PvP blood spells) only lasts when no hit update overwrites NewHP
+    if (%as_pnewhp > 0) {
+        stat_heal(hitpoints, %as_pnewhp, 0);
+    }
+    %as_pnewhp = 0;
+    %as_pheal = 0;
     return;
+}
+%as_pnewhp = 0;
+// playerLevel[3] += heal (the PvM blood spells, Shadow Barrage) only lasts with a hit update
+if (%as_pheal > 0) {
+    stat_add(hitpoints, %as_pheal, 0);
+    %as_pheal = 0;
 }
 def_int $hit = calc(%as_phit - 1);
 def_int $type = %as_phittype;
@@ -295,6 +305,7 @@ return($hit);
 [proc,allstar_stop_moving]
 if (p_finduid(uid) = true) {
     p_telejump(coord);
+    p_walk(coord);
 }
 
 // C:29116-29142: 750 xp per damage to the style's skill (controlled: 700 to Strength), 200 Hitpoints

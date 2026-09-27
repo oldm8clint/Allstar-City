@@ -313,12 +313,144 @@ async function pvpDeath() {
     await b.logout();
 }
 
+const count = (bot: Bot, id: number) => (bot.invs.get(3214) ?? []).reduce((sum, o) => sum + (o?.id === id ? o.count : 0), 0);
+const slotOf = (bot: Bot, id: number) => (bot.invs.get(3214) ?? []).findIndex(o => o?.id === id);
+const xp = (bot: Bot, stat: number) => bot.stats[stat]?.xp ?? 0;
+const RUNES = { fire: 554, water: 555, air: 556, earth: 557, mind: 558, death: 560, nature: 561, chaos: 562, law: 563, blood: 565, soul: 566 };
+
+// ---- magic: spells on an NPC from a distance, the rune bugs, alchemy, telegrab (and its dupe) ----
+async function magic() {
+    const bot = await login('mage');
+    for (const rune of ['firerune', 'waterrune', 'airrune', 'earthrune', 'mindrune', 'deathrune', 'naturerune', 'chaosrune', 'lawrune', 'bloodrune', 'soulrune']) {
+        bot.cheat(`give ${rune} 1000`);
+        await sleep(300);
+    }
+    bot.cheat('give rune_platebody 1');
+    bot.cheat('give bronze_sword 1');
+    await sleep(1000);
+    bot.cheat('train');
+    await bot.until(() => bot.self.x === 3209 && bot.self.z === 2801, 5000, '::train');
+    await sleep(1500);
+    const soldier = [...bot.npcs.values()].filter(n => n.type === 35).sort((a, b) => b.z - a.z || a.x - b.x)[0];
+    await walkTo(bot, soldier.x + 3, soldier.z);
+    const castAt = `${bot.self.x},${bot.self.z}`;
+
+    // Wind strike: 1 + r(6), 1 air + 1 mind, 15 xp per Magic level plus 1000 per damage
+    let hits = soldier.hits.length;
+    let magicXp = xp(bot, 6);
+    let air = count(bot, RUNES.air);
+    let mind = count(bot, RUNES.mind);
+    bot.opNpcT(soldier.nid, 1152);
+    await bot.until(() => soldier.hits.length > hits, 3000, 'wind strike hit');
+    let hit = soldier.hits[hits].damage;
+    await sleep(700);
+    check(hit >= 1 && hit <= 7, `wind strike from 3 tiles hits 1..7 (${hit})`);
+    check(air - count(bot, RUNES.air) === 1 && mind - count(bot, RUNES.mind) === 1, 'wind strike takes 1 air and 1 mind rune');
+    check(xp(bot, 6) - magicXp === 15 * 99 + 1000 * hit, `wind strike xp 15 x level + 1000 x damage (${xp(bot, 6) - magicXp})`);
+    check(`${bot.self.x},${bot.self.z}` === castAt, `the caster stays where they cast (${bot.self.x},${bot.self.z})`);
+
+    // Water blast: 0..26, the water runes are never taken
+    hits = soldier.hits.length;
+    const water = count(bot, RUNES.water);
+    air = count(bot, RUNES.air);
+    const death = count(bot, RUNES.death);
+    bot.opNpcT(soldier.nid, 1175);
+    await bot.until(() => soldier.hits.length > hits, 3000, 'water blast hit');
+    hit = soldier.hits[hits].damage;
+    await sleep(700);
+    check(hit >= 0 && hit <= 26, `water blast hits 0..26 (${hit})`);
+    check(count(bot, RUNES.water) === water && air - count(bot, RUNES.air) === 3 && death - count(bot, RUNES.death) === 1, 'water blast takes 3 air and 1 death, no water (BUG)');
+
+    // High alchemy: the item's shop value in coins, 1 nature rune, the 5 fire runes stay
+    const coins = count(bot, 995);
+    const fire = count(bot, RUNES.fire);
+    const nature = count(bot, RUNES.nature);
+    magicXp = xp(bot, 6);
+    bot.opHeldT(1127, slotOf(bot, 1127), 3214, 1178);
+    await bot.until(() => count(bot, 995) > coins, 3000, 'alchemy coins');
+    await sleep(600);
+    check(count(bot, 995) - coins === 40777 && count(bot, 1127) === 0, `high alchemy gives the shop value (${count(bot, 995) - coins})`);
+    check(nature - count(bot, RUNES.nature) === 1 && count(bot, RUNES.fire) === fire, 'high alchemy takes the nature rune only (BUG)');
+    check(xp(bot, 6) - magicXp === 65 * 99, `high alchemy xp 65 x level (${xp(bot, 6) - magicXp})`);
+
+    // Telekinetic Grab: from a distance, and again after the item is gone (QUIRKS Q2)
+    const sword = slotOf(bot, 1277);
+    bot.opHeld(5, 1277, sword, 3214);
+    await sleep(1200);
+    const x = bot.self.x;
+    const z = bot.self.z;
+    await walkTo(bot, x + 2, z);
+    const law = count(bot, RUNES.law);
+    air = count(bot, RUNES.air);
+    bot.opObjT(x, z, 1277, 1168);
+    await bot.until(() => count(bot, 1277) === 1, 3000, 'telegrab');
+    await sleep(600);
+    check(count(bot, 1277) === 1 && !bot.groundObjs.some(o => o.id === 1277 && o.x === x && o.z === z), 'telegrab brings the sword back from 2 tiles');
+    check(law - count(bot, RUNES.law) === 1 && air - count(bot, RUNES.air) === 1, 'telegrab takes 1 law and 1 air rune');
+    bot.opObjT(x, z, 1277, 1168);
+    await bot.until(() => count(bot, 1277) === 2, 3000, 'second telegrab');
+    check(count(bot, 1277) === 2, 'a telegrab on the item that is already gone still gives one (dupe)');
+    await bot.logout();
+}
+
+// ---- PvP magic: Tele Block, the 20-cycle cast delay, safe zones ----
+async function pvpMagic() {
+    const a = await login('mpa');
+    const b = await login('mpb');
+    for (const rune of ['deathrune', 'bloodrune', 'waterrune']) {
+        a.cheat(`give ${rune} 1000`);
+        await sleep(300);
+    }
+    await tele(a, 3222, 3219);
+    await tele(b, 3222, 3223);
+    const target = a.playerByName(b.username)!;
+    let since = b.messages.length;
+    const hits = b.myHits.length;
+    a.opPlayerT(target.pid, 12445);
+    const blocked = await b.waitForMessage(/^A teleblock has been cast on you!$/, 3000, since).catch(() => '');
+    check(blocked !== '', 'Tele Block tells the target');
+    await sleep(600);
+    check(b.myHits.length === hits + 1 && b.myHits[hits].damage === 0, `a spell without damage still hits for 0 (${b.myHits.slice(hits).map(h => h.damage)})`);
+    // Ice blitz (ancient spellbook; the Ancient staff would switch to it) within 20 cycles: nothing
+    a.cheat('~asancient');
+    await sleep(600);
+    const deaths = count(a, RUNES.death);
+    a.opPlayerT(target.pid, 12871);
+    await sleep(2000);
+    check(count(a, RUNES.death) === deaths && b.myHits.length === hits + 1, 'no second cast within 20 cycles');
+    await sleep(8500);
+    since = b.messages.length;
+    a.opPlayerT(target.pid, 12871);
+    const frozen = await b.waitForMessage(/^You are frozen!$/, 3000, since).catch(() => '');
+    await sleep(600);
+    check(frozen !== '' && deaths - count(a, RUNES.death) === 20, `Ice blitz after 10 s (${deaths - count(a, RUNES.death)} death runes)`);
+    // frozen: walking is refused
+    since = b.messages.length;
+    const bx = b.self.x;
+    const bz = b.self.z;
+    b.walk(bx + 2, bz);
+    const stuck = await b.waitForMessage(/^A magical force stops you from moving!$/, 3000, since).catch(() => '');
+    await sleep(1500);
+    check(stuck !== '' && b.self.x === bx && b.self.z === bz, `the frozen player cannot walk (${stuck})`);
+    // a safe zone: the message, nothing cast
+    await tele(a, 2855, 3591);
+    await tele(b, 2855, 3593);
+    since = a.messages.length;
+    a.opPlayerT(a.playerByName(b.username)!.pid, 12861);
+    const safe = await a.waitForMessage(/^This player is in a safe zone and cannot be attacked$/, 3000, since).catch(() => '');
+    check(safe !== '', 'no spells in a safe zone');
+    await a.logout();
+    await b.logout();
+}
+
 const scenarios: [string, () => Promise<void>][] = [
     ['train', trainingArea],
     ['moving', movingPlayer],
     ['death', deathAndRespawn],
     ['pvp', pvp],
-    ['pvpdeath', pvpDeath]
+    ['pvpdeath', pvpDeath],
+    ['magic', magic],
+    ['pvpmagic', pvpMagic]
 ];
 for (const [name, run] of scenarios) {
     if (only && only !== name) {

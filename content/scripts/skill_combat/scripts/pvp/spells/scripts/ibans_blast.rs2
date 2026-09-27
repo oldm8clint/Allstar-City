@@ -1,6 +1,4 @@
-[opplayert,magic:iban_blast] ~pvp_iban_blast;
-[applayert,magic:iban_blast] ~pvp_iban_blast;
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [proc,pvp_iban_blast]
 def_dbrow $spell_data = ~get_spell_data(^iban_blast);
 if (~pvp_combat_spell_checks($spell_data) = false) {

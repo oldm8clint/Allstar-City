@@ -10,6 +10,7 @@ while (npc_findnext = true) {
 // the player's combat state
 [debugproc,asme]
 mes("asme clock=<tostring(map_clock)> lastmove=<tostring(lastmove)> moveclicks=<tostring(%as_moveclicks)>/<tostring(p_moveclicks)> pking=<tostring(%as_pking)> attacking=<tostring(%as_isattacking)> prayers=<tostring(%as_prayers)> protect=<tostring(%as_protect)> drain=<tostring(%as_praydrain)> poison=<tostring(%as_poisondelay)>/<tostring(%as_poisonclear)> hp=<tostring(stat(hitpoints))> loopatt=<tostring(%as_loopatt)> special=<tostring(%as_special)> fight=<tostring(~allstar_fighttype)> maxhit=<tostring(~allstar_maxhit)>");
+mes("asme2 sb=<tostring(%as_spellbook)> wep=<tostring(~allstar_weapon)> mage=<tostring(%as_mageclock)> entangle=<tostring(%as_entangle)> tb=<tostring(%allstar_teleblock)>");
 if (busy = true) {
     mes("asme busy");
 }
@@ -35,3 +36,8 @@ playerall;
 while (huntnext = true) {
     mes("asplayer <displayname> <tostring(coordx(coord))>,<tostring(coordz(coord))>,<tostring(coordy(coord))>");
 }
+
+// the ancient spellbook without the Ancient staff (Lost City's Desert Treasure check blocks wielding it)
+[debugproc,asancient]
+%as_spellbook = 2;
+if_settab(inter_267, ^tab_magic);

@@ -24,24 +24,8 @@ if (~allstar_action_timer = 0) {
 }
 mes("You use vengence!");
 
-// client.attackPlayersWithin(gfx, maxDamage, range): distanceToPoint is the whole-tile Euclidean
-// distance and ignores height. The damage is misc.random(maxDamage), 0 to max. (The original also
-// turned the hit into the target's whole hitpoints when they were below the caster's own last
-// hitsplat, and set the target's KillerId; both belong to combat.)
-[proc,allstar_attack_players_within](int $gfx, int $max, int $range)
-def_int $dx = 0;
-def_int $dz = 0;
-playerall;
-while (.huntnext = true) {
-    if (.uid ! uid & ~allstar_nonwild(.coord) = false) {
-        $dx = calc(coordx(.coord) - coordx(coord));
-        $dz = calc(coordz(.coord) - coordz(coord));
-        if (calc($dx * $dx + $dz * $dz) < calc(($range + 1) * ($range + 1))) {
-            ~allstar_gfx_id($gfx, coordx(.coord), coordz(.coord));
-            .queue(damage_player, 0, randominc($max));
-        }
-    }
-}
+// client.attackPlayersWithin is combat's ~allstar_attack_players_within (allstar/combat/scripts/magic_player.rs2):
+// Allstar-Scape hits, the finishing blow bug and KillerId.
 
 // Cry (161): capeEmote (C:1066). Per worn cape: graphics on the player's tile, an animation, an
 // overhead text and the skill's current level set to its base level + 1. (The level was also

@@ -1,6 +1,4 @@
-[apnpct,magic:crumble_undead] ~pvm_crumble_undead;
-[opnpct,magic:crumble_undead] ~pvm_crumble_undead;
-
+// Allstar-City: the spell triggers are Allstar-Scape's magic (allstar/combat/scripts/magic*.rs2).
 [proc,pvm_crumble_undead]
 // order of these checks are from osrs:
 // - action_delay check

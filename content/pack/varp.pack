@@ -795,3 +795,6 @@
 794=as_monsterdelay
 795=as_currenthealth
 796=as_entangle
+797=as_pheal
+798=as_pnewhp
+799=as_inair
