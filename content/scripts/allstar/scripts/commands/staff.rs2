@@ -1,0 +1,364 @@
+// Allstar-Scape staff ::commands (client.customCommand, commands.md sections 4-6). Ranks are
+// %allstar_rights (1 moderator, 2 administrator, 3 owner); some tools are locked to names.
+// Global messages are sent after the command's own messages: Allstar-Scape delivered them at the
+// start of the next cycle.
+
+// ::alert <text> (rights >= 1): "[~!ANNOUNCEMENT!~]: " + command.substring(8), so the first two
+// characters of the text are lost (BUG)
+[proc,allstar_cmd_alert](string $cmd)
+def_boolean $ok = false;
+def_string $text = "";
+$ok, $text = ~allstar_after($cmd, 8);
+if ($ok = false) {
+    mes("Wrong syntax! Use ::announce [ANNOUNCEMENT].");
+    return;
+}
+mes("You have successfully sent an announcement.");
+world_broadcast("[~!ANNOUNCEMENT!~]: <$text>");
+
+// ::lupdate <text> (rights >= 3)
+[proc,allstar_cmd_lupdate](string $cmd)
+def_boolean $ok = false;
+def_string $text = "";
+$ok, $text = ~allstar_after($cmd, 8);
+if ($ok = false) {
+    mes("Wrong syntax! Use ::lupdate [update].");
+    return;
+}
+mes("You have successfully sent an announcement.");
+world_broadcast("[LATESTUPDATE]:<$text>");
+
+// ::sit (rights >= 1): the stand animation becomes 2939, shown at the next appearance update and
+// undone by any interface the server opens (resetAnimation)
+[proc,allstar_cmd_sit]
+readyanim(enum(int, seq, allstar_seq_ids, 2939));
+
+// ::pnpc <id> (rights >= 2, and again in the owner block)
+[proc,allstar_cmd_pnpc](string $cmd)
+def_boolean $ok = false;
+def_int $id = 0;
+$ok, $id = ~allstar_int_after($cmd, 5);
+if ($ok = false) {
+    mes("Wrong Syntax! Use as ::pnpc #");
+} else if ($id <= 10000 & $id >= 0) {
+    ~allstar_transmog($id);
+} else {
+    mes("No such P-NPC.");
+}
+
+// ::giveadmin / ::givemod / ::giveowner / ::demote <name> (L11481): the rank is saved, the player
+// is disconnected and everyone is told. A missing name threw.
+[proc,allstar_cmd_setrights](string $cmd, int $from, int $rights, string $news)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, $from);
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
+if (.findname($name) = false) {
+    mes("<$name> either isn't online or doesn't exist");
+    return;
+}
+.%allstar_rights = $rights;
+.p_kick;
+world_broadcast("<$name> <$news>");
+
+// ::alltome (rights >= 3): every player (the issuer too) to the issuer's x and y, heights unchanged
+[proc,allstar_cmd_alltome]
+playerall;
+while (.huntnext = true) {
+    .strongqueue*(allstar_telejump, 0)(movecoord(.coord, calc(coordx(coord) - coordx(.coord)), 0, calc(coordz(coord) - coordz(.coord))));
+}
+
+// ::xteletome <name>: the player comes to the issuer's tile and height
+[proc,allstar_cmd_xteletome](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 10);
+if ($ok = false) {
+    mes("Try entering a name you want to tele to you..");
+    return;
+}
+if (.findname($name) = false) {
+    mes("The name doesnt exist.");
+    return;
+}
+.strongqueue*(allstar_telejump, 0)(coord);
+.mes("You have been teleported to <displayname>");
+
+// ::xteleto <name>: the issuer goes to the player's tile and height
+[proc,allstar_cmd_xteleto](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 8);
+if ($ok = false) {
+    mes("Try entering a name you want to tele to..");
+    return;
+}
+if (.findname($name) = true) {
+    strongqueue*(allstar_telejump, 0)(.coord);
+    mes("Teleto: You teleport to <.displayname>");
+}
+
+// ::checkip <name> (rights >= 2 or D D 3)
+[proc,allstar_cmd_checkip](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 8);
+if ($ok = false) {
+    mes("Try entering a name you want to check ip on.");
+    return;
+}
+if (.findname($name) = true) {
+    mes("<$name>'s ip address is <.ipaddress>");
+}
+
+// ::god (rights >= 2): the walk and run animations become 1851 and the stand animation (playerSE)
+// 1501 from the next resetAnimation; energy 99,999,999. The hitpoints write was undone next cycle.
+[proc,allstar_cmd_god]
+~allstar_anim_id(1500);
+%allstar_godmode = 1;
+walkanim(enum(int, seq, allstar_seq_ids, 1851));
+runanim(enum(int, seq, allstar_seq_ids, 1851));
+healenergy(10000);
+%allstar_energy_text = 2;
+if_settext(controls:com_1, "99999999%");
+mes("God mode on");
+buildappearance(worn);
+
+// ::godoff (rights >= 2)
+[proc,allstar_cmd_godoff]
+mes("god mode off");
+%allstar_godmode = 0;
+walkanim(human_walk_f);
+runanim(human_running);
+healenergy(10000);
+%allstar_energy_text = 2;
+if_settext(controls:com_1, "100%");
+buildappearance(worn);
+
+// ::eat <name> (rights == 3): victim.ApplyDead(), the death routine, then the victim is told and
+// the issuer plays the eat animation. The death is combat's Allstar-Scape ApplyDead (player_death.rs2),
+// run as the victim's next strong queue.
+[proc,allstar_cmd_eat](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 4);
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
+if (.findname($name) = false) {
+    ~allstar_crash;
+    return;
+}
+.strongqueue(allstar_apply_dead, 0, 0);
+.mes("You have been eaten by <displayname>!");
+~allstar_anim_id(829);
+
+// ::tele XXXX,YYYY (rights >= 2, L12913): substring(5, 9) and (10, 14) with no try/catch
+[proc,allstar_cmd_tele4](string $cmd)
+def_boolean $ok = false;
+def_int $x = 0;
+def_int $z = 0;
+$ok, $x = ~allstar_int_between($cmd, 5, 9);
+if ($ok = true) {
+    $ok, $z = ~allstar_int_between($cmd, 10, 14);
+}
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
+~allstar_telejump($x, $z);
+
+// PlayerHandler.kickNick: the named player is kicked when next processed. A name that is not online
+// stays set and kicks the next player to log in with it.
+[proc,allstar_kicknick](string $name)
+if (.findname($name) = true) {
+    %allstar_kicknick = "";
+    .p_kick;
+    return;
+}
+%allstar_kicknick = $name;
+
+// ::banuser <name> (rights >= 1): kicked, added to data/bannedusers.txt (refused at login)
+[proc,allstar_cmd_banuser](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 8);
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
+~allstar_kicknick($name);
+mes("Player <$name> successfully banned");
+namelist_add("bannedusers", ~allstar_underscores_to_spaces($name));
+allstar_log("banlogs", "<displayname> banned<$name>");
+world_broadcast("Administrator <displayname> is banning <$name>");
+
+// ::unban <name> (rights >= 2): the FileWriter opened on data/bannedusers.txt truncates it and is
+// never written or closed, so every ban is lifted (BUG). Without a name, substring(6) then threw.
+[proc,allstar_cmd_unban](string $cmd)
+def_boolean $ok = false;
+def_string $shown = "";
+$ok, $shown = ~allstar_after($cmd, 5);
+mes("Player <$shown> successfully unbanned");
+namelist_clear("bannedusers");
+if (string_length($cmd) < 6) {
+    ~allstar_crash;
+}
+
+// ::ipban <name> (rights >= 3, Mod Allstar, Skillerzmine, Soz r4nged, rawr): an offline name threw
+[proc,allstar_cmd_ipban](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 6);
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
+if (.findname($name) = false) {
+    ~allstar_crash;
+    return;
+}
+namelist_add("bannedips", .ipaddress);
+.p_kick;
+mes("player successfully ip banned");
+def_string $shown = "";
+$ok, $shown = ~allstar_after($cmd, 5);
+allstar_log("ipbanlogs", "<displayname> banned<$name>");
+world_broadcast("<displayname>: HAS IP BANNED THE PLAYER: <$shown>");
+
+// ::macrowarn <name> (rights >= 2 or Mod Allstar): kicked; a black mark shown at every login
+[proc,allstar_cmd_macrowarn](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 10);
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
+~allstar_kicknick($name);
+mes("Player <$name> successfully given macro warning");
+namelist_add("macrowarn", $name);
+allstar_log("banlogs", "<displayname> warned<$name>");
+
+// ::kick <name> (owner block)
+[proc,allstar_cmd_kick](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 5);
+if ($ok = false) {
+    mes("Wrong Syntax! Use as ::kick [PLAYERNAME]");
+    return;
+}
+~allstar_kicknick($name);
+allstar_log("kicklogs", "<displayname> kicked <$name>");
+world_broadcast("<displayname>: Kicking Player: <$name>");
+
+// PlayerHandler.kickAllPlayers (::reboot, ::bootall): everyone, the issuer too; the server stays up
+[proc,allstar_kick_all]
+playerall;
+while (.huntnext = true) {
+    if (.uid ! uid) {
+        .p_kick;
+    }
+}
+p_kick;
+
+// The honeypots (::noclip, ::mute, ::mz, ::modzone, ::cp, ::si): banned by name and disconnected
+[proc,allstar_autoban](string $message)
+namelist_add("bannedusers", displayname);
+p_kick;
+world_broadcast($message);
+
+// ::hide (Mod Allstar): every body part set to -100, which the 317 appearance block could not
+// draw. The 377 appearance has no such state; only the message is shown.
+[proc,allstar_cmd_hide]
+mes("Other players can no longer see you, type ::show to reverse this command.");
+
+// ::show (Mod Allstar): a fixed look (not the saved one). The beard was idk 19, a torso kit.
+[proc,allstar_cmd_show]
+mes("Other players can now see you once again, type ::hide to reverse this command.");
+strongqueue(allstar_show, 0, 0);
+
+[queue,allstar_show]
+setgender(0);
+setidkit(man_head_mediumhair, 0);
+setidkit(man_jaw_none, 0);
+setidkit(man_torso_buttons, 1);
+setidkit(man_arms_longsleeves2, 1);
+setidkit(man_hands_demon, 1);
+setidkit(man_legs_turnups, 2);
+setidkit(man_feet_demon, 0);
+buildappearance(worn);
+
+// ::owner (Mod Allstar): 64 graphics around the player
+[proc,allstar_cmd_owner]
+def_int $x = coordx(coord);
+def_int $z = coordz(coord);
+~allstar_gfx_id(572, $x, $z);
+~allstar_gfx_id(571, $x, $z);
+~allstar_gfx_id(582, calc($x + 1), calc($z + 1));
+~allstar_gfx_id(498, calc($x - 1), calc($z + 4));
+~allstar_gfx_id(498, calc($x + 1), calc($z - 4));
+~allstar_gfx_id(498, calc($x + 4), calc($z + 1));
+~allstar_gfx_id(498, calc($x - 4), calc($z - 1));
+~allstar_gfx_id(498, calc($x - 4), $z);
+~allstar_gfx_id(498, calc($x + 4), $z);
+~allstar_gfx_id(498, $x, calc($z + 4));
+~allstar_gfx_id(498, $x, calc($z - 4));
+~allstar_gfx_id(547, calc($x - 1), calc($z + 1));
+~allstar_gfx_id(547, calc($x + 1), calc($z - 1));
+~allstar_gfx_id(547, calc($x + 1), calc($z + 1));
+~allstar_gfx_id(547, calc($x - 1), calc($z - 1));
+~allstar_gfx_id(437, calc($x - 1), $z);
+~allstar_gfx_id(437, calc($x + 1), $z);
+~allstar_gfx_id(437, $x, calc($z + 1));
+~allstar_gfx_id(437, $x, calc($z - 1));
+~allstar_gfx_id(287, $x, $z);
+~allstar_gfx_id(287, $x, calc($z + 3));
+~allstar_gfx_id(287, $x, calc($z - 3));
+~allstar_gfx_id(287, calc($x + 3), $z);
+~allstar_gfx_id(287, calc($x - 3), $z);
+~allstar_gfx_id(287, calc($x - 2), calc($z + 2));
+~allstar_gfx_id(287, calc($x + 2), calc($z - 2));
+~allstar_gfx_id(287, calc($x + 2), calc($z + 2));
+~allstar_gfx_id(287, calc($x - 2), calc($z - 2));
+~allstar_gfx_id(453, calc($x - 1), calc($z + 1));
+~allstar_gfx_id(453, calc($x + 1), calc($z - 1));
+~allstar_gfx_id(453, calc($x + 1), calc($z + 1));
+~allstar_gfx_id(453, calc($x - 1), calc($z - 1));
+~allstar_gfx_id(453, calc($x - 1), $z);
+~allstar_gfx_id(453, calc($x + 1), $z);
+~allstar_gfx_id(453, $x, calc($z + 1));
+~allstar_gfx_id(453, $x, calc($z - 1));
+~allstar_gfx_id(453, calc($x - 2), calc($z + 2));
+~allstar_gfx_id(453, calc($x + 2), calc($z - 2));
+~allstar_gfx_id(453, calc($x + 2), calc($z + 2));
+~allstar_gfx_id(453, calc($x - 2), calc($z - 2));
+~allstar_gfx_id(453, calc($x - 2), $z);
+~allstar_gfx_id(453, calc($x + 2), $z);
+~allstar_gfx_id(453, $x, calc($z + 2));
+~allstar_gfx_id(453, $x, calc($z - 2));
+~allstar_gfx_id(453, calc($x - 3), $z);
+~allstar_gfx_id(453, calc($x + 3), $z);
+~allstar_gfx_id(453, $x, calc($z + 3));
+~allstar_gfx_id(453, $x, calc($z - 3));
+~allstar_gfx_id(453, calc($x - 2), calc($z + 1));
+~allstar_gfx_id(453, calc($x + 2), calc($z - 1));
+~allstar_gfx_id(453, calc($x + 2), calc($z + 1));
+~allstar_gfx_id(453, calc($x - 2), calc($z - 1));
+~allstar_gfx_id(453, calc($x - 1), calc($z + 2));
+~allstar_gfx_id(453, calc($x + 1), calc($z - 2));
+~allstar_gfx_id(453, calc($x + 1), calc($z + 2));
+~allstar_gfx_id(453, calc($x - 1), calc($z - 2));
+~allstar_gfx_id(453, calc($x - 3), calc($z + 1));
+~allstar_gfx_id(453, calc($x + 3), calc($z - 1));
+~allstar_gfx_id(453, calc($x + 3), calc($z + 1));
+~allstar_gfx_id(453, calc($x - 3), calc($z - 1));
+~allstar_gfx_id(453, calc($x - 1), calc($z + 3));
+~allstar_gfx_id(453, calc($x + 1), calc($z - 3));
+~allstar_gfx_id(453, calc($x + 1), calc($z + 3));
+~allstar_gfx_id(453, calc($x - 1), calc($z - 3));

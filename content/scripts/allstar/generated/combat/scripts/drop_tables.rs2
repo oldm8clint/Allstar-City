@@ -320,7 +320,7 @@ return(bones);
 [proc,allstar_droptable_jelly]()(namedobj)
 def_int $roll = random(30);
 if ($roll < 1) {
-    return(null); // 14860 not defined yet (allstar_item_14860)
+    return(allstar_item_14860);
 }
 if ($roll < 2) {
     return(granite_legs);
@@ -356,7 +356,7 @@ if ($roll < 1) {
     return(devious_bowsword);
 }
 if ($roll < 2) {
-    return(null); // 11192 not defined yet (allstar_item_11192)
+    return(allstar_item_11192);
 }
 return(bones);
 
@@ -372,13 +372,13 @@ return(coins);
 [proc,allstar_droptable_battlemagesara]()(namedobj)
 def_int $roll = random(31);
 if ($roll < 1) {
-    return(null); // 14507 not defined yet (allstar_item_14507)
+    return(allstar_item_14507);
 }
 if ($roll < 2) {
-    return(null); // 14508 not defined yet (allstar_item_14508)
+    return(allstar_item_14508);
 }
 if ($roll < 3) {
-    return(null); // 14513 not defined yet (allstar_item_14513)
+    return(allstar_item_14513);
 }
 if ($roll < 4) {
     return(dragon_dagger_p++);
@@ -389,13 +389,13 @@ return(coins);
 [proc,allstar_droptable_battlemagezammy]()(namedobj)
 def_int $roll = random(31);
 if ($roll < 1) {
-    return(null); // 14507 not defined yet (allstar_item_14507)
+    return(allstar_item_14507);
 }
 if ($roll < 2) {
-    return(null); // 14508 not defined yet (allstar_item_14508)
+    return(allstar_item_14508);
 }
 if ($roll < 3) {
-    return(null); // 14512 not defined yet (allstar_item_14512)
+    return(allstar_item_14512);
 }
 if ($roll < 4) {
     return(dragon_dagger_p++);
@@ -406,13 +406,13 @@ return(coins);
 [proc,allstar_droptable_battlemageguthix]()(namedobj)
 def_int $roll = random(31);
 if ($roll < 1) {
-    return(null); // 14507 not defined yet (allstar_item_14507)
+    return(allstar_item_14507);
 }
 if ($roll < 2) {
-    return(null); // 14508 not defined yet (allstar_item_14508)
+    return(allstar_item_14508);
 }
 if ($roll < 3) {
-    return(null); // 14511 not defined yet (allstar_item_14511)
+    return(allstar_item_14511);
 }
 if ($roll < 4) {
     return(dragon_dagger_p++);
@@ -571,7 +571,7 @@ if ($roll < 1) {
     return(dragon_scimitar);
 }
 if ($roll < 2) {
-    return(null); // 15352 not defined yet (allstar_item_15352)
+    return(allstar_item_15352);
 }
 if ($roll < 3) {
     return(dragon_2h_sword);
@@ -600,12 +600,12 @@ if ($roll < 15) {
     return(big_bones);
 }
 if ($roll < 16) {
-    return(null); // 15345 not defined yet (allstar_item_15345)
+    return(allstar_item_15345);
 }
 if ($roll < 17) {
-    return(null); // 14521 not defined yet (allstar_item_14521)
+    return(allstar_item_14521);
 }
-return(null); // 15346 not defined yet (allstar_item_15346)
+return(allstar_item_15346);
 
 // Item2.randomSkeleton_Hellhound() = Skeleton_Hellhound[17]
 [proc,allstar_droptable_skeleton_hellhound]()(namedobj)
@@ -614,15 +614,15 @@ if ($roll < 13) {
     return(big_bones);
 }
 if ($roll < 14) {
-    return(null); // 14507 not defined yet (allstar_item_14507)
+    return(allstar_item_14507);
 }
 if ($roll < 15) {
-    return(null); // 14506 not defined yet (allstar_item_14506)
+    return(allstar_item_14506);
 }
 if ($roll < 16) {
-    return(null); // 14508 not defined yet (allstar_item_14508)
+    return(allstar_item_14508);
 }
-return(null); // 14509 not defined yet (allstar_item_14509)
+return(allstar_item_14509);
 
 // Item2.randomBlack_Demon() = Black_Demon[17]
 [proc,allstar_droptable_black_demon]()(namedobj)
@@ -631,12 +631,12 @@ if ($roll < 14) {
     return(big_bones);
 }
 if ($roll < 15) {
-    return(null); // 14503 not defined yet (allstar_item_14503)
+    return(allstar_item_14503);
 }
 if ($roll < 16) {
-    return(null); // 14505 not defined yet (allstar_item_14505)
+    return(allstar_item_14505);
 }
-return(null); // 14504 not defined yet (allstar_item_14504)
+return(allstar_item_14504);
 
 // Item2.randomIce_giant() = Ice_giant[4]
 [proc,allstar_droptable_ice_giant]()(namedobj)
@@ -670,9 +670,9 @@ if ($roll < 15) {
     return(big_bones);
 }
 if ($roll < 16) {
-    return(null); // 15185 not defined yet (allstar_item_15185)
+    return(allstar_item_15185);
 }
-return(null); // 15195 not defined yet (allstar_item_15195)
+return(allstar_item_15195);
 
 // Item2.randomDagannoth_Prime() = Dagannoth_Prime[17]
 [proc,allstar_droptable_dagannoth_prime]()(namedobj)
@@ -681,9 +681,9 @@ if ($roll < 15) {
     return(big_bones);
 }
 if ($roll < 16) {
-    return(null); // 15350 not defined yet (allstar_item_15350)
+    return(allstar_item_15350);
 }
-return(null); // 15334 not defined yet (allstar_item_15334)
+return(allstar_item_15334);
 
 // Item2.randomDagannoth_Rex() = Dagannoth_Rex[18]
 [proc,allstar_droptable_dagannoth_rex]()(namedobj)
@@ -692,29 +692,29 @@ if ($roll < 16) {
     return(big_bones);
 }
 if ($roll < 17) {
-    return(null); // 15348 not defined yet (allstar_item_15348)
+    return(allstar_item_15348);
 }
-return(null); // 15349 not defined yet (allstar_item_15349)
+return(allstar_item_15349);
 
 // Item2.randomKBD() = KBD[6]
 [proc,allstar_droptable_kbd]()(namedobj)
 def_int $roll = random(6);
 if ($roll < 1) {
-    return(null); // 15352 not defined yet (allstar_item_15352)
+    return(allstar_item_15352);
 }
 if ($roll < 2) {
-    return(null); // 15334 not defined yet (allstar_item_15334)
+    return(allstar_item_15334);
 }
 if ($roll < 3) {
     return(dragon_plateskirt);
 }
 if ($roll < 4) {
-    return(null); // 14519 not defined yet (allstar_item_14519)
+    return(allstar_item_14519);
 }
 if ($roll < 5) {
     return(dragon_platelegs);
 }
-return(null); // 15195 not defined yet (allstar_item_15195)
+return(allstar_item_15195);
 
 // Item2.randomDharok() = Dharok[4]
 [proc,allstar_droptable_dharok]()(namedobj)
@@ -804,24 +804,24 @@ return(barrows_ahrim_legs);
 [proc,allstar_droptable_well]()(namedobj)
 def_int $roll = random(7);
 if ($roll < 1) {
-    return(null); // 15195 not defined yet (allstar_item_15195)
+    return(allstar_item_15195);
 }
 if ($roll < 2) {
-    return(null); // 15185 not defined yet (allstar_item_15185)
+    return(allstar_item_15185);
 }
 if ($roll < 3) {
-    return(null); // 15348 not defined yet (allstar_item_15348)
+    return(allstar_item_15348);
 }
 if ($roll < 4) {
-    return(null); // 14520 not defined yet (allstar_item_14520)
+    return(allstar_item_14520);
 }
 if ($roll < 5) {
-    return(null); // 15334 not defined yet (allstar_item_15334)
+    return(allstar_item_15334);
 }
 if ($roll < 6) {
     return(hundred_hammer);
 }
-return(null); // 15346 not defined yet (allstar_item_15346)
+return(allstar_item_15346);
 
 // Item.randomSlayeritem65() = slayeritems65[891]
 [proc,allstar_droptable_slayeritem65]()(namedobj)

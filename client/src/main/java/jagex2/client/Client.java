@@ -680,6 +680,22 @@ public class Client extends GameShell {
 	@ObfuscatedName("client.tc")
 	public static int portOffset;
 
+	// Allstar-City: server address. -Dallstar.host / -Dallstar.portoff override allstar.properties
+	// bundled in the jar (see allstar/tools/build-client.mjs); defaults to this computer.
+	public static String serverHost = "127.0.0.1";
+
+	private static void loadServerConfig() {
+		java.util.Properties props = new java.util.Properties();
+		try (java.io.InputStream in = Client.class.getResourceAsStream("/allstar.properties")) {
+			if (in != null) {
+				props.load(in);
+			}
+		} catch (IOException ignore) {
+		}
+		serverHost = System.getProperty("allstar.host", props.getProperty("host", serverHost));
+		portOffset = Integer.parseInt(System.getProperty("allstar.portoff", props.getProperty("portoff", "0")));
+	}
+
 	@ObfuscatedName("client.Ic")
 	public int chatCount;
 
@@ -1468,7 +1484,7 @@ public class Client extends GameShell {
 			} else if (args.length == 0) {
 				// default args: 10 0 highmem members 32
 				nodeId = 10;
-				portOffset = 0;
+				loadServerConfig();
 				setHighMem();
 				membersWorld = true;
 
@@ -1534,7 +1550,7 @@ public class Client extends GameShell {
 		}
 		try {
 			if (super.frame != null) {
-				return new URL("http://127.0.0.1:" + (portOffset + 80));
+				return new URL("http://" + serverHost + ":" + (portOffset + 80));
 			}
 		} catch (Exception var1) {
 		}

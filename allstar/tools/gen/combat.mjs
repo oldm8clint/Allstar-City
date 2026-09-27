@@ -313,36 +313,8 @@ export default function combat({ legacy, packs, report, writeGenerated }) {
     }
     writeGenerated('combat/scripts/drop_tables.rs2', lines);
 
-    // ---- safe zones: client.nonWild() ----
-    const client = fs.readFileSync(legacy.file('client.java'), 'latin1');
-    const start = client.indexOf('public boolean nonWild()');
-    const body = client.slice(start, client.indexOf('return true;', start));
-    const rects = [];
-    const rre = /absX\s*>=\s*(\d+)\s*&&\s*absX\s*<=\s*(\d+)\s*&&\s*absY\s*>=\s*(\d+)\s*&&\s*absY\s*<=\s*(\d+)/g;
-    for (let m; (m = rre.exec(body)); ) {
-        rects.push(m.slice(1, 5).map(Number));
-    }
-    const safe = [
-        '// client.nonWild(): 67 rectangles (on every level) and all of level 1. Rectangles with min > max',
-        '// never matched in Allstar-Scape either and are kept for reference.',
-        '[proc,allstar_nonwild](coord $coord)(boolean)',
-        'if (coordy($coord) = 1) {',
-        '    return(true);',
-        '}',
-        'def_int $x = coordx($coord);',
-        'def_int $z = coordz($coord);'
-    ];
-    for (const [x1, x2, z1, z2] of rects) {
-        const dead = x1 > x2 || z1 > z2 ? ' // never true' : '';
-        safe.push(`if ($x >= ${x1} & $x <= ${x2} & $z >= ${z1} & $z <= ${z2}) {${dead}`);
-        safe.push('    return(true);');
-        safe.push('}');
-    }
-    safe.push('return(false);');
-    writeGenerated('combat/scripts/safe_zones.rs2', safe);
-
     report(
-        `Combat: ${hp.length} npc.cfg hitpoints, ${wanderers} wandering spawn tiles, ${DROP_TABLES.length} drop tables, ${rects.length} safe rectangles`,
+        `Combat: ${hp.length} npc.cfg hitpoints, ${wanderers} wandering spawn tiles, ${DROP_TABLES.length} drop tables`,
         ...[...missing.entries()].map(([id, fns]) => `  - drop item ${id} not defined yet (${[...new Set(fns)].join(', ')})`)
     );
 }

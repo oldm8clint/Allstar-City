@@ -1,0 +1,141 @@
+// The parts of client.process() (C:16949, every cycle) that drive the HUD: the walkable overlay
+// (Safe / Wild and the weather), the coordinates over the controls tab's weight display, the run
+// energy text, and the Chaos Elemental's weapon removal.
+[softtimer,allstar_process]
+~allstar_process;
+
+[proc,allstar_process]
+// appendPos (L17507)
+if (coord ! %allstar_lastcoord) {
+    %allstar_lastcoord = coord;
+    if_settext(controls:com_36, "X: <tostring(coordx(coord))> Y: <tostring(coordz(coord))>");
+}
+// Player.dropsitem (L17477)
+if (%allstar_dropsitem = 1 & inv_getobj(worn, ^wearpos_rhand) ! null) {
+    %allstar_dropsitem = 0;
+    strongqueue(allstar_dropsitem, 0, 0);
+}
+// WriteEnergy (L17579) while the energy regenerates: a fixed coloured "100%"
+if (runenergy < 10000 & %allstar_energy_text ! 1) {
+    %allstar_energy_text = 1;
+    if_settext(controls:com_1, "@whi@1@gre@0@whi@0@gre@%");
+}
+// the level-up chatbox went away when the player walked
+if (%allstar_levelup_box ! null & %allstar_levelup_box ! coord) {
+    %allstar_levelup_box = null;
+    tut_close;
+}
+~allstar_walkable;
+
+// The one walkable interface (frame 208), last write wins each cycle:
+//   process(): in a safe zone 197 with "@gre@Safe"
+//   WriteWildyLevel(): elsewhere (inwildy2 is always true) 197 with "@red@Wild"; entering a safe
+//     zone from there sets IsSnowing = 3
+//   weather, safe zones only: IsSnowing 1 snow, 4 dizzy, 5 dust; 3 clears the overlay for one cycle
+// The region-load overlays (the ServerPanel 15892 and the player count 6673) were replaced within
+// the same cycle and never showed.
+[proc,allstar_walkable]
+// ::skullz set another walkable interface this cycle, after process() ran
+if (%allstar_walkable = -2) {
+    %allstar_walkable = -1;
+    return;
+}
+def_int $walkable = 1;
+if (~allstar_nonwild(coord) = false) {
+    $walkable = 2;
+    %allstar_leftwild = 1;
+} else {
+    if (%allstar_leftwild = 1) {
+        %allstar_weather = 3;
+        %allstar_leftwild = 0;
+    }
+    def_boolean $reset = false;
+    if (%allstar_weather = 1) {
+        %allstar_snowfilter = 1;
+        $walkable = 11;
+    } else if (%allstar_weather = 4) {
+        %allstar_dizzyfilter = 1;
+        $walkable = 14;
+    } else if (%allstar_weather = 5) {
+        %allstar_dustfilter = 1;
+        $walkable = 15;
+    } else if (%allstar_weather = 3) {
+        $reset = true;
+        $walkable = 3;
+        %allstar_weather = 0;
+    }
+    // the static filters that later logins inherit
+    if ($reset = true) {
+        %allstar_snowfilter = 0;
+        %allstar_dustfilter = 0;
+        %allstar_dizzyfilter = 0;
+    } else {
+        if (%allstar_snowfilter = 1) {
+            %allstar_dustfilter = 0;
+            %allstar_dizzyfilter = 0;
+        }
+        if (%allstar_dustfilter = 1) {
+            %allstar_snowfilter = 0;
+            %allstar_dizzyfilter = 0;
+        }
+        if (%allstar_dizzyfilter = 1) {
+            %allstar_snowfilter = 0;
+            %allstar_dustfilter = 0;
+        }
+    }
+}
+if ($walkable ! %allstar_walkable) {
+    %allstar_walkable = $walkable;
+    if ($walkable = 1) {
+        if_settext(allstar_safe:status, "@gre@Safe");
+    } else if ($walkable = 2) {
+        if_settext(allstar_safe:status, "@red@Wild");
+    }
+}
+// every cycle, so it replaces any other overlay (the engine only sends a change)
+if ($walkable = 1 | $walkable = 2) {
+    if_openoverlay(allstar_safe);
+} else if ($walkable = 11) {
+    if_openoverlay(overlay_atmosphere_snow_flakes);
+} else if ($walkable = 14) {
+    if_openoverlay(inter_97);
+} else if ($walkable = 15) {
+    if_openoverlay(inter_268);
+} else {
+    if_openoverlay(null);
+}
+
+// Weather at login: data/weather.txt holds "Weather = 3", then the static filters (L10962).
+[proc,allstar_weather_login]
+%allstar_weather = 3;
+if (%allstar_snowfilter = 1) {
+    %allstar_weather = 1;
+}
+if (%allstar_dizzyfilter = 1) {
+    %allstar_weather = 4;
+}
+if (%allstar_dustfilter = 1) {
+    %allstar_weather = 5;
+}
+
+// client.remove(weapon, 3): back to the inventory if there is room; PoisonPlayer() belongs to
+// combat's poison
+[queue,allstar_dropsitem]
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+if (inv_freespace(inv) < 1) {
+    mes("Not enough space in your inventory.");
+} else {
+    inv_moveitem(worn, inv, $weapon, inv_getnum(worn, ^wearpos_rhand));
+    ~update_all($weapon);
+}
+mes("The Chaos Elemental removes your weapon!");
+~allstar_poison_player;
+
+// Player.removeequipped (::heal; the Chaos Elemental's special)
+[proc,allstar_removeequipped]
+%allstar_dropsitem = 1;
+
+// frame 208 with a raw 317 interface id (::skullz): replaced by process() the next cycle
+[proc,allstar_walkable_id](int $id)
+if_openoverlay(enum(int, interface, allstar_interface_ids, $id));
+%allstar_walkable = -2;

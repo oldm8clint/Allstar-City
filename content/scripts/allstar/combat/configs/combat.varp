@@ -16,10 +16,6 @@ protect=no
 [as_movecheck]
 protect=no
 
-// LogoutDelay: the cycle from which the player may log out again
-[as_logoutdelay]
-protect=no
-
 // AttackingOn / IsAttacking: the player being attacked
 [as_atkplayer]
 type=player_uid
@@ -31,10 +27,6 @@ protect=no
 
 // PkingDelay: the cycle from which Attack() may run again (the counter reached 0)
 [as_pking]
-protect=no
-
-// actionTimer: the cycle it reaches 0
-[as_actiontimer]
 protect=no
 
 // specialAmount (0-100) and its regeneration counter; usingSpecial is %sa_attack
@@ -103,16 +95,8 @@ protect=no
 [as_ringtele]
 protect=no
 
-// dropsitem: the Chaos Elemental takes the weapon off on the next cycle
-[as_dropsitem]
-protect=no
-
 // IsDead: killed, death not applied yet
 [as_dead]
-protect=no
-
-// safe zone overlay last sent: 1 safe, 2 wild
-[as_zone]
 protect=no
 
 // spellbook: 0 modern, 2 ancient (client.emotes)

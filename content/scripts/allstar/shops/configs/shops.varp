@@ -1,0 +1,8 @@
+// client.MyShopID: the shop whose window is open (0 = none). Reset when the window closes.
+[allstar_shop]
+protect=no
+
+// Test helper: the NPC found by ::~shopnpc (dev worlds only).
+[allstar_shop_testnpc]
+type=npc_uid
+protect=no

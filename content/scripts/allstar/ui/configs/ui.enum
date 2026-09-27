@@ -1,0 +1,25 @@
+// Allstar-Scape skill index (playerLevel[], playerXP[]) -> stat
+[allstar_skills]
+inputtype=int
+outputtype=stat
+val=0,attack
+val=1,defence
+val=2,strength
+val=3,hitpoints
+val=4,ranged
+val=5,prayer
+val=6,magic
+val=7,cooking
+val=8,woodcutting
+val=9,fletching
+val=10,fishing
+val=11,firemaking
+val=12,crafting
+val=13,smithing
+val=14,mining
+val=15,herblore
+val=16,agility
+val=17,thieving
+val=18,slayer
+val=19,farming
+val=20,runecraft

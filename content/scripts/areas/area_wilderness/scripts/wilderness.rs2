@@ -1,13 +1,10 @@
+// Allstar-City: Allstar-Scape has no wilderness overlay and no wilderness-only Attack option. The map
+// outside the safe zones is a PvP area (~allstar_nonwild), the Safe/Wild overlay is ui's
+// allstar_walkable and the player options are set once at login.
 [proc,wilderness_enter]
-if_openoverlay(wilderness_overlay);
-set_player_op("Attack", 2, ^false);
 %wilderness = ^true;
 
 [proc,wilderness_underground_enter]
-if_openoverlay(wilderness_underground_overlay);
-set_player_op("Attack", 2, ^false);
 %wilderness = ^true;
 
 [proc,wilderness_exit]
-if_openoverlay(null);
-set_player_op(null, 2, ^false);

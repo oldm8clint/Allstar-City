@@ -1,90 +1,91 @@
-// Allstar-Scape ::teleport commands (client.customCommand). All are instant and keep the current
-// height. Most refuse while teleblocked; pest, testminigame, relleka, cwars and gsmini do not.
+// Allstar-Scape ::teleport commands (client.customCommand, run by allstar_command). All are instant
+// and keep the current height. Most refuse while teleblocked; pest, testminigame, relleka, cwars,
+// gsmini and nc do not. There is no wilderness check.
 
-[proc,cmd_pest]
+[proc,allstar_cmd_pest]
 ~allstar_telejump(2657, 2639);
 
-[proc,cmd_testminigame]
+[proc,allstar_cmd_testminigame]
 ~allstar_telejump(3114, 9928);
 
-[proc,cmd_relleka]
+[proc,allstar_cmd_relleka]
 ~allstar_telejump(2680, 3718);
 mes("You teleport to the Rock crab training area");
 
-[proc,cmd_cwars]
+[proc,allstar_cmd_cwars]
 ~allstar_telejump(2397, 3108);
 mes("CastleWars Pk area!");
 
-[proc,cmd_gsmini]
+[proc,allstar_cmd_gsmini]
 ~allstar_telejump(2845, 4832);
 mes("Welcome godsword mini game, kill the monsters to advance rounds");
 mes("The monsters hp starts at 150 then next monster is 250 and so on");
 mes("If you PK here YOUR BANNED!");
 
-[proc,cmd_home]
+[proc,allstar_cmd_home]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2853, 3591);
 mes("You teleport to Home.");
 
-[proc,cmd_jad]
+[proc,allstar_cmd_jad]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3204, 3424);
 mes("WELCOME TO THE JAD!!!!!!KILL HIM FOR A FIRECAPE");
 
-[proc,cmd_drags]
+[proc,allstar_cmd_drags]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2858, 9844);
 mes("You Teleport to the Metal Dragon Lair");
 
-[proc,cmd_wc]
+[proc,allstar_cmd_wc]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2544, 3878);
 mes("Grab Axe And Start Cutting Trees.");
 
-[proc,cmd_kqueen]
+[proc,allstar_cmd_kqueen]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3485, 9483);
 mes("You teleport to the kalphite area.");
 
-[proc,cmd_cather]
+[proc,allstar_cmd_cather]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2842, 3439);
 mes("You teleport to fishing/cooking area.");
 
-[proc,cmd_3rdage]
+[proc,allstar_cmd_3rdage]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3232, 9801);
 mes("You teleport to the 3rdage area.Kill the guy's for 3rd age.");
 
-[proc,cmd_edge]
+[proc,allstar_cmd_edge]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3086, 3511);
 mes("You teleport to the EdgeVille Pk area, Pk Here!");
 
-[proc,cmd_pkbox]
+[proc,allstar_cmd_pkbox]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3306, 9375);
 mes("You teleport to the PkBox");
 
-[proc,cmd_zammy]
+[proc,allstar_cmd_zammy]
 if (~allstar_teleblocked = true) {
     return;
 }
@@ -93,77 +94,80 @@ if (~allstar_teleblocked = true) {
 ~allstar_additem(castlewars_cloak_zamorak_prize, 1);
 mes("You teleport to Zamorak's Clan");
 
-[proc,cmd_slayer]
+[proc,allstar_cmd_slayer]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3428, 3536);
 mes("You teleport to slayer tower, hit the chests for slayer exp!");
 
-[proc,cmd_smith]
+[proc,allstar_cmd_smith]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3227, 3438);
 mes("You teleport to the smithing area, grab a hammer and start smithin'!");
 
-[proc,cmd_guilds]
+[proc,allstar_cmd_guilds]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2757, 3496);
 mes("You teleport to the Guild Portals!");
 
-[proc,cmd_shops]
+[proc,allstar_cmd_shops]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2738, 3464);
 mes("You teleport to the Shopping Area!");
 
-[proc,cmd_teampk]
+[proc,allstar_cmd_teampk]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3243, 3517);
 mes("You teleport to the Team Pk area!");
 
-[proc,cmd_train]
+[proc,allstar_cmd_train]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3209, 2801);
 mes("You teleport to the Training Area!");
 
-[proc,cmd_skill]
+[proc,allstar_cmd_skill]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2380, 3427);
 mes("You teleport Allstar-Scape's Skill Area!");
 
-[proc,cmd_barrows]
+[proc,allstar_cmd_barrows]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3565, 3306);
 mes("You teleport to the Barrows!");
 
-[proc,cmd_mining]
+[proc,allstar_cmd_mining]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(2823, 3001);
 mes("You teleport to the Shilo Village Mining!");
 
-// moderator zone
-[proc,cmd_az]
-if (staffmodlevel < 1) {
-    return;
-}
+// ::az (rights >= 1): the Mod & Admin Zone in Sophanem
+[proc,allstar_cmd_az]
 if (~allstar_teleblocked = true) {
     return;
 }
 ~allstar_telejump(3281, 2766);
 mes("You teleport to the Mod & Admin Zone.");
 mes("GREAT JOB YOU FINALLY EARNED MOD or ADMIN!");
+
+// ::nc (rights < 2), a trap for noclip clients: teleportToX += 103, teleportToY -= 52 with no
+// teleport pending sent the player to 102,-53, off the map. Coordinates cannot be negative on 377,
+// so the player lands in the empty map square at 102,0.
+[proc,allstar_cmd_nc]
+~allstar_telejump(102, 0);

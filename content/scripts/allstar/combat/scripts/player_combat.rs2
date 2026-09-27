@@ -9,11 +9,11 @@
 %sa_attack = ^false;
 %as_fighttype = 1;
 %as_spellbook = 0;
-softtimer(allstar_process, 1);
+softtimer(allstar_combat, 1);
 
 // ---- client.process(), the parts that belong to combat, in the original order ----
-[softtimer,allstar_process]
-~allstar_zone_overlay;
+// (the Safe/Wild overlay and the Chaos Elemental weapon strip are ui's [softtimer,allstar_process])
+[softtimer,allstar_combat]
 ~allstar_spec2_cycle;
 ~allstar_special_regen;
 ~allstar_ancient_staff;
@@ -21,7 +21,6 @@ softtimer(allstar_process, 1);
 ~allstar_player_poison;
 ~allstar_poison_wears_off;
 ~allstar_prayer_drain;
-~allstar_dropsitem;
 if (%as_dead = 0) {
     ~allstar_attack_player_cycle;
     ~allstar_attack_npc_cycle;
@@ -55,10 +54,6 @@ if (stat(hitpoints) <= 0 & %as_dead = 0) {
 [proc,allstar_player_hit](int $damage, int $type)
 %as_phit = calc(max(0, $damage) + 1);
 %as_phittype = $type;
-
-// client.inCombat: LogoutDelay = 2 ("You must wait 10 seconds after combat to log out!")
-[proc,allstar_incombat]
-%as_logoutdelay = calc(map_clock + 2);
 
 // ---- attacking an NPC (packet 72, client.java L19647-19774) ----
 [opnpc2,_] @allstar_attack_npc;
@@ -205,11 +200,11 @@ def_int $hit = randominc(~allstar_maxhit);
 facesquare(npc_coord);
 if ($wep = 1333) {
     // rune scimitar: actionTimer = 8
-    %as_actiontimer = calc(map_clock + 8);
+    ~allstar_set_action_timer(8);
 }
-if ($wep = 15156 & %as_actiontimer <= map_clock) {
+if ($wep = 15156 & ~allstar_action_timer = 0) {
     // dark bow: a stronger hit whenever actionTimer is 0
-    %as_actiontimer = calc(map_clock + 8);
+    ~allstar_set_action_timer(8);
     $hit = calc(4 + randominc(20));
 }
 def_boolean $usebow = ~allstar_is_bow($wep);
@@ -237,7 +232,7 @@ if ($usebow = false) {
     npc_heropoints($hit);
     ~allstar_incombat;
     ~allstar_melee_xp($hit);
-    %as_actiontimer = calc(map_clock + 7);
+    ~allstar_set_action_timer(7);
     npc_anim(~allstar_npc_block_anim(npc_type), 0);
     return;
 }
@@ -253,7 +248,7 @@ npc_heropoints($hit);
 stat_advance(ranged, calc(820 * $hit));
 stat_advance(hitpoints, calc(300 * $hit));
 ~allstar_incombat;
-%as_actiontimer = calc(map_clock + 4);
+~allstar_set_action_timer(4);
 npc_anim(~allstar_npc_block_anim(npc_type), 0);
 
 // C:29116-29142: 750 xp per damage to the style's skill (controlled: 700 to Strength), 200 Hitpoints
@@ -293,19 +288,6 @@ if (inv_total(worn, $arrows) > 1) {
 // ---- the rest of client.process ----
 
 // C:16952, WriteWildyLevel: walkable interface 197 says "@gre@Safe" in safe zones, "@red@Wild" elsewhere
-[proc,allstar_zone_overlay]
-if (~allstar_nonwild(coord) = true) {
-    if (%as_zone ! 1) {
-        %as_zone = 1;
-        if_openoverlay(wilderness_overlay);
-        if_settext(wilderness_overlay:com_1, "@gre@Safe");
-    }
-} else if (%as_zone ! 2) {
-    %as_zone = 2;
-    if_openoverlay(wilderness_overlay);
-    if_settext(wilderness_overlay:com_1, "@red@Wild");
-}
-
 // C:17002: +1 special energy every 4 cycles up to 100
 [proc,allstar_special_regen]
 if (%as_special <= 99 & %as_specdelay <= 0) {
@@ -321,26 +303,6 @@ if (~allstar_weapon = 4675 & %as_spellbook = 0) {
     %as_spellbook = 2;
     if_settab(inter_267, ^tab_magic);
 }
-
-// C:17477: the Chaos Elemental's weapon strip happens on the player's next cycle
-[proc,allstar_dropsitem]
-if (%as_dropsitem = 0) {
-    return;
-}
-if (inv_getobj(worn, ^wearpos_rhand) = null) {
-    return;
-}
-%as_dropsitem = 0;
-strongqueue(allstar_chaos_strip, 0, 0);
-
-[queue,allstar_chaos_strip]
-def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
-if ($weapon ! null & inv_freespace(inv) > 0) {
-    inv_moveitem(worn, inv, $weapon, inv_total(worn, $weapon));
-    ~update_all($weapon);
-}
-mes("The Chaos Elemental removes your weapon!");
-~allstar_poison_player;
 
 // Ring of life (C:17795 + ApplyRingOfLife C:25679): at HP <= (int)(max HP / 10 + 0.5) the ring saves
 // the player: anim 1816, message, ring destroyed, 4 cycles later a teleport to 3254,3420.
@@ -361,7 +323,7 @@ if (%as_ringtele = 0) {
     inv_del(worn, ring_of_life, 1);
     return;
 }
-if (%as_actiontimer <= map_clock & map_clock >= %as_ringtele) {
+if (~allstar_action_timer = 0 & map_clock >= %as_ringtele) {
     strongqueue(allstar_ringoflife_tele, 0, 0);
 }
 

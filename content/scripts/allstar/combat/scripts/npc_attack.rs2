@@ -94,7 +94,7 @@ if ($type = cow | $type = cow2 | $type = cow2_calf | $type = cow3 | $type = cow3
 } else if ($type = chaoselemental) {
     // randomremoveschaos() = {1, 2, 2, 2}: 1 in 4 takes the weapon off on the player's next cycle
     if (random(4) = 0) {
-        %as_dropsitem = 1;
+        ~allstar_removeequipped;
     }
 } else if ($type = tzhaar_fightcave_swarm_boss) {
     $anim = lordmagmus_fire;
