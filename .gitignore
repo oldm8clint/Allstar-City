@@ -3,3 +3,5 @@ engine/.env
 node_modules/
 # agent worktrees
 .claude/
+dist/
+client/build/
