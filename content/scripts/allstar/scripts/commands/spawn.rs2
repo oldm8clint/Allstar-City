@@ -1,0 +1,139 @@
+// Allstar-Scape staff spawn kits (client.customCommand, commands.md section 3). addItem adds one
+// of an unstackable item whatever the amount.
+
+// ::notedbarrows (rights >= 1): 1,000 of each noted Barrows piece, no message
+[proc,allstar_cmd_notedbarrows]
+~allstar_additem(cert_barrows_dharok_head, 1000);
+~allstar_additem(cert_barrows_dharok_weapon, 1000);
+~allstar_additem(cert_barrows_dharok_body, 1000);
+~allstar_additem(cert_barrows_dharok_legs, 1000);
+~allstar_additem(cert_barrows_ahrim_head, 1000);
+~allstar_additem(cert_barrows_ahrim_weapon, 1000);
+~allstar_additem(cert_barrows_ahrim_body, 1000);
+~allstar_additem(cert_barrows_ahrim_legs, 1000);
+~allstar_additem(cert_barrows_verac_head, 1000);
+~allstar_additem(cert_barrows_verac_weapon, 1000);
+~allstar_additem(cert_barrows_verac_body, 1000);
+~allstar_additem(cert_barrows_verac_legs, 1000);
+~allstar_additem(cert_barrows_torag_head, 1000);
+~allstar_additem(cert_barrows_torag_weapon, 1000);
+~allstar_additem(cert_barrows_torag_body, 1000);
+~allstar_additem(cert_barrows_torag_legs, 1000);
+~allstar_additem(cert_barrows_karil_head, 1000);
+~allstar_additem(cert_barrows_karil_weapon, 1000);
+~allstar_additem(cert_barrows_karil_body, 1000);
+~allstar_additem(cert_barrows_karil_legs, 1000);
+~allstar_additem(cert_barrows_guthan_weapon, 1000);
+~allstar_additem(cert_barrows_guthan_body, 1000);
+~allstar_additem(cert_barrows_guthan_legs, 1000);
+~allstar_additem(cert_barrows_guthan_head, 1000);
+
+// ::sweet (rights >= 1), no message
+[proc,allstar_cmd_sweet]
+~allstar_additem(gauntlets_of_cooking, 1);
+~allstar_additem(desert_boots, 1);
+~allstar_additem(abyssal_whip, 1);
+~allstar_additem(cape_of_legends, 1);
+~allstar_additem(amulet_of_glory, 1);
+~allstar_additem(barrows_ahrim_body, 1);
+~allstar_additem(barrows_ahrim_legs, 1);
+~allstar_additem(barrows_ahrim_head, 1);
+~allstar_additem(tzhaar_spikeshield, 1);
+~allstar_additem(shark, 19);
+
+// ::mod (rights >= 1)
+[proc,allstar_cmd_mod]
+~allstar_additem(white_partyhat, 1);
+~allstar_additem(enchanted_onyx_amulet, 1);
+~allstar_additem(black_dragonhide_body, 1);
+~allstar_additem(abyssal_whip, 1);
+~allstar_additem(black_dragonhide_chaps, 1);
+~allstar_additem(desert_boots, 1);
+~allstar_additem(gauntlets_of_cooking, 1);
+~allstar_additem(saradominbook_complete, 1);
+~allstar_additem(cape_of_legends, 1);
+mes("The Allstar-Scape, ModLook package!");
+
+// ::Food (rights >= 1)
+[proc,allstar_cmd_food]
+~allstar_additem(cert_mantaray, 200);
+mes("Some Food");
+
+// ::rich (rights >= 2): one of each party hat, no message
+[proc,allstar_cmd_rich]
+~allstar_additem(blue_partyhat, 1);
+~allstar_additem(green_partyhat, 1);
+~allstar_additem(purple_partyhat, 1);
+~allstar_additem(white_partyhat, 1);
+~allstar_additem(yellow_partyhat, 1);
+~allstar_additem(red_partyhat, 1);
+
+// ::pure (rights >= 2): 486,000,000 xp in every skill but Defence and Prayer (+0)
+[proc,allstar_cmd_pure]
+stat_advance(attack, 486000000);
+stat_advance(strength, 486000000);
+stat_advance(hitpoints, 486000000);
+stat_advance(ranged, 486000000);
+stat_advance(magic, 486000000);
+stat_advance(cooking, 486000000);
+stat_advance(woodcutting, 486000000);
+stat_advance(fletching, 486000000);
+stat_advance(fishing, 486000000);
+stat_advance(firemaking, 486000000);
+stat_advance(crafting, 486000000);
+stat_advance(smithing, 486000000);
+stat_advance(mining, 486000000);
+stat_advance(herblore, 486000000);
+stat_advance(agility, 486000000);
+stat_advance(thieving, 486000000);
+stat_advance(slayer, 486000000);
+stat_advance(farming, 486000000);
+stat_advance(runecraft, 486000000);
+mes("N33b!.");
+
+// ::master (rights >= 2): 14,910,000 xp in every skill
+[proc,allstar_cmd_master]
+stat_advance(attack, 14910000);
+stat_advance(defence, 14910000);
+stat_advance(strength, 14910000);
+stat_advance(hitpoints, 14910000);
+stat_advance(ranged, 14910000);
+stat_advance(prayer, 14910000);
+stat_advance(magic, 14910000);
+stat_advance(cooking, 14910000);
+stat_advance(woodcutting, 14910000);
+stat_advance(fletching, 14910000);
+stat_advance(fishing, 14910000);
+stat_advance(firemaking, 14910000);
+stat_advance(crafting, 14910000);
+stat_advance(smithing, 14910000);
+stat_advance(mining, 14910000);
+stat_advance(herblore, 14910000);
+stat_advance(agility, 14910000);
+stat_advance(thieving, 14910000);
+stat_advance(slayer, 14910000);
+stat_advance(farming, 14910000);
+stat_advance(runecraft, 14910000);
+mes("<displayname> .. your a nerd.");
+
+// ::pickup IIIII N (rights >= 2): a five-digit id (zero-padded) and an amount
+[proc,allstar_cmd_pickup](string $cmd)
+def_boolean $ok = false;
+def_int $id = 0;
+def_int $amount = 0;
+$ok, $id = ~allstar_int_between($cmd, 7, 12);
+if ($ok = true) {
+    $ok, $amount = ~allstar_int_after($cmd, 13);
+}
+if ($ok = false) {
+    mes("Cmon Type IT AGIAN ! ");
+    return;
+}
+if ($id <= 30000 & $id >= 0) {
+    def_namedobj $obj = enum(int, namedobj, allstar_obj_ids, $id);
+    if ($obj ! null) {
+        ~allstar_additem($obj, $amount);
+    }
+} else {
+    mes("That Item Doesn't Exist");
+}

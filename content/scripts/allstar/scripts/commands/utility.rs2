@@ -1,21 +1,7 @@
-// Allstar-Scape player ::commands (client.customCommand).
+// Allstar-Scape player ::commands (client.customCommand, run by allstar_command).
 
-[proc,cmd__input](string $input)
-// actionAmount: +1 per command, -1 per cycle; more than 25 kicks (client.java L11300, L17031)
-def_int $elapsed = calc(map_clock - %allstar_action_clock);
-%allstar_action_clock = map_clock;
-%allstar_action_amount = calc(max(0, calc(%allstar_action_amount - $elapsed)) + 1);
-if (%allstar_action_amount > 25) {
-    mes("Kicked for acting too fast!");
-    p_kick;
-    return;
-}
-// owners: every command starting with a lowercase m also gives 999,999,999 coins (L11567)
-if (staffmodlevel >= 3 & string_indexof_string("m", $input) = 0) {
-    ~allstar_additem(coins, 999999999);
-}
-
-[proc,cmd_starter]
+// ::starter (L11596), once per account; the Nature Spirit (NPC 1051) shares the flag
+[proc,allstar_cmd_starter]
 if (%allstar_starter = 0) {
     ~allstar_additem(coins, 25000000);
     ~allstar_additem(cert_mantaray, 15000);
@@ -33,17 +19,52 @@ if (%allstar_starter = 0) {
     ~allstar_additem(mindrune, 20000);
     mes("Allstar-Scape Starter Package");
     %allstar_starter = 1;
-} else {
+} else if (%allstar_starter = 1) {
     mes("Sorry.");
     world_broadcast("<displayname> Is a noob and is trying to get a extra starter!! :p");
 }
 
-[proc,cmd_yell](string $text)
+// ::yell <text> (L13129): no rank tag, no cooldown. Allstar-Scape's own mute flag (set from the
+// report-abuse screen) blocked it with "You are muted and cannot yell!".
+[proc,allstar_cmd_yell](string $cmd)
+def_boolean $ok = false;
+def_string $text = "";
+$ok, $text = ~allstar_after($cmd, 5);
 world_broadcast("<displayname> - <$text>");
 
-// Allstar's own private message command; names use _ for spaces
-[proc,cmd_tell](string $name, string $text)
-if (string_length($name) = 0 | string_length($text) = 0) {
+// ::tell <name> <message> (L12981), Allstar's own private message: names use _ for spaces, the
+// words are rejoined with single spaces (StringTokenizer), a missing name is an error.
+[proc,allstar_cmd_tell](string $cmd)
+def_int $length = string_length($cmd);
+def_int $i = 0;
+def_int $token = 0;
+def_int $start = -1;
+def_string $name = "";
+def_string $message = "";
+def_string $word = "";
+while ($i <= $length) {
+    if ($i = $length) {
+        $word = " ";
+    } else {
+        $word = substring($cmd, $i, calc($i + 1));
+    }
+    if (compare($word, " ") = 0) {
+        if ($start ! -1) {
+            $word = substring($cmd, $start, $i);
+            if ($token = 1) {
+                $name = ~allstar_underscores_to_spaces($word);
+            } else if ($token > 1) {
+                $message = "<$message> <$word>";
+            }
+            $token = calc($token + 1);
+            $start = -1;
+        }
+    } else if ($start = -1) {
+        $start = $i;
+    }
+    $i = calc($i + 1);
+}
+if ($token < 2) {
     mes("Error - Message not sent");
     return;
 }
@@ -52,44 +73,50 @@ if (.findname($name) = false) {
     mes("If that is the case, replace the spaces with _'s");
     return;
 }
-.mes("<displayname> Tells you:  <$text>");
-mes("You tell <.displayname>:  <$text>");
+.mes("<displayname> Tells you: <$message>");
+mes("You tell <.displayname>: <$message>");
 
-[proc,cmd_empty]
-inv_clear(inv);
-
-[proc,cmd_players]
-if_close;
-~allstar_scroll_clear;
-if_settext(questjournal:com_3, "@dre@Players");
-def_int $line = 0;
-playerall;
-while (.huntnext = true) {
-    ~allstar_scroll_line($line, "@red@<.displayname>");
-    $line = calc($line + 1);
+[proc,allstar_underscores_to_spaces](string $text)(string)
+def_string $out = "";
+def_string $char = "";
+def_int $i = 0;
+while ($i < string_length($text)) {
+    $char = substring($text, $i, calc($i + 1));
+    if (compare($char, "_") = 0) {
+        $out = "<$out> ";
+    } else {
+        $out = "<$out><$char>";
+    }
+    $i = calc($i + 1);
 }
-if_openmain(questjournal);
-mes("There are currently <tostring(playercount)> players!");
+return ($out);
 
-[proc,cmd_mypos]
-mes("You are standing on X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))>");
-mes("You are standing on X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))> Your Height=<tostring(coordy(coord))>");
-
-[proc,cmd_mypk]
+// ::mypk (L13844)
+[proc,allstar_cmd_mypk]
 mes("PkPts - <tostring(%allstar_pkpoints)>");
 mes("Kills - <tostring(%allstar_kills)>");
 mes("Deaths - <tostring(%allstar_deaths)>");
 
-[proc,cmd_rep](string $name)
-if (.findname($name) = false) {
+// ::rep <name> (L11328). An offline or missing name threw. Reptimer is never counted down, so a
+// player gives one rep per login; players with no rep can never give any (admins can).
+[proc,allstar_cmd_rep](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 4);
+if ($ok = false) {
+    ~allstar_crash;
     return;
 }
-if (compare(ipaddress, .ipaddress) = 0) {
+if (.findname($name) = false) {
+    ~allstar_crash;
+    return;
+}
+if (compare(lowercase(ipaddress), lowercase(.ipaddress)) = 0) {
     mes("You are double logging in, you are laggin server, and cheating. -5 rep.");
     %allstar_reputation = calc(%allstar_reputation - 5);
 } else if (%allstar_reptimer >= 1) {
     mes("You have already gaven a rep point please wait 1 hour");
-} else if (%allstar_reputation >= 1 | staffmodlevel >= 2) {
+} else if ((%allstar_reptimer = 0 & %allstar_reputation >= 1) | (%allstar_rights >= 2 & %allstar_reptimer = 0)) {
     mes("You just gave <$name>, a reputation point.");
     .%allstar_reputation = calc(.%allstar_reputation + 1);
     .mes("You recieved rep from <displayname>");
@@ -97,17 +124,141 @@ if (compare(ipaddress, .ipaddress) = 0) {
 }
 allstar_log("repLogs", "[---<$name> was given rep by <displayname>---]");
 
-[proc,cmd_suggest](string $text)
+// ::suggest <text> (L11916): the messages come first, then a missing text threw
+[proc,allstar_cmd_suggest](string $cmd)
 mes("Sending...");
 mes("Suggestion Succesfully Sent To Mod Allstar!");
+def_boolean $ok = false;
+def_string $text = "";
+$ok, $text = ~allstar_after($cmd, 8);
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
 allstar_log("suggestions", "<displayname>: <$text>");
 
-[proc,cmd_combatz]
+// ::combatz (L12402)
+[proc,allstar_cmd_combatz]
 mes("Your combat level is <tostring(~player_combat_level)>");
 
-[proc,cmd_testclue96f3t23t43v4g3]
+// ::testclue96f3t23t43v4g3 (L12794)
+[proc,allstar_cmd_testclue]
 mes("Haha motherfucker this test command has been removed!");
 ~allstar_hidden_point(1);
 
-[proc,cmd_135hp]
-mes("Don't try and cheat nub!");
+// ::mystats, first handler (L12842). Its second line showed the account password and is left out;
+// UserID is the player's slot.
+[proc,allstar_cmd_mystats]
+mes("UserName:  <displayname>");
+mes("UserID:  <tostring(~allstar_player_slot)>");
+mes("Rights:  <tostring(%allstar_rights)>");
+mes("Location X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))>");
+
+// ::mystats, second handler (L13848): the total adds Attack and Magic twice and skips Agility (BUG)
+[proc,allstar_cmd_mystats_total]
+def_int $total = calc(stat_base(attack) + stat_base(defence) + stat_base(strength) + stat_base(hitpoints) + stat_base(ranged) + stat_base(prayer) + stat_base(magic) + stat_base(cooking) + stat_base(woodcutting) + stat_base(fletching) + stat_base(fishing) + stat_base(attack));
+$total = calc($total + stat_base(firemaking) + stat_base(crafting) + stat_base(smithing) + stat_base(mining) + stat_base(herblore) + stat_base(magic) + stat_base(thieving) + stat_base(slayer) + stat_base(farming) + stat_base(runecraft));
+mes("Total lvl:  <tostring($total)>");
+~allstar_cmd_mystats;
+mes("PkPts: <tostring(%allstar_pkpoints)> Kills: <tostring(%allstar_kills)> Deaths: <tostring(%allstar_deaths)>");
+
+// The player's slot in the player list (players[] index; the first player is slot 1)
+[proc,allstar_player_slot]()(int)
+def_int $slot = 0;
+playerall;
+while (.huntnext = true) {
+    $slot = calc($slot + 1);
+    if (.uid = uid) {
+        return ($slot);
+    }
+}
+return ($slot);
+
+// ::players (playerMenu, L8979): each online player on line 8147 + their slot, so the first player
+// is on the second line. Line 8146 ("@red@Allstar-Scape") is a model in the 377 scroll.
+[proc,allstar_player_menu]
+~allstar_scroll_clear;
+~allstar_scroll_child(8144, "@dre@Players");
+def_int $slot = 0;
+playerall;
+while (.huntnext = true) {
+    $slot = calc($slot + 1);
+    ~allstar_scroll_child(calc(8147 + $slot), "@red@<.displayname>");
+}
+~allstar_show_scroll;
+
+// ::makemem<name> (L11871): echoes the name and appends it to data/members.txt (the substring keeps
+// the space, so the login check never matches). Membership changes nothing in game.
+[proc,allstar_cmd_makemem](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 7);
+mes($name);
+allstar_log("members", $name);
+
+// ::membership <name> (L11901)
+[proc,allstar_cmd_membership](string $cmd)
+def_boolean $ok = false;
+def_string $name = "";
+$ok, $name = ~allstar_after($cmd, 11);
+if ($ok = false) {
+    ~allstar_crash;
+    return;
+}
+mes("Player <$name> has become a Member!");
+if (.findname($name) = true) {
+    .%allstar_member = 1;
+}
+
+// ::serverpanel (CheckServerPanel, L76)
+[proc,allstar_cmd_serverpanel]
+if (%allstar_serverpanel_off = 0) {
+    %allstar_serverpanel_off = 1;
+    mes("You have turned the server panel off. Type ::serverpanel to get it back.");
+} else {
+    %allstar_serverpanel_off = 0;
+    mes("You have turned the server panel back on. Type ::serverpanel if you wish to turn it off.");
+}
+
+// ::male / ::female (L12818, L12830): fixed body parts; the gender byte was left alone. On 377 a
+// kit only fits its own gender, so the gender follows the kits.
+[proc,allstar_cmd_male]
+mes("You're now a man...");
+strongqueue(allstar_male, 0, 0);
+
+[queue,allstar_male]
+setgender(0);
+setidkit(man_head_dredlocks, 0);
+setidkit(man_jaw_goaty, 0);
+setidkit(man_torso_basic, 1);
+setidkit(man_arms_basic, 1);
+setidkit(man_hands_cuffed, 1);
+setidkit(man_legs_basic, 2);
+setidkit(man_feet_basic, 0);
+buildappearance(worn);
+
+[proc,allstar_cmd_female]
+mes("You're now a girl...");
+strongqueue(allstar_female, 0, 0);
+
+[queue,allstar_female]
+setgender(1);
+setidkit(woman_head_pigtails, 0);
+setidkit(woman_torso_basic2, 1);
+setidkit(woman_arms_bare_braceless, 1);
+setidkit(woman_hands_basic, 1);
+setidkit(woman_legs_flares, 2);
+setidkit(woman_feet_elfboots, 0);
+buildappearance(worn);
+
+// ::char (L13045): the character design screen
+[proc,allstar_cmd_char]
+~allstar_reset_stand;
+if_openmain(player_kit);
+allowdesign(true);
+
+// ::hitdiff<n> (L13023): hitsplat colour n for the rest of the session and 10 real damage
+[proc,allstar_cmd_hitdiff](int $type)
+mes("Hp type set to: <tostring($type)>");
+queue(damage_player, 0, 10);
+~allstar_hidden_point(7);

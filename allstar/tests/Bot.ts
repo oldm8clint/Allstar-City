@@ -13,11 +13,13 @@ import Isaac from '../../engine/src/io/Isaac.js';
 import Packet from '../../engine/src/io/Packet.js';
 import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
 import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
+import ServerGameZoneProt from '../../engine/src/network/game/server/ServerGameZoneProt.js';
 
 const ENGINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../engine');
 
 const serverProts = new Map<number, ServerGameProt>();
-for (const value of Object.values(ServerGameProt)) {
+// zone packets (OBJ_ADD, MAP_ANIM ...) are also sent on their own
+for (const value of [...Object.values(ServerGameProt), ...Object.values(ServerGameZoneProt)]) {
     if (value instanceof ServerGameProt) {
         serverProts.set(value.id, value);
     }
@@ -85,6 +87,9 @@ export default class Bot {
     main = -1;
     side = -1;
     chat = -1;
+    overlay = -1;
+    tutorial = -1;
+    rebootTimer = -1;
     region = { x: -1, z: -1 };
     closed = false;
 
@@ -223,18 +228,31 @@ export default class Bot {
                 this.messages.push(buf.gjstr());
                 break;
             case ServerGameProt.IF_SETTEXT: {
-                const com = buf.g2();
+                const com = buf.g2_alt3();
                 this.texts.set(com, buf.gjstr());
                 break;
             }
             case ServerGameProt.IF_OPENMAIN:
-                this.main = buf.g2();
+                this.main = buf.g2_alt3();
                 this.side = -1;
                 break;
             case ServerGameProt.IF_OPENMAIN_SIDE:
-                this.main = buf.g2();
-                this.side = buf.g2();
+                this.main = buf.g2_alt2();
+                this.side = buf.g2_alt3();
                 break;
+            case ServerGameProt.IF_OPENOVERLAY: {
+                const com = buf.g2();
+                this.overlay = com === 65535 ? -1 : com;
+                break;
+            }
+            case ServerGameProt.UPDATE_REBOOT_TIMER:
+                this.rebootTimer = buf.g2_alt1();
+                break;
+            case ServerGameProt.TUT_OPEN: {
+                const com = buf.g2_alt1();
+                this.tutorial = com === 65535 ? -1 : com;
+                break;
+            }
             case ServerGameProt.IF_OPENCHAT:
                 this.chat = buf.g2();
                 break;
@@ -314,6 +332,12 @@ export default class Bot {
 
     ifButton(com: number) {
         this.send(ClientGameProt.IF_BUTTON, buf => buf.p2(com));
+    }
+
+    // what the client sends when the player closes an interface or walks
+    closeModal() {
+        this.send(ClientGameProt.CLOSE_MODAL);
+        this.main = this.side = this.chat = -1;
     }
 
     resumePauseButton(com: number) {

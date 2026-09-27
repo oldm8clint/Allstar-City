@@ -3,7 +3,8 @@ import customitems from './customitems.mjs';
 import npcs from './npcs.mjs';
 import scroll from './scroll.mjs';
 import shops from './shops.mjs';
+import ui from './ui.mjs';
 import world from './world.mjs';
 
-// customitems runs before shops: shop stock looks up allstar_item_<id> objs.
-export default [world, scroll, customitems, shops, npcs];
+// customitems runs before shops and ui: both look up allstar_item_<id> objs.
+export default [world, scroll, customitems, shops, ui, npcs];
