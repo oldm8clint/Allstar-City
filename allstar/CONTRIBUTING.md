@@ -13,7 +13,8 @@ Allstar-City is a **1:1 recreation of Allstar-Scape v2**. The original Java sour
   you port a system, remove or replace the Lost City scripts for it.
 - Reachable original bugs marked `BUG` in the spec: reproduce them when they are part of normal
   play; otherwise note them in your report. `JUNK` (dead code, broken debug) is not ported.
-- Behaviours the owner asked for that are not in the source are listed in `allstar/QUIRKS.md`.
+- Behaviours the owner asked for that are not in the source are tracked by the owner. Ask before
+  changing them.
 - Anything you cannot make identical goes in your report under "Deviations".
 
 ## Layout
