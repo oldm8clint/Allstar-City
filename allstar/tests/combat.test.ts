@@ -143,6 +143,7 @@ async function movingPlayer() {
     await bot.until(() => bot.self.x === x && bot.self.z === z, 5000, `tele ${x},${z}`);
     const since = bot.myHits.length;
     bot.walk(x + 1, z);
+    await bot.until(() => bot.nearestNpc(2745) !== undefined, 800, 'Jad in view');
     const jad = bot.nearestNpc(2745)!;
     const start = `${jad.x},${jad.z}`;
     // keep stepping between two tiles (a step at least every 2 cycles) for ~11 s
