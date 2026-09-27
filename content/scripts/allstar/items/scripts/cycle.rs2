@@ -1,0 +1,197 @@
+// Allstar-Scape client.process() (called every 500 ms cycle) for the item systems: actionTimer,
+// boosted stat decay, drunk timer, god book sermons, pending bury and pending bite.
+// In Allstar-Scape process() ran before the cycle's packets; here the soft timer runs after them,
+// so things a click starts are held back to the next cycle where it matters (potion, bury).
+
+// called from [login,_]
+[proc,allstar_items_login]
+~allstar_login_equipment;
+softtimer(allstar_items_cycle, 1);
+
+[softtimer,allstar_items_cycle]
+// L17028
+if (%allstar_action_timer > 0) {
+    %allstar_action_timer = calc(%allstar_action_timer - 1);
+}
+~allstar_stat_decay;
+// L17140
+if (%allstar_drunk_timer > 0) {
+    %allstar_drunk_timer = calc(%allstar_drunk_timer - 1);
+}
+~allstar_preach_lines;
+~allstar_drunk_cycle;
+~allstar_preaching;
+// prayer check (L17844) and healing check (L17853) change the inventory
+if (%allstar_bury_pending > 0 & %allstar_bury_clock < map_clock) {
+    if (p_finduid(uid) = true) {
+        ~allstar_bury_process;
+    }
+}
+if (%allstar_eat_pending > 0) {
+    if (p_finduid(uid) = true) {
+        ~allstar_healing;
+    }
+}
+
+// actionTimer, for skills that set it (bones wait for it to reach 0)
+[proc,allstar_set_action_timer](int $cycles)
+%allstar_action_timer = $cycles;
+
+// L17060-17107: a skill 0-6 above its base level loses 1 when its potTimer is 0, and the timer
+// waits 250 cycles. BUG: Strength adds its 250 to the Defence timer, so boosted Strength drops
+// every cycle and each drop delays the Defence decay.
+[proc,allstar_stat_decay]
+if (~allstar_decay(attack, %allstar_pottimer_attack) = true) {
+    %allstar_pottimer_attack = calc(%allstar_pottimer_attack + 250);
+}
+if (%allstar_pottimer_attack > 0) {
+    %allstar_pottimer_attack = calc(%allstar_pottimer_attack - 1);
+}
+if (~allstar_decay(defence, %allstar_pottimer_defence) = true) {
+    %allstar_pottimer_defence = calc(%allstar_pottimer_defence + 250);
+}
+if (%allstar_pottimer_defence > 0) {
+    %allstar_pottimer_defence = calc(%allstar_pottimer_defence - 1);
+}
+if (~allstar_decay(strength, %allstar_pottimer_strength) = true) {
+    %allstar_pottimer_defence = calc(%allstar_pottimer_defence + 250);
+}
+if (%allstar_pottimer_strength > 0) {
+    %allstar_pottimer_strength = calc(%allstar_pottimer_strength - 1);
+}
+if (~allstar_decay(hitpoints, %allstar_pottimer_hitpoints) = true) {
+    %allstar_pottimer_hitpoints = calc(%allstar_pottimer_hitpoints + 250);
+}
+if (%allstar_pottimer_hitpoints > 0) {
+    %allstar_pottimer_hitpoints = calc(%allstar_pottimer_hitpoints - 1);
+}
+if (~allstar_decay(ranged, %allstar_pottimer_ranged) = true) {
+    %allstar_pottimer_ranged = calc(%allstar_pottimer_ranged + 250);
+}
+if (%allstar_pottimer_ranged > 0) {
+    %allstar_pottimer_ranged = calc(%allstar_pottimer_ranged - 1);
+}
+if (~allstar_decay(prayer, %allstar_pottimer_prayer) = true) {
+    %allstar_pottimer_prayer = calc(%allstar_pottimer_prayer + 250);
+}
+if (%allstar_pottimer_prayer > 0) {
+    %allstar_pottimer_prayer = calc(%allstar_pottimer_prayer - 1);
+}
+if (~allstar_decay(magic, %allstar_pottimer_magic) = true) {
+    %allstar_pottimer_magic = calc(%allstar_pottimer_magic + 250);
+}
+if (%allstar_pottimer_magic > 0) {
+    %allstar_pottimer_magic = calc(%allstar_pottimer_magic - 1);
+}
+
+[proc,allstar_decay](stat $stat, int $timer)(boolean)
+if ($timer ! 0 | stat($stat) <= stat_base($stat)) {
+    return(false);
+}
+// the potion was drunk after this cycle's process() in Allstar-Scape
+if (%allstar_potion_stat = $stat & %allstar_potion_clock = map_clock) {
+    return(false);
+}
+stat_sub($stat, 1, 0);
+return(true);
+
+// L17334-17375: beer. Drunk: stand 2770, walk 2769 (run unchanged). Sober again: the weapon's
+// GetStandAnim/GetWalkAnim/GetRunAnim, item2handed, the whip's run 1661 (not its walk), and a ring
+// of stone turns the player into NPC 1266 (Rocks).
+[proc,allstar_drunk_cycle]
+if (%allstar_drunk_timer >= 1 & %allstar_drunk = 0) {
+    %allstar_drunk = 1;
+    %allstar_anim_stand = drunk_player_ready;
+    %allstar_anim_walk = drunk_player_walk;
+    ~update_bas;
+} else if (%allstar_drunk_timer < 1 & %allstar_drunk = 1) {
+    def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+    if ($weapon = null) {
+        %allstar_anim_stand = human_ready;
+        %allstar_anim_walk = human_walk_f;
+        if (inv_getobj(worn, ^wearpos_feet) = trollromance_toboggon_waxed) {
+            %allstar_anim_walk = human_ready_sidestep;
+        }
+        %allstar_anim_run = human_running;
+    } else {
+        %allstar_anim_stand = oc_param($weapon, allstar_stand_anim);
+        %allstar_anim_walk = ~allstar_walk_anim($weapon);
+        %allstar_anim_run = oc_param($weapon, allstar_run_anim);
+        if ($weapon = mcannontoolkit) {
+            %allstar_anim_stand = barrow_dharok_ready;
+            %allstar_anim_walk = slayer_granite_maul_walk;
+            %allstar_anim_run = slayer_granite_maul_run;
+        }
+        if ($weapon = abyssal_whip) {
+            %allstar_anim_run = slayer_abyssal_whip_run;
+        }
+    }
+    if (inv_getobj(worn, ^wearpos_ring) = enchanted_onyx_ring) {
+        if (p_finduid(uid) = true) {
+            p_transmogrify(horror_rockcrab_inactive);
+        }
+    }
+    %allstar_drunk = 0;
+    ~update_bas;
+}
+
+// God books: the sermon lines, 7 cycles apart (L17190-17330)
+[proc,allstar_preach_lines]
+if (%allstar_preach_timer > 0) {
+    %allstar_preach_timer = calc(%allstar_preach_timer - 1);
+}
+~allstar_sermon_step(0, "Protector of us all,", "I now join you in the eyes of Saradomin.", true);
+~allstar_sermon_step(1, "See you in Lumbridge when you get back.", "", true);
+~allstar_sermon_step(2, "May his glory shine upon you like the sun.", "", true);
+~allstar_sermon_step(3, "Mine is the glory that never ends,", "This is Saradomin's wisdom.", true);
+~allstar_sermon_step(4, "To spread destruction across the land,", "In Zamorak's name, now two are one.", true);
+~allstar_sermon_step(5, "So that the strong may flourish,", "This is the creed of Zamorak.", true);
+~allstar_sermon_step(6, "And may all your battles be glorious,", "May Zamorak bring you strength.", true);
+~allstar_sermon_step(7, "The strength of Zamorak will be with you,", "Zamorak give me strength.", true);
+~allstar_sermon_step(8, "Balance arises from contrast,", "I unify thee in the name of Guthix.", true);
+~allstar_sermon_step(9, "For it brought some balance to the world.", "May Guthix bring you rest.", true);
+~allstar_sermon_step(10, "For Guthix walks beside thee on thy journey.", "May Guthix bring you balance.", true);
+// BUG: the last Guthix sermon never sets preaching, so no anim and its flags stay set
+~allstar_sermon_step(11, "All play their part upon this land.", "May Guthix bring you balance.", false);
+
+[proc,allstar_sermon_step](int $sermon, string $second, string $third, boolean $finish)
+if (testbit(%allstar_sermons, $sermon) = 0) {
+    return;
+}
+if (testbit(%allstar_preach, 0) = 1 & %allstar_preach_timer <= 0) {
+    say($second);
+    %allstar_preach = clearbit(%allstar_preach, 0);
+    if (compare($third, "") = 0) {
+        %allstar_preaching = 1;
+    } else {
+        %allstar_preach = setbit(%allstar_preach, 1);
+        %allstar_preach_timer = 7;
+    }
+}
+if (compare($third, "") ! 0 & testbit(%allstar_preach, 1) = 1 & %allstar_preach_timer <= 0) {
+    say($third);
+    %allstar_preach = clearbit(%allstar_preach, 1);
+    if ($finish = true) {
+        %allstar_preaching = 1;
+    }
+}
+
+// client.preaching (L197): the book anim, then resetPreaching
+[proc,allstar_preaching]
+if (%allstar_preaching = 1) {
+    if (testbit(%allstar_books, 0) = 1) {
+        anim(horror_preach_saradomin, 0);
+    }
+    if (testbit(%allstar_books, 1) = 1) {
+        anim(horror_preach_zamorak, 0);
+    }
+    if (testbit(%allstar_books, 2) = 1) {
+        anim(horror_preach_guthix, 0);
+    }
+    %allstar_preaching = 2;
+}
+if (%allstar_preaching = 2) {
+    %allstar_preaching = 0;
+    %allstar_books = 0;
+    %allstar_sermons = 0;
+}

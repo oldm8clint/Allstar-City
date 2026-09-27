@@ -1,19 +1,3 @@
-[opheldu,cocktail_shaker] 
-switch_obj(last_useitem) {
-    case cocktail_glass_empty : @pour_cocktail_shaker;
-    case default : @add_cocktail_ingredient(last_useitem);
-}
-
-[opheldu,cocktail_glass_empty]
-switch_obj(last_useitem) {
-    case cocktail_shaker : @pour_cocktail_shaker;
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheld1,cocktail_shaker] // no idea what this is supposed to do
-~mesbox("You look into the cocktail shaker..."); // guess
-~gnome_cocktail_ingredients_display;
-
 [label,add_cocktail_ingredient](obj $ingredient)
 if (~gnome_cocktail_ingredient_space = 0) { // guess
     mes("The cocktail shaker is too full to fit anymore ingredients."); // guess

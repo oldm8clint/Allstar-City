@@ -1,0 +1,220 @@
+// Allstar-Scape equipment: packet 41 (wear), packet 145 on interface 1688 (remove), client.wear,
+// client.remove, client.setEquipment. allstar/spec/npc_item_handlers.md section 11,
+// allstar/spec/custom_items.md 6.1-6.5 and 6.8.
+
+// Packet 41 (L22607-22622): wear() is attempted once per twoHanderz entry {7158, 1319, 6528, 14915}.
+// - is2Hander() reads twoHanderz[i] with the client field i (0 in practice = 7158) and the packet
+//   compares the INVENTORY slot with 5 (playerShield).
+// - A twoHanderz item with a shield worn prints the message on its own entry, but the other entries
+//   still call wear(), so it is equipped and the shield stays.
+// - Failed requirements are therefore printed once per entry (4 times).
+[opheld2,_]
+def_obj $obj = last_item;
+def_int $slot = last_slot;
+def_int $i = 0;
+while ($i < 4) {
+    if ($slot = 5 & ~allstar_is2hander = true) {
+        mes("Two handed item = You cant equip a 2hander with a shield");
+    } else if (inv_getobj(worn, ^wearpos_lhand) ! null & oc_param($obj, allstar_twohanderz) = $i) {
+        mes("You cant equip a 2hander with a shield");
+    } else {
+        ~allstar_wear($obj, $slot);
+    }
+    $i = calc($i + 1);
+}
+
+// Packet 145 on interface 1688: remove() if that equipment slot holds the item
+[inv_button1,wornitems:worn]
+if (p_finduid(uid) = true) {
+    if (inv_getobj(worn, last_slot) = last_item) {
+        ~allstar_unwear(last_slot);
+    }
+}
+
+[proc,allstar_is2hander]()(boolean)
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+if ($weapon ! null) {
+    if (oc_param($weapon, allstar_twohanderz) = 0) {
+        return(true);
+    }
+}
+return(false);
+
+// client.wear (L15025-15216)
+[proc,allstar_wear](obj $obj, int $slot)
+if ($obj = null | inv_getobj(inv, $slot) ! $obj) {
+    return;
+}
+// the mourner cloak disguises the wearer before the requirement checks
+if ($obj = mourning_mourner_cloak) {
+    p_transmogrify(slayer_infernal_mage_3);
+    buildappearance(worn);
+}
+def_int $target = oc_wearpos($obj);
+if ($target = null) {
+    $target = ^wearpos_rhand;
+}
+if (~allstar_wear_requirements($obj) = false) {
+    return;
+}
+def_int $count = inv_getnum(inv, $slot);
+if ($count < 1) {
+    return;
+}
+def_obj $previous_weapon = inv_getobj(worn, ^wearpos_rhand);
+def_obj $old = inv_getobj(worn, $target);
+if ($old = $obj & oc_stackable($obj) = true) {
+    // the stacks are added together
+    inv_moveitem(inv, worn, $obj, $count);
+} else {
+    // deleteItem then addItem(old): the old item goes to the first free slot (or its stack)
+    inv_movetoslot(inv, worn, $slot, $target);
+    if ($old ! null) {
+        inv_movefromslot(inv, inv, $slot);
+    }
+}
+// twohanded.dat (or id 1, item2handed) takes the shield off, if there is room for it
+if ($target = ^wearpos_rhand & inv_getobj(worn, ^wearpos_lhand) ! null) {
+    if (oc_param($obj, allstar_twohanded) = true | $obj = mcannontoolkit) {
+        ~allstar_unwear(^wearpos_lhand);
+    }
+}
+if ($target = ^wearpos_rhand) {
+    ~allstar_wield_anims($obj);
+}
+~allstar_equipment_changed($previous_weapon);
+
+// GetCL* requirements against current levels; every unmet one is printed before giving up
+[proc,allstar_wear_requirements](obj $obj)(boolean)
+def_boolean $ok = true;
+if (stat(attack) < oc_param($obj, allstar_req_attack)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_attack))> attack to equip this item.");
+    $ok = false;
+}
+if (stat(prayer) < oc_param($obj, allstar_req_prayer)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_prayer))> prayer to equip this item.");
+    $ok = false;
+}
+if (stat(fletching) < oc_param($obj, allstar_req_fletching)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_fletching))> fletching to equip this item.");
+    $ok = false;
+}
+if (stat(woodcutting) < oc_param($obj, allstar_req_woodcutting)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_woodcutting))> woodcutting to equip this item.");
+    $ok = false;
+}
+if (stat(cooking) < oc_param($obj, allstar_req_cooking)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_cooking))> cooking to equip this item.");
+    $ok = false;
+}
+if (stat(fishing) < oc_param($obj, allstar_req_fishing)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_fishing))> fishing to equip this item.");
+    $ok = false;
+}
+if (stat(thieving) < oc_param($obj, allstar_req_thieving)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_thieving))> thieving to equip this item.");
+    $ok = false;
+}
+if (stat(hitpoints) < oc_param($obj, allstar_req_hitpoints)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_hitpoints))> hitpoints to equip this item.");
+    $ok = false;
+}
+if (stat(farming) < oc_param($obj, allstar_req_farming)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_farming))> farming to equip this item.");
+    $ok = false;
+}
+if (stat(slayer) < oc_param($obj, allstar_req_slayer)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_slayer))> slayer to equip this item.");
+    $ok = false;
+}
+if (stat(defence) < oc_param($obj, allstar_req_defence)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_defence))> defence to equip this item.");
+    $ok = false;
+}
+if (stat(strength) < oc_param($obj, allstar_req_strength)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_strength))> strength to equip this item.");
+    $ok = false;
+}
+if (stat(magic) < oc_param($obj, allstar_req_magic)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_magic))> magic to equip this item.");
+    $ok = false;
+}
+if (stat(ranged) < oc_param($obj, allstar_req_ranged)) {
+    mes("You need <tostring(oc_param($obj, allstar_req_ranged))> ranged to equip this item.");
+    $ok = false;
+}
+return($ok);
+
+// client.remove (L15274): needs a free inventory slot; taking off the mourner cloak ends any disguise
+[proc,allstar_unwear](int $wornslot)
+def_obj $obj = inv_getobj(worn, $wornslot);
+if ($obj = null) {
+    return;
+}
+if (inv_freespace(inv) < 1) {
+    mes("Not enough space in your inventory.");
+    return;
+}
+if ($obj = mourning_mourner_cloak) {
+    p_transmogrify(null);
+}
+def_obj $previous_weapon = inv_getobj(worn, ^wearpos_rhand);
+inv_movefromslot(worn, inv, $wornslot);
+~allstar_equipment_changed($previous_weapon);
+
+// ResetBonus/GetBonus/WriteBonus + SendWeapon + appearance update. The stand/walk/run anims are
+// not touched here: removing a weapon keeps its anims.
+[proc,allstar_equipment_changed](obj $previous_weapon)
+~update_all($previous_weapon);
+
+// wear(): playerSE/SEW/SER = GetStandAnim/GetWalkAnim/GetRunAnim, item2handed (id 1) 0x811/0x67F/0x680,
+// then the whip / cat toy walk 1660 run 1661 override. pEmote = playerSE.
+[proc,allstar_wield_anims](obj $obj)
+def_seq $stand = oc_param($obj, allstar_stand_anim);
+def_seq $walk = ~allstar_walk_anim($obj);
+def_seq $run = oc_param($obj, allstar_run_anim);
+if ($obj = mcannontoolkit) {
+    $stand = barrow_dharok_ready;
+    $walk = slayer_granite_maul_walk;
+    $run = slayer_granite_maul_run;
+}
+if (oc_param($obj, allstar_wield_walk_anim) ! null) {
+    $walk = oc_param($obj, allstar_wield_walk_anim);
+}
+if (oc_param($obj, allstar_wield_run_anim) ! null) {
+    $run = oc_param($obj, allstar_wield_run_anim);
+}
+%allstar_anim_stand = $stand;
+%allstar_anim_walk = $walk;
+%allstar_anim_run = $run;
+
+// GetWalkAnim: 4718 and the staves are decided before the sled (feet 4084 -> walk 755)
+[proc,allstar_walk_anim](obj $obj)(seq)
+if (oc_param($obj, allstar_walk_sled_exempt) = false & inv_getobj(worn, ^wearpos_feet) = trollromance_toboggon_waxed) {
+    return(human_ready_sidestep);
+}
+return(oc_param($obj, allstar_walk_anim));
+
+// client.initialize: setEquipment() for every slot (L15713-15723). For the weapon it sets the
+// wear() anims plus the maul (4153, 6528) and dragon dagger overrides, and the dragon dagger gfx 306.
+[proc,allstar_login_equipment]
+%allstar_anim_stand = human_ready;
+%allstar_anim_walk = human_walk_f;
+%allstar_anim_run = human_running;
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+if ($weapon = null) {
+    return;
+}
+~allstar_wield_anims($weapon);
+if (oc_param($weapon, allstar_login_stand_anim) ! null) {
+    %allstar_anim_stand = oc_param($weapon, allstar_login_stand_anim);
+}
+if (oc_param($weapon, allstar_login_walk_anim) ! null) {
+    %allstar_anim_walk = oc_param($weapon, allstar_login_walk_anim);
+}
+if (oc_param($weapon, allstar_login_run_anim) ! null) {
+    %allstar_anim_run = oc_param($weapon, allstar_login_run_anim);
+}
+if ($weapon = dragon_dagger) {
+    spotanim_map(spotanim_306, coord, 0, 0);
+}

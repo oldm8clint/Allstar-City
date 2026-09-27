@@ -1,11 +1,4 @@
 // logs
-[opheldu,_category_22]
-switch_obj(last_useitem) {
-    case knife : @fletch_log(last_item);
-    case tinderbox : @light_logs_inv(last_slot);
-    case default : ~displaymessage(^dm_default);
-}
-
 [label,fletch_log](obj $log)
 if (map_members = ^false) {
     mes(^mes_members_fletching); // guess

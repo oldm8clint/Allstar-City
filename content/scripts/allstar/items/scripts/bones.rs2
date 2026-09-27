@@ -1,0 +1,68 @@
+// Allstar-Scape bones: two independent XP paths per click (npc_item_handlers.md 5.4).
+// Path P: CheckForSkillUse3 sets prayer[] and process() buries once a weapon is wielded (cycle.rs2).
+// Path B: client.buryBones (L9969), immediately, only for the ids packet 122 sends there and only
+// when the slot holds exactly 1. Big and Jogre bones match no XP rule (the && condition is
+// impossible) and the burnt/pasty/marinated jogre bones only reach this path: they are deleted for 0.
+[proc,allstar_bury_bones](obj $obj, int $slot)
+def_int $xp = -1;
+switch_obj ($obj) {
+    case big_bones, tbwt_jogre_bones, tbwt_burnt_jogre_bones, tbwt_burnt_jogre_bones_in_raw_karambwanji_paste,
+        tbwt_burnt_jogre_bones_in_cooked_karambwanji_paste, tbwt_burnt_jogre_bones_marinated_in_karambwanji,
+        tbwt_jogre_bones_in_raw_karambwanji_paste, tbwt_jogre_bones_in_cooked_karambwanji_paste,
+        tbwt_jogre_bones_marinated_in_karambwanji : $xp = 0;
+    case dragon_bones : $xp = 72;
+    case zogre_bones : $xp = 25;
+    case zogre_ancestral_bones_fayg : $xp = 80;
+    case zogre_ancestral_bones_raurg : $xp = 100;
+    case zogre_ancestral_bones_ourg : $xp = 8000;
+}
+if ($xp = -1) {
+    return;
+}
+if (inv_getobj(inv, $slot) ! $obj | inv_getnum(inv, $slot) ! 1) {
+    return;
+}
+if ($xp > 0) {
+    stat_advance(prayer, $xp);
+}
+inv_delslot(inv, $slot);
+
+// client.prayer (L31100), run by process(). prayer[1] (the Prayer level needed) starts at 1 and is
+// 0 after the first reset of the session.
+[proc,allstar_bury_process]
+def_int $level = 1;
+if (%allstar_bury_level_cleared = 1) {
+    $level = 0;
+}
+if (stat(prayer) < $level) {
+    mes("You need <tostring($level)> prayer to bury these bones.");
+    ~allstar_bury_reset;
+    return;
+}
+if (%allstar_action_timer = 0 & %allstar_bury_pending = 1) {
+    def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+    // playerEquipment[playerWeapon] >= 1
+    if ($weapon ! null & $weapon ! mcannonremains) {
+        %allstar_bury_pending = 2;
+    }
+}
+if (%allstar_action_timer = 0 & %allstar_bury_pending = 2) {
+    // deleteItem(prayer[4], prayer[5], whole stack): only if that slot still holds it
+    if (%allstar_bury_obj ! null) {
+        if (inv_getobj(inv, %allstar_bury_slot) = %allstar_bury_obj) {
+            inv_delslot(inv, %allstar_bury_slot);
+        }
+    }
+    stat_advance(prayer, %allstar_bury_xp);
+    mes("You bury the bones.");
+    ~allstar_bury_reset;
+}
+
+// resetPR
+[proc,allstar_bury_reset]
+%allstar_bury_pending = 0;
+%allstar_bury_level_cleared = 1;
+%allstar_bury_xp = 0;
+%allstar_bury_obj = null;
+%allstar_bury_slot = -1;
+anim(human_eat, 0);

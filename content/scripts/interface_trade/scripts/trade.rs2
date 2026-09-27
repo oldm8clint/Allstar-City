@@ -325,10 +325,33 @@ if (.finduid(%tradepartner) = true) {
 
 // ----
 
-[inv_button1,tradeside:inv] @movetotrade(last_slot, 1);
-[inv_button2,tradeside:inv] @movetotrade(last_slot, 5);
-[inv_button3,tradeside:inv] @movetotrade(last_slot, 10);
-[inv_button4,tradeside:inv] @movetotrade(last_slot, ^max_32bit_int);
+// Allstar-City: client.tradeItem (L32050). Option 1 refuses 6556 and 6384 ("You cannot trade this
+// item."), options 2-4 only 6384 (no full stop) and X nothing. The amount is capped by the clicked
+// slot, so a non-stackable is offered one at a time; "All" offers the slot.
+[inv_button1,tradeside:inv]
+if (last_item = wileycatobject | oc_param(last_item, allstar_untradeable) = true) {
+    mes("You cannot trade this item.");
+    return;
+}
+@movetotrade(last_slot, 1);
+[inv_button2,tradeside:inv]
+if (oc_param(last_item, allstar_untradeable) = true) {
+    mes("You cannot trade this item");
+    return;
+}
+@movetotrade(last_slot, 5);
+[inv_button3,tradeside:inv]
+if (oc_param(last_item, allstar_untradeable) = true) {
+    mes("You cannot trade this item");
+    return;
+}
+@movetotrade(last_slot, 10);
+[inv_button4,tradeside:inv]
+if (oc_param(last_item, allstar_untradeable) = true) {
+    mes("You cannot trade this item");
+    return;
+}
+@movetotrade(last_slot, inv_getnum(inv, last_slot));
 [inv_button5,tradeside:inv] @movetotrade(last_slot, null);
 
 [label,movetotrade](int $slot, int $amount)
@@ -339,25 +362,17 @@ if ($amount <= 0) {
 }
 
 def_obj $obj = inv_getobj(inv, $slot);
-
-if (oc_tradeable($obj) = false) {
-    mes("You can't trade this item.");
+if ($obj = null) {
     return;
 }
-
-if (oc_members($obj) = true & map_members = ^false) {
-    mes("You can't trade this item.");
-    return;
+def_int $total = inv_getnum(inv, $slot);
+if ($amount < $total) {
+    $total = $amount;
+    inv_moveitem(inv, tradeoffer, $obj, $total);
+} else {
+    inv_movefromslot(inv, tradeoffer, $slot);
 }
 
-if ($obj = macro_cube) {
-    ~try_add_macro_cube;
-    return;
-}
-
-def_int $total = inv_total(inv, $obj);
-if ($amount < $total) $total = $amount;
-inv_moveitem(inv, tradeoffer, $obj, $total);
 
 %tradestatus = ^tradestatus_reset;
 if_settext(trademain:status, "");

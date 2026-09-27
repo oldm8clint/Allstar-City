@@ -1,106 +1,10 @@
-[opheld2,_] ~equip(last_slot);
-
-[inv_button1,wornitems:worn]
-if_close;
-if (p_finduid(uid) = true) {
-    p_clearpendingaction;
-    ~unequip(last_slot);
-}
-
+// Allstar-City: packet 41 (wear) and removing worn items are in
+// content/scripts/allstar/items/scripts/equip.rs2. These procs remain for Lost City scripts.
 [proc,equip](int $slot)
-if (p_finduid(uid) = true) {
-    def_obj $obj = inv_getobj(inv, $slot);
-    if (oc_wearpos($obj) = null) {
-        mes("[DEBUG]: No wearpos set on <oc_debugname($obj)>");
-        return;
-    }
-    if (~duel_arena_equip_check($obj) = false) {
-        return;
-    }
-    if (~duel_arena_flower_power_equip_check($obj) = false) {
-        return;
-    }
-    if(inzone(0_51_147_0_0, 0_51_147_19_63, coord) = true) {
-        if(npc_find(coord, desertminingmercenary2, 4, 2) = true | npc_find(coord, desertminingmercenary1, 4, 2) = true) {
-            ~npc_retaliate(0);
-            ~desertcamp_guard_search;
-        }
-    }
-    if ((oc_wearpos($obj) = ^wearpos_rhand | oc_wearpos($obj) = ^wearpos_lhand) & ~inzone_coord_pair_table(gnomeball_zones, coord) = true) {
-        mes("You feel it would be cheating to hold anything other than a gnomeball on the");
-        mes("gnomeball pitch");
-        return;
-    }
-    if (~wearpos_conflicts($obj, castlewars_cloak_saradomin) = true & (~in_castlewars_game(coord) = true | ~in_castlewars_waitingroom(coord) = true)) {
-            mes("You can't remove your team's colours.");
-            return;
-        }
-    def_obj $previous_weapon = inv_getobj(worn, ^wearpos_rhand);
-    if (~try_equip($slot) = false) {
-        mes("You don't have enough free space to do that.");
-        return;
-    }
-    // todo: this needs a better home...
-    if (%tutorial < ^tutorial_complete) {
-        if (%tutorial = ^newbie_combat_instructor_worn_inventory & $obj = bronze_dagger){
-            %tutorial = ^newbie_combat_instructor_dagger_equipped;
-            ~set_tutorial_progress;
-        }
-        else if (%tutorial = ^newbie_combat_instructor_unequipping_items) {
-            def_obj $shield = inv_getobj(worn, ^wearpos_lhand);
-
-            if ($previous_weapon = bronze_sword & $shield = wooden_shield) {
-                %tutorial = ^newbie_combat_instructor_open_combat_interface;
-                ~set_tutorial_progress;
-            }
-        }
-    }
-
-    if($obj = elemental_shield) {
-        inv_delslot(worn, ^wearpos_lhand);
-        buildappearance(worn);
-        spotanim_pl(elemental_shield_equip, 92, 0);
-        sound_synth(shield_appear, 1, 0);
-        p_delay(0);
-        inv_setslot(worn, ^wearpos_lhand, elemental_shield, 1);
-    } else if($obj = ibanstaff) {
-        // https://youtu.be/n_ip_vEDbCA?si=0uESoOC98Fvl7HqS&t=2333
-        mes("You equip the staff of Iban.");
-    }
-
-    ~update_all($previous_weapon);
-}
+~allstar_wear(inv_getobj(inv, $slot), $slot);
 
 [proc,unequip](int $slot)
-if (p_finduid(uid) = true) {
-    def_obj $obj = inv_getobj(worn, $slot);
-    if (~duel_arena_flower_power_unequip_check($slot) = false) {
-        return;
-    }
-    if ($obj = ball_gnomeball_game & ~inzone_coord_pair_table(gnomeball_zones, coord) = true) {
-        mes("You feel it would be cheating to put the ball in your pack whilst on the pitch.");
-        return;
-    }
-    if (($obj = castlewars_cloak_zamorak | $obj = castlewars_cloak_saradomin) & (~in_castlewars_game(coord) = true | ~in_castlewars_waitingroom(coord) = true)) {
-        mes("You can't remove your team's colours."); // osrs
-        return;
-    }
-    def_int $count = inv_getnum(worn, $slot);
-    def_int $overflow = inv_itemspace2(inv, $obj, $count, inv_size(inv));
-    if ($overflow >= $count) {
-        mes("You don't have enough free space to do that.");
-        return;
-    }
-    if($obj = elemental_shield) {
-        sound_synth(shield_appear, 1, 0);
-    }
-    if (oc_param($obj, specwep) = ^true) {
-        %sa_attack = ^false;
-    }
-    inv_moveitem(worn, inv, $obj, sub($count, $overflow));
-    ~update_all($obj);
-    ~on_unequip($obj);
-}
+~allstar_unwear($slot);
 
 // Called whenever an obj is removed from the 'worn' inv, intented to be used as a central hook point for
 // handling unequipping effects
@@ -361,44 +265,6 @@ if ($bonus < 0) {
 // =================================================================================
 
 [proc,.update_weight]
-
-[proc,try_equip](int $inv_slot)(boolean)
-def_obj $equip_obj = inv_getobj(inv, $inv_slot);
-if ($equip_obj = null) {
-    return(false);
-}
-def_int $worn_slot = oc_wearpos($equip_obj);
-if ($worn_slot = null) {
-    return(false);
-}
-
-// if the item is stackable and we have the item already in our worn inv, add to the stack!
-if (oc_stackable($equip_obj) = true & inv_total(worn, $equip_obj) > 0) {
-    def_int $equip_obj_num = inv_getnum(inv, $inv_slot);
-    def_int $overflow = inv_itemspace2(worn, $equip_obj, $equip_obj_num, inv_size(worn));
-    if ($overflow >= $equip_obj_num) {
-        return(false);
-    }
-    inv_moveitem(inv, worn, $equip_obj, sub($equip_obj_num, $overflow)); // equip stackable item!
-    return(true); // early return because if the worn item already exists in the inv, theres no conflicts *surely*
-}
-
-if (~unequip_conflicts_space($equip_obj) = false) { // check if enough space
-    return(false);
-}
-
-def_obj $previous_equip = inv_getobj(worn, $worn_slot);
-inv_movetoslot(inv, worn, $inv_slot, $worn_slot); // equip item! this performs a swap
-
-if (inv_getobj(inv, $inv_slot) ! null) {
-    // presumably, they added this as an easy way for stackable objs to stack in the inv (instead of directly swapping)
-    // seems like in late 2006 they removed this line of code and it produced this bug: https://youtu.be/EYXp7GMFWEw, https://youtu.be/DwzDt3yw6k4
-    inv_movefromslot(inv, inv, $inv_slot); // moves item to the first available slot in the inv...
-}
-~unequip_conflicts($equip_obj);
-~on_unequip($previous_equip);
-
-return(true);
 
 // proc to check if you have enough space to unequip conflicting items with $equip_obj
 [proc,unequip_conflicts_space](obj $equip_obj)(boolean)

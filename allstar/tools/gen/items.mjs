@@ -18,6 +18,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { Pack } from '../lib/pack.mjs';
+
 const MAX_ID = 7956; // ids >= 7956 belong to the custom item workstream
 const MARKER = '// allstar item data (allstar/tools/gen/items.mjs)';
 
@@ -38,8 +40,69 @@ const OWNED_PARAMS = new Set([
     'allstar_unnote',
     'allstar_withdraw_stackable',
     'allstar_twohanded',
+    'allstar_twohanderz',
+    'allstar_id',
+    'allstar_stand_anim',
+    'allstar_walk_anim',
+    'allstar_run_anim',
+    'allstar_walk_sled_exempt',
+    'allstar_wield_walk_anim',
+    'allstar_wield_run_anim',
+    'allstar_login_stand_anim',
+    'allstar_login_walk_anim',
+    'allstar_login_run_anim',
     ...REQ_SKILLS.map(s => `allstar_req_${s}`)
 ]);
+
+// client.twoHanderz (packet 41 loop): index of the id in {7158, 1319, 6528, 14915}
+const TWO_HANDERZ = [7158, 1319, 6528, 14915];
+
+// client.GetStandAnim / GetWalkAnim / GetRunAnim (L27584-27720), seq ids.
+// Walk: 4718 and the "staves" list are decided before the sled check (feet 4084 -> 755).
+const STAVES_WALK = [4039, 4037, 1379, 3204, 3202, 1381, 1383, 1385, 1387, 1389, 1391, 1393, 1395, 1397, 1399, 1401, 1403, 145, 1407, 1409, 3053, 3054, 4170, 4675, 4710, 6526, 4726, 6562, 6563, 6914, 5730];
+const STAVES_STAND = [1305, 1379, 1381, 1383, 1385, 1387, 1389, 1391, 1393, 1395, 1397, 1399, 1401, 1403, 145, 1407, 1409, 3053, 3054, 4170, 4675, 4710, 6526, 4726, 6562, 6563, 5730];
+
+function standAnim(id) {
+    if (id === 4718) return 2065;
+    if (id === 4755) return 2061;
+    if (id === 4734 || id === 837) return 2074;
+    if ([4153, 15334, 15336, 1419].includes(id)) return 1662;
+    if (id === 7449) return 1662;
+    if (id === 4565) return 1836;
+    if (STAVES_STAND.includes(id)) return 809;
+    if ([7158, 1319, 6528, 14915].includes(id)) return 2065;
+    if (id === 3204 || id === 3202) return 809;
+    return 808;
+}
+
+// without the sled check; sledExempt tells whether the id is decided before it
+function walkAnim(id) {
+    if (id === 4718) return 2064;
+    if (STAVES_WALK.includes(id)) return 1146;
+    if (id === 4565) return 1836;
+    if (id === 4755) return 2060;
+    if (id === 4734 || id === 837) return 2076;
+    if (id === 4153 || id === 1419) return 1663;
+    if (id === 15334 || id === 15336) return 1663;
+    if ([7158, 4718, 1319, 6528, 14915].includes(id)) return 2064;
+    if (id === 7449) return 1663;
+    if (id === 4151) return 1661;
+    if (id === 8447) return 1661;
+    return 819;
+}
+const sledExempt = id => id === 4718 || STAVES_WALK.includes(id);
+
+function runAnim(id) {
+    if (id === 4151 || id === 8447) return 1661;
+    if (id === 6818) return 744;
+    if (id === 4734 || id === 837) return 2077;
+    if (id === 4153 || id === 1419 || id === 7449) return 1664;
+    return 824;
+}
+
+// wear() and setEquipment() overrides after the Get*Anim calls
+const WIELD_OVERRIDES = { 4151: { walk: 1660, run: 1661 }, 8447: { walk: 1660, run: 1661 } };
+const LOGIN_OVERRIDES = { 4153: { stand: 2065, walk: 2064, run: 2064 }, 6528: { stand: 2065, walk: 2064, run: 2064 }, 1215: { walk: 1660, run: 1661 } };
 const OWNED_KEYS = new Set(['cost', 'stackable', 'tradeable', 'wearpos', 'wearpos2', 'wearpos3']);
 
 // Player.java slot numbers = Lost City wearpos ids
@@ -368,6 +431,12 @@ export default function items({ root, content, packs, report }) {
     const legacyDir = path.join(root, 'allstar/legacy');
     const data = loadAllstarItems(legacyDir);
     const pack = packs.obj;
+    const seqs = new Pack(path.join(content, 'pack/seq.pack'));
+    const seq = id => {
+        const name = seqs.name(id);
+        if (name === undefined) throw new Error(`seq ${id} is not in seq.pack`);
+        return name;
+    };
 
     // first pass: read every obj config so certs can see their link's name
     const files = walk(path.join(content, 'scripts')).filter(f => f.endsWith('.obj'));
@@ -429,6 +498,23 @@ export default function items({ root, content, packs, report }) {
             if (data.flags.twohanded(id)) {
                 lines.push('param=allstar_twohanded,yes');
             }
+            if (TWO_HANDERZ.includes(id)) {
+                lines.push(`param=allstar_twohanderz,${TWO_HANDERZ.indexOf(id)}`);
+            }
+            // stand/walk/run anims set when the item is wielded (only read for the weapon slot)
+            if (standAnim(id) !== 808) lines.push(`param=allstar_stand_anim,${seq(standAnim(id))}`);
+            if (walkAnim(id) !== 819) lines.push(`param=allstar_walk_anim,${seq(walkAnim(id))}`);
+            if (runAnim(id) !== 824) lines.push(`param=allstar_run_anim,${seq(runAnim(id))}`);
+            if (sledExempt(id)) lines.push('param=allstar_walk_sled_exempt,yes');
+            const wield = WIELD_OVERRIDES[id];
+            if (wield) {
+                lines.push(`param=allstar_wield_walk_anim,${seq(wield.walk)}`, `param=allstar_wield_run_anim,${seq(wield.run)}`);
+            }
+            const login = LOGIN_OVERRIDES[id];
+            if (login) {
+                if (login.stand) lines.push(`param=allstar_login_stand_anim,${seq(login.stand)}`);
+                lines.push(`param=allstar_login_walk_anim,${seq(login.walk)}`, `param=allstar_login_run_anim,${seq(login.run)}`);
+            }
         }
 
         if (data.value(id) !== 1) {
@@ -450,6 +536,10 @@ export default function items({ root, content, packs, report }) {
             stats.notes++;
             if (id > 0) {
                 lines.push(`param=allstar_unnote,${pack.name(id - 1)}`);
+            }
+            // bankItem prints the id when a note's id - 1 is a note too ("Item not supported <id>")
+            if (id === 0 || data.flags.note(id - 1)) {
+                lines.push(`param=allstar_id,${id}`);
             }
         }
         if (data.flags.note(id + 1) && pack.name(id + 1) !== undefined) {

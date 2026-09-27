@@ -25,6 +25,8 @@ param=crushattack_anim,human_banner_spike
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=1
 wearpos=righthand
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_sellable,yes
 param=allstar_note,cert_castlewars_saradomin_banner
 
@@ -64,6 +66,8 @@ param=crushattack_anim,human_banner_spike
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=1
 wearpos=righthand
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_sellable,yes
 param=allstar_note,cert_castlewars_zamorak_banner
 

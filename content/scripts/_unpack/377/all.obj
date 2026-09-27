@@ -2467,6 +2467,9 @@ param=decant_potion_enum,potion_2attack
 param=dose_count,3
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=144
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,144
 param=allstar_sellable,yes
 param=allstar_note,cert_3dose2attack
@@ -12877,6 +12880,9 @@ cost=58
 wearpos=righthand
 param=rangeattack,6
 param=allstar_twohanded,yes
+param=allstar_stand_anim,barrows_repeating_crossbow_ready
+param=allstar_walk_anim,barrows_repeating_crossbow_walk
+param=allstar_run_anim,barrows_repeating_crossbow_run
 param=allstar_value,58
 param=allstar_sellable,yes
 param=allstar_note,cert_crossbow
@@ -20456,6 +20462,8 @@ param=magicattack,1
 param=magicdefence,1
 param=strengthbonus,40
 param=allstar_req_attack,60
+param=allstar_login_walk_anim,slayer_abyssal_whip_walk
+param=allstar_login_run_anim,slayer_abyssal_whip_run
 param=allstar_value,19442
 param=allstar_sellable,yes
 param=allstar_note,cert_dragon_dagger
@@ -22545,6 +22553,7 @@ param=slashdefence,3
 param=crushdefence,2
 param=strengthbonus,71
 param=allstar_req_attack,60
+param=allstar_stand_anim,human_ds_ready
 param=allstar_value,100000
 param=allstar_sellable,yes
 param=allstar_note,cert_dragon_longsword
@@ -22869,6 +22878,9 @@ param=rangedefence,-1
 param=strengthbonus,70
 param=allstar_req_attack,40
 param=allstar_twohanded,yes
+param=allstar_twohanderz,1
+param=allstar_stand_anim,barrow_dharok_ready
+param=allstar_walk_anim,barrow_dharok_walk
 param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_note,cert_rune_2h_sword
@@ -23920,6 +23932,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,4
 param=strengthbonus,3
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,13
 param=allstar_sellable,yes
 param=allstar_note,cert_plainstaff
@@ -23966,6 +23981,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,3
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,1102
 param=allstar_sellable,yes
 param=allstar_note,cert_staff_of_air
@@ -24014,6 +24032,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,3
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,1102
 param=allstar_sellable,yes
 param=allstar_note,cert_staff_of_water
@@ -24064,6 +24085,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,5
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,1102
 param=allstar_sellable,yes
 param=allstar_note,cert_staff_of_earth
@@ -24113,6 +24137,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,6
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,1102
 param=allstar_sellable,yes
 param=allstar_note,cert_staff_of_fire
@@ -24162,6 +24189,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,7
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,160
 param=allstar_sellable,yes
 param=allstar_note,cert_magic_staff
@@ -24208,6 +24238,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,32
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,4823
 param=allstar_sellable,yes
 param=allstar_note,cert_battlestaff
@@ -24258,6 +24291,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,35
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,10328
 param=allstar_sellable,yes
 param=allstar_note,cert_fire_battlestaff
@@ -24308,6 +24344,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,35
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,10328
 param=allstar_sellable,yes
 param=allstar_note,cert_water_battlestaff
@@ -24356,6 +24395,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,35
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,10328
 param=allstar_sellable,yes
 param=allstar_note,cert_air_battlestaff
@@ -24406,6 +24448,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,35
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,10328
 param=allstar_sellable,yes
 param=allstar_note,cert_earth_battlestaff
@@ -24456,6 +24501,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,50
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,27143
 param=allstar_sellable,yes
 param=allstar_note,cert_mystic_fire_staff
@@ -24506,6 +24554,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,50
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,27143
 param=allstar_sellable,yes
 param=allstar_note,cert_mystic_water_staff
@@ -24604,6 +24655,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,50
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,27143
 param=allstar_sellable,yes
 param=allstar_note,cert_mystic_earth_staff
@@ -24647,6 +24701,9 @@ param=slashdefence,3
 param=crushdefence,1
 param=magicdefence,10
 param=strengthbonus,50
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,27143
 param=allstar_sellable,yes
 
@@ -24789,6 +24846,9 @@ param=crush_sound,scythe_double
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=1
 wearpos=righthand
+param=allstar_stand_anim,slayer_granite_maul_ready
+param=allstar_walk_anim,slayer_granite_maul_walk
+param=allstar_run_anim,slayer_granite_maul_run
 param=allstar_sellable,yes
 param=allstar_withdraw_stackable,yes
 
@@ -36152,6 +36212,7 @@ certtemplate=template_for_cert
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_flowers_waterfall_quest_black
+param=allstar_id,2478
 param=allstar_note,cert_poison
 
 [cert_poison]
@@ -36161,6 +36222,7 @@ certtemplate=template_for_cert
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_fish_food
+param=allstar_id,2479
 
 [cert_ground_charcoal]
 name=Firestarter
@@ -46257,6 +46319,7 @@ param=allstar_value,73
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_1dose1magic
+param=allstar_id,3048
 param=allstar_withdraw_stackable,yes
 
 [unidentified_toadflax]
@@ -46333,6 +46396,9 @@ param=crush_sound,staff_hit
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=11283
 wearpos=righthand
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,11283
 param=allstar_sellable,yes
 param=allstar_withdraw_stackable,yes
@@ -46362,6 +46428,9 @@ param=crush_sound,staff_hit
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=28670
 wearpos=righthand
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,28670
 param=allstar_sellable,yes
 param=allstar_note,cert_lava_battlestaff
@@ -46385,6 +46454,7 @@ param=allstar_value,28670
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_lava_battlestaff
+param=allstar_id,3056
 
 [black_dart]
 name=Black dart
@@ -46475,6 +46545,7 @@ param=allstar_value,42
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_bronze_claws
+param=allstar_id,3116
 param=allstar_note,cert_steel_claws
 param=allstar_withdraw_stackable,yes
 
@@ -46486,6 +46557,7 @@ param=allstar_value,140
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_iron_claws
+param=allstar_id,3117
 param=allstar_note,cert_black_claws
 param=allstar_withdraw_stackable,yes
 
@@ -46497,6 +46569,7 @@ param=allstar_value,281
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_steel_claws
+param=allstar_id,3118
 param=allstar_note,cert_mithril_claws
 param=allstar_withdraw_stackable,yes
 
@@ -46508,6 +46581,7 @@ param=allstar_value,366
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_black_claws
+param=allstar_id,3119
 param=allstar_note,cert_adamant_claws
 param=allstar_withdraw_stackable,yes
 
@@ -46519,6 +46593,7 @@ param=allstar_value,890
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_mithril_claws
+param=allstar_id,3120
 param=allstar_note,cert_rune_claws
 
 [cert_rune_claws]
@@ -46529,6 +46604,7 @@ param=allstar_value,8082
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_adamant_claws
+param=allstar_id,3121
 
 [granite_shield]
 name=Granite shield
@@ -47923,6 +47999,9 @@ param=slashdefence,4
 param=crushdefence,5
 param=strengthbonus,68
 param=allstar_req_attack,40
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_note,cert_rune_halberd
@@ -47963,6 +48042,9 @@ param=slashdefence,4
 param=crushdefence,5
 param=strengthbonus,129
 param=allstar_req_defence,60
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,5000000
 param=allstar_sellable,yes
 param=allstar_note,cert_dragon_halberd
@@ -55395,6 +55477,7 @@ param=allstar_value,1396
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_black_plateskirt_trim
+param=allstar_id,3669
 param=allstar_note,cert_adamant_plateskirt_trim
 param=allstar_withdraw_stackable,yes
 
@@ -55406,6 +55489,7 @@ param=allstar_value,4426
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_black_plateskirt_gold
+param=allstar_id,3670
 param=allstar_note,cert_adamant_plateskirt_gold
 param=allstar_withdraw_stackable,yes
 
@@ -55417,6 +55501,7 @@ param=allstar_value,4426
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_adamant_plateskirt_trim
+param=allstar_id,3671
 param=allstar_note,cert_rune_plateskirt_gold
 param=allstar_withdraw_stackable,yes
 
@@ -55428,6 +55513,7 @@ param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_adamant_plateskirt_gold
+param=allstar_id,3672
 param=allstar_note,cert_rune_plateskirt_trim
 param=allstar_withdraw_stackable,yes
 
@@ -55439,6 +55525,7 @@ param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_rune_plateskirt_gold
+param=allstar_id,3673
 param=allstar_note,cert_rune_plateskirt_zamorak
 param=allstar_withdraw_stackable,yes
 
@@ -55450,6 +55537,7 @@ param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_rune_plateskirt_trim
+param=allstar_id,3674
 param=allstar_note,cert_rune_plateskirt_saradomin
 param=allstar_withdraw_stackable,yes
 
@@ -55461,6 +55549,7 @@ param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_rune_plateskirt_zamorak
+param=allstar_id,3675
 param=allstar_note,cert_rune_plateskirt_guthix
 param=allstar_withdraw_stackable,yes
 
@@ -55472,6 +55561,7 @@ param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_rune_plateskirt_saradomin
+param=allstar_id,3676
 param=allstar_note,cert_rune_plateskirt_goldplate
 
 [cert_rune_plateskirt_goldplate]
@@ -55482,6 +55572,7 @@ param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_rune_plateskirt_guthix
+param=allstar_id,3677
 param=allstar_withdraw_stackable,yes
 
 [flamtaer_hammer]
@@ -58793,6 +58884,7 @@ param=allstar_value,160
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_readbook_dummy
+param=allstar_id,3852
 param=allstar_withdraw_stackable,yes
 
 [necklace_of_minigames_8]
@@ -62686,6 +62778,10 @@ wearpos=righthand
 param=slashattack,102
 param=strengthbonus,52
 param=allstar_req_attack,70
+param=allstar_walk_anim,slayer_abyssal_whip_run
+param=allstar_run_anim,slayer_abyssal_whip_run
+param=allstar_wield_walk_anim,slayer_abyssal_whip_walk
+param=allstar_wield_run_anim,slayer_abyssal_whip_run
 param=allstar_value,4000000
 param=allstar_sellable,yes
 param=allstar_note,cert_abyssal_whip
@@ -62721,6 +62817,12 @@ param=strengthbonus,79
 param=allstar_req_attack,50
 param=allstar_req_strength,50
 param=allstar_twohanded,yes
+param=allstar_stand_anim,slayer_granite_maul_ready
+param=allstar_walk_anim,slayer_granite_maul_walk
+param=allstar_run_anim,slayer_granite_maul_run
+param=allstar_login_stand_anim,barrow_dharok_ready
+param=allstar_login_walk_anim,barrow_dharok_walk
+param=allstar_login_run_anim,barrow_dharok_walk
 param=allstar_value,31715
 param=allstar_sellable,yes
 param=allstar_note,cert_granite_maul
@@ -63043,6 +63145,9 @@ param=crush_sound,staff_hit
 cost=13815
 wearpos=righthand
 param=allstar_req_slayer,80
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,13815
 param=allstar_sellable,yes
 param=allstar_note,cert_slayer_staff
@@ -65569,6 +65674,7 @@ param=allstar_name,Male ham
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_ham_boots
+param=allstar_id,4312
 param=allstar_withdraw_stackable,yes
 
 [roving_crystal_book]
@@ -69474,6 +69580,8 @@ weight=100g
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=0
 wearpos=righthand
+param=allstar_stand_anim,human_skipping_walk
+param=allstar_walk_anim,human_skipping_walk
 param=allstar_value,0
 param=allstar_sellable,yes
 
@@ -71065,6 +71173,9 @@ param=crushdefence,1
 param=magicdefence,15
 param=strengthbonus,50
 param=prayerbonus,-1
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,61608
 param=allstar_sellable,yes
 param=allstar_note,cert_staff_of_zaros
@@ -71680,6 +71791,9 @@ param=strengthbonus,68
 param=allstar_req_attack,70
 param=allstar_req_magic,70
 param=allstar_twohanded,yes
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,52726
 param=allstar_sellable,yes
 param=allstar_note,cert_barrows_ahrim_weapon
@@ -71854,6 +71968,9 @@ param=allstar_req_attack,70
 param=allstar_req_strength,70
 param=allstar_req_ranged,99
 param=allstar_twohanded,yes
+param=allstar_stand_anim,barrow_dharok_ready
+param=allstar_walk_anim,barrow_dharok_walk
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,124256
 param=allstar_sellable,yes
 param=allstar_note,cert_barrows_dharok_weapon
@@ -72039,6 +72156,9 @@ param=crushdefence,7
 param=strengthbonus,75
 param=allstar_req_attack,70
 param=allstar_twohanded,yes
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,61608
 param=allstar_sellable,yes
 param=allstar_note,cert_barrows_guthan_weapon
@@ -72222,6 +72342,9 @@ wearpos=righthand
 param=rangeattack,124
 param=allstar_req_ranged,70
 param=allstar_twohanded,yes
+param=allstar_stand_anim,barrows_repeating_crossbow_ready
+param=allstar_walk_anim,barrows_repeating_crossbow_walk
+param=allstar_run_anim,barrows_repeating_crossbow_run
 param=allstar_value,96642
 param=allstar_sellable,yes
 param=allstar_note,cert_barrows_karil_weapon
@@ -72713,6 +72836,8 @@ param=strengthbonus,72
 param=prayerbonus,6
 param=allstar_req_attack,70
 param=allstar_twohanded,yes
+param=allstar_stand_anim,barrow_guthan_ready
+param=allstar_walk_anim,barrow_guthan_walk
 param=allstar_value,96642
 param=allstar_sellable,yes
 param=allstar_note,cert_barrows_verac_weapon
@@ -78209,6 +78334,7 @@ param=allstar_value,0
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_raw_cave_eel
+param=allstar_id,5006
 param=allstar_note,cert_cave_eel
 
 [cert_cave_eel]
@@ -78219,6 +78345,7 @@ param=allstar_value,13
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_burnt_cave_eel
+param=allstar_id,5007
 
 [lost_tribe_brooch]
 name=Brooch
@@ -87458,6 +87585,7 @@ param=allstar_value,6787
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_basic_tk_helm
+param=allstar_id,5612
 param=allstar_note,cert_basic_tk_legs
 
 [cert_basic_tk_legs]
@@ -87468,6 +87596,7 @@ param=allstar_value,3494
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_basic_tk_body
+param=allstar_id,5613
 
 [magic_carpet]
 name=Magic carpet
@@ -90050,6 +90179,9 @@ param=magicdefence,5
 param=rangedefence,5
 param=strengthbonus,60
 param=allstar_req_defence,60
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,150000
 param=allstar_sellable,yes
 param=allstar_note,cert_dragon_spear_p++
@@ -96632,6 +96764,7 @@ param=allstar_value,22659
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_dagganoth_range_leg_part
+param=allstar_id,6175
 param=allstar_note,cert_dagganoth_melee_body
 param=allstar_withdraw_stackable,yes
 
@@ -96643,6 +96776,7 @@ param=allstar_value,40777
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_dagganoth_melee_helm
+param=allstar_id,6176
 param=allstar_note,cert_dagganoth_melee_legs
 
 [cert_dagganoth_melee_legs]
@@ -96653,6 +96787,7 @@ param=allstar_value,40176
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_dagganoth_melee_body
+param=allstar_id,6177
 
 [cert_evil_bob_uncooked_fish_correct]
 name=Fishmonger
@@ -102100,6 +102235,9 @@ param=crushdefence,5
 param=magicdefence,15
 param=strengthbonus,55
 param=prayerbonus,5
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,2253654
 param=allstar_sellable,yes
 
@@ -102216,6 +102354,7 @@ param=allstar_value,28670
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_tzhaar_splitsword
+param=allstar_id,6536
 param=allstar_note,cert_tzhaar_knife
 param=allstar_withdraw_stackable,yes
 
@@ -102227,6 +102366,7 @@ param=allstar_value,16327
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_tzhaar_spikeshield
+param=allstar_id,6537
 param=allstar_note,cert_tzhaar_staff
 param=allstar_withdraw_stackable,yes
 
@@ -102238,6 +102378,7 @@ param=allstar_value,22536
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_tzhaar_knife
+param=allstar_id,6538
 param=allstar_note,cert_tzhaar_mace
 param=allstar_withdraw_stackable,yes
 
@@ -102249,6 +102390,7 @@ param=allstar_value,19442
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_tzhaar_staff
+param=allstar_id,6539
 param=allstar_note,cert_tzhaar_maul
 
 [cert_tzhaar_maul]
@@ -102259,6 +102401,7 @@ param=allstar_value,31715
 param=allstar_sellable,yes
 param=allstar_is_note,yes
 param=allstar_unnote,cert_tzhaar_mace
+param=allstar_id,6540
 
 [twocats_mouse_toy]
 name=Mouse toy
@@ -102720,6 +102863,9 @@ weight=5lb
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=1
 wearpos=righthand
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:6562
 param=allstar_sellable,yes
 
@@ -102740,6 +102886,9 @@ weight=5lb
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=1
 wearpos=righthand
+param=allstar_stand_anim,human_ds_ready
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:6563
 param=allstar_sellable,yes
 
@@ -107454,6 +107603,7 @@ wearpos=righthand
 param=stabattack,3
 param=slashattack,3
 param=strengthbonus,20
+param=allstar_run_anim,human_monkeybars_walk
 param=allstar_value,3
 
 [devious_glowingpouch]
@@ -109105,6 +109255,8 @@ weight=7oz
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=1000
 wearpos=righthand
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
 param=allstar_value,1000
 
 [cert_magictraining_wand_master]
@@ -111738,6 +111890,9 @@ param=rangedefence,-1
 param=strengthbonus,93
 param=allstar_req_attack,60
 param=allstar_req_defence,60
+param=allstar_twohanderz,0
+param=allstar_stand_anim,barrow_dharok_ready
+param=allstar_walk_anim,barrow_dharok_walk
 param=allstar_value,3000000
 param=allstar_name,Dragon 2h Sword
 
@@ -116023,6 +116178,9 @@ param=rangedefence,150
 param=strengthbonus,150
 param=prayerbonus,150
 param=allstar_req_strength,80
+param=allstar_stand_anim,slayer_granite_maul_ready
+param=allstar_walk_anim,slayer_granite_maul_walk
+param=allstar_run_anim,slayer_granite_maul_run
 param=allstar_value,100000000
 param=allstar_name,Allstar's Hammer
 

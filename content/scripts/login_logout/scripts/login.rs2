@@ -29,6 +29,7 @@ if (%allstar_rights > 0 | ~allstar_is_named("D D 3") = true) {
 }
 
 ~initalltabs;
+~allstar_items_login; // item anims (setEquipment) and the per-cycle item timer
 ~update_all(inv_getobj(worn, ^wearpos_rhand));
 ~allstar_welcome;
 

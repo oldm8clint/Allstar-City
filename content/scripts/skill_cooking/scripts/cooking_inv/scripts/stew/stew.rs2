@@ -1,29 +1,3 @@
-[opheldu,potato]
-switch_obj (last_useitem) {
-    case bowl_water : @make_incomplete_stew(last_slot);
-    case stew2 : @make_uncooked_stew(last_slot, last_useslot);
-    case bowl_empty : @no_water_stew_message;
-    case raw_chompy : @quest_chompybird_add_ingredients_to_chompy_message;
-    case half_baked_bowl : @add_bowl_ingredient(last_item);
-    case default : ~displaymessage(^dm_default);
-};
-
-[opheldu,uncooked_stew]
-switch_obj (last_useitem) {
-    case spicespot : @make_curry;
-};
-
-[opheldu,spicespot]
-switch_obj (last_useitem) {
-    case uncooked_stew : @make_curry;
-};
-
-[opheld1,burnt_stew]
-inv_del(inv, burnt_stew, 1);
-inv_add(inv, bowl_empty, 1);
-mes("You empty the burnt stew from the bowl.");
-
-
 [label,no_water_stew_message]
 mes("I need some water before I can start making stew.");
 
@@ -72,8 +46,3 @@ inv_del(inv, spicespot, 1);
 
 inv_add(inv, uncooked_curry, 1);
 mes("You add the spice to the stew and make a curry.");
-
-[opheld1,burnt_curry]
-inv_del(inv, burnt_curry, 1);
-inv_add(inv, bowl_empty, 1);
-mes("You empty the burnt curry from the bowl.");

@@ -1,5 +1,3 @@
-[opplayeru,christmas_cracker] @player_pull_christmas_cracker;
-
 [label,player_pull_christmas_cracker]
 if (inv_total(inv, christmas_cracker) = 0) {
     return;

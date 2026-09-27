@@ -30,6 +30,11 @@ default=no
 type=boolean
 default=no
 
+// the id, only where a message prints it (a note whose id - 1 is also a note)
+[allstar_id]
+type=int
+default=-1
+
 [allstar_note]
 type=namedobj
 default=null
@@ -104,3 +109,48 @@ default=1
 [allstar_req_ranged]
 type=int
 default=1
+
+// client.twoHanderz index {0 = 7158, 1 = 1319, 2 = 6528, 3 = 14915}, -1 when not listed (packet 41)
+[allstar_twohanderz]
+type=int
+default=-1
+
+// client.GetStandAnim / GetWalkAnim / GetRunAnim of a wielded item (turn anims never change)
+[allstar_stand_anim]
+type=seq
+default=human_ready
+
+[allstar_walk_anim]
+type=seq
+default=human_walk_f
+
+[allstar_run_anim]
+type=seq
+default=human_running
+
+// GetWalkAnim returns before its sled check (feet 4084 -> walk 755) for these
+[allstar_walk_sled_exempt]
+type=boolean
+default=no
+
+// wear() and login (setEquipment) overrides: whip and cat toy walk 1660 / run 1661
+[allstar_wield_walk_anim]
+type=seq
+default=null
+
+[allstar_wield_run_anim]
+type=seq
+default=null
+
+// login-only (setEquipment) overrides: mauls 4153/6528 stand 2065 walk/run 2064, dragon dagger
+[allstar_login_stand_anim]
+type=seq
+default=null
+
+[allstar_login_walk_anim]
+type=seq
+default=null
+
+[allstar_login_run_anim]
+type=seq
+default=null

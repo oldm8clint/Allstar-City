@@ -1,0 +1,121 @@
+// Allstar-Scape item state (client.java fields). Not saved unless marked: Allstar-Scape reset
+// these at login. protect=no: written from the per-cycle soft timer.
+
+// playerSE / playerSEW / playerSER: stand, walk and run anims. Set by wielding a weapon, at login
+// (setEquipment) and by beer; removing the weapon keeps them.
+[allstar_anim_stand]
+type=seq
+protect=no
+
+[allstar_anim_walk]
+type=seq
+protect=no
+
+[allstar_anim_run]
+type=seq
+protect=no
+
+// potTimer0..6: boosted skills 0-6 lose a level when their timer is 0, then wait 250 cycles
+[allstar_pottimer_attack]
+protect=no
+
+[allstar_pottimer_defence]
+protect=no
+
+[allstar_pottimer_strength]
+protect=no
+
+[allstar_pottimer_hitpoints]
+protect=no
+
+[allstar_pottimer_ranged]
+protect=no
+
+[allstar_pottimer_prayer]
+protect=no
+
+[allstar_pottimer_magic]
+protect=no
+
+// the skill a potion reset this cycle (+ the cycle), so its first decay waits for the next cycle as
+// it did when process() ran before the packets
+[allstar_potion_stat]
+type=stat
+protect=no
+
+[allstar_potion_clock]
+protect=no
+
+// healing[]: a bite waits here until a weapon is wielded
+[allstar_eat_pending]
+protect=no
+
+[allstar_eat_min]
+protect=no
+
+[allstar_eat_max]
+protect=no
+
+[allstar_eat_obj]
+type=obj
+protect=no
+
+[allstar_eat_leftover]
+type=namedobj
+protect=no
+
+// prayer[]: bones buried by process() once a weapon is wielded and actionTimer is 0
+[allstar_bury_pending]
+protect=no
+
+[allstar_bury_xp]
+protect=no
+
+[allstar_bury_obj]
+type=obj
+protect=no
+
+[allstar_bury_slot]
+protect=no
+
+[allstar_bury_clock]
+protect=no
+
+// prayer[1]: the first bury of a session needs Prayer 1, later ones 0
+[allstar_bury_level_cleared]
+protect=no
+
+// actionTimer: counts down 1 per cycle. Skills that set it in Allstar-Scape should use
+// ~allstar_set_action_timer; bones wait for it.
+[allstar_action_timer]
+protect=no
+
+// drunkTimer / drunk (beer)
+[allstar_drunk_timer]
+protect=no
+
+[allstar_drunk]
+protect=no
+
+// god books (client holyBook/unholyBook/balanceBook): bit 0 holy, 1 unholy, 2 balance
+[allstar_books]
+protect=no
+
+// the chosen sermons (holyBook1-4, unholyBook1-4, balanceBook1-4) as bits 0-11
+[allstar_sermons]
+protect=no
+
+// preach2 (bit 0) / preach3 (bit 1): the next line to say
+[allstar_preach]
+protect=no
+
+[allstar_preach_timer]
+protect=no
+
+// preaching: 1 = play the book anim, 2 = reset
+[allstar_preaching]
+protect=no
+
+// ring of dueling menu open (duelring)
+[allstar_duelring]
+protect=no
