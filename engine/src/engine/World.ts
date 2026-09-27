@@ -33,6 +33,7 @@ import VarPlayerType from '#/cache/config/VarPlayerType.js';
 import VarSharedType from '#/cache/config/VarSharedType.js';
 import { CrcBuffer32, makeCrcs } from '#/cache/CrcTable.js';
 import WordEnc from '#/cache/wordenc/WordEnc.js';
+import AllstarLists from '#/engine/AllstarLists.js';
 import { BlockWalk } from '#/engine/entity/BlockWalk.js';
 import { EntityLifeCycle } from '#/engine/entity/EntityLifeCycle.js';
 import { NpcList } from '#/engine/entity/EntityList.js';
@@ -117,7 +118,8 @@ class World {
     private static readonly PLAYERS: number = 2047;
     private static readonly NPCS: number = Environment.runtime.maxNpcs;
 
-    private static readonly TICKRATE: number = 600; // ms (0.6s) - DO NOT CHANGE. This is only exposed for condensing time while testing long-running operations.
+    // ms per game cycle. Authentic RS2 is 600ms; Allstar-City runs Allstar-Scape's original 500ms cycle (NODE_TICKRATE).
+    private static readonly TICKRATE: number = Environment.node.tickrate;
 
     private static readonly INV_STOCKRATE: number = 100; // 1m shop restocks
 
@@ -1895,6 +1897,13 @@ class World {
 
             const { username, lowMemory, reconnecting, staffmodlevel, muted_until, members, messageCount } = msg;
             const save = msg.save ?? new Uint8Array();
+
+            // Allstar-City: Allstar-Scape's banned name and IP lists (::banuser, ::ipban)
+            if (AllstarLists.has('bannedusers', username) || AllstarLists.has('bannedips', client.remoteAddress)) {
+                client.send(Uint8Array.from([4]));
+                client.close();
+                return;
+            }
 
             // if (reconnecting && !this.getPlayerByUsername(username)) {
             //     // rejected

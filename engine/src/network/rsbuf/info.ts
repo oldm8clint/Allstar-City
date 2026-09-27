@@ -267,7 +267,8 @@ export class PlayerInfoEncoder {
 }
 
 export class NpcInfoEncoder {
-    private static readonly BITS_ADD = 14 + 11 + 5 + 5 + 1;
+    // Allstar-City: npc types are 13 bits (377 has 3852 npc types; 289 sent 11 bits)
+    private static readonly BITS_ADD = 14 + 13 + 5 + 5 + 1 + 1;
     private static readonly BITS_RUN = 1 + 2 + 3 + 3 + 1;
     private static readonly BITS_WALK = 1 + 2 + 3 + 1;
     private static readonly BITS_EXTEND = 1 + 2;
@@ -359,7 +360,7 @@ export class NpcInfoEncoder {
 
     private add(renderer: NpcRenderer, player: Player, other: Npc, nid: number, ntype: number, x: number, z: number, jump: boolean): void {
         this.buf.pbit(14, nid);
-        this.buf.pbit(11, ntype);
+        this.buf.pbit(13, ntype);
         this.buf.pbit(5, x);
         this.buf.pbit(5, z);
         this.buf.pbit(1, jump ? 1 : 0);

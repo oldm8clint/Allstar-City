@@ -33,6 +33,10 @@ export interface WorldConfig {
         hopTime: number;
         rateLimitAddressLogin: number;
         rateLimitDeviceLogin: number;
+        // Allstar-City: ms per game cycle (authentic: 600, Allstar-Scape: 500)
+        tickrate: number;
+        // Allstar-City: Allstar-Scape xp (whole xp units, half xp curve, strict level thresholds)
+        allstarXp: boolean;
     };
     login: {
         enabled: boolean;
@@ -106,7 +110,9 @@ export function createDefaultWorldConfig(): WorldConfig {
             debugProcChar: '~',
             hopTime: 45000,
             rateLimitAddressLogin: 30,
-            rateLimitDeviceLogin: 5
+            rateLimitDeviceLogin: 5,
+            tickrate: 600,
+            allstarXp: false
         },
         login: {
             enabled: false,
@@ -246,6 +252,8 @@ function migrateFromLegacyEnv(defaults: WorldConfig, env: Record<string, string>
     config.node.hopTime = tryParseInt(env.NODE_HOP_TIME, tryParseInt(env.NODE_MAX_NPCS, config.node.hopTime));
     config.node.rateLimitAddressLogin = tryParseInt(env.NODE_RATELIMIT_ADDRESS_LOGIN, config.node.rateLimitAddressLogin);
     config.node.rateLimitDeviceLogin = tryParseInt(env.NODE_RATELIMIT_DEVICE_LOGIN, config.node.rateLimitDeviceLogin);
+    config.node.tickrate = tryParseInt(env.NODE_TICKRATE, config.node.tickrate);
+    config.node.allstarXp = tryParseBoolean(env.NODE_ALLSTAR_XP, config.node.allstarXp);
 
     config.login.enabled = tryParseBoolean(env.LOGIN_SERVER, config.login.enabled);
     config.login.host = tryParseString(env.LOGIN_HOST, config.login.host);
@@ -289,41 +297,49 @@ export function getDatabaseUrl(config: WorldConfig): string {
     return `mysql://${user}:${pass}@${config.db.host}:${config.db.port}/${config.db.name}`;
 }
 
+// Allstar-City: settings are layered defaults < data/config/world.json < .env < process.env.
+// Every Allstar-City checkout keeps its ports and options in engine/.env (the 377 engine's format), so
+// .env is read on every start instead of being migrated once into world.json.
+const LEGACY_ENV_PREFIXES = ['EASY_STARTUP', 'WEBSITE_', 'WEB_', 'ENGINE_', 'NODE_', 'LOGIN_', 'FRIEND_', 'LOGGER_', 'DB_', 'KYSELY_', 'BUILD_'];
+
+function legacyProcessEnv(): Record<string, string> {
+    const env: Record<string, string> = {};
+    for (const [key, value] of Object.entries(process.env)) {
+        if (typeof value === 'string' && LEGACY_ENV_PREFIXES.some(prefix => key.startsWith(prefix))) {
+            env[key] = value;
+        }
+    }
+    return env;
+}
+
 export function loadWorldConfig(): WorldConfig {
-    const defaults = createDefaultWorldConfig();
+    let config = createDefaultWorldConfig();
 
     if (fs.existsSync(worldConfigPath)) {
         try {
             const raw = fs.readFileSync(worldConfigPath, 'utf8');
-            const parsed = JSON.parse(raw);
-            return normalizeWorldConfig(parsed);
+            config = normalizeWorldConfig(JSON.parse(raw));
         } catch (error) {
             if (error instanceof Error) {
                 console.warn(`[Config] Failed to parse ${worldConfigPath}: ${error.message}. Using defaults.`);
             } else {
                 console.warn(`[Config] Failed to parse ${worldConfigPath}. Using defaults.`);
             }
-
-            return defaults;
         }
     }
 
+    let env: Record<string, string> = {};
     if (fs.existsSync(legacyEnvPath)) {
         try {
-            const env = parseLegacyEnvFile(legacyEnvPath);
-            const migrated = migrateFromLegacyEnv(defaults, env);
-            saveWorldConfig(migrated);
-            return migrated;
+            env = parseLegacyEnvFile(legacyEnvPath);
         } catch (error) {
             if (error instanceof Error) {
-                console.warn(`[Config] Failed to migrate ${legacyEnvPath}: ${error.message}. Using defaults.`);
+                console.warn(`[Config] Failed to read ${legacyEnvPath}: ${error.message}.`);
             } else {
-                console.warn(`[Config] Failed to migrate ${legacyEnvPath}. Using defaults.`);
+                console.warn(`[Config] Failed to read ${legacyEnvPath}.`);
             }
-
-            return defaults;
         }
     }
 
-    return defaults;
+    return migrateFromLegacyEnv(config, { ...env, ...legacyProcessEnv() });
 }

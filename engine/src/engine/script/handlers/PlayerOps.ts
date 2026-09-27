@@ -43,6 +43,9 @@ import IfSetAnim from '#/network/game/server/model/IfSetAnim.js';
 import IfSetColour from '#/network/game/server/model/IfSetColour.js';
 import IfSetHide from '#/network/game/server/model/IfSetHide.js';
 import IfSetModel from '#/network/game/server/model/IfSetModel.js';
+import IfOpenFull from '#/network/game/server/model/IfOpenFull.js';
+import IfSetAngle from '#/network/game/server/model/IfSetAngle.js';
+import IfSetRotation from '#/network/game/server/model/IfSetRotation.js';
 import IfSetNpcHead from '#/network/game/server/model/IfSetNpcHead.js';
 import IfSetObject from '#/network/game/server/model/IfSetObject.js';
 import IfSetPlayerHead from '#/network/game/server/model/IfSetPlayerHead.js';
@@ -686,6 +689,33 @@ const PlayerOps: CommandHandlers = {
 
     [ScriptOpcode.IF_SETTABACTIVE]: state => {
         state.activePlayer.write(new IfSetTabActive(check(state.popInt(), NumberNotNull)));
+    },
+
+    // Allstar-City: 377 interface commands
+    [ScriptOpcode.IF_SETANGLE]: state => {
+        const [com, xan, yan, zoom] = state.popInts(4);
+
+        check(com, NumberNotNull);
+        check(xan, NumberNotNull);
+        check(yan, NumberNotNull);
+        check(zoom, NumberNotNull);
+
+        state.activePlayer.write(new IfSetAngle(xan, com, zoom, yan));
+    },
+
+    [ScriptOpcode.IF_SETROTATION]: state => {
+        const [com, xAngleSpeed, yAngleSpeed] = state.popInts(3);
+
+        check(com, NumberNotNull);
+        check(xAngleSpeed, NumberNotNull);
+        check(yAngleSpeed, NumberNotNull);
+
+        state.activePlayer.write(new IfSetRotation(xAngleSpeed, com, yAngleSpeed));
+    },
+
+    [ScriptOpcode.IF_OPENFULL]: state => {
+        const [overlayCom, mainCom] = state.popInts(2);
+        state.activePlayer.write(new IfOpenFull(overlayCom, mainCom));
     },
 
     [ScriptOpcode.IF_SETMODEL]: state => {

@@ -189,7 +189,8 @@ const ScriptOpcodePointers: {
         require: ['active_player']
     },
     [ScriptOpcode.IF_SETANIM]: {
-        require: ['active_player']
+        require: ['active_player'],
+        require2: ['active_player2']
     },
     [ScriptOpcode.IF_SETCOLOUR]: {
         require: ['active_player']
@@ -211,7 +212,8 @@ const ScriptOpcodePointers: {
         require: ['active_player']
     },
     [ScriptOpcode.IF_SETPOSITION]: {
-        require: ['active_player']
+        require: ['active_player'],
+        require2: ['active_player2']
     },
     [ScriptOpcode.IF_ADDRESUMEBUTTON]: {
         require: ['active_player']
@@ -270,7 +272,8 @@ const ScriptOpcodePointers: {
         require2: ['active_player2']
     },
     [ScriptOpcode.MIDI_JINGLE]: {
-        require: ['active_player']
+        require: ['active_player'],
+        require2: ['active_player2']
     },
     [ScriptOpcode.MIDI_SONG]: {
         require: ['active_player']
@@ -1022,6 +1025,45 @@ const ScriptOpcodePointers: {
     },
     [ScriptOpcode.DB_LISTALL_WITH_COUNT]: {
         set: ['find_db']
+    },
+
+    // Allstar-City: 377 commands
+    [ScriptOpcode.IF_OPENFULL]: {
+        require: ['active_player']
+    },
+    [ScriptOpcode.IF_SETANGLE]: {
+        require: ['active_player']
+    },
+    [ScriptOpcode.IF_SETROTATION]: {
+        require: ['active_player']
+    },
+    [ScriptOpcode.NPC_TELEJUMP]: {
+        require: ['active_npc'],
+        require2: ['active_npc2']
+    },
+
+    // Allstar-City
+    [ScriptOpcode.FINDNAME]: {
+        set: ['active_player'],
+        set2: ['active_player2'],
+        corrupt: ['p_active_player'],
+        corrupt2: ['p_active_player2'],
+        conditional: true
+    },
+    [ScriptOpcode.PLAYERALL]: {
+        set: ['find_player']
+    },
+    [ScriptOpcode.SETSTAFFMODLEVEL]: {
+        require: ['active_player'],
+        require2: ['active_player2']
+    },
+    [ScriptOpcode.P_KICK]: {
+        require: ['active_player'],
+        require2: ['active_player2']
+    },
+    [ScriptOpcode.IPADDRESS]: {
+        require: ['active_player'],
+        require2: ['active_player2']
     }
 };
 

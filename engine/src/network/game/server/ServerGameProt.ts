@@ -21,6 +21,11 @@ export default class ServerGameProt {
     static readonly IF_SETPOSITION = new ServerGameProt(79, 6);
     static readonly IF_SETSCROLLPOS = new ServerGameProt(184, 4);
 
+    // Allstar-City: 377 interface packets carried over to the 289 protocol (opcodes unused in 289)
+    static readonly IF_OPENFULL = new ServerGameProt(5, 4);
+    static readonly IF_SETANGLE = new ServerGameProt(186, 8);
+    static readonly IF_SETROTATION = new ServerGameProt(3, 6);
+
     // tutorial area
     static readonly TUT_FLASH = new ServerGameProt(181, 1);
     static readonly TUT_OPEN = new ServerGameProt(12, 2);
