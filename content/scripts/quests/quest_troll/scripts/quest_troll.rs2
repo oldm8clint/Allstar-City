@@ -188,13 +188,8 @@ if(stat_random(agility, 125, 250) = false) {
 ~update_bas;
 stat_advance(agility, 10);
 
-[oploc1,troll_stronghold_door]
-p_teleport(2_44_157_21_42);
-if(%troll_entered_stronghold = ^false) %troll_entered_stronghold = ^true;
-
 [oploc1,troll_stronghold_top_exit_mid]
 p_teleport(0_44_57_24_42);
-
 
 [oploc1,troll_stronghold_stairstop]
 p_arrivedelay;
@@ -213,13 +208,6 @@ switch_int(loc_angle) {
     case ^loc_east : p_teleport(movecoord(loc_coord, 0, 1, -1));
     case default : mes("Unhandled troll stairs, loc_angle <tostring(loc_angle)>");
 }
-
-[oploc1,eadgar_kitchen_drawers]
-p_arrivedelay;
-anim(human_openchest, 0);
-sound_synth(cupboard_open, 1, 0);
-p_delay(0);
-loc_change(eadgar_kitchen_drawers_open, 300);
 
 [oploc1,eadgar_kitchen_drawers_open]
 p_arrivedelay;

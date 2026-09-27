@@ -1,0 +1,38 @@
+// Allstar-Scape item on player: packet 14 (L20504-20580), npc_item_handlers.md section 8.
+// Handled as soon as the target is in approach range (the packet had no distance check). The
+// item-giving code was commented out, so nothing changes hands. Allstar-Scape logged every use;
+// item-on-player triggers cannot be global, so only the items it reacted to are logged here.
+[applayeru,dwarf_goldrock_helmet] @allstar_item_on_player;
+[applayeru,drill_helm] @allstar_item_on_player;
+[applayeru,caveorb1] @allstar_item_on_player;
+
+[label,allstar_item_on_player]
+def_obj $obj = last_useitem;
+allstar_log("giveitemlogs", "[<displayname>] gives/uses item [<oc_debugname($obj)>] on player: [<.displayname>]");
+if ($obj = dwarf_goldrock_helmet | $obj = drill_helm) {
+    mes("You can't trade this item.");
+}
+// Orb of light: spams players in the wilderness (y >= 3523); not consumed, no cooldown
+if ($obj = caveorb1) {
+    if (coordz(coord) < 3523 & coordx(coord) < 2954) {
+        mes("Move into the wilderness to use this spell on a player.");
+    }
+}
+if (coordz(coord) >= 3523 & coordz(.coord) >= 3523 & $obj = caveorb1) {
+    mes("You spam the enemy!");
+    .mes("You have been spammed!");
+    ~.allstar_spam_menu;
+}
+
+// client.SpamMenu on the target: scroll 8134 titled "@dre@SPAM" with three "@dbl@SPAM" lines
+[proc,.allstar_spam_menu]
+.if_settext(questjournal:com_3, "@dre@SPAM");
+def_int $line = 0;
+while ($line <= 99) {
+    .if_settext(enum(int, component, allstar_scroll_lines, $line), "");
+    $line = calc($line + 1);
+}
+.if_settext(enum(int, component, allstar_scroll_lines, 0), "@dbl@SPAM");
+.if_settext(enum(int, component, allstar_scroll_lines, 1), "@dbl@SPAM");
+.if_settext(enum(int, component, allstar_scroll_lines, 2), "@dbl@SPAM");
+.if_openmain(questjournal);

@@ -1,5 +1,3 @@
-[oploc1,_prayer_altar] @pray_at_altar(stat_base(prayer));
-
 [label,pray_at_altar](int $amount)
 // p in "Prayer" is uppercase in osrs. but old videos such as: https://youtu.be/Rif_5-90nkI?t=210
 // are lower case

@@ -1,9 +1,4 @@
 // Source: https://youtu.be/JrsT--Rr0Kk?t=519
-[opheld1,ardougne_book]
-%book_page = 0;
-%open_book = ardougne_book;
-@open_guide_ardougne;
-
 [label,open_guide_ardougne]
 @book_flip_page(0, 0, 3, guide_ardougne);
 

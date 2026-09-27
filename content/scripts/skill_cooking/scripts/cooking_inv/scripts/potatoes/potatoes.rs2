@@ -1,24 +1,3 @@
-[opheldu,potato_baked]
-if (last_useitem = pot_of_butter) {
-    @make_potato_butter;
-} else {
-    ~displaymessage(^dm_default);
-}
-
-[opheldu,pot_of_butter]
-if (last_useitem = potato_baked) {
-    @make_potato_butter;
-} else {
-    ~displaymessage(^dm_default);
-}
-
-[opheldu,potato_butter]
-if (last_useitem = cheese) {
-    @make_cheese_potato;
-} else {
-    ~displaymessage(^dm_default);
-}
-
 [label,make_potato_butter]
 if (stat_base(cooking) < 39) {
     ~mesbox("You need a Cooking level of 39 to do make a Potato with butter.");

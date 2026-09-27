@@ -8,9 +8,11 @@ model=obj_trollromance_toboggon
 manwear=obj_trollromance_toboggon_manwear,0
 womanwear=obj_trollromance_toboggon_manwear,0
 members=yes
-cost=150
-wearpos=righthand
 weight=18g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=121489
+param=allstar_value,121489
+param=allstar_sellable,yes
 
 [trollromance_toboggon_waxed]
 name=Sled
@@ -29,9 +31,6 @@ iop2=Ride
 manwear=obj_trollromance_toboggon_manwear,0
 womanwear=obj_trollromance_toboggon_manwear,0
 members=yes
-cost=175
-wearpos=righthand
-wearpos2=lefthand
 weight=18g
 param=ready_baseanim,trollromance_toboggan_ready
 param=turnonspot_baseanim,trollromance_toboggan_walking
@@ -41,6 +40,11 @@ param=walk_l_baseanim,trollromance_toboggan_walking
 param=walk_r_baseanim,trollromance_toboggan_walking
 param=running_baseanim,trollromance_toboggan_walking
 param=defend_anim,trollromance_toboggan_defend
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=140821
+wearpos=righthand
+param=allstar_value,140821
+param=allstar_sellable,yes
 
 [trollromance_wax]
 name=Wax
@@ -54,9 +58,11 @@ womanwear=obj_trollromance_wax_manwear,0
 2dyan=1936
 2dxan=176
 members=yes
-cost=15
-wearpos=lefthand
 weight=25g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=13
+param=allstar_value,13
+param=allstar_sellable,yes
 
 [trollromance_rare_flower]
 name=Trollweiss
@@ -80,6 +86,10 @@ iop2=Wield
 manwear=obj_flowers_waterfall_quest_manwear,0
 womanwear=obj_flowers_waterfall_quest_manwear,6
 members=yes
-cost=5
 weight=1oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
 wearpos=righthand
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes

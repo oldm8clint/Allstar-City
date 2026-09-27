@@ -6,12 +6,16 @@ model=obj_bowl_tomato
 2dzoom=890
 2dyan=36
 2dxan=156
-cost=3
 members=yes
 iop1=Eat
 weight=200g
 category=category_86
 param=ugthanki_kebab_struct,chopped_tomato_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2
+param=allstar_value,2
+param=allstar_sellable,yes
+param=allstar_note,cert_bowl_tomato
 
 [bowl_onion]
 name=Chopped onion
@@ -21,11 +25,15 @@ model=obj_bowl_onion
 2dzoom=890
 2dyan=36
 2dxan=156
-cost=3
 members=yes
 iop1=Eat
 category=category_131
 param=ugthanki_kebab_struct,chopped_onion_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2
+param=allstar_value,2
+param=allstar_sellable,yes
+param=allstar_note,cert_bowl_onion
 
 [bowl_ugthanki]
 name=Chopped ugthanki
@@ -35,10 +43,14 @@ model=obj_bowl_ugthanki
 2dzoom=890
 2dyan=36
 2dxan=156
-cost=5
 weight=200g
 members=yes
 param=ugthanki_kebab_struct,chopped_ugthanki_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_bowl_ugthanki
 
 [bowl_oniontomato]
 name=Onion & tomato
@@ -48,12 +60,16 @@ model=obj_bowl_ugthanki
 2dzoom=890
 2dyan=36
 2dxan=156
-cost=5
 members=yes
 iop1=Eat
 weight=300g
 category=category_131
 param=ugthanki_kebab_struct,chopped_onion_tomato_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_bowl_oniontomato
 
 [bowl_ugthankionion]
 name=Ugthanki & onion
@@ -63,10 +79,14 @@ model=obj_bowl_ugthanki
 2dzoom=890
 2dyan=36
 2dxan=156
-cost=7
 members=yes
 weight=300g
 param=ugthanki_kebab_struct,chopped_ugthanki_onion_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=6
+param=allstar_value,6
+param=allstar_sellable,yes
+param=allstar_note,cert_bowl_ugthankionion
 
 [bowl_ugthankitomato]
 name=Ugthanki & tomato
@@ -76,10 +96,14 @@ model=obj_bowl_ugthanki
 2dzoom=890
 2dyan=36
 2dxan=156
-cost=7
 weight=300g
 members=yes
 param=ugthanki_kebab_struct,chopped_ugthanki_tomato_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=6
+param=allstar_value,6
+param=allstar_sellable,yes
+param=allstar_note,cert_bowl_ugthankitomato
 
 [bowl_oniontomugthanki]
 name=Kebab mix
@@ -89,9 +113,13 @@ model=obj_bowl_ugthanki
 2dzoom=890
 2dyan=36
 2dxan=156
-cost=9
 members=yes
 weight=400g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=8
+param=allstar_value,8
+param=allstar_sellable,yes
+param=allstar_note,cert_bowl_oniontomugthanki
 
 [ugthanki_kebab_bad]
 name=Ugthanki kebab
@@ -103,11 +131,15 @@ model=obj_ugthanki_kebab_bad
 2dyan=1844
 2dzan=176
 2dxan=1876
-cost=20
 members=yes
 iop1=Eat
 weight=500g
 category=category_59
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=17
+param=allstar_value,17
+param=allstar_sellable,yes
+param=allstar_note,cert_ugthanki_kebab_bad
 
 [ugthanki_kebab]
 name=Ugthanki kebab
@@ -119,8 +151,12 @@ model=obj_ugthanki_kebab_bad
 2dyan=1844
 2dzan=176
 2dxan=1876
-cost=20
 members=yes
 iop1=Eat
 weight=500g
 category=category_59
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=17
+param=allstar_value,17
+param=allstar_sellable,yes
+param=allstar_note,cert_ugthanki_kebab

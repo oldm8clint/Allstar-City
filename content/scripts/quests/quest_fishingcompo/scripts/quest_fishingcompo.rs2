@@ -1,9 +1,3 @@
-[oploc1,tunnelstairstop] @dwarven_tunnel;
-[oploc1,tunnelstairstop2] @dwarven_tunnel;
-
-[oploc1,tunnelstairs] p_telejump(0_44_54_4_30);
-[oploc1,tunnelstairs2] p_telejump(0_44_54_61_26);
-
 [label,dwarven_tunnel]
 if(%fishingcompo = ^fishingcompo_complete) {
     if(loc_type = tunnelstairstop) {

@@ -1,4 +1,0 @@
-[opplayer5,_]
-if (~in_castlewars_game(coord) = true) {
-    @castlewars_takefrom;
-}

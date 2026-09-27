@@ -5,7 +5,6 @@ recol1s=15360
 recol1d=25096
 recol2s=16129
 recol2d=30385
-cost=120
 model=obj_premade_worm_batta
 2dxof=1
 2dyof=32
@@ -16,6 +15,11 @@ iop1=Eat
 members=yes
 weight=250g
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=98
+param=allstar_value,98
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_worm_batta
 
 [premade_toad_batta]
 name=Toad batta
@@ -30,9 +34,13 @@ model=obj_premade_worm_batta
 2dxan=236
 iop1=Eat
 members=yes
-cost=120
 weight=250g
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=98
+param=allstar_value,98
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_toad_batta
 
 [premade_cheese+tom_batta]
 name=Cheese+tom batta
@@ -47,9 +55,13 @@ model=obj_premade_worm_batta
 2dxan=236
 iop1=Eat
 members=yes
-cost=120
 weight=250g
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=98
+param=allstar_value,98
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_cheese+tom_batta
 
 [premade_fruit_batta]
 name=Fruit batta
@@ -64,9 +76,13 @@ model=obj_premade_worm_batta
 2dxan=236
 iop1=Eat
 members=yes
-cost=120
 weight=250g
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=98
+param=allstar_value,98
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_fruit_batta
 
 [premade_vegetable_batta]
 name=Vegetable batta
@@ -83,9 +99,13 @@ model=obj_premade_worm_batta
 2dxan=236
 iop1=Eat
 members=yes
-cost=120
 weight=250g
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=98
+param=allstar_value,98
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_vegetable_batta
 
 [spoilt_batta]
 name=Odd batta
@@ -96,7 +116,6 @@ recol2s=16129
 recol2d=15841
 recol3s=15648
 recol3d=15744
-cost=2
 members=yes
 model=obj_premade_worm_batta
 2dxof=1
@@ -107,13 +126,16 @@ model=obj_premade_worm_batta
 iop1=Eat
 weight=250g
 category=gnome_unf_odd_batta
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spoilt_batta
 
 [burnt_batta]
 name=Burnt batta
 desc=This batta has been burnt to a cinder.
 recol1s=23146
 recol1d=5285
-cost=1
 members=yes
 model=obj_burnt_batta
 2dxof=1
@@ -122,6 +144,10 @@ model=obj_burnt_batta
 2dyan=136
 2dxan=236
 weight=200g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_batta
 
 [half_baked_batta]
 name=Half baked batta
@@ -129,7 +155,6 @@ desc=This gnome batta is in the early stages of preparation.
 recol1s=23146
 recol1d=18820
 iop1=Inspect
-cost=2
 members=yes
 model=obj_half_baked_batta
 2dxof=1
@@ -138,12 +163,13 @@ model=obj_half_baked_batta
 2dyan=136
 2dxan=236
 weight=250g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
 
 [raw_batta]
 name=Raw batta
 desc=This gnome batta needs cooking.
-cost=2
 members=yes
 model=obj_half_baked_batta
 2dxof=1
@@ -152,7 +178,10 @@ model=obj_half_baked_batta
 2dyan=136
 2dxan=236
 weight=250g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [unfinished_worm_batta]
 name=Unfinished batta
@@ -172,6 +201,10 @@ category=gnome_unf_odd_batta
 members=yes
 weight=250g
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_worm_batta
 
 [worm_batta]
 name=Worm batta
@@ -190,13 +223,16 @@ iop1=Eat
 category=gnome_batta
 members=yes
 weight=250g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_worm_batta
 
 [toad_batta]
 name=Toad batta
 desc=It actually smells quite good.
 recol1s=15360
 recol1d=224
-cost=2
 model=obj_premade_worm_batta
 2dxof=1
 2dyof=32
@@ -207,6 +243,10 @@ iop1=Eat
 category=gnome_batta
 members=yes
 weight=250g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_toad_batta
 
 [unfinished_cheese+tom_batta]
 name=Unfinished batta
@@ -224,13 +264,16 @@ category=gnome_unf_odd_batta
 members=yes
 weight=250g
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_cheese+tom_batta
 
 [cheese+tom_batta]
 name=Cheese+tom batta
 desc=This smells really good.
 recol1s=16129
 recol1d=31649
-cost=2
 model=obj_premade_worm_batta
 2dxof=1
 2dyof=32
@@ -241,6 +284,10 @@ iop1=Eat
 category=gnome_batta
 weight=250g
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_cheese+tom_batta
 
 [fruitless_batta]
 name=Unfinished batta
@@ -260,6 +307,10 @@ category=gnome_unf_odd_batta
 weight=250g
 members=yes
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruitless_batta
 
 [fruit_batta_lime]
 name=Unfinished batta
@@ -279,6 +330,10 @@ weight=250g
 members=yes
 category=gnome_unf_odd_batta
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_batta_lime
 
 [fruit_batta_orange]
 name=Unfinished batta
@@ -298,6 +353,10 @@ category=gnome_unf_odd_batta
 weight=250g
 members=yes
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_batta_orange
 
 [fruit_batta_pineapple]
 name=Unfinished batta
@@ -317,6 +376,10 @@ category=gnome_unf_odd_batta
 weight=250g
 members=yes
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_batta_pineapple
 
 [fruit_batta_limeorange]
 name=Unfinished batta
@@ -336,6 +399,10 @@ members=yes
 category=gnome_unf_odd_batta
 weight=250g
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_batta_limeorange
 
 [fruit_batta_limepineapple]
 name=Unfinished batta
@@ -355,6 +422,10 @@ iop1=Eat
 weight=250g
 category=gnome_unf_odd_batta
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_batta_limepineapple
 
 [fruit_batta_orangepineapple]
 name=Unfinished batta
@@ -374,6 +445,10 @@ category=gnome_unf_odd_batta
 weight=250g
 members=yes
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_batta_orangepineapple
 
 [unfinished_fruit_batta]
 name=Unfinished batta
@@ -391,13 +466,16 @@ category=gnome_unf_odd_batta
 weight=250g
 members=yes
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_fruit_batta
 
 [fruit_batta]
 name=Fruit batta
 desc=It actually smells quite good.
 recol1s=15360
 recol1d=31201
-cost=2
 model=obj_premade_worm_batta
 2dxof=1
 2dyof=32
@@ -408,6 +486,10 @@ iop1=Eat
 category=gnome_batta
 weight=250g
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_batta
 
 [unfinished_vegetable_batta]
 name=Unfinished batta
@@ -427,6 +509,10 @@ category=gnome_unf_odd_batta
 weight=250g
 members=yes
 param=gnome_cooking_type,3
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_vegetable_batta
 
 
 [vegetable_batta]
@@ -436,7 +522,6 @@ recol1s=15360
 recol1d=24609
 recol2s=16129
 recol2d=27567
-cost=2
 model=obj_premade_worm_batta
 2dxof=1
 2dyof=32
@@ -447,3 +532,7 @@ iop1=Eat
 weight=250g
 members=yes
 category=gnome_batta
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_vegetable_batta

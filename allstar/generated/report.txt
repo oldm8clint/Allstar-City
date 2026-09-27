@@ -5,3 +5,164 @@ NPC spawns: 486 placed, 6 skipped
   - autospawn.cfg:56 npc 2026 at 3553,3000 is outside the map
   - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
   - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map
+Items (< 7956): 7956 obj configs, 1571 wearable, 928 stackable, 2042 notes, 1235 with an Allstar server name, 598 wear requirements
+Custom items: 154 objs (6 with stand-in models), 222 allstar_items entries
+World objects: 509 placements (27 exact duplicates, 1 overwritten, 0 removed again), 67 removals
+  479 tiles placed on levels 0-3, 2 skipped; 1356 upper-level copies have no floor under them
+  - skipped client.java:1829 loc 61 at 2854,3957: no map square
+  - skipped client.java:2119 loc 6473 at 3444,9792: no map square
+  - overwritten client.java:1879 6477 at 3101,3513 replaced by client.java:2029 6472
+  Lost City locs replaced by placements (14):
+    0 2572,3853 816 pier_shadow_on_water shape 10 -> 9398
+    0 2892,9907 1757 loc_1757 shape 10 -> 4626
+    0 2373,3433 1187 blueflower shape 10 -> 4877
+    0 2373,3437 1187 blueflower shape 11 -> 2565
+    1 3426,3536 4519 slayer_corpse2 shape 10 -> 2213
+    0 3286,3211 631 gemmarket shape 10 -> 2562
+    1 2513,3857 4245 viking_abode_poor_roof_corner2 shape 10 -> 210
+    0 3078,3552 14516 wild0_tree_stump shape 10 -> 6472
+    1 2853,2957 1113 stool_bamboo shape 11 -> 2213
+    1 2851,2957 1113 stool_bamboo shape 11 -> 2213
+    0 3442,3520 3457 ornaterailing shape 9 -> 1032
+    0 2378,3427 1187 blueflower shape 11 -> 12120
+    0 3248,9364 6420 fd_firedungeon_shutchest shape 10 -> 10689
+    2 2758,3493 821 cannon shape 10 -> 11758
+  Lost City locs removed by Deleteobjects/Deletewalls (65):
+    0 2895,3513 1738 loc_1738 shape 10
+    0 2885,3515 1289 deadtree2_dark shape 10
+    0 2883,3511 1289 deadtree2_dark shape 10
+    0 2886,3514 1315 evergreen shape 10
+    0 2883,3512 1316 evergreen_large shape 10
+    0 2883,3508 1316 evergreen_large shape 10
+    0 2886,3506 1315 evergreen shape 10
+    0 2886,3510 1289 deadtree2_dark shape 10
+    0 2785,3175 1401 jungleplant2 shape 10
+    0 2891,3511 1516 loc_1516 shape 0
+    0 2891,3510 1519 loc_1519 shape 0
+    0 2790,3177 1534 loc_1534 shape 0
+    0 2794,3180 1534 loc_1534 shape 0
+    0 2816,3183 1597 membergater shape 0
+    0 2816,3182 1596 membergatel shape 0
+    0 2847,9637 2608 elvarg_gate_left shape 0
+    0 2847,9636 2607 elvarg_gate_right shape 0
+    0 2836,9600 2606 dragonsecretdoor shape 0
+    0 2811,3170 2626 grubordoor shape 0
+    0 3292,3167 1506 loc_1506 shape 0
+    0 3287,3171 1508 loc_1508 shape 0
+    0 3293,3167 1508 loc_1508 shape 0
+    0 3298,3171 1506 loc_1506 shape 0
+    0 2799,3154 612 counter shape 10
+    0 2798,3156 612 counter shape 10
+    0 2797,3156 885 barpumps shape 10
+    0 2796,3156 885 barpumps shape 10
+    0 2795,3156 885 barpumps shape 10
+    0 2794,3156 364 barrelwithtap shape 10
+    0 2791,3157 364 barrelwithtap shape 10
+    0 2794,3157 1100 barstool shape 10
+    0 2796,3157 1100 barstool shape 10
+    0 2797,3157 1100 barstool shape 10
+    0 2799,3157 271 anchor shape 10
+    0 2795,3159 1088 chair shape 10
+    0 2794,3160 1088 chair shape 10
+    0 2794,3161 1088 chair shape 10
+    0 2795,3160 594 bigtable shape 10
+    0 2797,3161 1088 chair shape 10
+    0 2798,3159 1089 smashedchair shape 10
+    0 2799,3160 1088 chair shape 10
+    0 2799,3161 1089 smashedchair shape 10
+    0 2798,3160 594 bigtable shape 10
+    0 2791,3160 363 barrel_fish shape 10
+    0 2791,3161 227 pileofrope shape 10
+    0 2791,3162 227 pileofrope shape 10
+    0 2791,3164 271 anchor shape 10
+    0 2799,3164 362 barrel shape 10
+    0 2799,3165 362 barrel shape 10
+    0 2799,3166 362 barrel shape 10
+    0 2799,3169 374 hatstand shape 10
+    0 2798,3169 364 barrelwithtap shape 10
+    0 2797,3169 227 pileofrope shape 10
+    0 2791,3167 599 smashedtable shape 10
+    0 2791,3166 1089 smashedchair shape 10
+    0 2793,3166 1088 chair shape 10
+    0 2794,3166 1088 chair shape 10
+    0 2795,3166 1088 chair shape 10
+    0 2796,3166 1088 chair shape 10
+    0 2793,3165 594 bigtable shape 10
+    0 2795,3165 594 bigtable shape 10
+    0 2793,3164 1088 chair shape 10
+    0 2794,3164 1088 chair shape 10
+    0 2795,3164 1088 chair shape 10
+    0 2796,3164 1088 chair shape 10
+  - no effect: client.java:1626 Deletewalls type 0 at 2895,3513: no loc of that class on any level
+  - no effect: client.java:1627 Deletewalls type 0 at 2892,9907: no loc of that class on any level
+Smithing: 6 bars, 134 column items, 134 removeBar and 137 canSmith entries
+  - skipped (custom item) removeBar 1215 -> 15331
+Shops: 64 defined (TotalShops 65), 67 generated, 1010 stock slots, 59 NPC shop options
+  - shop 29: trailing token "554     50000   555     50000   556     50000   557     50000   558     50000   559     50000   560     5000    561     10000   562     25000   563     5000   564      25000" ignored (as loadShops did)
+  - shop 34: trailing token "100" ignored (as loadShops did)
+  - shop 48: trailing token "14116    100" ignored (as loadShops did)
+  - shop 34: loaded 2 times (lines 34, 50), ShopItemsStandard 78
+  - shop 60: undefined in shops.cfg but opened by an NPC
+  - shop 63: undefined in shops.cfg but opened by an NPC
+  - shop 79: undefined in shops.cfg but opened by an NPC
+  - [opnpc1,nulodion] NPC 209 -> shop 79
+  - [opnpc3,nulodion] NPC 209 -> shop 40
+  - [opnpc1,wizard_frumscone] NPC 460 -> shop 36
+  - [opnpc3,magic_store_owner] NPC 461 -> shop 34
+  - [opnpc1,guild_wizard] NPC 462 -> shop 35
+  - [opnpc3,bob] NPC 519 -> shop 23
+  - [opnpc3,generalshopkeeper1] NPC 520 -> shop 50
+  - [opnpc3,generalassistant1] NPC 521 -> shop 53
+  - [opnpc3,generalshopkeeper2] NPC 522 -> shop 55
+  - [opnpc3,generalshopkeeper3] NPC 524 -> shop 60
+  - [opnpc3,generalassistant3] NPC 525 -> shop 26
+  - [opnpc3,generalshopkeeper5] NPC 528 -> shop 57
+  - [opnpc3,generalassistant5] NPC 529 -> shop 63
+  - [opnpc3,generalshopkeeper6] NPC 530 -> shop 59
+  - [opnpc3,generalassistant8] NPC 535 -> shop 39
+  - [opnpc3,peksa] NPC 538 -> shop 64
+  - [opnpc3,zeke] NPC 541 -> shop 24
+  - [opnpc3,louie_legs] NPC 542 -> shop 27
+  - [opnpc3,ranael] NPC 544 -> shop 28
+  - [opnpc3,dommik] NPC 545 -> shop 25
+  - [opnpc3,zaff] NPC 546 -> shop 7
+  - [opnpc3,thessalia] NPC 548 -> shop 56
+  - [opnpc3,horvik_the_armourer] NPC 549 -> shop 38
+  - [opnpc3,lowe] NPC 550 -> shop 49
+  - [opnpc3,swordshop1] NPC 551 -> shop 58
+  - [opnpc3,swordshop2] NPC 552 -> shop 9
+  - [opnpc3,aubury] NPC 553 -> shop 2
+  - [opnpc3,tailorp] NPC 554 -> shop 48
+  - [opnpc3,khazard_shopkeeper] NPC 555 -> shop 61
+  - [opnpc3,grum] NPC 556 -> shop 20
+  - [opnpc3,wydin] NPC 557 -> shop 32
+  - [opnpc3,gerrant] NPC 558 -> shop 65
+  - [opnpc3,brian] NPC 559 -> shop 19
+  - [opnpc3,lathas_shopkeeper] NPC 561 -> shop 62
+  - [opnpc3,cassie] NPC 577 -> shop 4
+  - [opnpc3,flynn] NPC 580 -> shop 5
+  - [opnpc3,wayne] NPC 581 -> shop 13
+  - [opnpc3,betty] NPC 583 -> shop 21
+  - [opnpc3,herquin] NPC 584 -> shop 12
+  - [opnpc3,rommik] NPC 585 -> shop 14
+  - [opnpc3,jatix] NPC 587 -> shop 46
+  - [opnpc1,wizardadventuterpg] NPC 652 -> shop 37
+  - [opnpc1,ranging_guild_poison_salesman] NPC 681 -> shop 66
+  - [opnpc3,ranging_guild_bow_salesman] NPC 683 -> shop 11
+  - [opnpc3,magearena_runeshop] NPC 903 -> shop 29
+  - [opnpc1,newbie_combat_instructor] NPC 944 -> shop 42
+  - [opnpc1,viking_man] NPC 1305 -> shop 30
+  - [opnpc1,santa_claus] NPC 1552 -> shop 31
+  - [opnpc3,ahoy_ghost_shopkeeper] NPC 1699 -> shop 51
+  - [opnpc3,wilderness_capeseller_6] NPC 1783 -> shop 52
+  - [opnpc3,salesman_ranging] NPC 1860 -> shop 16
+  - [opnpc3,dt_bandit_shopkeeper] NPC 1917 -> shop 54
+  - [opnpc1,dwarf_city_library_customer] NPC 2167 -> shop 33
+  - [opnpc1,dwarf_city_library_customer_human] NPC 2168 -> shop 34
+  - [opnpc1,rcu_zammy_mage2] NPC 2262 -> shop 32
+  - [opnpc3,farming_shopkeeper_1] NPC 2304 -> shop 45
+  - [opnpc1,npc_2621] NPC 2621 -> shop 41
+  - [opnpc3,npc_2621] NPC 2621 -> shop 41
+  - [opnpc1,macro_sandwich_lady_npc] NPC 3117 -> shop 44
+Id enums: 8086 objs, 3852 npcs, 3997 seqs, 666 spotanims, 391 interfaces
+TextHandler: 368 writes, 355 sent, not text in 377: 332 (combat_staff_2:com_3, graphic), 340 (combat_staff_2:com_11, graphic), 341 (inter_14, no type), 342 (combat_staff_2:com_13, model), 351 (combat_staff_2:com_22, model), 354 (inter_14:com_0, rect), 343 (combat_staff_2:com_14, model), 344 (combat_staff_2:com_15, model), 345 (combat_staff_2:com_16, model), 346 (combat_staff_2:com_17, model), 347 (combat_staff_2:com_18, model), 348 (combat_staff_2:com_19, model), 1336 (magic:com_184, model)

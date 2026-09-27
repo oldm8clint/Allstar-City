@@ -9,8 +9,6 @@ iop2=Wield
 manwear=obj_castlewars_saradomin_banner_manwear,0
 womanwear=obj_castlewars_saradomin_banner_manwear,6
 members=yes
-wearpos=righthand
-wearpos2=lefthand
 weight=5lb
 category=weapon_spear
 param=ready_baseanim,human_bannerready
@@ -24,10 +22,22 @@ param=defend_anim,human_banner_block
 param=stabattack_anim,human_banner_spike
 param=slashattack_anim,human_banner_spike
 param=crushattack_anim,human_banner_spike
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=righthand
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_saradomin_banner
 
 [cert_castlewars_saradomin_banner]
 certlink=castlewars_saradomin_banner
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_saradomin_banner
+param=allstar_withdraw_stackable,yes
 
 [castlewars_zamorak_banner]
 name=Zamorak banner
@@ -40,8 +50,6 @@ iop2=Wield
 manwear=obj_castlewars_zamorak_banner_manwear,0
 womanwear=obj_castlewars_zamorak_banner_manwear,6
 members=yes
-wearpos=righthand
-wearpos2=lefthand
 weight=5lb
 category=weapon_spear
 param=ready_baseanim,human_bannerready
@@ -55,10 +63,21 @@ param=defend_anim,human_banner_block
 param=stabattack_anim,human_banner_spike
 param=slashattack_anim,human_banner_spike
 param=crushattack_anim,human_banner_spike
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=righthand
+param=allstar_walk_anim,walk_walkingstick
+param=allstar_walk_sled_exempt,yes
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_zamorak_banner
 
 [cert_castlewars_zamorak_banner]
 certlink=castlewars_zamorak_banner
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_zamorak_banner
 
 [castlewars_cloak_saradomin]
 name=Hooded cloak
@@ -84,10 +103,11 @@ manhead=obj_castlewars_cloak_saradomin_manhead
 womanhead=obj_castlewars_cloak_saradomin_womanhead
 members=yes
 team=1
-wearpos=back
-wearpos2=hat
-wearpos3=head
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=hat
+param=allstar_sellable,yes
 
 [castlewars_cloak_zamorak]
 name=Hooded cloak
@@ -113,10 +133,12 @@ manhead=obj_castlewars_cloak_saradomin_manhead
 womanhead=obj_castlewars_cloak_saradomin_womanhead
 members=yes
 team=2
-wearpos=back
-wearpos2=hat
-wearpos3=head
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=hat
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [castlewars_catapult_rock]
 name=Rock
@@ -129,10 +151,19 @@ model=obj_castlewars_catapult_rock
 2dxan=52
 members=yes
 weight=5kg
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_catapult_rock
 
 [cert_castlewars_catapult_rock]
 certlink=castlewars_catapult_rock
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_catapult_rock
+param=allstar_withdraw_stackable,yes
 
 [castlewars_explosives_potion]
 name=Explosive potion
@@ -146,10 +177,19 @@ model=obj_strength4
 2dxan=84
 members=yes
 weight=35g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_explosives_potion
 
 [cert_castlewars_explosives_potion]
 certlink=castlewars_explosives_potion
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_explosives_potion
+param=allstar_withdraw_stackable,yes
 
 [castlewars_climbing_rope]
 name=Climbing rope
@@ -164,10 +204,19 @@ model=pileofrope_8
 2dxan=188
 members=yes
 weight=3lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_climbing_rope
 
 [cert_castlewars_climbing_rope]
 certlink=castlewars_climbing_rope
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_climbing_rope
+param=allstar_withdraw_stackable,yes
 
 [castlewars_bandages]
 name=Bandages
@@ -180,10 +229,19 @@ model=obj_castlewars_bandages
 iop1=Heal
 members=yes
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_bandages
 
 [cert_castlewars_bandages]
 certlink=castlewars_bandages
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_bandages
+param=allstar_withdraw_stackable,yes
 
 [castlewars_toolkit]
 name=Toolbox
@@ -196,10 +254,19 @@ model=obj_castlewars_toolkit
 2dxan=136
 members=yes
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_toolkit
 
 [cert_castlewars_toolkit]
 certlink=castlewars_toolkit
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_toolkit
+param=allstar_withdraw_stackable,yes
 
 [castlewars_barricade]
 name=Barricade
@@ -212,10 +279,18 @@ model=castlewars_barricade_8
 iop1=Set-up
 members=yes
 weight=5kg
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_castlewars_barricade
 
 [cert_castlewars_barricade]
 certlink=castlewars_barricade
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,castlewars_barricade
 
 [castlewars_manual]
 name=Castlewars manual
@@ -229,7 +304,6 @@ recol3d=6340
 recol4s=15855
 recol4d=6340
 model=obj_digsitebook
-cost=5
 2dxof=1
 2dyof=-21
 2dzoom=830
@@ -238,6 +312,10 @@ cost=5
 members=yes
 iop1=Read
 weight=18oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
 
 [castlewars_no0]
 model=obj_castlewars_no0
@@ -246,6 +324,10 @@ model=obj_castlewars_no0
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no0
+param=allstar_sellable,yes
 
 [castlewars_no1]
 model=obj_castlewars_no1
@@ -254,6 +336,10 @@ model=obj_castlewars_no1
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no1
+param=allstar_sellable,yes
 
 [castlewars_no2]
 model=obj_castlewars_no2
@@ -262,6 +348,10 @@ model=obj_castlewars_no2
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no2
+param=allstar_sellable,yes
 
 [castlewars_no3]
 model=obj_castlewars_no3
@@ -270,6 +360,10 @@ model=obj_castlewars_no3
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no3
+param=allstar_sellable,yes
 
 [castlewars_no4]
 model=obj_castlewars_no4
@@ -278,6 +372,10 @@ model=obj_castlewars_no4
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no4
+param=allstar_sellable,yes
 
 [castlewars_no5]
 model=obj_castlewars_no5
@@ -286,6 +384,10 @@ model=obj_castlewars_no5
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no5
+param=allstar_sellable,yes
 
 [castlewars_no6]
 model=obj_castlewars_no6
@@ -294,6 +396,10 @@ model=obj_castlewars_no6
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no6
+param=allstar_sellable,yes
 
 [castlewars_no7]
 model=obj_castlewars_no7
@@ -302,6 +408,10 @@ model=obj_castlewars_no7
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no7
+param=allstar_sellable,yes
 
 [castlewars_no8]
 model=obj_castlewars_no8
@@ -310,6 +420,10 @@ model=obj_castlewars_no8
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no8
+param=allstar_sellable,yes
 
 [castlewars_no9]
 model=obj_castlewars_no9
@@ -318,6 +432,11 @@ model=obj_castlewars_no9
 2dzoom=2180
 2dxan=520
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Castlewars no9
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [castlewars_catapult]
 model=catapult_8
@@ -328,6 +447,10 @@ members=yes
 2dyan=1848
 2dzan=2028
 2dxan=188
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Catapult
+param=allstar_sellable,yes
 
 [castlewars_ticket]
 name=Castle wars ticket
@@ -335,14 +458,16 @@ desc=I can exchange these for further items.
 recol1s=19150
 recol1d=18888
 model=obj_agilityarena_ticket
-cost=1
 2dzoom=1160
 2dyan=1888
 2dzan=8
 2dxan=308
 members=yes
-stackable=yes
 weight=5g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_sellable,yes
 
 [castlewars_sword]
 name=Decorative sword
@@ -359,7 +484,6 @@ recol5s=15871
 recol5d=20
 recol6s=32767
 recol6d=22203
-cost=500
 members=yes
 model=obj_faladian_sword
 2dxof=6
@@ -370,21 +494,19 @@ model=obj_faladian_sword
 manwear=obj_faladian_sword_manwear,0
 womanwear=obj_faladian_sword_manwear,6
 iop2=Wield
-wearpos=righthand
 weight=56oz
 category=weapon_slash
 param=attackrate,5
-param=stabattack,13
-param=slashattack,18
-param=crushattack,-2
-param=slashdefence,3
-param=crushdefence,2
-param=strengthbonus,16
 param=slashattack_anim,human_sword_slash
 param=stabattack_anim,human_sword_stab
 param=defend_anim,human_sword_def
 param=slash_sound,hacksword_slash
 param=stab_sound,hacksword_stab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=384
+wearpos=righthand
+param=allstar_value,384
+param=allstar_sellable,yes
 
 [castlewars_armour_body]
 name=Decorative armour
@@ -393,7 +515,6 @@ recol1s=15855
 recol1d=19489
 recol2s=10570
 recol2d=20
-cost=2000
 model=obj_khazard_platemail
 members=yes
 2dxof=-1
@@ -404,17 +525,21 @@ manwear=obj_khazard_platemail_manwear,0
 manwear2=obj_iron_platebody_manwear2
 womanwear=obj_khazard_platemail_womanwear,0
 womanwear2=obj_iron_platebody_womanwear2
-wearpos=torso
-wearpos2=arms
 weight=19lb
 category=armour_body
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1452
+wearpos=torso
+wearpos2=arms
 param=magicattack,-30
 param=rangeattack,-10
-param=stabdefence,32
-param=slashdefence,31
-param=crushdefence,24
+param=stabdefence,46
+param=slashdefence,44
+param=crushdefence,38
 param=magicdefence,-6
-param=rangedefence,31
+param=rangedefence,44
+param=allstar_value,1452
+param=allstar_sellable,yes
 
 [castlewars_armour_legs]
 name=Decorative armour
@@ -425,7 +550,6 @@ recol2s=10570
 recol2d=19489
 recol3s=14798
 recol3d=20
-cost=1000
 members=yes
 model=obj_iron_platelegs
 2dyof=-8
@@ -434,16 +558,20 @@ model=obj_iron_platelegs
 iop2=Wear
 manwear=obj_iron_platelegs_manwear,0
 womanwear=obj_iron_platelegs_womanwear,0
-wearpos=legs
 weight=20lb
 category=armour_legs
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=747
+wearpos=legs
 param=magicattack,-21
 param=rangeattack,-7
-param=stabdefence,17
-param=slashdefence,16
-param=crushdefence,15
+param=stabdefence,24
+param=slashdefence,22
+param=crushdefence,20
 param=magicdefence,-4
-param=rangedefence,16
+param=rangedefence,22
+param=allstar_value,747
+param=allstar_sellable,yes
 
 [castlewars_med_helm]
 name=Decorative helm
@@ -452,7 +580,6 @@ recol1s=15360
 recol1d=20
 recol2s=15855
 recol2d=19489
-cost=300
 model=obj_khazard_helmet
 members=yes
 2dxof=1
@@ -465,17 +592,21 @@ manwear=obj_khazard_helmet_manwear,0
 womanwear=obj_khazard_helmet_womanwear,0
 manhead=obj_khazard_helmet_manhead
 womanhead=obj_khazard_helmet_womanhead
-wearpos=hat
-wearpos2=head
 weight=3lb
 category=armour_helmet
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+wearpos=hat
+wearpos2=head
 param=magicattack,-3
 param=rangeattack,-1
-param=stabdefence,7
-param=slashdefence,8
-param=crushdefence,6
+param=stabdefence,10
+param=slashdefence,11
+param=crushdefence,9
 param=magicdefence,-1
-param=rangedefence,7
+param=rangedefence,10
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [castlewars_shield]
 name=Decorative shield
@@ -494,19 +625,23 @@ members=yes
 2dyan=1104
 2dxan=344
 iop2=Wear
-cost=850
 manwear=obj_bronze_kiteshield_manwear,0
 womanwear=obj_bronze_kiteshield_manwear,6
-wearpos=lefthand
 weight=10lb
 category=armour_shield
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=639
+wearpos=lefthand
 param=magicattack,-8
 param=rangeattack,-2
-param=stabdefence,13
-param=slashdefence,15
-param=crushdefence,14
+param=stabdefence,18
+param=slashdefence,22
+param=crushdefence,20
 param=magicdefence,-1
-param=rangedefence,14
+param=rangedefence,20
+param=allstar_value,639
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [castlewars_sword_2]
 name=Decorative sword
@@ -523,7 +658,6 @@ recol5s=15871
 recol5d=7413
 recol6s=32767
 recol6d=22203
-cost=1300
 members=yes
 model=obj_faladian_sword
 2dxof=6
@@ -534,21 +668,19 @@ model=obj_faladian_sword
 manwear=obj_faladian_sword_manwear,0
 womanwear=obj_faladian_sword_manwear,6
 iop2=Wield
-wearpos=righthand
 weight=56oz
 category=weapon_slash
 param=attackrate,5
-param=stabattack,15
-param=slashattack,20
-param=crushattack,-2
-param=slashdefence,3
-param=crushdefence,2
-param=strengthbonus,22
 param=slashattack_anim,human_sword_slash
 param=stabattack_anim,human_sword_stab
 param=defend_anim,human_sword_def
 param=slash_sound,hacksword_slash
 param=stab_sound,hacksword_stab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=961
+wearpos=righthand
+param=allstar_value,961
+param=allstar_sellable,yes
 
 [castlewars_armour_body_2]
 name=Decorative armour
@@ -557,7 +689,6 @@ recol1s=15855
 recol1d=24311
 recol2s=10570
 recol2d=7413
-cost=5200
 model=obj_khazard_platemail
 members=yes
 2dxof=-1
@@ -568,17 +699,14 @@ manwear=obj_khazard_platemail_manwear,0
 manwear2=obj_iron_platebody_manwear2
 womanwear=obj_khazard_platemail_womanwear,0
 womanwear2=obj_iron_platebody_womanwear2
-wearpos=torso
-wearpos2=arms
 weight=19lb
 category=armour_body
-param=magicattack,-30
-param=rangeattack,-10
-param=stabdefence,46
-param=slashdefence,44
-param=crushdefence,38
-param=magicdefence,-6
-param=rangedefence,44
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3627
+wearpos=torso
+wearpos2=arms
+param=allstar_value,3627
+param=allstar_sellable,yes
 
 [castlewars_armour_legs_2]
 name=Decorative armour
@@ -589,7 +717,6 @@ recol2s=10570
 recol2d=24311
 recol3s=14798
 recol3d=7413
-cost=2600
 members=yes
 model=obj_iron_platelegs
 2dyof=-8
@@ -598,16 +725,13 @@ model=obj_iron_platelegs
 iop2=Wear
 manwear=obj_iron_platelegs_manwear,0
 womanwear=obj_iron_platelegs_womanwear,0
-wearpos=legs
 weight=20lb
 category=armour_legs
-param=magicattack,-21
-param=rangeattack,-7
-param=stabdefence,24
-param=slashdefence,22
-param=crushdefence,20
-param=magicdefence,-4
-param=rangedefence,22
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1867
+wearpos=legs
+param=allstar_value,1867
+param=allstar_sellable,yes
 
 [castlewars_med_helm_2]
 name=Decorative helm
@@ -618,7 +742,6 @@ recol2s=15855
 recol2d=24311
 recol3s=15393
 recol3d=7413
-cost=780
 model=obj_khazard_helmet
 members=yes
 2dxof=1
@@ -631,17 +754,13 @@ manwear=obj_khazard_helmet_manwear,0
 womanwear=obj_khazard_helmet_womanwear,0
 manhead=obj_khazard_helmet_manhead
 womanhead=obj_khazard_helmet_womanhead
-wearpos=hat
-wearpos2=head
 weight=3lb
 category=armour_helmet
-param=magicattack,-3
-param=rangeattack,-1
-param=stabdefence,10
-param=slashdefence,11
-param=crushdefence,9
-param=magicdefence,-1
-param=rangedefence,10
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=589
+wearpos=hat
+param=allstar_value,589
+param=allstar_sellable,yes
 
 [castlewars_shield_2]
 name=Decorative shield
@@ -660,19 +779,15 @@ members=yes
 2dyan=1104
 2dxan=344
 iop2=Wear
-cost=2210
 manwear=obj_bronze_kiteshield_manwear,0
 womanwear=obj_bronze_kiteshield_manwear,6
-wearpos=lefthand
 weight=10lb
 category=armour_shield
-param=magicattack,-8
-param=rangeattack,-2
-param=stabdefence,18
-param=slashdefence,22
-param=crushdefence,20
-param=magicdefence,-1
-param=rangedefence,20
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1598
+wearpos=lefthand
+param=allstar_value,1598
+param=allstar_sellable,yes
 
 [castlewars_sword_3]
 name=Decorative sword
@@ -689,7 +804,6 @@ recol5s=15871
 recol5d=3173
 recol6s=32767
 recol6d=22203
-cost=3200
 members=yes
 model=obj_faladian_sword
 2dxof=6
@@ -700,21 +814,19 @@ model=obj_faladian_sword
 manwear=obj_faladian_sword_manwear,0
 womanwear=obj_faladian_sword_manwear,6
 iop2=Wield
-wearpos=righthand
 weight=56oz
 category=weapon_slash
 param=attackrate,5
-param=stabattack,20
-param=slashattack,29
-param=crushattack,-2
-param=slashdefence,3
-param=crushdefence,2
-param=strengthbonus,31
 param=slashattack_anim,human_sword_slash
 param=stabattack_anim,human_sword_stab
 param=defend_anim,human_sword_def
 param=slash_sound,hacksword_slash
 param=stab_sound,hacksword_stab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2278
+wearpos=righthand
+param=allstar_value,2278
+param=allstar_sellable,yes
 
 [castlewars_armour_body_3]
 name=Decorative armour
@@ -723,7 +835,6 @@ recol1s=15855
 recol1d=21092
 recol2s=10570
 recol2d=3173
-cost=12800
 model=obj_khazard_platemail
 members=yes
 2dxof=-1
@@ -734,17 +845,14 @@ manwear=obj_khazard_platemail_manwear,0
 manwear2=obj_iron_platebody_manwear2
 womanwear=obj_khazard_platemail_womanwear,0
 womanwear2=obj_iron_platebody_womanwear2
-wearpos=torso
-wearpos2=arms
 weight=19lb
 category=armour_body
-param=magicattack,-30
-param=rangeattack,-10
-param=stabdefence,65
-param=slashdefence,63
-param=crushdefence,55
-param=magicdefence,-6
-param=rangedefence,63
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=8598
+wearpos=torso
+wearpos2=arms
+param=allstar_value,8598
+param=allstar_sellable,yes
 
 [castlewars_armour_legs_3]
 name=Decorative armour
@@ -755,7 +863,6 @@ recol2s=10570
 recol2d=21092
 recol3s=14798
 recol3d=3173
-cost=6400
 members=yes
 model=obj_iron_platelegs
 2dyof=-8
@@ -764,16 +871,13 @@ model=obj_iron_platelegs
 iop2=Wear
 manwear=obj_iron_platelegs_manwear,0
 womanwear=obj_iron_platelegs_womanwear,0
-wearpos=legs
 weight=20lb
 category=armour_legs
-param=magicattack,-21
-param=rangeattack,-7
-param=stabdefence,33
-param=slashdefence,31
-param=crushdefence,29
-param=magicdefence,-4
-param=rangedefence,31
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4426
+wearpos=legs
+param=allstar_value,4426
+param=allstar_sellable,yes
 
 [castlewars_med_helm_3]
 name=Decorative helm
@@ -784,7 +888,6 @@ recol2s=15855
 recol2d=21092
 recol3s=15393
 recol3d=3173
-cost=1920
 model=obj_khazard_helmet
 members=yes
 2dxof=1
@@ -797,17 +900,14 @@ manwear=obj_khazard_helmet_manwear,0
 womanwear=obj_khazard_helmet_womanwear,0
 manhead=obj_khazard_helmet_manhead
 womanhead=obj_khazard_helmet_womanhead
-wearpos=hat
-wearpos2=head
 weight=3lb
 category=armour_helmet
-param=magicattack,-3
-param=rangeattack,-1
-param=stabdefence,14
-param=slashdefence,15
-param=crushdefence,13
-param=magicdefence,-1
-param=rangedefence,14
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1396
+wearpos=hat
+wearpos2=head
+param=allstar_value,1396
+param=allstar_sellable,yes
 
 [castlewars_shield_3]
 name=Decorative shield
@@ -826,19 +926,15 @@ members=yes
 2dyan=1104
 2dxan=344
 iop2=Wear
-cost=5440
 manwear=obj_bronze_kiteshield_manwear,0
 womanwear=obj_bronze_kiteshield_manwear,6
-wearpos=lefthand
 weight=10lb
 category=armour_shield
-param=magicattack,-8
-param=rangeattack,-2
-param=stabdefence,27
-param=slashdefence,31
-param=crushdefence,29
-param=magicdefence,-1
-param=rangedefence,29
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3788
+wearpos=lefthand
+param=allstar_value,3788
+param=allstar_sellable,yes
 
 [castlewars_hood_saradomin_prize]
 name=Castlewars hood
@@ -860,13 +956,13 @@ womanwear=obj_castlewars_hood_saradomin_prize_womanwear,0
 manhead=obj_castlewars_cloak_saradomin_manhead
 womanhead=obj_castlewars_cloak_saradomin_womanhead
 members=yes
-wearpos=hat
-wearpos2=head
 weight=1lb
 category=armour_helmet
-param=slashdefence,1
-param=crushdefence,2
-param=rangedefence,1
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=hat
+wearpos2=head
+param=allstar_sellable,yes
 
 [castlewars_cloak_saradomin_prize]
 name=Castlewars cloak
@@ -881,7 +977,6 @@ recol4s=6272
 recol4d=372
 recol5s=31649
 recol5d=30646
-cost=100
 model=obj_red_cape
 2dxof=3
 2dyof=6
@@ -892,12 +987,13 @@ iop2=Wear
 manwear=obj_castlewars_cloak_saradomin_prize_manwear,0
 womanwear=obj_castlewars_cloak_saradomin_prize_manwear,6
 members=yes
-wearpos=back
 weight=1lb
 category=armour_cape
-param=slashdefence,1
-param=crushdefence,1
-param=rangedefence,2
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=back
+param=allstar_value,82
+param=allstar_sellable,yes
 
 [castlewars_hood_zamorak_prize]
 name=Castlewars hood
@@ -919,13 +1015,13 @@ womanwear=obj_castlewars_hood_saradomin_prize_womanwear,0
 manhead=obj_castlewars_cloak_saradomin_manhead
 womanhead=obj_castlewars_cloak_saradomin_womanhead
 members=yes
-wearpos=hat
-wearpos2=head
 weight=1lb
 category=armour_helmet
-param=slashdefence,1
-param=crushdefence,2
-param=rangedefence,1
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=hat
+wearpos2=head
+param=allstar_sellable,yes
 
 [castlewars_cloak_zamorak_prize]
 name=Castlewars cloak
@@ -938,7 +1034,6 @@ recol3s=6272
 recol3d=13441
 recol4s=31649
 recol4d=7266
-cost=100
 model=obj_red_cape
 2dxof=3
 2dyof=6
@@ -949,9 +1044,11 @@ iop2=Wear
 manwear=obj_castlewars_cloak_saradomin_prize_manwear,0
 womanwear=obj_castlewars_cloak_saradomin_prize_manwear,6
 members=yes
-wearpos=back
 weight=1lb
 category=armour_cape
-param=slashdefence,1
-param=crushdefence,1
-param=rangedefence,2
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=82
+wearpos=back
+param=allstar_value,82
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes

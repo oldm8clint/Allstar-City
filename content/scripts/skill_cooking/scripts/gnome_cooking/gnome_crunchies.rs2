@@ -1,16 +1,3 @@
-[opheld1,half_baked_crunchy]
-~mesbox("You inspect the half baked crunchies..."); // guess
-~gnome_crunchies_ingredient_display;
-
-
-[opheldu,half_baked_crunchy]
-if (oc_param(last_useitem, gnome_cooking_ingredient) = ^false) {
-    ~displaymessage(^dm_default);
-    return;
-}
-@add_crunchies_ingredient(last_useitem);
-
-
 [label,add_crunchies_ingredient](obj $ingredient)
 if (~gnome_crunchies_ingredient_space = 0) {
     mes("The half baked crunchies already have enough ingredients."); // guess

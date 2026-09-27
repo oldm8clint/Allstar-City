@@ -1,17 +1,3 @@
-[opnpc3,nulodion]
-if (%mcannon < ^mcannon_complete) {
-    mes("The dwarf doesn't seem interested in trading.");
-    return;
-}
-~openshop_activenpc;
-
-[opnpc1,nulodion]
-switch_int(%mcannon) {
-    case ^mcannon_tasked_with_speaking_to_nulodion : @mcannon_speak_with_nulodion_first_time;
-    case ^mcannon_return_to_dwarf_commander_with_notes : @mcannon_speak_with_nulodion_should_return_to_dwarf_commander;
-    case ^mcannon_complete : @nulodion_post_quest;
-}
-
 [label,mcannon_speak_with_nulodion_first_time]
 ~chatplayer("<p,neutral>Hello there.");
 ~chatnpc("<p,neutral>Can I help you?");

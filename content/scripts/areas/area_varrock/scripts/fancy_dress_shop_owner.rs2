@@ -14,10 +14,3 @@ if($option = 1) {
     ~chatplayer("<p,happy>Okay, lets see what you've got then.");
     ~openshop_activenpc;
 }
-
-[opnpc3,tailorp]
-if(map_members = ^false) {
-    ~chatnpc("<p,sad>Sorry, we're closed at the moment.");
-    return;
-}
-~openshop_activenpc;

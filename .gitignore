@@ -4,3 +4,4 @@ node_modules/
 # agent worktrees
 .claude/
 dist/
+engine/data/allstar/

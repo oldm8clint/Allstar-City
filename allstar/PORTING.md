@@ -1,9 +1,10 @@
 # Allstar-City porting tracker
 
-Goal: a 1:1 recreation of Allstar-Scape v2 (2008, Moparscape/317) on the Lost City
-engine, with the revision 377 (May 2006) game data, played in a web browser. The original Java
-source in `allstar/legacy` is the specification: every behavior there is reproduced, and Lost City
-gameplay that Allstar-Scape did not have is removed.
+Goal: a 1:1 recreation of Allstar-Scape v2 (2008, Moparscape/317) on the Lost City engine, with
+the revision 377 (May 2006) game data, played in a web browser. The original Java source in
+`allstar/legacy` is the specification (`allstar/spec` explains it): every behaviour there is
+reproduced, and Lost City gameplay that Allstar-Scape did not have is removed.
+How to contribute: `allstar/CONTRIBUTING.md`. Owner-requested extras: `allstar/QUIRKS.md`.
 
 ## Layout
 
@@ -14,16 +15,20 @@ gameplay that Allstar-Scape did not have is removed.
 | `content/scripts/allstar/` | Allstar-Scape gameplay in RuneScript |
 | `webclient/` | Lost City Client-TS `289` web client (git subtree) + 377 support; built into `engine/public/client` |
 | `allstar/legacy/` | Original Allstar-Scape v2 source (logs and player data removed) |
-| `allstar/tools/generate.mjs` | Regenerates data-driven content (spawns, shops, drops, ...) from `allstar/legacy` |
-| `allstar/generated/` | Generator output bookkeeping (map edit manifest, report) |
+| `allstar/spec/` | Behaviour inventory of the original source (commands, NPC/item handlers, objects/buttons, dialogues/quests, NPCs/combat/rules, items) |
+| `allstar/tools/` | `generate.mjs` (+ `gen/` steps), `lookup.mjs`, `build-client.mjs` |
+| `allstar/tests/` | Headless test bot and tests |
 
 ## Engine changes
 
 | Change | Why |
 | --- | --- |
-| `NODE_TICKRATE` env (default 600) | Allstar-Scape ran 500ms cycles (`server.java` `cycleTime = 500`) |
-| `::<name>` runs `[proc,cmd_<name>]` for every player | Allstar-Scape commands were available to players; each script checks rank |
-| `NODE_ALLSTAR_XP`, Allstar script commands, ban lists | see `CONTRIBUTING.md` |
+| `NODE_TICKRATE` (default 600) | Allstar-Scape ran 500ms cycles |
+| `NODE_ALLSTAR_XP` | Allstar-Scape xp: whole xp (2B cap), half curve (99 at 6,517,817), strict thresholds |
+| `::input` → `[proc,cmd__input]`, `::name` → `[proc,cmd_name]` for every player | Allstar-Scape commands were open to all players; scripts check rank |
+| Script commands `findname`, `playerall`, `world_broadcast`, `setstaffmodlevel`, `p_kick`, `ipaddress`, `namelist_*`, `allstar_log`, `world_reboot` | commands, broadcasts, bans and logs |
+| Login refused for names/IPs in `data/allstar/bannedusers.txt` / `bannedips.txt` | `::banuser`, `::ipban` |
+| Build snapshot race fix | incremental builds sometimes missed new configs |
 | `engine/.env` overrides `data/config/world.json` on every start | each checkout keeps its ports in `.env` |
 
 ## Platform: 377 content on the 289 web stack
@@ -43,34 +48,26 @@ Player head icon bits (`headicons_set`): 0 skull, 1 multiway, 2 hint, 3 protect 
 4 protect from missiles, 5 protect from magic, 6 duel skull, 7 hint 2, 8 retribution, 9 smite,
 10 redemption. Npc `headicon=` indexes the 377 prayer icons.
 
-## Systems
+## Workstreams
 
-Status: `todo` / `wip` / `done` / `n/a`.
+Each runs in its own git worktree (`D:\Desktop\Allstar-City.worktrees\<name>`, branch `port/<name>`).
 
-| System | Legacy source | Status | Notes |
-| --- | --- | --- | --- |
-| NPC spawns | `autospawn.cfg`, `NPCHandler.loadAutoSpawn` | done | all Lost City spawns removed; 486 placed, 6 were off-map in the original too |
-| Ground item spawns | `itemspawnpoints.java` | done | god capes; `drops.cfg` was never loaded by Allstar-Scape |
-| Custom objects | `client.NewObjects`, `WorldObjects.cfg` | todo | |
-| Doors | `Config/objects.cfg`, `data/Objects.cfg` | todo | |
-| Login / new players | `client.initialize`, `Player.java` | todo | |
-| Commands | `client.customCommand` | todo | |
-| Shops | `shops.cfg`, `ShopHandler.java` | todo | |
-| NPC clicks / dialogues | `client.parseIncomingPackets`, `UpdateNPCChat` | todo | |
-| NPC combat, drops, respawn | `NPCHandler.java`, `npcdrops.cfg` | todo | |
-| Player combat, specials, prayer | `client.Attack*`, `calculateSpecial` | todo | |
-| Magic (spells, teleports) | `client.AttackMage`, `Teleport.cfg`, button handler | todo | |
-| Emote-tab teleports | button handler | todo | |
-| Skills | `client.*` skill methods | todo | |
-| Items (eat, drink, bury, ...) | packet handlers | todo | |
-| Custom items (id >= 7956) | `item.cfg` | todo | need models from later caches |
-| Clue scrolls, quests | `Clues.java`, `client.quest/clue` | todo | |
-| Minigames | | todo | |
-| Remove Lost City-only gameplay | | todo | quests, tutorial, random events, etc. |
+| Workstream | Scope | Status |
+| --- | --- | --- |
+| lead (main) | world spawns, login/new player, command framework, XP, engine commands, generator, test bot | done |
+| shops | every shop, Allstar pricing and sell rules, shop-opening NPC options | merged |
+| npcs | NPC clicks, 71 dialogues, banks, pickpocketing, quests, clue scrolls | in progress |
+| objects | 509 placed / 67 removed objects, object clicks (coin trees, stalls, chests, stairs, doors...), item-on-object | merged |
+| items | item data from item.cfg, equipment rules, food/potions/bones, item-on-item, bank, trade | merged |
+| combat | NPC system (HP, max hit, respawn, aggression), drops, player combat, specials, prayers, death, PvP zones, magic | in progress |
+| ui | remaining commands, emote-tab teleports, level-ups, 99 broadcasts, tabs/texts | merged |
+| customitems | items with ids >= 7956: 154 objs `allstar_item_<id>` (obj id = Allstar id), enum `allstar_items`, models converted from the OSRS cache by `allstar/tools/models` (can also read a 317 client cache); stand-ins: Summoning cape/(t)/hood, 9540, 14819, 15181 | merged |
+| platform | 377 content on the 289 engine + Lost City web client | in progress |
+| lead (after merge) | QUIRKS dupes, remove leftover Lost City gameplay, hosting setup, docs | todo |
 
 ## Known deviations from Allstar-Scape
 
-Things that cannot be (or are not yet) identical; reviewed with the owner after major progress.
+Reviewed with the owner after major progress.
 
 - The client is Lost City's web client with the 377 game data, not Allstar-Scape's custom 317
   client, so interfaces look like May 2006 RuneScape.
@@ -81,3 +78,6 @@ Things that cannot be (or are not yet) identical; reviewed with the owner after 
 - The world map for the map editor is not built (the 377 content has no worldmap fonts).
 - 6 autospawn.cfg spawns sit outside the game map (e.g. `2000,3468`); they were unreachable in
   Allstar-Scape too and are skipped.
+- The welcome interface (317 interface 15944) is shown on the 377 text scroll for now.
+- Lost City's staff commands (`::tele`, `::give`, ...) still exist for staff; Allstar commands of
+  the same name take precedence.

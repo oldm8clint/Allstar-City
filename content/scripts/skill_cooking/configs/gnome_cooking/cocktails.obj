@@ -1,7 +1,6 @@
 [vodka]
 name=Vodka
 desc=A strong spirit.
-cost=5
 iop1=Drink
 members=yes
 model=obj_vodka
@@ -11,11 +10,15 @@ model=obj_vodka
 2dxan=104
 category=alcoholic_drinks
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_vodka
 
 [whisky]
 name=Whisky
 desc=A bottle of Draynor Malt.
-cost=5
 iop1=Drink
 members=yes
 model=obj_khali_brew
@@ -26,13 +29,17 @@ model=obj_khali_brew
 weight=1kg
 category=alcoholic_drinks
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_whisky
 
 [gin]
 name=Gin
 desc=A strong spirit.
 recol1s=11328
 recol1d=352
-cost=5
 iop1=Drink
 members=yes
 model=obj_khali_brew
@@ -43,11 +50,15 @@ model=obj_khali_brew
 weight=1kg
 category=alcoholic_drinks
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_gin
 
 [brandy]
 name=Brandy
 desc=A strong spirit.
-cost=5
 iop1=Drink
 members=yes
 model=obj_murderbottle
@@ -57,13 +68,17 @@ model=obj_murderbottle
 weight=1kg
 category=alcoholic_drinks
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_brandy
 
 [cocktail_guide]
 name=Cocktail guide
 desc=A book on tree gnome cocktails.
 recol1s=13472
 recol1d=7427
-cost=2
 iop1=Read
 members=yes
 model=obj_mcannonbook
@@ -71,11 +86,14 @@ model=obj_mcannonbook
 2dyan=152
 2dxan=256
 weight=18oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_cocktail_guide
 
 [cocktail_shaker]
 name=Cocktail shaker
 desc=Used for mixing cocktails.
-cost=2
 members=yes
 model=obj_cocktail_shaker
 2dyof=-1
@@ -84,7 +102,10 @@ model=obj_cocktail_shaker
 2dxan=92
 iop1=Inspect
 weight=150g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [cocktail_glass_empty]
 name=Cocktail glass
@@ -94,16 +115,18 @@ model=obj_cocktail_glass_empty
 2dzoom=700
 2dyan=1988
 2dxan=104
-cost=1
 members=yes
 weight=100g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_cocktail_glass_empty
 
 [premade_blurberry_special]
 name=Blurberry special
 desc=Looks good... smells strong.
 recol1s=31649
 recol1d=31297
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -114,13 +137,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=450g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_blurberry_special
 
 [premade_choc_saturday]
 name=Choc saturday
 desc=A warm creamy alcoholic beverage.
 recol1s=473
 recol1d=16705
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_choc_saturday
@@ -131,11 +158,15 @@ model=obj_premade_choc_saturday
 category=gnome_cocktail
 weight=450g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_choc_saturday
 
 [premade_drunk_dragon]
 name=Drunk dragon
 desc=A warm creamy alcoholic beverage.
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_choc_saturday
@@ -146,6 +177,11 @@ model=obj_premade_choc_saturday
 category=gnome_cocktail
 weight=450g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_drunk_dragon
 
 [premade_fruit_blast]
 name=Fruit blast
@@ -156,7 +192,6 @@ recol2s=19442
 recol2d=30640
 recol3s=992
 recol3d=31553
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -167,6 +202,11 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=450g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_fruit_blast
 
 [premade_pineapple_punch]
 name=Pineapple punch
@@ -177,7 +217,6 @@ recol2s=19442
 recol2d=31297
 recol3s=992
 recol3d=31201
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -188,13 +227,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=450g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_pineapple_punch
 
 [premade_sgg]
 name=Short green guy
 desc=A Short Green Guy... looks good.
 recol1s=31649
 recol1d=17353
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -205,13 +248,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=450g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_sgg
 
 [premade_wizard_blizzard]
 name=Wizard blizzard
 desc=This looks like a strange mix.
 recol1s=31649
 recol1d=26517
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -222,13 +269,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=450g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_premade_wizard_blizzard
 
 [unfinished_pineapple_punch1]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=31589
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -240,13 +291,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_pineapple_punch1
 
 [unfinished_pineapple_punch2]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=31649
 recol1d=31589
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch2
@@ -258,13 +312,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_pineapple_punch2
 
 [unfinished_pineapple_punch3]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=31649
 recol1d=31589
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch2
@@ -276,6 +333,10 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_pineapple_punch3
 
 [pineapple_punch]
 name=Pineapple punch
@@ -286,7 +347,6 @@ recol2s=19442
 recol2d=31297
 recol3s=992
 recol3d=31201
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -297,13 +357,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=500g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_pineapple_punch
 
 [unfinished_wizard_blizzard1]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=26517
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -315,13 +379,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_wizard_blizzard1
 
 [unfinished_wizard_blizzard2]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=31649
 recol1d=26517
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch2
@@ -333,13 +400,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_wizard_blizzard2
 
 [wizard_blizzard]
 name=Wizard blizzard
 desc=This looks like a strange mix.
 recol1s=31649
 recol1d=26517
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -350,13 +420,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=500g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_wizard_blizzard
 
 [unfinished_blurberry_special1]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=31297
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -368,13 +442,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_blurberry_special1
 
 [unfinished_blurberry_special2]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=31649
 recol1d=31297
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch2
@@ -386,13 +463,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_blurberry_special2
 
 [unfinished_blurberry_special3]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=31649
 recol1d=31297
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch2
@@ -404,13 +484,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_blurberry_special3
 
 [unfinished_blurberry_special4]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=31649
 recol1d=31297
-cost=2
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -422,13 +505,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_blurberry_special4
 
 [blurberry_special]
 name=Blurberry special
 desc=Looks good... smells strong.
 recol1s=31649
 recol1d=31297
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -439,13 +525,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=500g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_blurberry_special
 
 [unfinished_chocolate_saturday1]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=25199
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -457,13 +547,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_chocolate_saturday1
 
 [unfinished_chocolate_saturday2]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=16705
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -475,13 +568,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_chocolate_saturday2
 
 [unfinished_chocolate_saturday3]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=16705
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -493,13 +589,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_chocolate_saturday3
 
 [unfinished_chocolate_saturday4]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=16705
-cost=2
 iop1=Drink
 members=yes
 model=obj_premade_choc_saturday
@@ -511,13 +610,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_chocolate_saturday4
 
 [chocolate_saturday]
 name=Choc saturday
 desc=A warm creamy alcoholic beverage.
 recol1s=473
 recol1d=16705
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_choc_saturday
@@ -528,13 +630,17 @@ model=obj_premade_choc_saturday
 category=gnome_cocktail
 weight=500g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_chocolate_saturday
 
 [unfinished_sgg1]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=17353
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -546,13 +652,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_sgg1
 
 [unfinished_sgg2]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=17353
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -564,13 +673,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_sgg2
 
 [sgg]
 name=Short green guy
 desc=A Short Green Guy... looks good.
 recol1s=31649
 recol1d=17353
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -581,13 +693,17 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=500g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_sgg
 
 [unfinished_fruit_blast1]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=473
 recol1d=31393
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -599,6 +715,10 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_fruit_blast1
 
 [fruit_blast]
 name=Fruit blast
@@ -609,7 +729,6 @@ recol2s=19442
 recol2d=30640
 recol3s=992
 recol3d=31553
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_blurberry_special
@@ -620,11 +739,15 @@ model=obj_premade_blurberry_special
 category=gnome_cocktail
 weight=500g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_fruit_blast
 
 [unfinished_drunk_dragon1]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch1
@@ -636,13 +759,16 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_drunk_dragon1
 
 [unfinished_drunk_dragon2]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
 recol1s=31649
 recol1d=473
-cost=2
 iop1=Drink
 members=yes
 model=obj_unfinished_pineapple_punch2
@@ -654,11 +780,14 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_drunk_dragon2
 
 [unfinished_drunk_dragon3]
 name=Unfinished cocktail
 desc=This cocktail is just missing those little finishing touches.
-cost=2
 iop1=Drink
 members=yes
 model=obj_premade_choc_saturday
@@ -670,11 +799,14 @@ weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
 param=gnome_cooking_type,0
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_unfinished_drunk_dragon3
 
 [drunk_dragon]
 name=Drunk dragon
 desc=A warm creamy alcoholic beverage.
-cost=30
 iop1=Drink
 members=yes
 model=obj_premade_choc_saturday
@@ -685,13 +817,17 @@ model=obj_premade_choc_saturday
 category=gnome_cocktail
 weight=500g
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_drunk_dragon
 
 [spoilt_cocktail]
 name=Odd cocktail
 desc=I'm not completely sure what this contains.
 recol1s=473
 recol1d=16912
-cost=2
 iop1=Empty
 iop3=Drink
 members=yes
@@ -703,13 +839,16 @@ model=obj_unfinished_pineapple_punch1
 weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spoilt_cocktail
 
 [spoilt_cocktail_fruity]
 name=Odd cocktail
 desc=I'm not completely sure what this contains.
 recol1s=31649
 recol1d=16912
-cost=2
 iop1=Empty
 iop3=Drink
 members=yes
@@ -721,13 +860,16 @@ model=obj_unfinished_pineapple_punch2
 weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spoilt_cocktail_fruity
 
 [spoilt_cocktail_creamy]
 name=Odd cocktail
 desc=I'm not completely sure what this contains.
 recol1s=473
 recol1d=16912
-cost=2
 iop1=Empty
 iop3=Drink
 members=yes
@@ -739,6 +881,10 @@ model=obj_premade_choc_saturday
 weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spoilt_cocktail_creamy
 
 [spoilt_cocktail_slice]
 name=Odd cocktail
@@ -749,7 +895,6 @@ recol2s=19442
 recol2d=19026
 recol3s=992
 recol3d=15855
-cost=2
 iop1=Empty
 iop3=Drink
 members=yes
@@ -761,11 +906,14 @@ model=obj_premade_blurberry_special
 weight=400g
 category=gnome_unf_odd_cocktail
 param=next_obj_stage,cocktail_glass_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spoilt_cocktail_slice
 
 [lemon]
 name=Lemon
 desc=A fresh lemon.
-cost=2
 iop1=Eat
 members=yes
 model=obj_lemon
@@ -775,13 +923,16 @@ model=obj_lemon
 category=category_120
 weight=100g
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_lemon
 
 [lemon_chunks]
 name=Lemon chunks
 desc=Fresh chunks of lemon.
 recol1s=31201
 recol1d=31660
-cost=2
 iop1=Eat
 members=yes
 model=obj_lemon_chunks
@@ -795,6 +946,10 @@ category=category_120
 weight=80g
 param=gnome_topping,^true
 param=cocktail_message,You add the diced lemon to the drink.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_lemon_chunks
 
 [lemon_slices]
 name=Lemon slices
@@ -803,7 +958,6 @@ recol1s=31201
 recol1d=31393
 recol2s=30646
 recol2d=31637
-cost=2
 iop1=Eat
 members=yes
 model=obj_lemon_slices
@@ -814,11 +968,14 @@ category=category_120
 weight=80g
 param=gnome_topping,^true
 param=cocktail_message,You add a lemon slice to the drink.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_lemon_slices
 
 [orange]
 name=Orange
 desc=A fresh orange.
-cost=2
 iop1=Eat
 members=yes
 model=obj_orange
@@ -828,11 +985,14 @@ model=obj_orange
 category=category_120
 weight=110g
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_orange
 
 [orange_chunks]
 name=Orange chunks
 desc=Fresh chunks of orange.
-cost=2
 iop1=Eat
 members=yes
 model=obj_lemon_chunks
@@ -846,13 +1006,16 @@ category=category_120
 weight=90g
 param=gnome_topping,^true
 param=cocktail_message,You add the diced orange to the drink.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_orange_chunks
 
 [orange_slices]
 name=Orange slices
 desc=Fresh orange slices.
 recol1s=30646
 recol1d=31435
-cost=2
 iop1=Eat
 members=yes
 model=obj_lemon_slices
@@ -863,11 +1026,14 @@ category=category_120
 weight=90g
 param=gnome_topping,^true
 param=cocktail_message,You add an orange slice to the dirnk.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_orange_slices
 
 [pineapple]
 name=Pineapple
 desc=It can be cut up into something more manageable with a knife.
-cost=1
 iop1=Eat
 members=yes
 model=obj_tentipineapple
@@ -878,13 +1044,16 @@ model=obj_tentipineapple
 category=category_120
 weight=150g
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_pineapple
 
 [pineapple_chunks]
 name=Pineapple chunks
 desc=Fresh chunks of pineapple.
 recol1s=31201
 recol1d=31429
-cost=1
 iop1=Eat
 members=yes
 model=obj_lemon_chunks
@@ -899,11 +1068,14 @@ category=category_120
 weight=120g
 param=gnome_topping,^true
 param=pizza_topping_struct,pineapple_topping
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_pineapple_chunks
 
 [pineapple_ring]
 name=Pineapple ring
 desc=Exotic fruit.
-cost=1
 iop1=Eat
 members=yes
 model=obj_pineapple_ring
@@ -914,11 +1086,14 @@ model=obj_pineapple_ring
 category=category_120
 weight=30g
 param=pizza_topping_struct,pineapple_topping
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_pineapple_ring
 
 [lime]
 name=Lime
 desc=A fresh lime.
-cost=2
 iop1=Eat
 members=yes
 model=obj_lime
@@ -928,13 +1103,16 @@ model=obj_lime
 category=category_120
 weight=100g
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_lime
 
 [lime_chunks]
 name=Lime chunks
 desc=Fresh chunks of lime.
 recol1s=31201
 recol1d=23539
-cost=1
 iop1=Eat
 members=yes
 model=obj_lemon_chunks
@@ -947,6 +1125,10 @@ model=obj_lemon_chunks
 category=category_120
 weight=80g
 param=gnome_topping,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_lime_chunks
 
 [lime_slices]
 name=Lime slices
@@ -955,7 +1137,6 @@ recol1s=30646
 recol1d=19443
 recol2s=31201
 recol2d=544
-cost=2
 iop1=Eat
 members=yes
 model=obj_lemon_slices
@@ -966,3 +1147,7 @@ category=category_120
 weight=80g
 param=gnome_topping,^true
 param=cocktail_message,You add a lime slice to the drink.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_lime_slices

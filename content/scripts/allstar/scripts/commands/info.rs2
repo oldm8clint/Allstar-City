@@ -1,0 +1,221 @@
+// Allstar-Scape's info scrolls (client.java L8723-9057 and inline in customCommand): the 317
+// scroll 8134 is questjournal. Every menu sets the title, clears the lines (not the title), writes
+// its lines, scrolls back to the top (sendQuestSomething 8143) and opens the scroll.
+
+// sendQuestSomething(8143) + showInterface(8134)
+[proc,allstar_show_scroll]
+if_setscrollpos(questjournal:com_2, 0);
+~allstar_showinterface(questjournal);
+
+// ElementalHelpMenu (::armorhelp)
+[proc,allstar_help_elemental]
+~allstar_scroll_child(8144, "@dre@Elemental Armors");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Elemental Help Guide");
+~allstar_scroll_child(8149, "First, buy a gem from the combat instructor.");
+~allstar_scroll_child(8151, "Then, buy a pink robe set.");
+~allstar_scroll_child(8152, "Use the gem with a peice of the set.");
+~allstar_scroll_child(8153, "You now have that type of elemental armor.");
+~allstar_scroll_child(8154, "Once you have the full set, you can");
+~allstar_scroll_child(8155, "use it to your advantage in the wilderness");
+~allstar_scroll_child(8156, "Fire > Earth");
+~allstar_scroll_child(8157, "Water > Fire");
+~allstar_scroll_child(8158, "Air > Water");
+~allstar_scroll_child(8159, "Earth > Air");
+~allstar_scroll_child(8160, "There is a 1/10 chance of doing a special attack, but only");
+~allstar_scroll_child(8161, "if you're using the full robe set.");
+~allstar_scroll_child(8163, "Have fun!");
+~allstar_show_scroll;
+
+// the rules, shared by ::modinfo (any rights) and MainHelpMenu
+[proc,allstar_rules_lines]
+~allstar_scroll_child(8145, "How to Become Mod/Admin");
+~allstar_scroll_child(8147, "----");
+~allstar_scroll_child(8148, "1. Respect all other players!");
+~allstar_scroll_child(8149, "2. Respect Owners,Admins and Mods");
+~allstar_scroll_child(8150, "3. Do not start fights with other players");
+~allstar_scroll_child(8151, "   just simply tell an Owner or Admin.");
+~allstar_scroll_child(8152, "4. Help other players if they need help.");
+~allstar_scroll_child(8153, "5. Play on Server alot.");
+~allstar_scroll_child(8154, "5. Higher chance if you register on forums at");
+~allstar_scroll_child(8155, "allstarscapeforums.smfforfree2.com and stay active");
+~allstar_scroll_child(8156, "_____________________________________________________");
+~allstar_scroll_child(8157, "If you follow all of these rules you will be fine");
+~allstar_scroll_child(8158, "Just follow these and you will become a mod or admin");
+
+// ::modinfo (L12058)
+[proc,allstar_cmd_modinfo]
+~allstar_scroll_child(8144, "@dre@The rules of Allstar-Scape");
+~allstar_scroll_clear;
+~allstar_rules_lines;
+~allstar_show_scroll;
+
+// MainHelpMenu (L9000; ::mainmenu, ::info, login): text only for rank 0. The design screen check
+// needs the look (0,10,18,26,72,42,33), which new characters never have.
+[proc,allstar_help_main]
+if (%allstar_rights > 0) {
+    return;
+}
+~allstar_scroll_child(8144, "info");
+~allstar_scroll_clear;
+~allstar_rules_lines;
+~allstar_scroll_child(8159, "");
+~allstar_show_scroll;
+
+// QuestHelpMenu (::questmenu)
+[proc,allstar_help_quest]
+~allstar_scroll_child(8144, "@dre@Quests");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@The secret commands quest");
+~allstar_scroll_child(8147, "@dbl@@dre@To start tele to 2511,3494...@dbl@");
+~allstar_scroll_child(8148, "@dbl@@dre@Then click board raft for your first instructions :) @dbl@");
+~allstar_scroll_child(8149, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8150, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8151, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8152, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8153, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8154, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8155, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8156, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8157, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8160, "@dbl@*future quest*");
+~allstar_scroll_child(8161, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8162, "@dbl@@dre@ *future quest* @dbl@");
+~allstar_scroll_child(8163, "@dbl@@dre@ *future quest*@dbl@");
+~allstar_show_scroll;
+
+// SlayerHelpMenu (::slayerinfo)
+[proc,allstar_help_slayer]
+~allstar_scroll_child(8144, "@dre@Slayer Info");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Slayer Information");
+~allstar_scroll_child(8147, "@dbl@@dre@Chickens@dbl@");
+~allstar_scroll_child(8148, "@dbl@@dre@Requirments: 5 slayer@dbl@");
+~allstar_scroll_child(8149, "@dbl@@dre@Located at the beginning of slayer tower@dbl@");
+~allstar_scroll_child(8150, "@dbl@-------------@dbl@");
+~allstar_scroll_child(8151, "@dbl@@dre@Skele's@dbl@");
+~allstar_scroll_child(8152, "@dbl@@dre@Requirements: 20 slayer@dbl@");
+~allstar_scroll_child(8153, "@dbl@@dre@Located at slayer tower@dbl@");
+~allstar_scroll_child(8154, "@dbl@-------------@dbl@");
+~allstar_scroll_child(8155, "@dbl@@dre@Crawling Hands@dbl@");
+~allstar_scroll_child(8156, "@dbl@@dre@Requirements: 30 slayer@dbl@");
+~allstar_scroll_child(8157, "@dbl@@dre@Located at Slayer Tower@dbl@");
+~allstar_scroll_child(8160, "@dbl@-------------");
+~allstar_scroll_child(8161, "@dbl@@dre@Cave Bugs@dbl@");
+~allstar_scroll_child(8162, "@dbl@@dre@Requirements: 40 slayer@dbl@");
+~allstar_scroll_child(8163, "@dbl@@dre@Located at: slayer tower@dbl@");
+~allstar_scroll_child(8164, "@dbl@-------------@dbl@");
+~allstar_scroll_child(8165, "@dbl@@dre@Jelly@dbl@");
+~allstar_scroll_child(8166, "@dbl@@dre@Requirements: 50 slayer@dbl@");
+~allstar_scroll_child(8167, "@dbl@@dre@Located at: Slayer Tower@dbl@");
+~allstar_scroll_child(8168, "@dbl@-------------@dbl@");
+~allstar_scroll_child(8169, "@dbl@@dre@Aberrant Specter@dbl@");
+~allstar_scroll_child(8170, "@dbl@@dre@Requirements: 65 slayer@dbl@");
+~allstar_scroll_child(8171, "@dbl@@dre@Located at: Slayer Tower@dbl@");
+~allstar_scroll_child(8172, "@dbl@Abyssal Demon@dbl@");
+~allstar_scroll_child(8173, "@dbl@Located at: Slayer Tower@dbl@");
+~allstar_scroll_child(8174, "@dbl@Dark Beast@dbl@");
+~allstar_scroll_child(8175, "@dbl@Located at: Slayer Tower@dbl@");
+~allstar_show_scroll;
+
+// TheifHelpMenu (::theifmenu)
+[proc,allstar_help_theif]
+~allstar_scroll_child(8144, "@dre@Theiving");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Theiving help guide");
+~allstar_scroll_child(8147, "@dbl@@dre@Silver stall@dbl@");
+~allstar_scroll_child(8148, "@dbl@@dre@Requirents: 85 theiving@dbl@");
+~allstar_scroll_child(8149, "@dbl@@dre@Located at: 2658,3312@dbl@");
+~allstar_scroll_child(8150, "@dbl@-------------@dbl@");
+~allstar_scroll_child(8151, "@dbl@@dre@Tea Stall@dbl@");
+~allstar_scroll_child(8152, "@dbl@@dre@Requirements: None@dbl@");
+~allstar_scroll_child(8153, "@dbl@@dre@Located at: 3269,3412@dbl@");
+~allstar_scroll_child(8154, "@dbl@-------------@dbl@");
+~allstar_scroll_child(8155, "@dbl@@dre@Secret crate@dbl@");
+~allstar_scroll_child(8156, "@dbl@@dre@Requirements: 99 theiving@dbl@");
+~allstar_scroll_child(8157, "@dbl@@dre@Located at: 2954,3303 @dbl@");
+~allstar_scroll_child(8160, "@dbl@-------------");
+~allstar_scroll_child(8161, "@dbl@@dre@Type ::castlewars for info on theiving stalls there@dbl@");
+~allstar_scroll_child(8162, "@dbl@@dre@-------------@dbl@");
+~allstar_scroll_child(8163, "@dbl@@dre@-------------@dbl@");
+~allstar_show_scroll;
+
+// CastlewarsHelpMenu (::castlewars): lines 8161-8163 are written twice, the Limestone Table never shows
+[proc,allstar_help_castlewars]
+~allstar_scroll_child(8144, "@dre@Castle Wars");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Castle Wars Theiving Guide");
+~allstar_scroll_child(8147, "@dbl@All tables located at 2425,3078@dbl@");
+~allstar_scroll_child(8148, "@dbl@@dre@Rock table@dbl@");
+~allstar_scroll_child(8149, "@dbl@@dre@Requirements: 65 theiving@dbl@");
+~allstar_scroll_child(8150, "@dbl@----------@dbl@");
+~allstar_scroll_child(8151, "@dbl@@dre@Pickaxe table@dbl@");
+~allstar_scroll_child(8152, "@dbl@@dre@Requirements: 70 theiving@dbl@");
+~allstar_scroll_child(8153, "@dbl@----------@dbl@");
+~allstar_scroll_child(8154, "@dbl@@dbl@Potion table@dbl@");
+~allstar_scroll_child(8155, "@dbl@@dre@Requirements: 75 theiving@dbl@");
+~allstar_scroll_child(8156, "@dbl@----------@dbl@");
+~allstar_scroll_child(8157, "@dbl@@dre@Rope table@dbl@");
+~allstar_scroll_child(8160, "@dbl@@dbl@Requirements: 85 theiving@dbl@");
+~allstar_scroll_child(8161, "@dbl@----------@dbl@");
+~allstar_scroll_child(8162, "@dbl@@dre@Limestone Table@dbl@");
+~allstar_scroll_child(8163, "@dbl@@dre@Requirements: 99 theiving@dbl@");
+~allstar_scroll_child(8161, "@dbl@----------@dbl@");
+~allstar_scroll_child(8162, "@dbl@@dre@Barricades Table@dbl@");
+~allstar_scroll_child(8163, "@dbl@@dre@Requirements: 120 theiving@dbl@");
+~allstar_show_scroll;
+
+// ServerHelpMenu (::servermenu): PimpScape's old details
+[proc,allstar_help_server]
+~allstar_scroll_child(8144, "@dre@Server Information Menu");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Server Information");
+~allstar_scroll_child(8147, "@dbl@Server IP: @gre@5.53.106.141");
+~allstar_scroll_child(8148, "@dbl@Players Online: @gre@<tostring(playercount)>");
+~allstar_scroll_child(8149, "@dbl@Server Hoster And Creator: @dre@admin");
+~allstar_scroll_child(8150, "@dbl@Server Admins: @dbl@ admin, Mod Darren, ....");
+~allstar_scroll_child(8151, " ");
+~allstar_scroll_child(8152, "@dbl@@dre@ ---");
+~allstar_scroll_child(8153, "@dbl@WebSite: @red@www.pimpscape.tk");
+~allstar_show_scroll;
+
+// SmeltingHelpMenu (::smeltingmenu): ::smelt does not exist
+[proc,allstar_help_smelting]
+~allstar_scroll_child(8144, "@dre@Smelting Information Menu");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dre@Smelting Menu");
+~allstar_scroll_child(8148, "@dbl@First Off you will need an ore,@dbl@");
+~allstar_scroll_child(8149, "@dbl@Now type in ::smelt and this will take you too Fally furance.@dbl@");
+~allstar_scroll_child(8150, "@dbl@The ore you are smelting must be the first in your inventory!.@dbl@");
+~allstar_scroll_child(8151, "@dbl@You may only smelt at Fally furnace.@dbl@");
+~allstar_show_scroll;
+
+// FishingHelpMenu (::fishing): ::fish does not exist
+[proc,allstar_help_fishing]
+~allstar_scroll_child(8144, "@dre@Fishing Information Menu");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dre@Fishing Menu");
+~allstar_scroll_child(8148, "@dbl@First off type in ::fish@dbl@");
+~allstar_scroll_child(8149, "@dbl@Fish at the big fountain next to where ::fish teles you to@dbl@");
+~allstar_scroll_child(8150, "@dbl@The item your fishing with must be in the 1st slot of your inventory.@dbl@");
+~allstar_scroll_child(8151, "@dbl@You may only fish there for now.@dbl@");
+~allstar_scroll_child(8153, "@dbl@Harpoon Fishes Sharks.@dbl@");
+~allstar_scroll_child(8154, "@dbl@Lobster pot Fishes Lobsters.@dbl@");
+~allstar_scroll_child(8155, "@dbl@Big Fishing net fishes carp.@dbl@");
+~allstar_show_scroll;
+
+// ::updates (L13227): no scroll reset
+[proc,allstar_help_updates]
+~allstar_scroll_child(8144, "@dre@LATEST UPDATES!!!!");
+~allstar_scroll_clear;
+~allstar_scroll_child(8145, "@dbl@Very Latest");
+~allstar_scroll_child(8147, "@dbl@@dre@- New Shops added!@dbl@");
+~allstar_scroll_child(8148, "@dbl@@dre@ @");
+~allstar_scroll_child(8149, "@dbl@@dre@-----------------------------@dbl@");
+~allstar_scroll_child(8150, "@dbl@ @dbl@");
+~allstar_scroll_child(8151, "@dbl@@dre@- Black Dragon lair added!@dbl@");
+~allstar_scroll_child(8152, "@dbl@@dre@ @");
+~allstar_scroll_child(8153, "@dbl@@dre@----------------------------@dbl@");
+~allstar_scroll_child(8154, "@dbl@ @dbl@");
+~allstar_scroll_child(8155, "@dbl@@dre@- added white armour and changed some bonuses@dbl@");
+~allstar_showinterface(questjournal);

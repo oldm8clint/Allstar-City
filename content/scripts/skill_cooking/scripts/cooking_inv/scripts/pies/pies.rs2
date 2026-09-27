@@ -1,38 +1,3 @@
-[opheldu,pastry_dough]
-switch_obj (last_useitem) {
-    case piedish : @make_pie_shell;
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,piedish]
-switch_obj (last_useitem) {
-    case pastry_dough : @make_pie_shell;
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,pie_shell]
-switch_obj (last_useitem) {
-    case cooking_apple, cooked_meat, cooked_chicken, redberries : @make_uncooked_pie(last_useslot);
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,cooking_apple]
-switch_obj (last_useitem) {
-    case pie_shell : @make_uncooked_pie(last_slot);
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,redberries]
-switch_obj (last_useitem) {
-    case pie_shell : @make_uncooked_pie(last_slot);
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheld1,burnt_pie]
-inv_del(inv, burnt_pie, 1);
-inv_add(inv, piedish, 1);
-mes("You remove the burnt pie from the pie dish.");
-
 [label,make_pie_shell]
 // delete the dough and pie dish
 inv_del(inv, pastry_dough, 1);

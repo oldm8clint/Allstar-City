@@ -1,0 +1,67 @@
+// Allstar-Scape client fields used by ::commands, the emote tab, the HUD and level-ups.
+
+// a ::command threw an exception in Allstar-Scape and the player is being disconnected
+[allstar_cmd_crashed]
+protect=no
+
+// the flood check (actionAmount > 25) is waiting for the next cycle
+[allstar_action_check]
+protect=no
+
+// client.IsSnowing: the weather shown in safe zones (1 snow, 3 clear, 4 dizzy, 5 dust)
+[allstar_weather]
+protect=no
+
+// client.leftwild (WriteWildyLevel)
+[allstar_leftwild]
+protect=no
+
+// the walkable overlay last sent: 1 safe, 2 wild, 3 none, 11 snow, 14 dizzy, 15 dust
+[allstar_walkable]
+protect=no
+
+// client.hasset: Motherload11's one-time wipe (moreinfo character-hasset)
+[allstar_hasset]
+scope=perm
+protect=no
+
+// Player.dropsitem (::heal, Chaos Elemental): take the weapon off next cycle
+[allstar_dropsitem]
+protect=no
+
+// the base level of each skill last announced (7 bits each, skill index order, 4 per varp)
+[allstar_levels0]
+protect=no
+
+[allstar_levels1]
+protect=no
+
+[allstar_levels2]
+protect=no
+
+[allstar_levels3]
+protect=no
+
+[allstar_levels4]
+protect=no
+
+[allstar_levels5]
+protect=no
+
+// where the player stood when the level-up chatbox opened (null: none showing)
+[allstar_levelup_box]
+type=coord
+protect=no
+
+// the controls tab's run energy text: 0 the client's own, 1 WriteEnergy's "100%", 2 ::god/::godoff
+[allstar_energy_text]
+protect=no
+
+// the coordinate last written over the controls tab's weight display (appendPos)
+[allstar_lastcoord]
+type=coord
+protect=no
+
+// client.LogoutDelay: map_clock until which the logout button refuses (~allstar_incombat)
+[allstar_logout_delay]
+protect=no

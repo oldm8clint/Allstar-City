@@ -1,0 +1,110 @@
+// Allstar-Scape item options 3 and 4: packet 16 (3rd option) and packet 75 (4th option)
+// (L18343-18446, npc_item_handlers.md section 6). Other items do nothing. The packet-16 fall
+// through into case 192 ("Nothing interesting happens.") is JUNK and not ported.
+[opheld3,_]
+
+[opheld4,_]
+
+// ---- yo-yo: Play (option 1, consume.rs2), Loop (option 2 = wear), Walk, Crazy ----
+[opheld3,xmas_yoyo] anim(yoyo_walkdog, 0);
+[opheld4,xmas_yoyo] anim(yoyo_advanced, 0);
+
+// ---- Amulet of glory(4) "Rub": home, unlimited charges; other charges do nothing ----
+[opheld4,amulet_of_glory_4]
+if (%allstar_teleblock = 1) {
+    mes("You are currently teleblocked and cannot teleport");
+    return;
+}
+~allstar_item_teleport(0_44_60_36_23);
+mes("Home, sweet home");
+
+// ---- Ring of dueling (8)-(2) "Rub" ((1) is not handled); no charges are used ----
+[opheld4,ring_of_dueling_8] @allstar_duelring;
+[opheld4,ring_of_dueling_7] @allstar_duelring;
+[opheld4,ring_of_dueling_6] @allstar_duelring;
+[opheld4,ring_of_dueling_5] @allstar_duelring;
+[opheld4,ring_of_dueling_4] @allstar_duelring;
+[opheld4,ring_of_dueling_3] @allstar_duelring;
+[opheld4,ring_of_dueling_2] @allstar_duelring;
+
+// selectoption(2459) "Where would you like to go?" Jad / Runecraft
+[label,allstar_duelring]
+if (%allstar_teleblock = 1) {
+    mes("You are currently teleblocked and cannot teleport");
+    return;
+}
+%allstar_duelring = 1;
+def_int $choice = ~p_choice2_header("@whi@J@gre@a@whi@d", 1, "@whi@R@gre@u@whi@n@gre@e@whi@c@gre@r@whi@a@gre@f@whi@t", 2, "Where would you like to go?");
+if ($choice = 2) {
+    // button 9158 with no NPC dialogue reaches the duelring branch. BUG: duelring stays set.
+    if_close;
+    ~allstar_item_teleport(0_47_75_32_40);
+    mes("You teleport to the abyssal rift");
+    mes("You can feel the magical aura in the air");
+    return;
+}
+// button 9157 with no NPC dialogue opens Hans' menu (NpcDialogue 1340) before reaching duelring
+def_int $hans = ~p_choice2("Yea i wanna go own n00bs!", 1, "Nah im really scared!", 2);
+if ($hans = 1) {
+    ~allstar_duelring_hans_option1;
+} else {
+    if_close;
+}
+
+// Button 9157 on Hans' menu (dialogue 1340): with duelring set, teleport to TzTok-Jad's lair.
+// Hans' own dialogue (npcs) should call this for its first option too.
+[proc,allstar_duelring_hans_option1]
+if (%allstar_duelring = 1) {
+    ~allstar_item_teleport(0_44_149_21_45);
+    mes("You teleport to the TzTok-Jad's lair");
+    mes("As you materialize, you feel the air around you grow hot");
+    %allstar_duelring = 0;
+}
+if_close;
+
+// teleportToX/Y with heightLevel 0: an instant move at the end of the cycle
+[proc,allstar_item_teleport](coord $dest)
+strongqueue*(allstar_telejump, 0)($dest);
+
+// ---- God books "Preach": menu 2480, sermons said 7 cycles apart (cycle.rs2) ----
+[opheld3,saradominbook_complete] @allstar_god_book(0);
+[opheld3,zamorakbook_complete] @allstar_god_book(1);
+[opheld3,guthixbook_complete] @allstar_god_book(2);
+
+// holyBook / unholyBook / balanceBook stay set until a sermon finishes; the first one set wins
+[label,allstar_god_book](int $book)
+%allstar_books = setbit(%allstar_books, $book);
+def_int $choice = ~p_choice4("Wedding rights", 1, "Last rights", 2, "Blessing", 3, "Preach", 4);
+def_int $first = -1;
+if (testbit(%allstar_books, 0) = 1) {
+    $first = 0;
+} else if (testbit(%allstar_books, 1) = 1) {
+    $first = 1;
+} else if (testbit(%allstar_books, 2) = 1) {
+    $first = 2;
+}
+if ($first = -1) {
+    return;
+}
+if_close;
+def_int $sermon = calc($first * 4 + $choice - 1);
+%allstar_sermons = setbit(%allstar_sermons, $sermon);
+say(~allstar_sermon_first_line($sermon));
+%allstar_preach_timer = 7;
+%allstar_preach = setbit(%allstar_preach, 0);
+
+[proc,allstar_sermon_first_line](int $sermon)(string)
+switch_int ($sermon) {
+    case 0 : return("In the name of Saradomin,");
+    case 1 : return("Thy cause was false, thine skills did lack,");
+    case 2 : return("Go in peace in the name of Saradomin,");
+    case 3 : return("Protect yourself, protect your friends,");
+    case 4 : return("Two great warriors, joined by hand,");
+    case 5 : return("The weak deserve to die,");
+    case 6 : return("May your bloodthirst be never sated,");
+    case 7 : return("Strike fast, strike hard, strike true,");
+    case 8 : return("Light and dark, day and night,");
+    case 9 : return("Thy death was not in vain,");
+    case 10 : return("May you walk the path, and never fall,");
+    case default : return("The trees, the earth, the sky, the waters,");
+}

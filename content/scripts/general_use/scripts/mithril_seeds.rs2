@@ -1,33 +1,3 @@
-[opheld1,mithril_seed]
-p_stopaction;
-if (~area_allow_loc_add(coord) = false) {
-    mes("You can't plant your flowers here."); // OSRS
-    return;
-} 
-if (~inzone_coord_pair_table(party_room_zones, coord) = true) {
-    // osrs
-    mes("Party Pete won't be happy if you plant your flowers here.");
-    return;
-}
-mes("You open the small mithril case.");
-mes("You drop a seed by your feet.");
-inv_del(inv, mithril_seed, 1);
-// Temp note: dur does not need updated
-loc_add(coord, ~random_flowers, 0, centrepiece_straight, 500);
-~push_player(coord);
-facesquare(loc_coord);
-def_int $option = ~p_choice2("Pick the flowers.", 1, "Leave the flowers.", 2);
-if($option = 2) {
-    return;
-}
-if(inv_freespace(inv) = 0) {
-    mes("You have no free space in your pack."); // OSRS
-    return;
-}
-anim(human_pickupfloor, 0);
-inv_add(inv, ~flowers_obj(loc_type), 1);
-loc_del(1);
-
 [proc,random_flowers]()(loc)
 def_int $rand = random(1001);
 if($rand < 150) {

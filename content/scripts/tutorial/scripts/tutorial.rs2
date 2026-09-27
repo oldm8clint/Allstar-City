@@ -130,15 +130,8 @@ if (%tutorial = ^newbie_combat_instructor_during_attacking_melee
 }
 
 
-[if_button,player_kit:accept]
-if_close;
-
-[if_close,player_kit]
-queue(tutorial_designed_character, 0, 0);
-
-[queue,tutorial_designed_character]
-%tutorial = ^newbie_basics_instructor_designed_character;
-allowdesign(false);
+// Allstar-City: the design screen's accept and close are in content/scripts/allstar/ui/scripts/design.rs2
+// (Allstar-Scape has no tutorial).
 
 [tutorial,_]
 if (%tutorial = 2) {
@@ -277,7 +270,7 @@ if (%tutorial = ^newbie_combat_instructor_worn_inventory & $weapon = bronze_dagg
     ~set_tutorial_progress;
 }
 
-@levelrequire_attack(1, $slot);
+~equip($slot);
 if_settab(null, ^tab_combat_options);
 
 [proc,tutorial_has_obj_on_person](namedobj $obj)(boolean)

@@ -1,8 +1,5 @@
 [oploc1,loc_5127]
 ~mesbox("@red@>WARNING!|This area contains very dangerous creatures!|Do not pass unless properly prepared!");
 
-[oploc1,slayer_dungeon_entrance]
-p_teleport(0_43_156_56_18);
-
 [oploc1,slayer_dungeon_exit]
 p_teleport(0_43_56_44_31);
