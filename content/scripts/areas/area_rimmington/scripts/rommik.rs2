@@ -8,10 +8,3 @@ if($option = 1) {
     ~chatplayer("<p,neutral>Let's see what you've got, then."); 
     ~openshop_activenpc;
 }
-
-[opnpc3,rommik]
-if(map_members = ^true) {
-    ~openshop(craftingshop, 650, 1000, 20, "Rommiks Crafty Supplies.");
-} else {
-    ~openshop(craftingshop_free, 650, 1000, 20, "Rommiks Crafty Supplies.");
-}
