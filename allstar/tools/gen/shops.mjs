@@ -311,14 +311,18 @@ export default function shops({ legacy, packs, content, writeGenerated, report }
     const items = loadItems(legacy.file('item.cfg'));
     const flags = loadFlags(legacyDir);
 
-    // Custom items (id >= 7956) are named allstar_item_<id> once the customitems step adds them.
-    const objName = id => {
-        const name = packs.obj.name(id);
-        if (name === undefined) {
-            return undefined;
+    // Allstar item id -> obj debugname. Ids up to 7955 are the 377 objs; custom items (id >= 7956)
+    // exist once the customitems step adds them as allstar_item_<id> (at whatever pack id).
+    const allstarObjs = new Map();
+    for (const [packId, name] of packs.obj.byId) {
+        const custom = name.match(/^allstar_item_(\d+)$/);
+        if (custom) {
+            allstarObjs.set(Number(custom[1]), name);
+        } else if (packId < 7956) {
+            allstarObjs.set(packId, name);
         }
-        return id >= 7956 && name !== `allstar_item_${id}` ? undefined : name;
-    };
+    }
+    const objName = id => allstarObjs.get(id);
 
     // ---- NPC options that open shops ----
     const clicks = [
@@ -349,7 +353,7 @@ export default function shops({ legacy, packs, content, writeGenerated, report }
     const maxShop = Math.max(...shopIds);
 
     // ---- per-item data (every obj that exists) ----
-    const objIds = [...packs.obj.byId.keys()].filter(id => objName(id) !== undefined).sort((a, b) => a - b);
+    const objIds = [...allstarObjs.keys()].sort((a, b) => a - b);
     const price = id => {
         const entry = items.last.get(id);
         return entry ? Math.floor(entry.value) : 1;

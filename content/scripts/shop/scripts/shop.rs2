@@ -1,8 +1,12 @@
-// Allstar-City: the Lost City shops (the [opnpc3,_shop_keeper] "Trade" option, haggle pricing,
-// stock-based prices and restocking) are replaced by Allstar-Scape's shops in
-// content/scripts/allstar/shops. Lost City NPC scripts still call these two procs; they open
-// nothing, because Allstar-Scape had no shop behind those NPC options.
+// Allstar-City: the Lost City shops (haggle pricing, stock-based prices, restocking) are replaced
+// by Allstar-Scape's shops in content/scripts/allstar/shops. Lost City NPC scripts still call
+// these two procs; they open nothing, because Allstar-Scape had no shop behind those NPC options.
 
 [proc,openshop](inv $shop, int $shop_buy, int $shop_sell, int $shop_haggle, string $title)
 
 [proc,openshop_activenpc]
+
+// "Trade" on a shopkeeper whose option opened no shop in Allstar-Scape (no case in the packet 17
+// chain, e.g. the spawned 527 Shop assistant, 793 Alfonse, 2620/2622 TzHaar merchants): nothing
+// happens. The NPCs that had a shop get their own [opnpc3] trigger (allstar/generated/scripts).
+[opnpc3,_shop_keeper]
