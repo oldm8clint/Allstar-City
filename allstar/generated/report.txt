@@ -8,25 +8,20 @@ NPC spawns: 486 placed, 6 skipped
 Items (< 7956): 7956 obj configs, 1571 wearable, 928 stackable, 2042 notes, 1235 with an Allstar server name, 598 wear requirements
 Custom items: 154 objs (6 with stand-in models), 222 allstar_items entries
 World objects: 509 placements (27 exact duplicates, 1 overwritten, 0 removed again), 67 removals
-  479 tiles placed on levels 0-3, 2 skipped; 1356 upper-level copies have no floor under them
+  479 tiles placed on level 0 (+1 upper-level copies of 10687), 2 skipped
   - skipped client.java:1829 loc 61 at 2854,3957: no map square
   - skipped client.java:2119 loc 6473 at 3444,9792: no map square
   - overwritten client.java:1879 6477 at 3101,3513 replaced by client.java:2029 6472
-  Lost City locs replaced by placements (14):
+  Lost City locs replaced by placements (9):
     0 2572,3853 816 pier_shadow_on_water shape 10 -> 9398
     0 2892,9907 1757 loc_1757 shape 10 -> 4626
     0 2373,3433 1187 blueflower shape 10 -> 4877
     0 2373,3437 1187 blueflower shape 11 -> 2565
-    1 3426,3536 4519 slayer_corpse2 shape 10 -> 2213
     0 3286,3211 631 gemmarket shape 10 -> 2562
-    1 2513,3857 4245 viking_abode_poor_roof_corner2 shape 10 -> 210
     0 3078,3552 14516 wild0_tree_stump shape 10 -> 6472
-    1 2853,2957 1113 stool_bamboo shape 11 -> 2213
-    1 2851,2957 1113 stool_bamboo shape 11 -> 2213
     0 3442,3520 3457 ornaterailing shape 9 -> 1032
     0 2378,3427 1187 blueflower shape 11 -> 12120
     0 3248,9364 6420 fd_firedungeon_shutchest shape 10 -> 10689
-    2 2758,3493 821 cannon shape 10 -> 11758
   Lost City locs removed by Deleteobjects/Deletewalls (65):
     0 2895,3513 1738 loc_1738 shape 10
     0 2885,3515 1289 deadtree2_dark shape 10
@@ -93,8 +88,8 @@ World objects: 509 placements (27 exact duplicates, 1 overwritten, 0 removed aga
     0 2794,3164 1088 chair shape 10
     0 2795,3164 1088 chair shape 10
     0 2796,3164 1088 chair shape 10
-  - no effect: client.java:1626 Deletewalls type 0 at 2895,3513: no loc of that class on any level
-  - no effect: client.java:1627 Deletewalls type 0 at 2892,9907: no loc of that class on any level
+  - no effect: client.java:1626 Deletewalls type 0 at 2895,3513: no loc of that class on level 0
+  - no effect: client.java:1627 Deletewalls type 0 at 2892,9907: no loc of that class on level 0
 Smithing: 6 bars, 134 column items, 134 removeBar and 137 canSmith entries
   - skipped (custom item) removeBar 1215 -> 15331
 Shops: 64 defined (TotalShops 65), 67 generated, 1010 stock slots, 59 NPC shop options

@@ -2,8 +2,11 @@
 // (allstar/spec/objects_buttons.md section 1, appendices A and B).
 //
 // Allstar-Scape sent these edits to a player's client after every map region load. The 317 client
-// applied them on the plane the player stood on, so Allstar-City applies them on all four levels
-// (allstar/QUIRKS.md Q3 relies on the custom objects existing on upper floors).
+// applied them on the plane the player stood on, so players only ever saw them on their own floor.
+// The 377 client draws every level at once (a copy on a level without a floor floats above the
+// ground), so Allstar-City applies them on level 0, where players saw them. The one exception is
+// the Q3 party box (allstar/QUIRKS.md Q3: reached from the floor above), which also goes on the
+// upper levels that have a floor under it.
 //
 // makeGlobalObject(x, y, id, face, type) -> createNewTileObject: type 10, rotation face & 3
 // (0 -> 0, -1 -> 3, -2 -> 2, -3 -> 1). The 317 client replaces the loc of the same class on the
@@ -20,13 +23,8 @@ import path from 'path';
 
 import { Pack } from '../lib/pack.mjs';
 
-const LEVELS = [0, 1, 2, 3];
-
-// The 377 client draws locs of every level above the player when no roof hides them, so a copy on a
-// level without a floor floats one or more storeys above the level-0 object. Allstar-Scape players
-// on level 0 never saw those copies. Set to true to keep upper-level copies only where that level
-// has a floor (the Q3 party box at 3285,2770 level 1 has one).
-const UPPER_COPIES_NEED_FLOOR = false;
+// placed on level 0 and on every upper level with a floor under them
+const UPPER_LEVEL_LOCS = new Set([10687]);
 
 const hasFloor = (maps, level, x, z) => maps.entries('MAP', level, x, z).some(e => /(^| )[ou]\d/.test(e.data));
 
@@ -135,7 +133,7 @@ function worldEdits({ packs, maps, report }, lines) {
     const deleted = [];
     const missed = [];
     let placed = 0;
-    let floating = 0;
+    let upper = 0;
     for (const t of tiles.values()) {
         if (!maps.has(t.x, t.z)) {
             skipped.push(`client.java:${t.line} ${t.remove ? `${t.fn} type ${t.type}` : `loc ${t.id}`} at ${t.x},${t.z}: no map square`);
@@ -146,17 +144,16 @@ function worldEdits({ packs, maps, report }, lines) {
             const shape = Number(data.split(' ')[1] ?? 10);
             return shapeClass(shape) === t.cls && !isRoof(shape);
         };
-        for (const level of LEVELS) {
+        const levels = [0];
+        if (!t.remove && UPPER_LEVEL_LOCS.has(t.id)) {
+            levels.push(...[1, 2, 3].filter(level => hasFloor(maps, level, t.x, t.z)));
+            upper += levels.length - 1;
+        }
+        for (const level of levels) {
             for (const e of maps.entries('LOC', level, t.x, t.z).filter(e => affected(e.data))) {
                 const [id, shape = '10'] = e.data.split(' ');
                 const label = `${level} ${t.x},${t.z} ${id} ${packs.loc.name(Number(id)) ?? '?'} shape ${shape}`;
                 (t.remove ? deleted : replaced).push(t.remove ? label : `${label} -> ${t.id}`);
-            }
-            if (!t.remove && level > 0 && !hasFloor(maps, level, t.x, t.z)) {
-                if (UPPER_COPIES_NEED_FLOOR) {
-                    continue;
-                }
-                floating++;
             }
             removedHere += maps.remove('LOC', level, t.x, t.z, affected);
             if (!t.remove) {
@@ -167,7 +164,7 @@ function worldEdits({ packs, maps, report }, lines) {
             }
         }
         if (t.remove && removedHere === 0) {
-            missed.push(`client.java:${t.line} ${t.fn} type ${t.type} at ${t.x},${t.z}: no loc of that class on any level`);
+            missed.push(`client.java:${t.line} ${t.fn} type ${t.type} at ${t.x},${t.z}: no loc of that class on level 0`);
         }
         if (!t.remove) {
             placed++;
@@ -176,7 +173,7 @@ function worldEdits({ packs, maps, report }, lines) {
 
     report(
         `World objects: ${placements.length} placements (${duplicates} exact duplicates, ${overwritten.length} overwritten, ${cancelled.length} removed again), ${removals.length} removals`,
-        `  ${placed} tiles placed on levels 0-3, ${skipped.length} skipped; ${floating} upper-level copies have no floor under them`,
+        `  ${placed} tiles placed on level 0 (+${upper} upper-level copies of ${[...UPPER_LEVEL_LOCS].join(', ')}), ${skipped.length} skipped`,
         ...skipped.map(s => `  - skipped ${s}`),
         ...overwritten.map(s => `  - overwritten ${s}`),
         ...cancelled.map(s => `  - cancelled ${s}`),
