@@ -5,6 +5,13 @@
 // level at login); the Hitpoints stat only showed the hit. When the pool reached 0 the player lost
 // every carried item and every worn item that fitted in the inventory, and was sent away.
 
+// For the login script: client.process() checked the zones every cycle for everyone, so a player who
+// logs in inside one is hit from the start.
+[proc,allstar_objects_login]
+if (~allstar_zone_kbd(coord) = true | ~allstar_zone_dungeon(coord) = true) {
+    ~allstar_zone_start;
+}
+
 // Starts the per-cycle check; stops by itself outside both zones.
 [proc,allstar_zone_start]
 if (%allstar_current_health = 0) {
