@@ -57,6 +57,8 @@ while (%allstar_travelboat ! 0) {
     }
     p_telejump(movecoord(coord, calc(9999 - coordx(coord)), 0, calc(9999 - coordz(coord))));
     if_openmain_side(ship_journey, inventory);
+    // closing a side interface stops the transmits of its components, the inventory's included
+    inv_transmit(inv, inventory:inv);
     p_delay(0);
 }
 
@@ -72,3 +74,4 @@ if (%allstar_travelboat = 1) {
 %allstar_travelboat = 0;
 %allstar_traveltime = 0;
 if_close;
+inv_transmit(inv, inventory:inv);

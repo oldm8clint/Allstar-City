@@ -33,7 +33,11 @@ if ($id = 0) {
     return;
 }
 if (~allstar_talkrange = true) {
-    ~allstar_npc_dialogue($id, npc_type);
+    // ends the interaction: after a p_aprange earlier in the cycle the engine would otherwise keep
+    // it and run this trigger again once the chatbox closes
+    def_npc $npc = npc_type;
+    p_stopaction;
+    ~allstar_npc_dialogue($id, $npc);
 }
 
 // the "isn't interested" messages are sent at the click, without walking
@@ -50,6 +54,7 @@ if (npc_range(coord) > 2) {
     p_aprange(2);
     return;
 }
+p_stopaction;
 @allstar_openbank;
 
 // ---- dialogues ----

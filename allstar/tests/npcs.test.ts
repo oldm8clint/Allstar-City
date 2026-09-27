@@ -1,0 +1,539 @@
+// NPC interactions: dialogues, option chain, bankers, pickpocketing, click-fishing, teleport npcs,
+// boats, make-over, quests and clue scrolls. Run against a server on NODE_PORT 43612 / WEB_PORT 8112:
+//   cd engine && npx tsx ../allstar/tests/npcs.test.ts
+import Bot from './Bot.js';
+import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
+import type Packet from '../../engine/src/io/Packet.js';
+
+// Bot.ts reads these three packets with plain g2(); the engine writes the component ids with the
+// alt encodings (IfSetTextEncoder, IfOpenMainEncoder, IfOpenMainSideEncoder).
+type Handler = (this: Bot, prot: ServerGameProt, buf: Packet, length: number) => void;
+const proto = Bot.prototype as unknown as { handle: Handler };
+const handle = proto.handle;
+proto.handle = function (prot, buf, length) {
+    if (prot === ServerGameProt.IF_SETTEXT) {
+        const com = buf.g2_alt3();
+        this.texts.set(com, buf.gjstr());
+    } else if (prot === ServerGameProt.IF_OPENMAIN) {
+        this.main = buf.g2_alt3();
+        this.side = -1;
+    } else if (prot === ServerGameProt.IF_OPENMAIN_SIDE) {
+        this.main = buf.g2_alt2();
+        this.side = buf.g2_alt3();
+    } else {
+        handle.call(this, prot, buf, length);
+    }
+};
+
+const PORT = Number(process.env.BOT_PORT ?? 43612);
+const WEB = Number(process.env.BOT_WEB ?? 8112);
+
+// 317/377 component ids used by Allstar-Scape's chatbox
+const NPCCHAT1 = 4882; // head 4883, name 4884, line 4885, continue 4886
+const NPCCHAT4 = 4900; // name 4902, lines 4903-4906, continue 4907
+const CHAT2 = 973; // name 975, lines 976-977, continue 978
+const MULTI2 = 2459; // title 2460, options 2461/2462
+const INV = 3214;
+
+let failures = 0;
+const check = (ok: boolean, what: string) => {
+    if (!ok) failures++;
+    console.log(ok ? 'PASS' : 'FAIL', what);
+};
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+async function connect(prefix: string): Promise<Bot> {
+    return Bot.connect({ username: `${prefix}${Date.now() % 10000}`, port: PORT, webPort: WEB });
+}
+
+async function command(bot: Bot, text: string, pause = 700) {
+    bot.cheat(text);
+    await sleep(pause);
+}
+
+async function tele(bot: Bot, x: number, z: number, level = 0) {
+    await command(bot, `tele ${level},${x >> 6},${z >> 6},${x & 63},${z & 63}`, 1200);
+}
+
+async function getvar(bot: Bot, name: string): Promise<number> {
+    const since = bot.messages.length;
+    bot.cheat(`getvar ${name}`);
+    const text = await bot.waitForMessage(new RegExp(`^get ${name}: `), 5000, since);
+    await sleep(300);
+    return Number(text.split(': ')[1]);
+}
+
+async function setvar(bot: Bot, name: string, value: number) {
+    const since = bot.messages.length;
+    bot.cheat(`setvar ${name} ${value}`);
+    await bot.waitForMessage(new RegExp(`^set ${name}: `), 5000, since);
+    await sleep(300);
+}
+
+// the nearest such npc, found with the ::~npcnid debugproc: its index (sent with npc options) and tile
+async function find(bot: Bot, npc: string): Promise<{ id: number; x: number; z: number }> {
+    const since = bot.messages.length;
+    bot.cheat(`~npcnid ${npc}`);
+    const found = await bot.waitForMessage(/^npcnid /, 5000, since);
+    if (found === 'npcnid none') {
+        throw new Error(`no ${npc} nearby`);
+    }
+    await sleep(300);
+    const [x, z] = found.slice('npcnid '.length).split(',').map(Number);
+    return { id: (await getvar(bot, 'allstar_debug_npc')) & 0xffff, x, z };
+}
+
+async function nid(bot: Bot, npc: string): Promise<number> {
+    return (await find(bot, npc)).id;
+}
+
+// Bots send no client path, so the server walks them naively and can stop diagonally next to an
+// npc. Stand on the npc's column first (dialogues open on its row or column within 2 tiles).
+async function approach(bot: Bot, npc: string, dx = 0, dz = -1): Promise<number> {
+    const at = await find(bot, npc);
+    await tele(bot, at.x + dx, at.z + dz);
+    return nid(bot, npc);
+}
+
+async function give(bot: Bot, name: string, obj: number, n = 1) {
+    const before = count(bot, obj);
+    bot.cheat(`give ${name} ${n}`);
+    try {
+        await bot.until(() => count(bot, obj) > before, 5000, `::give ${name}`);
+    } catch (err) {
+        console.log('inventory', JSON.stringify(inv(bot)), JSON.stringify(bot.messages.slice(-5)), bot.chat, bot.main);
+        throw err;
+    }
+    await sleep(300);
+}
+
+async function spawn(bot: Bot, npc: string): Promise<number> {
+    await command(bot, `npcadd ${npc}`, 900);
+    return approach(bot, npc);
+}
+
+// op1 on the npc until the chatbox opens (npcs wander between finding and clicking)
+async function talk(bot: Bot, npc: string, com: number, line: number, text: string, what: string, spawned = false) {
+    for (let attempt = 0; attempt < 4; attempt++) {
+        const id = spawned && attempt === 0 ? await spawn(bot, npc) : await approach(bot, npc);
+        bot.opNpc(1, id);
+        try {
+            await bot.until(() => bot.chat === com && bot.texts.get(line) === text, 4000, what);
+            check(true, what);
+            return;
+        } catch {
+            await sleep(300);
+        }
+    }
+    check(false, `${what} (chat ${bot.chat}, ${line}=${JSON.stringify(bot.texts.get(line))})`);
+}
+
+const inv = (bot: Bot) => bot.invs.get(INV) ?? [];
+const count = (bot: Bot, obj: number) => inv(bot).reduce((n, o) => n + (o?.id === obj ? o.count : 0), 0);
+const slotOf = (bot: Bot, obj: number) => inv(bot).findIndex(o => o?.id === obj);
+
+async function chat(bot: Bot, com: number, line: number, text: string, what: string) {
+    try {
+        await bot.until(() => bot.chat === com && bot.texts.get(line) === text, 6000, what);
+        check(true, what);
+    } catch {
+        check(false, `${what} (chat ${bot.chat}, ${line}=${JSON.stringify(bot.texts.get(line))})`);
+    }
+}
+
+async function closed(bot: Bot, what: string) {
+    try {
+        await bot.until(() => bot.chat === -1, 4000, what);
+        check(true, what);
+    } catch {
+        check(false, `${what} (chat ${bot.chat}, 4885=${JSON.stringify(bot.texts.get(4885))}, last messages ${JSON.stringify(bot.messages.slice(-4))})`);
+    }
+}
+
+async function nothingFor(bot: Bot, ms: number, since: number): Promise<string[]> {
+    await sleep(ms);
+    return bot.messages.slice(since);
+}
+
+async function coord(bot: Bot) {
+    const c = await bot.coord();
+    await sleep(300);
+    return c;
+}
+
+// ---------------------------------------------------------------------------------------------
+
+async function quests(bot: Bot) {
+    // loadquestinterface at login
+    check(bot.texts.get(640) === '@red@Allstar-Scape', 'quest tab title');
+    check(bot.texts.get(663) === '@whi@Info', 'quest tab Info');
+    check(bot.texts.get(7332) === '@whi@Thank you for choosing', 'quest tab line 1');
+    check(bot.texts.get(7333) === '@yel@Allstar-Scape', 'quest tab line 2');
+    check(bot.texts.get(7334) === '@whi@We hope you have a great', 'quest tab line 3');
+    check(bot.texts.get(7336) === '@whi@Good time on our server =)', 'quest tab line 4');
+    check(bot.texts.get(7339) === '          - Mod Allstar', 'quest tab signature');
+    check(bot.texts.get(7353) === '' && bot.texts.get(7383) === '', 'stock quest names blanked');
+}
+
+async function hans(bot: Bot) {
+    await tele(bot, 2737, 3466);
+    await talk(bot, 'hans', NPCCHAT1, 4885, 'Welcome To Mod Allstarscape !!', 'Hans 1339 line');
+    check(bot.texts.get(4886) === 'Click here to Get shot by Hans' && bot.texts.get(4884) === 'Hans', 'Hans continue line + header');
+    bot.resumePauseButton(4886);
+    await chat(bot, MULTI2, 2461, 'Yea i wanna go own n00bs!', 'Hans 1340 menu');
+    check(bot.texts.get(2460) === 'Select an Option' && bot.texts.get(2462) === 'Nah im really scared!', 'Hans menu texts');
+    bot.ifButton(2461);
+    await sleep(1500);
+    check(bot.chat === MULTI2, 'Hans option 1 does nothing (menu stays)');
+    bot.ifButton(2462);
+    await closed(bot, 'Hans option 2 closes');
+    check(bot.texts.get(4885) === 'Fine, you suck!', '"Fine, you suck!" written to 4885');
+}
+
+async function hijack(bot: Bot) {
+    // Ring of dueling menu while NpcDialogue == 0: option 1 opens Hans' menu first
+    await command(bot, '~npcsring', 900);
+    await chat(bot, MULTI2, 2460, 'Where would you like to go?', 'ring menu via selectoption');
+    const since = bot.messages.length;
+    bot.ifButton(2461);
+    await chat(bot, MULTI2, 2461, 'Yea i wanna go own n00bs!', 'option 1 hijacked into Hans menu');
+    check(bot.texts.get(4885) === 'Mmk thanks for reading!', '"Mmk thanks for reading!" written');
+    bot.ifButton(2461);
+    await bot.waitForMessage(/^You teleport to the TzTok-Jad's lair$/, 5000, since);
+    await bot.waitForMessage(/^As you materialize, you feel the air around you grow hot$/, 5000, since);
+    await sleep(900);
+    const c = await coord(bot);
+    check(c.x === 2837 && c.z === 9581 && c.level === 0, `duelring Jad teleport -> ${JSON.stringify(c)}`);
+    check((await getvar(bot, 'allstar_duelring')) === 0, 'duelring reset after Jad');
+}
+
+async function bankers(bot: Bot) {
+    await tele(bot, 3094, 3491);
+    await talk(bot, 'banker2', NPCCHAT1, 4885, 'Good day, how can I help you?', 'banker dialogue 1');
+    check(bot.texts.get(4884) === 'Banker', 'banker header');
+    bot.resumePauseButton(4886);
+    await chat(bot, MULTI2, 2460, 'What would you like to say?', 'banker menu 2');
+    check(bot.texts.get(2461) === "I'd like to access my bank account, please." && bot.texts.get(2462) === "I'd like to check my PIN settings.", 'banker menu options');
+    bot.ifButton(2461);
+    try {
+        await bot.until(() => bot.main === 5292, 4000, 'bank');
+        check(true, 'banker option 1 opens the bank');
+    } catch {
+        check(false, `banker option 1 opens the bank (main ${bot.main})`);
+    }
+    await talk(bot, 'banker2', NPCCHAT1, 4885, 'Good day, how can I help you?', 'banker dialogue again');
+    bot.resumePauseButton(4886);
+    await chat(bot, MULTI2, 2460, 'What would you like to say?', 'banker menu again');
+    bot.ifButton(2462);
+    try {
+        await bot.until(() => bot.main === 14924, 4000, 'pin');
+        check(bot.texts.get(15038) === 'Customers are reminded' && bot.texts.get(15107) === '3 days', 'banker option 2 opens PIN settings');
+    } catch {
+        check(false, `banker option 2 opens PIN settings (main ${bot.main})`);
+    }
+    bot.opNpc(3, await approach(bot, 'banker1'));
+    try {
+        await bot.until(() => bot.main === 5292, 5000, 'bank op3');
+        check(true, 'banker Bank option opens the bank');
+    } catch {
+        check(false, `banker Bank option (main ${bot.main})`);
+    }
+}
+
+async function aubury(bot: Bot) {
+    await tele(bot, 2743, 3468);
+    await talk(bot, 'aubury', NPCCHAT1, 4885, 'Do you want to buy some runes?', 'Aubury 3');
+    bot.resumePauseButton(4886);
+    await chat(bot, MULTI2, 2462, "Oh it's a rune shop. No thank you, then.", 'Aubury menu 4');
+    bot.ifButton(2462);
+    await chat(bot, CHAT2, 976, "Oh it's a rune shop. No thank you, then.", 'Aubury player line 5');
+    bot.resumePauseButton(978);
+    await chat(bot, NPCCHAT1, 4885, 'Well, if you find somone who does want runes, please', 'Aubury 6');
+    check(bot.texts.get(4886) === 'send them my way.', 'Aubury 6 continue line');
+    bot.resumePauseButton(4886);
+    await closed(bot, 'Aubury 6 closes');
+}
+
+async function lowe(bot: Bot) {
+    await tele(bot, 2823, 3441);
+    await talk(bot, 'lowe', CHAT2, 977, 'Ok, where can I find the Consecration seed?', 'Lowe 550 (line on 977)');
+    check(bot.texts.get(976) === '', 'Lowe 976 blanked');
+    bot.resumePauseButton(978);
+    await sleep(1500);
+    check(bot.chat === CHAT2, '551 renders nothing, the chat stays');
+    bot.resumePauseButton(978);
+    await closed(bot, 'second continue closes');
+}
+
+async function darkMage(bot: Bot) {
+    await tele(bot, 3302, 3198);
+    await talk(bot, 'upassmage', NPCCHAT1, 4885, 'Welcome to the Thieving Area :)', 'Dark mage 4444');
+    check(bot.texts.get(4884) === 'Dark_mage', 'npc.cfg name keeps underscores');
+    bot.resumePauseButton(4886);
+    await closed(bot, 'Dark mage closes');
+}
+
+async function pickpocket(bot: Bot) {
+    await tele(bot, 3291, 3175);
+    const id = await approach(bot, 'al_kharid_warrior');
+    let since = bot.messages.length;
+    bot.opNpc(3, id);
+    await bot.waitForMessage(/^You need 25 theiving to pickpocket warriors\.$/, 5000, since);
+    check(true, 'warrior level check');
+    await command(bot, 'setstat thieving 25');
+    const coins = count(bot, 995);
+    since = bot.messages.length;
+    bot.opNpc(3, id);
+    await bot.waitForMessage(/^You pickpocket the warrior\.$/, 5000, since);
+    await sleep(600);
+    check(count(bot, 995) === coins + 1800, `warrior gives 1800 coins (${count(bot, 995) - coins}) ${JSON.stringify(bot.messages.slice(since))} ${JSON.stringify(inv(bot))} ${[...bot.invs.keys()]}`);
+    since = bot.messages.length;
+    bot.opNpc(3, id);
+    const extra = await nothingFor(bot, 1500, since);
+    check(!extra.some(m => /pickpocket/.test(m)) && count(bot, 995) === coins + 1800, 'actionTimer (10 cycles) blocks the next pickpocket');
+}
+
+async function paladin(bot: Bot) {
+    await tele(bot, 3300, 3177);
+    await command(bot, 'setstat thieving 50');
+    const id = await approach(bot, 'paladin2');
+    const coins = count(bot, 995);
+    const since = bot.messages.length;
+    await sleep(4000); // warrior timer
+    bot.opNpc(3, id);
+    await bot.waitForMessage(/^You pickpocket the paladin\.$/, 5000, since);
+    await sleep(600);
+    check(count(bot, 995) === coins + 8000, 'paladin gives 8000 coins');
+}
+
+async function fishing(bot: Bot) {
+    await tele(bot, 2576, 3880);
+    let id = await approach(bot, '0_41_53_bigdavefishspot');
+    const shrimps = count(bot, 317);
+    let since = bot.messages.length;
+    bot.opNpc(1, id);
+    await bot.waitForMessage(/^You fish a shrimp$/, 5000, since);
+    await sleep(600);
+    check(count(bot, 317) === shrimps + 1, 'click-fishing gives a shrimp');
+    await tele(bot, 2560, 3890);
+    id = await approach(bot, '0_41_53_compofishspot');
+    since = bot.messages.length;
+    bot.opNpc(1, id);
+    await bot.waitForMessage(/^You need a fishing level of 90 to fish manta ray\.$/, 5000, since);
+    check(true, 'manta ray level message');
+}
+
+async function teleports(bot: Bot) {
+    await tele(bot, 2851, 3591);
+    const id = await approach(bot, 'fairy');
+    bot.opNpc(1, id);
+    await sleep(2000);
+    let c = await coord(bot);
+    check(c.x === 2438 && c.z === 5169 && c.level === 0, `Fairy teleport -> ${JSON.stringify(c)}`);
+    const monkey = await spawn(bot, 'magic_carpet_monkey');
+    bot.opNpc(1, monkey);
+    await sleep(2000);
+    c = await coord(bot);
+    check(c.x === 2715 && c.z === 9161 && c.level === 1, `Monkey teleport -> ${JSON.stringify(c)}`);
+}
+
+async function nothing(bot: Bot) {
+    await tele(bot, 3209, 2801);
+    const id = await nid(bot, 'king_roald');
+    const since = bot.messages.length;
+    bot.opNpc(1, id);
+    const got = await nothingFor(bot, 3000, since);
+    check(bot.chat === -1 && got.length === 0, `King Roald Talk-to does nothing (${JSON.stringify(got)})`);
+    await tele(bot, 2855, 3597);
+    const wom = await nid(bot, 'wise_old_man');
+    const since2 = bot.messages.length;
+    bot.opNpc(1, wom);
+    const got2 = await nothingFor(bot, 3000, since2);
+    check(bot.chat === -1 && got2.length === 0, `Wise Old Man Talk-to does nothing (${JSON.stringify(got2)})`);
+}
+
+async function starter(bot: Bot) {
+    await tele(bot, 2852, 3591);
+    const spirit = await spawn(bot, 'filliman_tarlock_ns');
+    const coins = count(bot, 995);
+    let since = bot.messages.length;
+    bot.opNpc(1, spirit);
+    await bot.waitForMessage(/^Get more food from the store owner:zeek$/, 5000, since);
+    await sleep(600);
+    check(count(bot, 995) === coins + 15000000 && count(bot, 392) >= 1500, 'Nature Spirit starter items');
+    since = bot.messages.length;
+    bot.opNpc(1, spirit);
+    await bot.waitForMessage(/^Why do you have to be greedy\?$/, 5000, since);
+    await bot.waitForMessage(/is really greedy trying to type ::starter again$/, 5000, since);
+    check(true, 'Nature Spirit second click');
+}
+
+async function makeover(bot: Bot) {
+    await tele(bot, 2852, 3589);
+    await talk(bot, 'makeover_mage', NPCCHAT4, 4904, 'Yo you want a make over?', 'make-over 14600', true);
+    check(bot.texts.get(4902) === 'Make-over_mage', 'make-over header');
+    bot.resumePauseButton(4907);
+    await chat(bot, MULTI2, 2461, 'Sure', 'make-over menu 14601');
+    bot.ifButton(2461);
+    await chat(bot, NPCCHAT4, 4904, "Ok that'll be 10000 coins", 'make-over 14602');
+    bot.resumePauseButton(4907);
+    await chat(bot, MULTI2, 2462, 'Gay...', 'make-over menu 14603');
+    const coins = count(bot, 995);
+    bot.ifButton(2461);
+    try {
+        await bot.until(() => bot.main === 3559, 5000, 'design');
+        await sleep(600);
+        check(count(bot, 995) === coins - 10000, 'make-over takes 10000 coins and opens the design screen');
+    } catch {
+        check(false, `make-over design screen (main ${bot.main})`);
+    }
+}
+
+async function mageOfZamorak(bot: Bot) {
+    await tele(bot, 2852, 3587);
+    await talk(bot, 'rcu_zammy_mage1b', NPCCHAT4, 4904, 'Hello, would you like me to tele you to the abyss?', 'Mage of Zamorak 2259', true);
+    bot.resumePauseButton(4907);
+    await chat(bot, MULTI2, 2461, 'Hell yeah!', 'abyss menu 2260');
+    const since = bot.messages.length;
+    bot.ifButton(2461);
+    await bot.waitForMessage(/^You teleport to the abyss\.$/, 5000, since);
+    await sleep(900);
+    const c = await coord(bot);
+    check(c.x === 3040 && c.z === 4842, `abyss teleport -> ${JSON.stringify(c)}`);
+    check(bot.chat === MULTI2, 'the abyss menu stays up');
+    bot.ifButton(2461);
+    await chat(bot, MULTI2, 2461, 'Yea i wanna go own n00bs!', 'clicking it again: hijack into Hans menu');
+    bot.ifButton(2462);
+    await closed(bot, 'Hans menu option 2 closes');
+}
+
+async function boat(bot: Bot) {
+    await tele(bot, 2852, 3585);
+    await talk(bot, 'captain_tobias', NPCCHAT4, 4904, 'Do you want to go on a trip to Karjama?', 'Captain Tobias 40', true);
+    check(bot.texts.get(4905) === "It's free.", 'boat is free');
+    bot.resumePauseButton(4907);
+    await chat(bot, MULTI2, 2461, 'Yes, please', 'boat menu 41');
+    const since = bot.messages.length;
+    const start = Date.now();
+    bot.ifButton(2461);
+    await bot.waitForMessage(/^You board the ship\.$/, 5000, since);
+    await sleep(2000);
+    let c = await coord(bot);
+    check(c.x === 9999 && c.z === 9999, `on the boat in the void -> ${JSON.stringify(c)}`);
+    await bot.waitForMessage(/^The boat arrives at Karamja\.$/, 20000, since);
+    const secs = (Date.now() - start) / 1000;
+    await sleep(600);
+    c = await coord(bot);
+    check(c.x === 2956 && c.z === 3146, `boat arrives at Karamja -> ${JSON.stringify(c)}`);
+    check(secs > 13 && secs < 16.5, `trip takes 29 cycles (${secs.toFixed(1)} s)`);
+}
+
+async function horvik(bot: Bot) {
+    await tele(bot, 2377, 3440);
+    await talk(bot, 'horvik_the_armourer', NPCCHAT1, 4885, 'Hey I need help with making some invisible armour...', 'Horvik 100');
+    check(bot.texts.get(4886) === "and you're gonna help me.", 'Horvik 100 continue line');
+    check((await getvar(bot, 'allstar_q1stage')) === 1, 'q1stage 1 on render');
+    bot.resumePauseButton(4886);
+    await closed(bot, 'Horvik 100 closes');
+    await sleep(600);
+    check(bot.texts.get(7332) === '@yel@Invisible Armour', 'quest tab shows Invisible Armour in progress');
+    // clue L1/S1/id1 -> dialogue 31, continue runs newclue()
+    await setvar(bot, 'allstar_cluelevel', 1);
+    await setvar(bot, 'allstar_cluestage', 1);
+    await setvar(bot, 'allstar_clueid', 1);
+    await talk(bot, 'horvik_the_armourer', NPCCHAT1, 4885, 'Heres your next clue, goodluck', 'Horvik clue 31');
+    bot.resumePauseButton(4886);
+    await closed(bot, 'clue 31 closes');
+    check((await getvar(bot, 'allstar_cluestage')) === 2, 'newclue advanced the stage');
+    check((await getvar(bot, 'allstar_npcdialogue')) === 31, 'NpcDialogue stays 31 after closing');
+}
+
+async function cook(bot: Bot) {
+    await tele(bot, 2852, 3583);
+    await talk(bot, 'cook', NPCCHAT1, 4885, "Yo, I'll add what I need to your quest log", 'Cook 200', true);
+    bot.resumePauseButton(4886);
+    await closed(bot, 'Cook 200 closes');
+    await give(bot, 'egg', 1944);
+    await give(bot, 'bucket_milk', 1927);
+    await give(bot, 'pot_flour', 1933);
+    const since = bot.messages.length;
+    bot.opNpc(1, await approach(bot, 'cook'));
+    await bot.waitForMessage(/^Quest complete!$/, 5000, since);
+    await sleep(600);
+    check(bot.main === 297 && bot.texts.get(301) === "You have completed Cook's Assistant" && bot.texts.get(4444) === '2', 'Cook quest complete scroll');
+    check(count(bot, 775) === 1 && count(bot, 1944) === 0 && count(bot, 1927) === 0 && count(bot, 1933) === 0, `Cooking gauntlets given, ingredients taken ${JSON.stringify(inv(bot))}`);
+    check((await getvar(bot, 'allstar_totalqp')) === 2, 'quest points 2');
+}
+
+async function mizgog(bot: Bot) {
+    await tele(bot, 2852, 3581);
+    await talk(bot, 'wizard_mizgog', NPCCHAT4, 4904, "Hi there, you don't happen to of seen a staff", 'Mizgog 301', true);
+    bot.resumePauseButton(4907);
+    await chat(bot, MULTI2, 2461, 'No but maybe I can help?', 'Mizgog menu 302');
+    bot.ifButton(2461);
+    await chat(bot, NPCCHAT4, 4904, 'You will? Well I think it\'s located in a', 'Mizgog 303');
+    check((await getvar(bot, 'allstar_q3stage')) === 1, 'q3stage 1');
+    bot.resumePauseButton(4907);
+    await closed(bot, 'Mizgog 303 closes');
+}
+
+async function clues(bot: Bot) {
+    await command(bot, 'empty');
+    await setvar(bot, 'allstar_cluelevel', 0);
+    await setvar(bot, 'allstar_cluestage', 0);
+    await setvar(bot, 'allstar_clueid', 0);
+    await bot.until(() => inv(bot).every(o => o === null), 5000, '::empty');
+    await give(bot, 'trail_clue_easy_simple006', 2682);
+    await give(bot, 'coins', 995, 5);
+    const slot = slotOf(bot, 2682);
+    let since = bot.messages.length;
+    bot.opHeld(1, 2682, slot, INV);
+    await bot.waitForMessage(/^Nothing interesting is happening\.$/, 5000, since);
+    await sleep(900);
+    check(count(bot, 2682) === 0, 'first read of a fresh scroll deletes it');
+    check((await getvar(bot, 'allstar_cluelevel')) === 2 && (await getvar(bot, 'allstar_cluestage')) === 1, 'scroll read sets level 2 stage 1');
+    // a level 1 trail at its last stage: dig at 3225,3218 (id 1)
+    await setvar(bot, 'allstar_cluelevel', 1);
+    await setvar(bot, 'allstar_cluestage', 5);
+    await setvar(bot, 'allstar_clueid', 1);
+    await give(bot, 'spade', 952);
+    await tele(bot, 3225, 3218);
+    const before = inv(bot).filter(o => o).length;
+    since = bot.messages.length;
+    bot.opHeld(1, 952, slotOf(bot, 952), INV);
+    await bot.waitForMessage(/^Congratulations you have completed the treasure trail!$/, 5000, since);
+    await sleep(900);
+    const got = bot.messages.slice(since);
+    check(got[0] === 'Nothing interesting is happening.' && got[1] === 'Dig working - cheezy' && got[2] === 'Clue level 1 found.', `dig messages ${JSON.stringify(got.slice(0, 3))}`);
+    check(bot.main === 8134 && bot.texts.get(8145) === '@dbl@Congratz, you have completed the treasure trail!' && bot.texts.get(8146) === '@dbl@Reward:', 'reward scroll');
+    check(/^@dbl@.+@dre@ \(500\)@dbl@$/.test(bot.texts.get(8151) ?? ''), `rune reward line ${bot.texts.get(8151)}`);
+    check(inv(bot).filter(o => o).length === before + 5 && count(bot, 952) === 1, 'five rewards added, spade kept');
+    check((await getvar(bot, 'allstar_cluelevel')) === 0, 'clue state reset');
+    // a dig with no trail only prints the message
+    since = bot.messages.length;
+    bot.opHeld(1, 952, slotOf(bot, 952), INV);
+    const msgs = await nothingFor(bot, 1500, since);
+    check(msgs.length === 1 && msgs[0] === 'Nothing interesting is happening.', `spade without a trail ${JSON.stringify(msgs)}`);
+}
+
+const bot = await connect('npc');
+await sleep(1500);
+const tests: Record<string, (bot: Bot) => Promise<void>> = {
+    quests, hans, hijack, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
+    starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, clues
+};
+// ONLY=hans,bankers runs a subset
+const only = process.env.ONLY?.split(',');
+try {
+    for (const [name, test] of Object.entries(tests)) {
+        if (!only || only.includes(name)) {
+            await test(bot);
+        }
+    }
+} catch (err) {
+    failures++;
+    console.log('FAIL', (err as Error).message);
+}
+bot.close();
+console.log(failures === 0 ? 'ALL PASSED' : `${failures} FAILED`);
+process.exit(failures === 0 ? 0 : 1);
