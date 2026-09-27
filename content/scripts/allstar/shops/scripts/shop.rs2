@@ -51,12 +51,12 @@ if (calc(map_clock - 1) >= ~allstar_shop_due(%allstar_shop)) {
 // Shop item (3900): "<name>: currently costs <v> coins".
 [inv_button1,shop_template:inv]
 def_int $value = enum(obj, int, allstar_shop_price, last_item);
-mes("<enum(obj, string, allstar_shop_itemname, last_item)>: currently costs <tostring($value)> coins<~allstar_shop_bigvalue($value)>");
+mes("<~allstar_shop_itemname(last_item)>: currently costs <tostring($value)> coins<~allstar_shop_bigvalue($value)>");
 
 // Inventory item (3823): sellable first, then the specialty-store check.
 [inv_button1,shop_template_side:inv]
 def_obj $item = last_item;
-def_string $name = enum(obj, string, allstar_shop_itemname, $item);
+def_string $name = ~allstar_shop_itemname($item);
 if (enum(obj, boolean, allstar_shop_sellable, $item) = false) {
     mes("I cannot sell <$name>.");
     return;
@@ -68,6 +68,18 @@ if (enum(int, int, allstar_shop_smod, %allstar_shop) > 1 & ~allstar_shop_stocks(
 }
 def_int $value = enum(obj, int, allstar_shop_price, $item);
 mes("<$name>: shop will buy for <tostring($value)>Coins<~allstar_shop_bigvalue($value)>");
+
+// GetItemName: the first item.cfg name. An item added after the generator last ran (a custom
+// item) is not in the enums yet; it gets the name item.cfg gives an undefined id.
+[proc,allstar_shop_itemname](obj $item)(string)
+if (enum(obj, namedobj, allstar_shop_obj, $item) ! null) {
+    return (enum(obj, string, allstar_shop_itemname, $item));
+}
+def_string $name = oc_debugname($item);
+if (string_indexof_string("allstar_item_", $name) = 0) {
+    $name = substring($name, 13, string_length($name));
+}
+return ("!! NOT EXISTING ITEM !!! - ID:<$name>");
 
 // " (<v/1000>K)" for 1,000 - 999,999 and " (<v/1000000> million)" from 1,000,000
 [proc,allstar_shop_bigvalue](int $value)(string)
@@ -149,7 +161,7 @@ return (enum(obj, namedobj, allstar_shop_obj, $obj));
 [proc,allstar_shop_sell](int $slot, obj $item, int $amount)
 def_int $shop = %allstar_shop;
 ~allstar_shop_sync($shop);
-def_string $name = enum(obj, string, allstar_shop_itemname, $item);
+def_string $name = ~allstar_shop_itemname($item);
 if (enum(int, int, allstar_shop_smod, $shop) > 1 & ~allstar_shop_stocks($shop, $item) = false) {
     mes("You cannot sell <$name> in this store.");
     return;

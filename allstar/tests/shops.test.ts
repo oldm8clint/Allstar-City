@@ -54,8 +54,12 @@ async function message(pattern: RegExp, action: () => void | Promise<void>): Pro
     return bot.waitForMessage(pattern, 5000, since);
 }
 
+// Finds the NPC (::~shopnpc), stands the bot on its tile and returns its npc slot id.
 async function nid(npc: string): Promise<number> {
-    await message(/^shopnpc /, () => cmd(`~shopnpc ${npc}`));
+    const found = await message(/^shopnpc /, () => cmd(`~shopnpc ${npc}`));
+    const [x, z] = found.slice('shopnpc '.length).split(',').map(Number);
+    await cmd(`tele 0,${x >> 6},${z >> 6},${x & 63},${z & 63}`);
+    await sleep(600);
     const text = await message(/^get allstar_shop_testnpc: /, () => cmd('getvar allstar_shop_testnpc'));
     return Number(text.split(': ')[1]) & 0xffff;
 }
@@ -219,6 +223,36 @@ check(coins() - before === 3, 'undefined shop 79 buys anything');
 await cmd('~shopage 79 6000');
 await sleep(600);
 check(view()[0]?.id === LOGS && view()[0]?.count === 1, 'shop 79 never decays');
+await closeShop();
+
+// ---------------------------------------------------------------- Nulodion op3 = shop 40 (colour codes kept)
+await cmd('~shopreset 40');
+await openShop('nulodion', 3, '@whi@D@gre@r@whi@a@gre@g@whi@o@gre@n @whi@s@gre@h@whi@o@gre@p');
+check(view()[0]?.id === 1149 && view()[0]?.count === 10, 'dragon shop 1149 x10');
+await closeShop();
+
+// ---------------------------------------------------------------- Herquin (shop 12, unspawned):
+// every default amount is 0; a sold gem decays to 0 and empties its default slot, which then
+// shows as a gap, hides the last gem and stops the shop buying that gem
+await cmd('~shopreset 12');
+await cmd('npcadd herquin');
+await setInventory([['coins', 1000], ['uncut_sapphire', 1]]);
+await openShop('herquin', 3, "Herquin's Gems.");
+check(view().slice(0, 8).every(o => o !== null && o.count === 0) && view()[0]?.id === 1623 && view()[7]?.id === 1601, `8 gems at 0: ${JSON.stringify(view().slice(0, 8))}`);
+before = coins();
+bot.invButton(2, 1623, 0, SHOP);
+await sleep(1200);
+check(coins() === before && count(inv(), 1623) === 1, 'buying a sold-out item does nothing');
+bot.invButton(2, 1623, slotOf(inv(), 1623), SIDE);
+await bot.until(() => view()[0]?.count === 1, 5000, 'sold sapphire');
+check(coins() - before === 21, `sapphire sold for 21 (${coins() - before})`);
+await cmd('~shopage 12 60');
+await bot.until(() => view()[0] === null, 5000, 'sapphire slot emptied');
+check(view()[0] === null && view()[7] === null && view()[6]?.id === 1603, `gap at 0, diamond hidden: ${JSON.stringify(view().slice(0, 8))}`);
+await cmd('give uncut_sapphire 1');
+await sleep(600);
+text = await message(/cannot sell/, () => bot.invButton(2, 1623, slotOf(inv(), 1623), SIDE));
+check(text === 'You cannot sell Uncut sapphire in this store.', `emptied default slot: ${text}`);
 await closeShop();
 
 // ---------------------------------------------------------------- live restock (real clock)
