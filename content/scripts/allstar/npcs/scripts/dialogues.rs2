@@ -117,7 +117,7 @@ switch_int (%allstar_npcdialogue) {
         if (inv_total(inv, coins) >= 10000) {
             inv_del(inv, coins, 10000);
             ~allstar_open_makeover;
-            %allstar_npcdialogue = 0;
+            ~allstar_dialogue_set(0);
             return (0);
         }
         ~allstar_chat_4900("", "You got no money, bitch,", "come back when you got some.", "");

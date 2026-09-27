@@ -184,27 +184,51 @@ async function hans(bot: Bot) {
     check(bot.texts.get(4885) === 'Fine, you suck!', '"Fine, you suck!" written to 4885');
 }
 
-async function hijack(bot: Bot) {
-    // Juna's menu (object 6657) opens while NpcDialogue == 0: option 1 opens Hans' menu first
-    // ("Mmk thanks for reading!"); option 1 there reaches the JunaTele branch
+// Hans' "Select an Option" box (NpcDialogue 1340), answered by the shared option chain
+async function hansMenu(bot: Bot, what: string) {
     await tele(bot, 2737, 3466);
-    await command(bot, '~npcsjuna', 900);
-    await chat(bot, MULTI2, 2460, 'Hello what do you want?', 'Juna menu via selectoption');
+    await talk(bot, 'hans', NPCCHAT1, 4885, 'Welcome To Mod Allstarscape !!', `${what}: Hans 1339`);
+    bot.resumePauseButton(4886);
+    await chat(bot, MULTI2, 2461, 'Yea i wanna go own n00bs!', `${what}: Hans 1340 menu`);
+}
+
+async function leftovers(bot: Bot) {
+    // walking resets NpcDialogue for every reader: the object menus read the varp directly
+    await hansMenu(bot, 'walk reset');
+    check((await getvar(bot, 'allstar_npcdialogue')) === 1340, 'NpcDialogue is 1340 while the menu is up');
+    const at = await coord(bot);
+    await tele(bot, at.x + 1, at.z);
+    await sleep(600);
+    check((await getvar(bot, 'allstar_npcdialogue')) === 0, 'moving resets NpcDialogue');
+
+    // a clan portal or Juna menu (objects) left unanswered keeps OptionObject / JunaTele set; the
+    // next NPC option the chain does not match acts on them
+    await setvar(bot, 'allstar_option_object', 2466);
+    await hansMenu(bot, 'OptionObject 2466');
+    let since = bot.messages.length;
     bot.ifButton(2461);
-    await chat(bot, MULTI2, 2461, 'Yea i wanna go own n00bs!', 'option 1 hijacked into Hans menu');
-    check(bot.texts.get(4885) === 'Mmk thanks for reading!', '"Mmk thanks for reading!" written');
-    bot.ifButton(2461);
-    await closed(bot, "Hans' option 1 with JunaTele closes");
+    await bot.waitForMessage(/^Welcome to Saradomin's team!$/, 5000, since);
     await sleep(900);
-    const c = await coord(bot);
-    check(c.x === 3253 && c.z === 3466 && c.level === 0, `JunaTele 1 -> ${JSON.stringify(c)}`);
-    check((await getvar(bot, 'allstar_junatele')) === 0, 'JunaTele reset');
-    // option 2: the player says "Ya ma."
-    await command(bot, '~npcsjuna', 900);
-    await chat(bot, MULTI2, 2460, 'Hello what do you want?', 'Juna menu again');
+    let c = await coord(bot);
+    check(c.x === 2387 && c.z === 3116, `Hans option 1 with OptionObject 2466 -> Saradomin ${JSON.stringify(c)}`);
+    check((await getvar(bot, 'allstar_option_object')) === -1, 'OptionObject reset to -1');
+
+    await setvar(bot, 'allstar_junatele', 1);
+    await hansMenu(bot, 'JunaTele 1');
+    const before = await coord(bot);
+    bot.ifButton(2461);
+    await closed(bot, 'Hans option 1 with JunaTele 1 closes');
+    await sleep(900);
+    c = await coord(bot);
+    check(c.x === 3253 && c.z === before.z && c.level === 0, `JunaTele 1 -> x 3253 ${JSON.stringify(c)}`);
+    check((await getvar(bot, 'allstar_junatele')) === -1, 'JunaTele reset to -1');
+
+    await setvar(bot, 'allstar_junatele', 2);
+    await hansMenu(bot, 'JunaTele 2');
     bot.ifButton(2462);
-    await chat(bot, CHAT2, 976, 'Ya ma.', 'Juna option 2: "Ya ma."');
-    check((await getvar(bot, 'allstar_junatele')) === 0, 'JunaTele reset after "Ya ma."');
+    await chat(bot, CHAT2, 976, 'Ya ma.', 'Hans option 2 with JunaTele 2: "Fine, you suck!", then "Ya ma."');
+    check(bot.texts.get(4885) === 'Fine, you suck!', '"Fine, you suck!" written to 4885');
+    check((await getvar(bot, 'allstar_junatele')) === -1, 'JunaTele reset after "Ya ma."');
     bot.resumePauseButton(978);
     await closed(bot, '"Ya ma." closes');
 }
@@ -726,7 +750,7 @@ async function boatAsPlayer(bot: Bot) {
 const bot = await connect('npc');
 await sleep(1500);
 const tests: Record<string, (bot: Bot) => Promise<void>> = {
-    quests, hans, hijack, ring, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
+    quests, hans, leftovers, ring, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
     starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, questItems, mizgogKalrag, clueNpcs, tzhaarBanker,
     clues, level3, essence, gnomeBanker, guards, boatAsPlayer
 };

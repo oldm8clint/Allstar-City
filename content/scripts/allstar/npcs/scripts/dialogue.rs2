@@ -23,9 +23,21 @@
 [proc,allstar_dialogue_set](int $id)
 %allstar_npcdialogue = $id;
 %allstar_npcdialogue_coord = coord;
+if ($id ! 0) {
+    softtimer(allstar_npcdialogue_walk, 1);
+}
 
-// NpcDialogue as the option and continue handlers read it. Walking (packets 98/164/248) reset it
-// to 0; a player standing elsewhere than where it was last set has walked.
+// Walking (packets 98/164/248) reset NpcDialogue to 0 (L20417); a player standing elsewhere than
+// where it was last set has walked. Checked every cycle, so the object menus see the reset too.
+[softtimer,allstar_npcdialogue_walk]
+if (%allstar_npcdialogue = 0) {
+    clearsofttimer(allstar_npcdialogue_walk);
+} else if (%allstar_npcdialogue_coord ! coord) {
+    %allstar_npcdialogue = 0;
+    clearsofttimer(allstar_npcdialogue_walk);
+}
+
+// NpcDialogue as the option and continue handlers read it (the same check, for this cycle)
 [proc,allstar_npcdialogue]()(int)
 if (%allstar_npcdialogue ! 0 & %allstar_npcdialogue_coord ! coord) {
     %allstar_npcdialogue = 0;
