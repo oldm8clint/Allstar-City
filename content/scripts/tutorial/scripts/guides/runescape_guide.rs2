@@ -1,12 +1,3 @@
-[opnpc1,newbie_basics_instructor]
-
-switch_int(%tutorial) {
-    case ^newbie_basics_instructor_designed_character : @newbie_basics_instructor_welcome;
-    //case ^2 : @newbie_basics_instructor_spanner;
-    case ^newbie_basics_instructor_interact_with_scenery : @newbie_basics_instructor_return;
-    case default : @newbie_basics_instructor_return;
-}
-
 [label,newbie_basics_instructor_welcome]
 if (map_live = false) {
     ~chatnpc("<p,neutral>Do you want to skip the tutorial?");

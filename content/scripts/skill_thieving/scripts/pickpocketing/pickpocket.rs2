@@ -19,9 +19,6 @@
 [opnpc3,woman3] // Woman
 @attempt_pick_pocket(npc_type);
 
-[opnpc3,farmer1] // Farmer
-@attempt_pick_pocket(npc_type);
-
 [opnpc3,guard1] // Guard
 @attempt_pick_pocket(npc_type);
 
@@ -37,13 +34,7 @@
 [opnpc3,al_kharid_man] // Man (Al-Kharid)
 @attempt_pick_pocket(npc_type);
 
-[opnpc3,al_kharid_warrior] // Al-Kharid warrior
-@attempt_pick_pocket(npc_type);
-
 [opnpc3,paladin] // Paladin
-@attempt_pick_pocket(npc_type);
-
-[opnpc3,hero] // Hero
 @attempt_pick_pocket(npc_type);
 
 [opnpc3,knight_of_ardougne] // Knight of Ardougne

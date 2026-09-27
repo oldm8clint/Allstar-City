@@ -1,0 +1,73 @@
+// Allstar-Scape NPC dialogue, quest and clue scroll state (client.java / Player.java fields).
+
+// ---- dialogue engine (Player.java L1436-1439), reset on login like the Java fields ----
+
+// NpcDialogue is %allstar_npcdialogue (objects.varp, shared with the object menus): the dialogue
+// case UpdateNPCChat renders. Walking resets it to 0; several branches leave it set after closing
+// the chatbox, which decides the option-1 hijack (dialogue.rs2).
+
+// where the player stood when NpcDialogue was last set (a move means the player walked)
+[allstar_npcdialogue_coord]
+type=coord
+protect=no
+
+// NpcTalkTo: npc type whose name and chathead the chatbox shows
+[allstar_npctalkto]
+type=npc
+protect=no
+
+// The option buttons 9157/9158 also read client.duelring (%allstar_duelring, items.varp),
+// Player.OptionObject (%allstar_option_object) and client.JunaTele (%allstar_junatele, both
+// objects.varp); their branches reset them to -1 (0 at login).
+
+// client.Essence (1-3): which wizard sent the player to 3088,3489. Only stairs 26 read it, which no
+// object uses; stairs 25 (essence mine portal 2492) overwrites it from the height level.
+[allstar_essence]
+protect=no
+
+// ---- boat trips (client.travelboat1/2, traveltime), not saved ----
+[allstar_travelboat]
+protect=no
+
+[allstar_traveltime]
+protect=no
+
+// the height the player boarded at (the void stand-in is height 3)
+[allstar_travel_level]
+protect=no
+
+// ---- quests (moreinfo [QUESTS]); 0 not started, 1..n in progress, -1 complete ----
+[allstar_q1stage]
+scope=perm
+protect=no
+
+[allstar_q2stage]
+scope=perm
+protect=no
+
+[allstar_q3stage]
+scope=perm
+protect=no
+
+// character-questpoints (totalqp)
+[allstar_totalqp]
+scope=perm
+protect=no
+
+// ---- clue scrolls (moreinfo [MOREINFO] character-cluelevel/-cluestage/-clueid) ----
+[allstar_cluelevel]
+scope=perm
+protect=no
+
+[allstar_cluestage]
+scope=perm
+protect=no
+
+[allstar_clueid]
+scope=perm
+protect=no
+
+// ---- development only: nearest npc found by ::~npcnid, read back with ::getvar ----
+[allstar_debug_npc]
+type=npc_uid
+protect=no

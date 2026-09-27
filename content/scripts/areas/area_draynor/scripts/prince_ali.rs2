@@ -1,9 +1,3 @@
-[opnpc1,prince_ali_prison]
-if(%princequest = ^prince_tied_keli) {
-    @prince_rescue;
-}
-~chatnpc("<p,neutral>I owe you my life for that escape.|You cannot help me this time, they know who you are.|Go in peace, friend of Al-Kharid.");
-
 [label,prince_rescue]
 ~chatplayer("<p,happy>Prince, I come to rescue you.");
 ~chatnpc("<p,neutral>That is very very kind of you, how do I get out?");
@@ -23,9 +17,3 @@ if(inv_total(inv, princeskey) >= 1 & inv_total(inv, blondwig) >= 1 & inv_total(i
     ~mesbox("The prince has escaped, well done!|You are now a friend of Al-Kharid|and may pass through the Al-Kharid toll gate for free.");
 } 
 
-
-[opnpcu,prince_ali_prison]
-if(%princequest = ^prince_tied_keli & (last_useitem = pink_skirt | last_useitem = blondwig | last_useitem = skinpaste)) {
-    @prince_rescue;
-}
-~displaymessage(^dm_default);
