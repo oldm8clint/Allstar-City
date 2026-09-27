@@ -185,20 +185,54 @@ async function hans(bot: Bot) {
 }
 
 async function hijack(bot: Bot) {
-    // Ring of dueling menu while NpcDialogue == 0: option 1 opens Hans' menu first
-    await command(bot, '~npcsring', 900);
-    await chat(bot, MULTI2, 2460, 'Where would you like to go?', 'ring menu via selectoption');
-    const since = bot.messages.length;
+    // Juna's menu (object 6657) opens while NpcDialogue == 0: option 1 opens Hans' menu first
+    // ("Mmk thanks for reading!"); option 1 there reaches the JunaTele branch
+    await tele(bot, 2737, 3466);
+    await command(bot, '~npcsjuna', 900);
+    await chat(bot, MULTI2, 2460, 'Hello what do you want?', 'Juna menu via selectoption');
     bot.ifButton(2461);
     await chat(bot, MULTI2, 2461, 'Yea i wanna go own n00bs!', 'option 1 hijacked into Hans menu');
     check(bot.texts.get(4885) === 'Mmk thanks for reading!', '"Mmk thanks for reading!" written');
+    bot.ifButton(2461);
+    await closed(bot, "Hans' option 1 with JunaTele closes");
+    await sleep(900);
+    const c = await coord(bot);
+    check(c.x === 3253 && c.z === 3466 && c.level === 0, `JunaTele 1 -> ${JSON.stringify(c)}`);
+    check((await getvar(bot, 'allstar_junatele')) === 0, 'JunaTele reset');
+    // option 2: the player says "Ya ma."
+    await command(bot, '~npcsjuna', 900);
+    await chat(bot, MULTI2, 2460, 'Hello what do you want?', 'Juna menu again');
+    bot.ifButton(2462);
+    await chat(bot, CHAT2, 976, 'Ya ma.', 'Juna option 2: "Ya ma."');
+    check((await getvar(bot, 'allstar_junatele')) === 0, 'JunaTele reset after "Ya ma."');
+    bot.resumePauseButton(978);
+    await closed(bot, '"Ya ma." closes');
+}
+
+async function ring(bot: Bot) {
+    // the Ring of dueling (items) leaves duelring set after the rift (BUG): Hans' option 1 then
+    // takes the player to TzTok-Jad's lair
+    await give(bot, 'ring_of_dueling_8', 2552);
+    bot.opHeld(4, 2552, slotOf(bot, 2552), INV);
+    await chat(bot, MULTI2, 2460, 'Where would you like to go?', 'Ring of dueling menu (items)');
+    let since = bot.messages.length;
+    bot.ifButton(2462);
+    await bot.waitForMessage(/^You teleport to the abyssal rift$/, 5000, since);
+    await sleep(900);
+    check((await getvar(bot, 'allstar_duelring')) === 1, 'duelring left set after the rift');
+    await tele(bot, 2737, 3466);
+    await talk(bot, 'hans', NPCCHAT1, 4885, 'Welcome To Mod Allstarscape !!', 'Hans after the rift');
+    bot.resumePauseButton(4886);
+    await chat(bot, MULTI2, 2461, 'Yea i wanna go own n00bs!', 'Hans menu after the rift');
+    since = bot.messages.length;
     bot.ifButton(2461);
     await bot.waitForMessage(/^You teleport to the TzTok-Jad's lair$/, 5000, since);
     await bot.waitForMessage(/^As you materialize, you feel the air around you grow hot$/, 5000, since);
     await sleep(900);
     const c = await coord(bot);
-    check(c.x === 2837 && c.z === 9581 && c.level === 0, `duelring Jad teleport -> ${JSON.stringify(c)}`);
+    check(c.x === 2837 && c.z === 9581 && c.level === 0, `Hans option 1 with duelring -> Jad ${JSON.stringify(c)}`);
     check((await getvar(bot, 'allstar_duelring')) === 0, 'duelring reset after Jad');
+    check(bot.chat === -1, 'chatbox closed after Jad');
 }
 
 async function bankers(bot: Bot) {
@@ -413,13 +447,14 @@ async function boat(bot: Bot) {
     check(bot.texts.get(4905) === "It's free.", 'boat is free');
     bot.resumePauseButton(4907);
     await chat(bot, MULTI2, 2461, 'Yes, please', 'boat menu 41');
+    const dock = await coord(bot);
     const since = bot.messages.length;
     const start = Date.now();
     bot.ifButton(2461);
     await bot.waitForMessage(/^You board the ship\.$/, 5000, since);
     await sleep(2000);
     let c = await coord(bot);
-    check(c.x === 2852 && c.z === 3584 && c.level === 3, `on the boat: the void is height 3 above the dock -> ${JSON.stringify(c)}`);
+    check(c.x === dock.x && c.z === dock.z && c.level === 3, `on the boat: the void is height 3 above the dock ${JSON.stringify(dock)} -> ${JSON.stringify(c)}`);
     await bot.waitForMessage(/^The boat arrives at Karamja\.$/, 20000, since);
     const secs = (Date.now() - start) / 1000;
     await sleep(600);
@@ -672,11 +707,9 @@ async function guards(bot: Bot) {
 
 async function boatAsPlayer(bot: Bot) {
     await tele(bot, 2852, 3585);
-    await command(bot, 'npcadd customs_officer', 900);
-    const officer = await approach(bot, 'customs_officer');
+    await talk(bot, 'customs_officer', NPCCHAT4, 4904, 'Do you want to go on a trip to Port Sarim?', 'Customs officer 42', true);
+    // the trip itself runs as a player (rank 0 cannot use cheats or debugprocs afterwards)
     await command(bot, '~npcsstaff 0');
-    bot.opNpc(1, officer);
-    await chat(bot, NPCCHAT4, 4904, 'Do you want to go on a trip to Port Sarim?', 'Customs officer 42 (rank 0)');
     bot.resumePauseButton(4907);
     await chat(bot, MULTI2, 2461, 'Yes, please', 'boat menu 43');
     const since = bot.messages.length;
@@ -693,7 +726,7 @@ async function boatAsPlayer(bot: Bot) {
 const bot = await connect('npc');
 await sleep(1500);
 const tests: Record<string, (bot: Bot) => Promise<void>> = {
-    quests, hans, hijack, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
+    quests, hans, hijack, ring, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
     starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, questItems, mizgogKalrag, clueNpcs, tzhaarBanker,
     clues, level3, essence, gnomeBanker, guards, boatAsPlayer
 };

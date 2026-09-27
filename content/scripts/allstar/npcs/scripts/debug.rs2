@@ -19,14 +19,14 @@ if ($at = null) {
 }
 mes("npcnid <tostring(coordx($at))>,<tostring(coordz($at))>");
 
-// ::~npcsring opens the Ring of dueling menu (client.java L18380) through ~allstar_selectoption,
-// to test the option chain until the items port wires the ring itself
-[debugproc,npcsring]
-strongqueue(allstar_debug_ring, 0, 0);
+// ::~npcsjuna opens Juna's menu (object 6657, client.java L3416, player west of Juna) the way the
+// objects port should: set %allstar_junatele, then ~allstar_selectoption
+[debugproc,npcsjuna]
+strongqueue(allstar_debug_juna, 0, 0);
 
-[queue,allstar_debug_ring]
-%allstar_duelring = 1;
-~allstar_selectoption("Where would you like to go?", "@whi@J@gre@a@whi@d", "@whi@R@gre@u@whi@n@gre@e@whi@c@gre@r@whi@a@gre@f@whi@t", "");
+[queue,allstar_debug_juna]
+%allstar_junatele = 1;
+~allstar_selectoption("Hello what do you want?", "Can I go through please?", "Ya ma.", "");
 
 // ::~npcsstaff <level> sets the engine staff level, so a test can act as a player (rank 0 cannot
 // run debugprocs or dev cheats afterwards)
