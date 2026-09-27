@@ -144,7 +144,7 @@ let known377 = null;
 async function osrsLabelMap() {
     if (labelMap) return labelMap;
     const base = playerBase377();
-    known377 = new Set(base.groups.flat());
+    known377 = new Set([...base.groups.flat(), 255]); // 377 worn models use 255 for parts that never move
     const data = await osrsCache.read(1, 0);
     let r = 0;
     const count = data[r++];
