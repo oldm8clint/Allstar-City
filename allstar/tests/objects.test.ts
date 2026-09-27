@@ -370,7 +370,7 @@ await at(bot, 2854, 3598);
 since = bot.messages.length;
 bot.opLoc(1, 2855, 3598, 2466);
 await bot.until(() => text(bot, 2461) === "@red@Saradomin's Clan", 4000, 'clan menu').catch(() => {});
-check(text(bot, 2461) === "@red@Saradomin's Clan" && text(bot, 2462) === "@red@Zamorak's Clan", `clan portal menu ${JSON.stringify(bot.messages.slice(since))} ${bot.main} ${bot.chat}`);
+check(text(bot, 2461) === "@red@Saradomin's Clan" && text(bot, 2462) === "@red@Zamorak's Clan", 'clan portal menu');
 untext(bot, 2461);
 bot.ifButton(2461);
 await bot.until(() => text(bot, 2461) === 'Yea i wanna go own n00bs!', 4000, 'hans box').catch(() => {});
