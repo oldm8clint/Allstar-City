@@ -5,4 +5,72 @@ NPC spawns: 486 placed, 6 skipped
   - autospawn.cfg:56 npc 2026 at 3553,3000 is outside the map
   - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
   - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map
+Custom items: 154 objs (6 with stand-in models), 222 allstar_items entries
+Shops: 64 defined (TotalShops 65), 67 generated, 1010 stock slots, 59 NPC shop options
+  - shop 29: trailing token "554     50000   555     50000   556     50000   557     50000   558     50000   559     50000   560     5000    561     10000   562     25000   563     5000   564      25000" ignored (as loadShops did)
+  - shop 34: trailing token "100" ignored (as loadShops did)
+  - shop 48: trailing token "14116    100" ignored (as loadShops did)
+  - shop 34: loaded 2 times (lines 34, 50), ShopItemsStandard 78
+  - shop 60: undefined in shops.cfg but opened by an NPC
+  - shop 63: undefined in shops.cfg but opened by an NPC
+  - shop 79: undefined in shops.cfg but opened by an NPC
+  - [opnpc1,nulodion] NPC 209 -> shop 79
+  - [opnpc3,nulodion] NPC 209 -> shop 40
+  - [opnpc1,wizard_frumscone] NPC 460 -> shop 36
+  - [opnpc3,magic_store_owner] NPC 461 -> shop 34
+  - [opnpc1,guild_wizard] NPC 462 -> shop 35
+  - [opnpc3,bob] NPC 519 -> shop 23
+  - [opnpc3,generalshopkeeper1] NPC 520 -> shop 50
+  - [opnpc3,generalassistant1] NPC 521 -> shop 53
+  - [opnpc3,generalshopkeeper2] NPC 522 -> shop 55
+  - [opnpc3,generalshopkeeper3] NPC 524 -> shop 60
+  - [opnpc3,generalassistant3] NPC 525 -> shop 26
+  - [opnpc3,generalshopkeeper5] NPC 528 -> shop 57
+  - [opnpc3,generalassistant5] NPC 529 -> shop 63
+  - [opnpc3,generalshopkeeper6] NPC 530 -> shop 59
+  - [opnpc3,generalassistant8] NPC 535 -> shop 39
+  - [opnpc3,peksa] NPC 538 -> shop 64
+  - [opnpc3,zeke] NPC 541 -> shop 24
+  - [opnpc3,louie_legs] NPC 542 -> shop 27
+  - [opnpc3,ranael] NPC 544 -> shop 28
+  - [opnpc3,dommik] NPC 545 -> shop 25
+  - [opnpc3,zaff] NPC 546 -> shop 7
+  - [opnpc3,thessalia] NPC 548 -> shop 56
+  - [opnpc3,horvik_the_armourer] NPC 549 -> shop 38
+  - [opnpc3,lowe] NPC 550 -> shop 49
+  - [opnpc3,swordshop1] NPC 551 -> shop 58
+  - [opnpc3,swordshop2] NPC 552 -> shop 9
+  - [opnpc3,aubury] NPC 553 -> shop 2
+  - [opnpc3,tailorp] NPC 554 -> shop 48
+  - [opnpc3,khazard_shopkeeper] NPC 555 -> shop 61
+  - [opnpc3,grum] NPC 556 -> shop 20
+  - [opnpc3,wydin] NPC 557 -> shop 32
+  - [opnpc3,gerrant] NPC 558 -> shop 65
+  - [opnpc3,brian] NPC 559 -> shop 19
+  - [opnpc3,lathas_shopkeeper] NPC 561 -> shop 62
+  - [opnpc3,cassie] NPC 577 -> shop 4
+  - [opnpc3,flynn] NPC 580 -> shop 5
+  - [opnpc3,wayne] NPC 581 -> shop 13
+  - [opnpc3,betty] NPC 583 -> shop 21
+  - [opnpc3,herquin] NPC 584 -> shop 12
+  - [opnpc3,rommik] NPC 585 -> shop 14
+  - [opnpc3,jatix] NPC 587 -> shop 46
+  - [opnpc1,wizardadventuterpg] NPC 652 -> shop 37
+  - [opnpc1,ranging_guild_poison_salesman] NPC 681 -> shop 66
+  - [opnpc3,ranging_guild_bow_salesman] NPC 683 -> shop 11
+  - [opnpc3,magearena_runeshop] NPC 903 -> shop 29
+  - [opnpc1,newbie_combat_instructor] NPC 944 -> shop 42
+  - [opnpc1,viking_man] NPC 1305 -> shop 30
+  - [opnpc1,santa_claus] NPC 1552 -> shop 31
+  - [opnpc3,ahoy_ghost_shopkeeper] NPC 1699 -> shop 51
+  - [opnpc3,wilderness_capeseller_6] NPC 1783 -> shop 52
+  - [opnpc3,salesman_ranging] NPC 1860 -> shop 16
+  - [opnpc3,dt_bandit_shopkeeper] NPC 1917 -> shop 54
+  - [opnpc1,dwarf_city_library_customer] NPC 2167 -> shop 33
+  - [opnpc1,dwarf_city_library_customer_human] NPC 2168 -> shop 34
+  - [opnpc1,rcu_zammy_mage2] NPC 2262 -> shop 32
+  - [opnpc3,farming_shopkeeper_1] NPC 2304 -> shop 45
+  - [opnpc1,npc_2621] NPC 2621 -> shop 41
+  - [opnpc3,npc_2621] NPC 2621 -> shop 41
+  - [opnpc1,macro_sandwich_lady_npc] NPC 3117 -> shop 44
 NPC names: 2650 npc.cfg names; clue rewards: 102 items in 9 pools

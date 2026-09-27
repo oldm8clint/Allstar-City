@@ -1,6 +1,0 @@
-[opnpc3,tailorp]
-if(map_members = ^false) {
-    ~chatnpc("<p,sad>Sorry, we're closed at the moment.");
-    return;
-}
-~openshop_activenpc;

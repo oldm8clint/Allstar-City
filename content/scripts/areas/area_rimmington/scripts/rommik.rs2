@@ -1,6 +1,0 @@
-[opnpc3,rommik]
-if(map_members = ^true) {
-    ~openshop(craftingshop, 650, 1000, 20, "Rommiks Crafty Supplies.");
-} else {
-    ~openshop(craftingshop_free, 650, 1000, 20, "Rommiks Crafty Supplies.");
-}
