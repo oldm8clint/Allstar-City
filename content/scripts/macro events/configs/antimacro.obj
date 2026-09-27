@@ -776,6 +776,7 @@ weight=2lb
 param=fixed,bronze_axe
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=13
+param=allstar_weapon_tab,1698
 param=allstar_value,13
 param=allstar_sellable,yes
 param=allstar_note,cert_macro_bronze_hatchethead
@@ -804,6 +805,7 @@ weight=2lb
 param=fixed,iron_axe
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=46
+param=allstar_weapon_tab,1698
 param=allstar_value,46
 param=allstar_sellable,yes
 param=allstar_note,cert_macro_iron_hatchethead
@@ -831,6 +833,7 @@ param=fixed,steel_axe
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=159
 param=allstar_req_defence,5
+param=allstar_weapon_tab,1698
 param=allstar_value,159
 param=allstar_sellable,yes
 param=allstar_note,cert_macro_steel_hatchethead
@@ -859,6 +862,7 @@ weight=2lb
 param=fixed,black_axe
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=298
+param=allstar_weapon_tab,1698
 param=allstar_value,298
 param=allstar_sellable,yes
 param=allstar_note,cert_macro_black_hatchethead
@@ -888,6 +892,7 @@ param=fixed,mithril_axe
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=398
 param=allstar_req_defence,20
+param=allstar_weapon_tab,1698
 param=allstar_value,398
 param=allstar_sellable,yes
 param=allstar_note,cert_macro_mithril_hatchethead
@@ -917,6 +922,7 @@ param=fixed,adamant_axe
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=946
 param=allstar_req_defence,30
+param=allstar_weapon_tab,1698
 param=allstar_value,946
 param=allstar_sellable,yes
 param=allstar_note,cert_macro_adamant_hatchethead
@@ -945,6 +951,7 @@ weight=2lb
 param=fixed,rune_axe
 // allstar item data (allstar/tools/gen/items.mjs)
 cost=8597
+param=allstar_weapon_tab,1698
 param=allstar_value,8597
 param=allstar_sellable,yes
 param=allstar_note,cert_macro_rune_hatchethead

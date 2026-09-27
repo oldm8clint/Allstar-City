@@ -37,6 +37,7 @@ param=stabdefence,1
 param=slashdefence,2
 param=crushdefence,1
 param=strengthbonus,5
+param=allstar_weapon_tab,7762
 param=allstar_value,13
 param=allstar_sellable,yes
 
@@ -71,6 +72,7 @@ param=stabdefence,2
 param=slashdefence,3
 param=crushdefence,1
 param=strengthbonus,7
+param=allstar_weapon_tab,7762
 param=allstar_value,42
 param=allstar_sellable,yes
 
@@ -114,6 +116,7 @@ param=slashdefence,6
 param=crushdefence,2
 param=strengthbonus,12
 param=allstar_req_attack,5
+param=allstar_weapon_tab,7762
 param=allstar_value,140
 param=allstar_sellable,yes
 
@@ -157,6 +160,7 @@ param=slashdefence,7
 param=crushdefence,2
 param=strengthbonus,14
 param=allstar_req_attack,10
+param=allstar_weapon_tab,7762
 param=allstar_value,281
 param=allstar_sellable,yes
 
@@ -200,6 +204,7 @@ param=slashdefence,8
 param=crushdefence,2
 param=strengthbonus,17
 param=allstar_req_attack,20
+param=allstar_weapon_tab,7762
 param=allstar_value,366
 param=allstar_sellable,yes
 
@@ -243,6 +248,7 @@ param=slashdefence,12
 param=crushdefence,3
 param=strengthbonus,24
 param=allstar_req_attack,30
+param=allstar_weapon_tab,7762
 param=allstar_value,890
 param=allstar_sellable,yes
 

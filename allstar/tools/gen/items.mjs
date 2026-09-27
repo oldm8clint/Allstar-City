@@ -41,6 +41,7 @@ const OWNED_PARAMS = new Set([
     'allstar_withdraw_stackable',
     'allstar_twohanded',
     'allstar_twohanderz',
+    'allstar_weapon_tab',
     'allstar_id',
     'allstar_stand_anim',
     'allstar_walk_anim',
@@ -98,6 +99,22 @@ function runAnim(id) {
     if (id === 4734 || id === 837) return 2077;
     if (id === 4153 || id === 1419 || id === 7449) return 1664;
     return 824;
+}
+
+// client.SendWeapon (L14554): the attack style tab (317 interface id) chosen from the item.cfg name
+function weaponTab(name) {
+    const stripped = stripWords(name, ['Bronze', 'Iron', 'Steel', 'Black', 'Mithril', 'Adamant', 'Rune', 'Granite', 'Dragon', 'Crystal']);
+    if (name.endsWith('whip')) return 12290;
+    if (name.endsWith('bow') || name.endsWith('Bow') || name.startsWith('crystal_bow') || name.startsWith('seercull')) return 1764;
+    if (name.startsWith('Staff') || name.endsWith('staff')) return 328;
+    if (stripped.startsWith('dart')) return 4446;
+    if (stripped.startsWith('dagger')) return 2276;
+    if (stripped.startsWith('pickaxe')) return 5570;
+    if (stripped.startsWith('axe') || stripped.startsWith('battleaxe')) return 1698;
+    if (stripped.startsWith('halberd')) return 8460;
+    if (stripped.startsWith('spear')) return 4679;
+    if (stripped.startsWith('claws')) return 7762;
+    return 2423;
 }
 
 // wear() and setEquipment() overrides after the Get*Anim calls
@@ -325,6 +342,8 @@ const REQ_FUNCS = {
 
 // ---- the data model ----
 
+export { weaponTab };
+
 export function loadAllstarItems(legacyDir) {
     const entries = readItemCfg(path.join(legacyDir, 'item.cfg'));
     const first = new Map();
@@ -497,6 +516,9 @@ export default function items({ root, content, packs, report }) {
             }
             if (data.flags.twohanded(id)) {
                 lines.push('param=allstar_twohanded,yes');
+            }
+            if (data.slot(id) === 3 && weaponTab(data.name(id)) !== 2423) {
+                lines.push(`param=allstar_weapon_tab,${weaponTab(data.name(id))}`);
             }
             if (TWO_HANDERZ.includes(id)) {
                 lines.push(`param=allstar_twohanderz,${TWO_HANDERZ.indexOf(id)}`);

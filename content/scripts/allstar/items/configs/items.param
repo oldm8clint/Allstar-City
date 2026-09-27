@@ -154,3 +154,10 @@ default=null
 [allstar_login_run_anim]
 type=seq
 default=null
+
+// client.SendWeapon: the attack style tab chosen from the item.cfg name, as the 317 interface id
+// (12290 whip, 1764 bow, 328 staff, 4446 dart, 2276 dagger, 5570 pickaxe, 1698 axe, 8460 halberd,
+// 4679 spear, 7762 claws, 2423 everything else; no weapon 5855). For the combat tab.
+[allstar_weapon_tab]
+type=int
+default=2423
