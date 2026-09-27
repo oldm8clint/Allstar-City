@@ -10,6 +10,9 @@ while (npc_findnext = true) {
 // the player's combat state
 [debugproc,asme]
 mes("asme clock=<tostring(map_clock)> lastmove=<tostring(lastmove)> movecheck=<tostring(%as_movecheck)> loopatt=<tostring(%as_loopatt)> special=<tostring(%as_special)> fight=<tostring(~allstar_fighttype)> maxhit=<tostring(~allstar_maxhit)>");
+if (busy = true) {
+    mes("asme busy");
+}
 if (~allstar_nonwild(coord) = true) {
     mes("asme safe");
 } else {

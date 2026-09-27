@@ -13,6 +13,7 @@ import Isaac from '../../engine/src/io/Isaac.js';
 import Packet from '../../engine/src/io/Packet.js';
 import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
 import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
+import ServerGameZoneProt from '../../engine/src/network/game/server/ServerGameZoneProt.js';
 
 const ENGINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../engine');
 
@@ -20,6 +21,14 @@ const serverProts = new Map<number, ServerGameProt>();
 for (const value of Object.values(ServerGameProt)) {
     if (value instanceof ServerGameProt) {
         serverProts.set(value.id, value);
+    }
+}
+// zone packets (ground objects, locs, projectiles) follow UPDATE_ZONE_PARTIAL_FOLLOWS
+const zoneProts = new Map<number, ServerGameZoneProt>();
+for (const value of Object.values(ServerGameZoneProt)) {
+    if (value instanceof ServerGameZoneProt) {
+        serverProts.set(value.id, value);
+        zoneProts.set(value.id, value);
     }
 }
 
@@ -131,6 +140,8 @@ export default class Bot {
     players = new Map<number, BotPlayer>();
     myHits: { damage: number; type: number; hp: number; at: number }[] = [];
     myAnims: { anim: number; at: number }[] = [];
+    groundObjs: { id: number; count: number; x: number; z: number; at: number }[] = [];
+    private zoneBase = { x: 0, z: 0 };
     private npcList: number[] = [];
     private playerList: number[] = [];
 
@@ -236,6 +247,8 @@ export default class Bot {
         return out;
     }
 
+    private recentProts: string[] = [];
+
     private async readLoop() {
         try {
             while (!this.closed) {
@@ -243,7 +256,7 @@ export default class Bot {
                 const opcode = (raw - this.decryptor.nextInt()) & 0xff;
                 const prot = serverProts.get(opcode);
                 if (!prot) {
-                    throw new Error(`unknown server opcode ${opcode}`);
+                    throw new Error(`unknown server opcode ${opcode} (after ${this.recentProts.join(' ')})`);
                 }
                 let length = prot.length;
                 if (length === -1) {
@@ -251,6 +264,10 @@ export default class Bot {
                 } else if (length === -2) {
                     const b = await this.readBytes(2);
                     length = (b[0] << 8) | b[1];
+                }
+                this.recentProts.push(`${prot.id}:${length}`);
+                if (this.recentProts.length > 8) {
+                    this.recentProts.shift();
                 }
                 this.handle(prot, new Packet(await this.readBytes(length)), length);
                 this.wake();
@@ -264,6 +281,10 @@ export default class Bot {
     }
 
     private handle(prot: ServerGameProt, buf: Packet, length: number) {
+        if (prot instanceof ServerGameZoneProt) {
+            this.handleZone(prot, buf);
+            return;
+        }
         switch (prot) {
             case ServerGameProt.MESSAGE_GAME:
                 this.messages.push(buf.gjstr());
@@ -343,9 +364,78 @@ export default class Bot {
             case ServerGameProt.NPC_INFO:
                 this.handleNpcInfo(buf, length);
                 break;
+            case ServerGameProt.UPDATE_ZONE_PARTIAL_FOLLOWS: {
+                const x = buf.g1_alt2();
+                const z = buf.g1_alt1();
+                this.setZoneBase(x, z);
+                break;
+            }
+            case ServerGameProt.UPDATE_ZONE_FULL_FOLLOWS: {
+                const z = buf.g1_alt3();
+                const x = buf.g1_alt2();
+                this.setZoneBase(x, z);
+                const { x: bx, z: bz } = this.zoneBase;
+                this.groundObjs = this.groundObjs.filter(o => o.x < bx || o.x >= bx + 8 || o.z < bz || o.z >= bz + 8);
+                break;
+            }
+            case ServerGameProt.UPDATE_ZONE_PARTIAL_ENCLOSED: {
+                const x = buf.g1();
+                const z = buf.g1_alt1();
+                this.setZoneBase(x, z);
+                while (buf.pos < length) {
+                    const zoneProt = zoneProts.get(buf.g1());
+                    if (!zoneProt) {
+                        break;
+                    }
+                    const start = buf.pos;
+                    this.handleZone(zoneProt, new Packet(Uint8Array.from(buf.data.subarray(start, start + zoneProt.length))));
+                    buf.pos = start + zoneProt.length;
+                }
+                break;
+            }
             case ServerGameProt.LOGOUT:
                 this.close();
                 break;
+        }
+    }
+
+    // ---- zone updates: ground objects (engine/src/network/game/server/codec/Obj*Encoder.ts) ----
+
+    private setZoneBase(localX: number, localZ: number) {
+        this.zoneBase = { x: ((this.zone.x - 6) << 3) + localX, z: ((this.zone.z - 6) << 3) + localZ };
+    }
+
+    private zoneTile(coord: number) {
+        return { x: this.zoneBase.x + ((coord >> 4) & 0x7), z: this.zoneBase.z + (coord & 0x7) };
+    }
+
+    private handleZone(prot: ServerGameProt, buf: Packet) {
+        if (prot === ServerGameZoneProt.OBJ_ADD) {
+            const id = buf.g2();
+            const tile = this.zoneTile(buf.g1_alt2());
+            const count = buf.g2_alt2();
+            this.groundObjs.push({ id, count, ...tile, at: Date.now() });
+        } else if (prot === ServerGameZoneProt.OBJ_REVEAL) {
+            const tile = this.zoneTile(buf.g1_alt1());
+            const count = buf.g2_alt3();
+            const id = buf.g2_alt2();
+            this.groundObjs.push({ id, count, ...tile, at: Date.now() });
+        } else if (prot === ServerGameZoneProt.OBJ_DEL) {
+            const id = buf.g2_alt2();
+            const tile = this.zoneTile(buf.g1_alt1());
+            const i = this.groundObjs.findIndex(o => o.id === id && o.x === tile.x && o.z === tile.z);
+            if (i !== -1) {
+                this.groundObjs.splice(i, 1);
+            }
+        } else if (prot === ServerGameZoneProt.OBJ_COUNT) {
+            const tile = this.zoneTile(buf.g1());
+            const id = buf.g2();
+            const oldCount = buf.g2();
+            const newCount = buf.g2();
+            const obj = this.groundObjs.find(o => o.id === id && o.x === tile.x && o.z === tile.z && o.count === oldCount);
+            if (obj) {
+                obj.count = newCount;
+            }
         }
     }
 
@@ -688,6 +778,11 @@ export default class Bot {
 
     // Allstar-City combat tests: walk to a tile (MOVE_GAMECLICK with the destination as the path)
     walk(x: number, z: number, run = false) {
+        // the client closes any open dialog (level-up etc.) before walking
+        if (this.main !== -1 || this.chat !== -1) {
+            this.send(ClientGameProt.CLOSE_MODAL);
+            this.main = this.chat = -1;
+        }
         this.send(ClientGameProt.MOVE_GAMECLICK, buf => {
             buf.p2_alt3(x);
             buf.p1(run ? 1 : 0);
