@@ -106,13 +106,9 @@ const inv = (bot: Bot) => bot.invs.get(INV) ?? [];
 const count = (bot: Bot, id: number) => inv(bot).reduce((n, o) => n + (o?.id === id ? o.count : 0), 0);
 const slotOf = (bot: Bot, id: number) => inv(bot).findIndex(o => o?.id === id);
 const xp = (bot: Bot, stat: number) => bot.stats[stat]?.xp ?? 0;
-// Bot reads IF_OPENMAIN and IF_SETTEXT components with g2, but they arrive as p2_alt3 (low byte + 128,
-// then high byte): translate between the two.
-const unalt = (v: number) => (((v >> 8) - 128) & 0xff) | ((v & 0xff) << 8);
-const alt = (com: number) => ((((com & 0xff) + 128) & 0xff) << 8) | (com >> 8);
-const main = (bot: Bot) => (bot.main === -1 ? -1 : unalt(bot.main));
-const text = (bot: Bot, com: number) => bot.texts.get(alt(com));
-const untext = (bot: Bot, com: number) => bot.texts.delete(alt(com));
+const main = (bot: Bot) => bot.main;
+const text = (bot: Bot, com: number) => bot.texts.get(com);
+const untext = (bot: Bot, com: number) => bot.texts.delete(com);
 
 async function empty(bot: Bot) {
     bot.cheat('empty');
@@ -426,6 +422,19 @@ c = await coordIs(bot, 3006, 3958);
 check(c.x === 3006 && c.z === 3958, `rope swing -> ${JSON.stringify(c)}`);
 check(xp(bot, 16) - xp0 === 8, `rope swing xp 8 x 1 (${xp(bot, 16) - xp0})`);
 
+// door 1530 at 2564,3310: from x 2564 the player is moved to 2563 (and the door becomes loc 2)
+await at(bot, 2564, 3310);
+bot.opLoc(1, 2564, 3310, 1530);
+c = await coordIs(bot, 2563, 3310);
+check(c.x === 2563 && c.z === 3310, `door 1530 moves the player -> ${JSON.stringify(c)}`);
+
+// mage bank web 733 at 3093,3957: later matches override earlier ones, so from 3092,3957 the
+// player ends up at 3092,3959
+await at(bot, 3092, 3957);
+bot.opLoc(1, 3093, 3957, 733);
+c = await coordIs(bot, 3092, 3959);
+check(c.x === 3092 && c.z === 3959, `web -> ${JSON.stringify(c)}`);
+
 // trap staircase 1728 in the Yanille agility dungeon drops into the King Black Dragon's zone
 await at(bot, 2620, 9496);
 since = bot.messages.length;
@@ -434,6 +443,26 @@ check(await expect(bot, /^You climb down the stairs, and stand on a trap!$/, sin
 c = await coordIs(bot, 2636, 9517);
 check(c.x === 2636 && c.z === 9517, `trap stairs -> ${JSON.stringify(c)}`);
 check(await expect(bot, /^You get hit!$/, since, 25000), 'KBDLair hit while standing in the zone');
+
+// scoreboard 3192 at the old home: the player list on the scroll
+await at(bot, 2843, 2959);
+since = bot.messages.length;
+bot.opLoc(1, 2843, 2961, 3192);
+check(await expect(bot, /^Players Online!$/, since) && (await expect(bot, /^For The Win!$/, since)), 'scoreboard messages');
+
+// wishing well with 70m (last: the wish sets actionTimer to 3600 cycles; the trap stairs' 30 must run out)
+await sleep(15000);
+await empty(bot);
+await give(bot, 'coins', 995, 70000005);
+await at(bot, 2860, 3589);
+since = bot.messages.length;
+useOnLoc(bot, 995, slotOf(bot, 995), 2860, 3591, 884);
+check(await expect(bot, /^YOUR WISH HAS CAME TRUE!$/, since) && (await expect(bot, /^Unfortanatly you need to wait 1 HOUR to make another wish!$/, since)), 'wish messages');
+await sleep(600);
+check(count(bot, 995) === 5, `wish costs 70m (${count(bot, 995)} left)`);
+since = bot.messages.length;
+useOnLoc(bot, 995, slotOf(bot, 995), 2860, 3591, 884);
+check(!(await expect(bot, /70m/, since, 2000)), 'the well is silent while actionTimer runs');
 
 bot.close();
 console.log(failures === 0 ? 'ALL PASS' : `${failures} FAILED`);
