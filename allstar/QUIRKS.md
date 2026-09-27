@@ -12,5 +12,24 @@ These come from the owner's memory of the live server (not all are visible in th
 | Q5 | **Tzhaar-ket-em (6527, the obsidian "mini maul") one-hit kills** like the glowing dagger. | owner ("I think") | todo |
 | Q6 | **'perfect' ring (773) is overpowered**: +10000 in every bonus, as in the older `data/item.cfg` (the loaded v2 `item.cfg` had zeroed it). | owner + data/item.cfg | todo |
 
+## How Q1/Q2 worked in the original code
+
+- `client.fromBank` (legacy client.java L13892) tests `Item.itemStackable[bankItems[slot] + 1]`,
+  but `bankItems` already stores id+1, so it checks id+2. Blood runes (565) look up 567, which is
+  not stackable, so a withdrawal of N blood runes runs `addItem(565, 1)` N times and sends N
+  inventory packets. The client worked through that backlog slowly: the "stall". The server had
+  already finished.
+- Telekinetic Grab (packet 181, L19873) never checks that the ground item still exists or how far
+  away it is: it gives `max(1, amount on the ground)` of the clicked item id, then removes it. While
+  the client was stalled the item stayed visible, so every telegrab click reached the server and
+  each one paid out. The same missing check lets a stale right-click menu grab an item someone
+  already looted, from anywhere.
+- It also takes 1 law + 1 air rune (not 5 air), needs Magic 33 but says 21.
+
+Plan for Allstar-City: telegrab with the original semantics (no existence or distance check,
+amount at least 1), and a server-side stall for withdrawals of items hit by the id+2 check (derived
+from Allstar's stackable flags): the items are added gradually over several cycles and telegrab
+casts made during the stall are queued, then all fire when it ends.
+
 Other original bugs are documented in `allstar/spec/*.md` (marked BUG / JUNK). Reproduce them only
 when the owner asks.
