@@ -392,14 +392,11 @@ export default class Bot {
                 break;
             }
             case ServerGameProt.REBUILD_NORMAL: {
+                // RebuildNormalEncoder: p2(zoneX), p2(zoneZ), the centre zone of the 13x13-zone build area
                 const x = buf.g2();
                 const z = buf.g2();
                 this.region = { x, z };
-                // RebuildNormalEncoder: p2(zoneZ), p2_alt3(zoneX)
-                const zb = new Packet(Uint8Array.from(buf.data.subarray(0, 4)));
-                const zoneZ = zb.g2();
-                const zoneX = zb.g2_alt3();
-                this.zone = { x: zoneX, z: zoneZ };
+                this.zone = { x, z };
                 break;
             }
             case ServerGameProt.PLAYER_INFO:
@@ -408,15 +405,16 @@ export default class Bot {
             case ServerGameProt.NPC_INFO:
                 this.handleNpcInfo(buf, length);
                 break;
+            // UpdateZone*Encoder: p1(zone x), p1(zone z), relative to the build area's south-west corner
             case ServerGameProt.UPDATE_ZONE_PARTIAL_FOLLOWS: {
-                const x = buf.g1_alt2();
-                const z = buf.g1_alt1();
+                const x = buf.g1();
+                const z = buf.g1();
                 this.setZoneBase(x, z);
                 break;
             }
             case ServerGameProt.UPDATE_ZONE_FULL_FOLLOWS: {
-                const z = buf.g1_alt3();
-                const x = buf.g1_alt2();
+                const x = buf.g1();
+                const z = buf.g1();
                 this.setZoneBase(x, z);
                 const { x: bx, z: bz } = this.zoneBase;
                 this.groundObjs = this.groundObjs.filter(o => o.x < bx || o.x >= bx + 8 || o.z < bz || o.z >= bz + 8);
@@ -424,7 +422,7 @@ export default class Bot {
             }
             case ServerGameProt.UPDATE_ZONE_PARTIAL_ENCLOSED: {
                 const x = buf.g1();
-                const z = buf.g1_alt1();
+                const z = buf.g1();
                 this.setZoneBase(x, z);
                 while (buf.pos < length) {
                     const zoneProt = zoneProts.get(buf.g1());
@@ -456,20 +454,25 @@ export default class Bot {
         return { x: this.zoneBase.x + ((coord >> 4) & 0x7), z: this.zoneBase.z + (coord & 0x7) };
     }
 
+    // Every 289 zone packet starts with p1(coord in the zone) followed by plain p2 fields.
     private handleZone(prot: ServerGameProt, buf: Packet) {
         if (prot === ServerGameZoneProt.OBJ_ADD) {
+            const tile = this.zoneTile(buf.g1());
             const id = buf.g2();
-            const tile = this.zoneTile(buf.g1_alt2());
-            const count = buf.g2_alt2();
+            const count = buf.g2();
             this.groundObjs.push({ id, count, ...tile, at: Date.now() });
         } else if (prot === ServerGameZoneProt.OBJ_REVEAL) {
-            const tile = this.zoneTile(buf.g1_alt1());
-            const count = buf.g2_alt3();
-            const id = buf.g2_alt2();
-            this.groundObjs.push({ id, count, ...tile, at: Date.now() });
+            const tile = this.zoneTile(buf.g1());
+            const id = buf.g2();
+            const count = buf.g2();
+            const receiver = buf.g2();
+            // like the client: the player it was dropped for already has it (OBJ_ADD)
+            if (receiver !== this.pid) {
+                this.groundObjs.push({ id, count, ...tile, at: Date.now() });
+            }
         } else if (prot === ServerGameZoneProt.OBJ_DEL) {
-            const id = buf.g2_alt2();
-            const tile = this.zoneTile(buf.g1_alt1());
+            const tile = this.zoneTile(buf.g1());
+            const id = buf.g2();
             const i = this.groundObjs.findIndex(o => o.id === id && o.x === tile.x && o.z === tile.z);
             if (i !== -1) {
                 this.groundObjs.splice(i, 1);
@@ -486,12 +489,22 @@ export default class Bot {
         }
     }
 
-    // ---- PLAYER_INFO / NPC_INFO (engine/src/network/rsbuf/info.ts) ----
+    // ---- PLAYER_INFO / NPC_INFO (engine/src/network/rsbuf/info.ts, the web client's getPlayerPos/getNpcPos) ----
+
+    // Entities that left the list (op 3, or past the new count after a rebuild) are forgotten unless the
+    // same packet adds them again; a re-added entity keeps its object, as in the client.
+    private static forget<T>(map: Map<number, T>, dropped: number[], list: number[]) {
+        for (const id of dropped) {
+            if (!list.includes(id)) {
+                map.delete(id);
+            }
+        }
+    }
 
     private handlePlayerInfo(buf: Packet, length: number) {
         buf.bitStart();
         const updates: number[] = [];
-        // local player
+        // local player: op 0 extended info only, 1 walk, 2 run, 3 teleport (level, local x, local z, jump)
         if (buf.gBit(1) === 1) {
             const kind = buf.gBit(2);
             if (kind === 0) {
@@ -508,18 +521,19 @@ export default class Bot {
                 this.self.z += DIR_Z[dir1] + DIR_Z[dir2];
                 if (buf.gBit(1) === 1) updates.push(-1);
             } else {
-                buf.gBit(1); // jump
                 this.self.level = buf.gBit(2);
-                const lz = buf.gBit(7);
                 const lx = buf.gBit(7);
+                const lz = buf.gBit(7);
+                buf.gBit(1); // jump
                 this.self.x = ((this.zone.x - 6) << 3) + lx;
                 this.self.z = ((this.zone.z - 6) << 3) + lz;
                 if (buf.gBit(1) === 1) updates.push(-1);
             }
         }
-        // other players
+        // other players already in view
         const count = buf.gBit(8);
         const list: number[] = [];
+        const dropped = this.playerList.slice(count);
         for (let i = 0; i < count; i++) {
             const pid = this.playerList[i];
             const other = this.players.get(pid);
@@ -529,7 +543,7 @@ export default class Bot {
             }
             const kind = buf.gBit(2);
             if (kind === 3) {
-                this.players.delete(pid);
+                dropped.push(pid);
                 continue;
             }
             list.push(pid);
@@ -551,6 +565,7 @@ export default class Bot {
                 if (buf.gBit(1) === 1) updates.push(pid);
             }
         }
+        // players coming into view: pid (11), dx (5), dz (5) from this player, jump, extended info
         while (buf.bitPos + 10 < length * 8) {
             const pid = buf.gBit(11);
             if (pid === 2047) {
@@ -562,57 +577,64 @@ export default class Bot {
             if (dz > 15) dz -= 32;
             buf.gBit(1); // jump
             const update = buf.gBit(1);
-            this.players.set(pid, { pid, name: this.players.get(pid)?.name ?? this.playerNames.get(pid) ?? '', x: this.self.x + dx, z: this.self.z + dz });
+            const other = this.players.get(pid) ?? { pid, name: this.playerNames.get(pid) ?? '', x: 0, z: 0 };
+            other.x = this.self.x + dx;
+            other.z = this.self.z + dz;
+            this.players.set(pid, other);
             list.push(pid);
             if (update === 1) updates.push(pid);
         }
         buf.bitEnd();
         this.playerList = list;
+        Bot.forget(this.players, dropped, list);
 
+        // extended info, blocks in PlayerInfoEncoder.writeBlocks order (masks above 0xff add a byte, 0x80)
         for (const pid of updates) {
             let mask = buf.g1();
-            if ((mask & 32) !== 0) {
+            if ((mask & 0x80) !== 0) {
                 mask += buf.g1() << 8;
             }
-            if (mask & 8) {
-                const anim = buf.g2();
-                buf.g1_alt3();
-                if (pid === -1) this.myAnims.push({ anim, at: Date.now() });
-            }
-            if (mask & 16) buf.gjstr(); // say
-            if (mask & 256) buf.pos += 9; // exact move
-            if (mask & 1) buf.pos += 2; // face entity
-            if (mask & 2) buf.pos += 4; // face coord
-            if (mask & 512) buf.pos += 6; // spotanim
-            if (mask & 4) {
+            if (mask & 0x1) {
+                // appearance: ... p8(name), p1(combat level), p2(skill level)
                 const len = buf.g1();
-                const bytes = Uint8Array.from(buf.data.subarray(buf.pos, buf.pos + len)).reverse();
+                const bytes = Uint8Array.from(buf.data.subarray(buf.pos, buf.pos + len));
                 buf.pos += len;
                 if (pid !== -1 && len >= 11) {
-                    const name = new Packet(bytes.slice(len - 11, len - 3)).g8();
+                    const name = fromBase37(new Packet(bytes.slice(len - 11, len - 3)).g8());
                     const other = this.players.get(pid);
-                    if (other) other.name = fromBase37(name);
+                    if (other) other.name = name;
                     // the engine only resends an appearance that changed: remember it like the client
-                    this.playerNames.set(pid, fromBase37(name));
+                    this.playerNames.set(pid, name);
                 }
             }
-            if (mask & 1024) {
-                const damage = buf.g1_alt1();
-                const type = buf.g1_alt3();
-                const hp = buf.g1_alt2();
-                buf.g1();
+            if (mask & 0x2) {
+                const anim = buf.g2();
+                buf.g1(); // delay
+                if (pid === -1) this.myAnims.push({ anim, at: Date.now() });
+            }
+            if (mask & 0x4) buf.pos += 2; // face entity
+            if (mask & 0x8) buf.gjstr(); // say
+            if (mask & 0x10) {
+                const damage = buf.g1();
+                const type = buf.g1();
+                const hp = buf.g1();
+                buf.g1(); // base hitpoints
                 if (pid === -1) this.myHits.push({ damage, type, hp, at: Date.now() });
             }
-            if (mask & 64) {
+            if (mask & 0x20) buf.pos += 4; // face coord
+            if (mask & 0x40) {
+                // chat: colour, effect, type, length, packed text
                 buf.pos += 3;
-                const len = buf.g1_alt1();
+                const len = buf.g1();
                 buf.pos += len;
             }
-            if (mask & 128) {
-                const damage = buf.g1_alt3();
-                const type = buf.g1_alt2();
-                const hp = buf.g1_alt3();
-                buf.g1();
+            if (mask & 0x100) buf.pos += 6; // spotanim
+            if (mask & 0x200) buf.pos += 9; // exact move
+            if (mask & 0x400) {
+                const damage = buf.g1();
+                const type = buf.g1();
+                const hp = buf.g1();
+                buf.g1(); // base hitpoints
                 if (pid === -1) this.myHits.push({ damage, type, hp, at: Date.now() });
             }
         }
@@ -621,8 +643,10 @@ export default class Bot {
     private handleNpcInfo(buf: Packet, length: number) {
         buf.bitStart();
         const updates: number[] = [];
+        // npcs already in view
         const count = buf.gBit(8);
         const list: number[] = [];
+        const dropped = this.npcList.slice(count);
         for (let i = 0; i < count; i++) {
             const nid = this.npcList[i];
             const npc = this.npcs.get(nid);
@@ -632,7 +656,7 @@ export default class Bot {
             }
             const kind = buf.gBit(2);
             if (kind === 3) {
-                this.npcs.delete(nid);
+                dropped.push(nid);
                 continue;
             }
             list.push(nid);
@@ -654,52 +678,67 @@ export default class Bot {
                 if (buf.gBit(1) === 1) updates.push(nid);
             }
         }
+        // npcs coming into view: nid (14), type (13, Allstar-City), dx (5), dz (5), jump, extended info
         while (buf.bitPos + 21 < length * 8) {
             const nid = buf.gBit(14);
             if (nid === 16383) {
                 break;
             }
-            const update = buf.gBit(1);
-            let dz = buf.gBit(5);
-            if (dz > 15) dz -= 32;
+            const type = buf.gBit(13);
             let dx = buf.gBit(5);
             if (dx > 15) dx -= 32;
+            let dz = buf.gBit(5);
+            if (dz > 15) dz -= 32;
             buf.gBit(1); // jump
-            const type = buf.gBit(13);
-            this.npcs.set(nid, { nid, type, x: this.self.x + dx, z: this.self.z + dz, level: this.self.level, hp: -1, maxHp: -1, hits: [], anims: [], says: [] });
+            const update = buf.gBit(1);
+            const npc = this.npcs.get(nid) ?? { nid, type, x: 0, z: 0, level: 0, hp: -1, maxHp: -1, hits: [], anims: [], says: [] };
+            npc.type = type;
+            npc.x = this.self.x + dx;
+            npc.z = this.self.z + dz;
+            npc.level = this.self.level;
+            this.npcs.set(nid, npc);
             list.push(nid);
             if (update === 1) updates.push(nid);
         }
         buf.bitEnd();
         this.npcList = list;
+        Bot.forget(this.npcs, dropped, list);
 
+        // extended info, blocks in NpcInfoEncoder.writeBlocks order; hitsplats are p2 damage, p1 type,
+        // p2 hitpoints, p2 max hitpoints (Allstar-City, NPCs with more than 255 hitpoints)
         for (const nid of updates) {
-            const npc = this.npcs.get(nid)!;
+            const npc = this.npcs.get(nid);
             const mask = buf.g1();
-            if (mask & 1) npc.type = buf.g2_alt2(); // change type
-            if (mask & 64) buf.pos += 2; // face entity
-            if (mask & 128) {
-                const damage = buf.g2();
-                const type = buf.g1_alt1();
-                npc.hp = buf.g2();
-                npc.maxHp = buf.g2();
-                npc.hits.push({ damage, type, hp: npc.hp, maxHp: npc.maxHp, at: Date.now() });
-            }
-            if (mask & 4) buf.pos += 6; // spotanim
-            if (mask & 32) npc.says.push(buf.gjstr());
-            if (mask & 8) buf.pos += 4; // face coord
-            if (mask & 2) {
+            if (mask & 0x1) this.npcHit(buf, npc); // damage 2
+            if (mask & 0x2) {
                 const anim = buf.g2();
-                buf.g1_alt3();
-                npc.anims.push({ anim, at: Date.now() });
+                buf.g1(); // delay
+                npc?.anims.push({ anim, at: Date.now() });
             }
-            if (mask & 16) {
-                const damage = buf.g2();
-                const type = buf.g1_alt3();
-                npc.hp = buf.g2();
-                npc.maxHp = buf.g2();
-                npc.hits.push({ damage, type, hp: npc.hp, maxHp: npc.maxHp, at: Date.now() });
+            if (mask & 0x4) buf.pos += 2; // face entity
+            if (mask & 0x8) {
+                const say = buf.gjstr();
+                npc?.says.push(say);
             }
+            if (mask & 0x10) this.npcHit(buf, npc); // damage
+            if (mask & 0x20) {
+                const type = buf.g2(); // change type
+                if (npc) npc.type = type;
+            }
+            if (mask & 0x40) buf.pos += 6; // spotanim
+            if (mask & 0x80) buf.pos += 4; // face coord
+        }
+    }
+
+    private npcHit(buf: Packet, npc: BotNpc | undefined) {
+        const damage = buf.g2();
+        const type = buf.g1();
+        const hp = buf.g2();
+        const maxHp = buf.g2();
+        if (npc) {
+            npc.hp = hp;
+            npc.maxHp = maxHp;
+            npc.hits.push({ damage, type, hp, maxHp, at: Date.now() });
         }
     }
 
@@ -809,7 +848,8 @@ export default class Bot {
         });
     }
 
-    // Allstar-City combat tests: walk to a tile (MOVE_GAMECLICK with the destination as the path)
+    // Allstar-City combat tests: walk to a tile (MOVE_GAMECLICK: p1(ctrl held), p2(x), p2(z), then the
+    // waypoints as byte offsets; the destination alone is a one-tile path)
     walk(x: number, z: number, run = false) {
         // the client closes any open dialog (level-up etc.) before walking
         if (this.main !== -1 || this.chat !== -1) {
@@ -817,55 +857,43 @@ export default class Bot {
             this.main = this.chat = -1;
         }
         this.send(ClientGameProt.MOVE_GAMECLICK, buf => {
-            buf.p2_alt3(x);
             buf.p1(run ? 1 : 0);
-            buf.p2_alt3(z);
+            buf.p2(x);
+            buf.p2(z);
         });
     }
 
-    opPlayer(op: number, pid: number) {
-        const prot = [ClientGameProt.OPPLAYER1, ClientGameProt.OPPLAYER2, ClientGameProt.OPPLAYER3, ClientGameProt.OPPLAYER4, ClientGameProt.OPPLAYER5][op - 1];
-        this.send(prot, buf => {
-            if (op === 1) {
-                buf.p2_alt3(pid);
-            } else if (op === 2 || op === 5) {
-                buf.p2_alt2(pid);
-            } else {
-                buf.p2_alt1(pid);
-            }
-        });
-    }
-
-    // spell (interface component) on an npc / player / held item / ground item
+    // spell (interface component) on an npc / player / held item / ground item: the target's fields as in
+    // the plain op, then p2(spellCom) (engine/src/network/game/client/codec/Op*TDecoder.ts)
     opNpcT(nid: number, spellCom: number) {
         this.send(ClientGameProt.OPNPCT, buf => {
-            buf.p2_alt2(spellCom);
-            buf.p2_alt1(nid);
+            buf.p2(nid);
+            buf.p2(spellCom);
         });
     }
 
     opPlayerT(pid: number, spellCom: number) {
         this.send(ClientGameProt.OPPLAYERT, buf => {
             buf.p2(pid);
-            buf.p2_alt1(spellCom);
+            buf.p2(spellCom);
         });
     }
 
     opHeldT(obj: number, slot: number, com: number, spellCom: number) {
         this.send(ClientGameProt.OPHELDT, buf => {
+            buf.p2(obj);
+            buf.p2(slot);
+            buf.p2(com);
             buf.p2(spellCom);
-            buf.p2_alt2(com);
-            buf.p2_alt2(slot);
-            buf.p2_alt2(obj);
         });
     }
 
     opObjT(x: number, z: number, obj: number, spellCom: number) {
         this.send(ClientGameProt.OPOBJT, buf => {
-            buf.p2_alt1(obj);
+            buf.p2(x);
             buf.p2(z);
-            buf.p2_alt1(spellCom);
-            buf.p2_alt3(x);
+            buf.p2(obj);
+            buf.p2(spellCom);
         });
     }
 
