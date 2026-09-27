@@ -115,6 +115,52 @@ if (~allstar_clue_route(2, 4, 2, 31) = 0) {
     mes("Thessalia isn't interested in talking right now...");
 }
 
+// - TzHaar-Mej-Jal 2617, TzHaar-Hur-Tel 2620, TzHaar-Hur-Koz 2621 and TzHaar-Hur-Lek 2622 are each
+//   spawned twice on one tile (slots 421-426 and 447-452). The first copies ran slots 165, 168, 169
+//   and 170, the fishing spots 236 (shark), 233 (manta ray), 235 and 235 (shrimp), so Talk-to fished
+//   at once; the second copies ran giant rats (slots 191-196): nothing. The copies cannot be told
+//   apart, so the first one clicked becomes the one that fishes. TzHaar-Hur-Koz's Talk-to is a shop
+//   option in the shops port.
+[opnpc1,tzhaar_fightcave_master] ~allstar_tzhaar_fish(236);
+[apnpc1,tzhaar_fightcave_master] ~allstar_tzhaar_fish(236);
+[opnpc1,tzhaar_merchant_equipment] ~allstar_tzhaar_fish(233);
+[apnpc1,tzhaar_merchant_equipment] ~allstar_tzhaar_fish(233);
+[opnpc1,tzhaar_merchant_oreandgem] ~allstar_tzhaar_fish(235);
+[apnpc1,tzhaar_merchant_oreandgem] ~allstar_tzhaar_fish(235);
+
+[proc,allstar_tzhaar_fish](int $spot)
+if (~allstar_first_copy = false) {
+    return;
+}
+if ($spot = 236) {
+    ~allstar_clickfish(75, human_harpoon, raw_shark, 500, "You fish a shark", "You need a fishing level of 75 to fish shark.");
+} else if ($spot = 233) {
+    ~allstar_clickfish(90, human_harpoon, raw_mantaray, 750, "You fish a manta ray", "You need a fishing level of 90 to fish manta ray.");
+} else {
+    ~allstar_clickfish(1, human_fishing_casting, raw_shrimp, 150, "You fish a shrimp", "You need a fishing level of 1 to fish shrimp.");
+}
+
+// whether this npc is the copy whose Talk-to fishes: the first one clicked of those nearby
+[proc,allstar_first_copy]()(boolean)
+if (%allstar_npc_copy = 0) {
+    def_npc_uid $me = npc_uid;
+    def_int $copy = 1;
+    npc_findall(npc_coord, npc_type, 16, 0);
+    while (npc_findnext = true) {
+        if (npc_uid ! $me & %allstar_npc_copy = 1) {
+            $copy = 2;
+        }
+    }
+    if (npc_finduid($me) = false) {
+        return (false);
+    }
+    %allstar_npc_copy = $copy;
+}
+if (%allstar_npc_copy = 1) {
+    return (true);
+}
+return (false);
+
 // clue npc: dialogue $dialogue when the clue is level $level, stage $stage and id $id
 [proc,allstar_clue_route](int $level, int $stage, int $id, int $dialogue)(int)
 if (%allstar_cluelevel = $level & %allstar_cluestage = $stage & %allstar_clueid = $id) {

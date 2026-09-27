@@ -61,6 +61,23 @@ async function find(bot: Bot, npc: string): Promise<{ id: number; x: number; z: 
     return { id: (await getvar(bot, 'allstar_debug_npc')) & 0xffff, x, z };
 }
 
+// every such npc within 15 tiles, with its tile (::~npcnidn walks the search one npc at a time)
+async function findAll(bot: Bot, npc: string): Promise<{ id: number; x: number; z: number }[]> {
+    const found: { id: number; x: number; z: number }[] = [];
+    for (let n = 0; n < 10; n++) {
+        const since = bot.messages.length;
+        bot.cheat(`~npcnidn ${npc} ${n}`);
+        const text = await bot.waitForMessage(/^npcnidn /, 5000, since);
+        await sleep(300);
+        if (text === 'npcnidn none') {
+            break;
+        }
+        const [x, z] = text.slice('npcnidn '.length).split(',').map(Number);
+        found.push({ id: (await getvar(bot, 'allstar_debug_npc')) & 0xffff, x, z });
+    }
+    return found;
+}
+
 async function nid(bot: Bot, npc: string): Promise<number> {
     return (await find(bot, npc)).id;
 }
@@ -144,9 +161,10 @@ async function closed(bot: Bot, what: string) {
     }
 }
 
+// the messages since `since` after `ms`, without other players' login and logout broadcasts
 async function nothingFor(bot: Bot, ms: number, since: number): Promise<string[]> {
     await sleep(ms);
-    return bot.messages.slice(since);
+    return bot.messages.slice(since).filter(m => !/ has logged (in|out)$/.test(m));
 }
 
 async function coord(bot: Bot) {
@@ -403,10 +421,7 @@ async function nothing(bot: Bot) {
     check(bot.chat === -1 && got2.length === 0, `Wise Old Man Talk-to does nothing (${JSON.stringify(got2)})`);
     // the Zoo keeper's click ran Thessalia's handler
     await setvar(bot, 'allstar_cluelevel', 0);
-    const keeper = await approach(bot, 'zoo_keeper');
-    const since3 = bot.messages.length;
-    bot.opNpc(1, keeper);
-    await bot.waitForMessage(/^Thessalia isn't interested in talking right now\.\.\.$/, 5000, since3);
+    await act(bot, 'zoo_keeper', 1, /^Thessalia isn't interested in talking right now\.\.\.$/);
     check(true, 'Zoo keeper Talk-to gives Thessalia\'s refusal');
 }
 
@@ -598,10 +613,7 @@ async function mizgogKalrag(bot: Bot) {
 
 async function clueNpcs(bot: Bot) {
     await tele(bot, 2736, 3459);
-    const thessalia = await approach(bot, 'thessalia');
-    let since = bot.messages.length;
-    bot.opNpc(1, thessalia);
-    await bot.waitForMessage(/^Thessalia isn't interested in talking right now\.\.\.$/, 5000, since);
+    await act(bot, 'thessalia', 1, /^Thessalia isn't interested in talking right now\.\.\.$/);
     check(true, 'Thessalia refuses without the clue step');
     // clue L2/S5/id2: Louie legs, dialogue 32, rewards on render
     await setvar(bot, 'allstar_cluelevel', 2);
@@ -610,7 +622,6 @@ async function clueNpcs(bot: Bot) {
     await give(bot, 'trail_clue_easy_simple006', 2682);
     await tele(bot, 2852, 3571);
     const louie = await spawn(bot, 'louie_legs');
-    since = bot.messages.length;
     bot.opNpc(1, louie);
     try {
         await bot.until(() => bot.main === 8134 && bot.texts.get(8145) === '@dbl@Congratz, you have completed the treasure trail!', 6000, 'reward');
@@ -621,6 +632,50 @@ async function clueNpcs(bot: Bot) {
     await sleep(600);
     check(count(bot, 2682) === 0 && (await getvar(bot, 'allstar_cluelevel')) === 0, 'reward took the scroll and reset the clue');
     check(bot.texts.get(4885) === 'Congratulations! Heres your last reward!', 'dialogue 32 text');
+}
+
+async function tzhaarAlias(bot: Bot) {
+    // each TzHaar npc stands twice on one tile: Talk-to on one copy ran a fishing spot's handler
+    // (npc slot aliasing), on the other nothing
+    const cases: [number, number, string, RegExp][] = [
+        [2461, 5126, 'tzhaar_merchant_oreandgem', /^You fish a shrimp$/],
+        [2400, 5180, 'tzhaar_fightcave_master', /^You need a fishing level of 75 to fish shark\.$/],
+    ];
+    // Talk-to from next to the copy (they wander), again if the click got no answer; the messages
+    // without level-ups
+    const talkTo = async (npc: string, copy: number, expect: RegExp): Promise<string[]> => {
+        let got: string[] = [];
+        for (const [dx, dz] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
+            await sleep(3000); // actionTimer 5 after a catch
+            const at = (await findAll(bot, npc)).find(c => c.id === copy);
+            if (at) {
+                await tele(bot, at.x + dx, at.z + dz);
+            }
+            const since = bot.messages.length;
+            bot.opNpc(1, copy);
+            got = (await nothingFor(bot, 3000, since)).filter(m => !m.startsWith('Congratulations'));
+            if (got.some(m => expect.test(m))) {
+                break;
+            }
+        }
+        return got;
+    };
+    for (const [x, z, npc, expect] of cases) {
+        await tele(bot, x, z);
+        const copies = (await findAll(bot, npc)).map(c => c.id);
+        check(copies.length === 2, `${npc}: two copies (${copies})`);
+        const fished: boolean[] = [];
+        for (const copy of copies) {
+            const got = await talkTo(npc, copy, expect);
+            fished.push(got.some(m => expect.test(m)));
+            if (!got.every(m => expect.test(m) || m === "I can't reach that!")) {
+                check(false, `${npc} copy ${copy}: unexpected ${JSON.stringify(got)}`);
+            }
+        }
+        check(fished.filter(f => f).length === 1, `${npc}: Talk-to fishes on exactly one copy (${fished})`);
+        const again = await talkTo(npc, copies[fished.indexOf(true)], expect);
+        check(again.some(m => expect.test(m)), `${npc}: the same copy fishes again (${JSON.stringify(again)})`);
+    }
 }
 
 async function tzhaarBanker(bot: Bot) {
@@ -751,7 +806,7 @@ const bot = await connect('npc');
 await sleep(1500);
 const tests: Record<string, (bot: Bot) => Promise<void>> = {
     quests, hans, leftovers, ring, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
-    starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, questItems, mizgogKalrag, clueNpcs, tzhaarBanker,
+    starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, questItems, mizgogKalrag, clueNpcs, tzhaarAlias, tzhaarBanker,
     clues, level3, essence, gnomeBanker, guards, boatAsPlayer
 };
 // ONLY=hans,bankers runs a subset
