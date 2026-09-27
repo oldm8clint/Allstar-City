@@ -1,9 +1,5 @@
 // Allstar-Scape client fields used by ::commands, the emote tab, the HUD and level-ups.
 
-// client.actionTimer: map_clock at which the shared action cooldown ends (~allstar_action_timer)
-[allstar_action_timer]
-protect=no
-
 // a ::command threw an exception in Allstar-Scape and the player is being disconnected
 [allstar_cmd_crashed]
 protect=no
@@ -27,10 +23,6 @@ protect=no
 // client.hasset: Motherload11's one-time wipe (moreinfo character-hasset)
 [allstar_hasset]
 scope=perm
-protect=no
-
-// ::god: playerSE is ::god's stand animation until ::godoff or relog
-[allstar_godmode]
 protect=no
 
 // Player.dropsitem (::heal, Chaos Elemental): take the weapon off next cycle

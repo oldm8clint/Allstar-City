@@ -342,7 +342,7 @@ const REQ_FUNCS = {
 
 // ---- the data model ----
 
-export { weaponTab };
+export { weaponTab, standAnim, walkAnim, runAnim, TWO_HANDERZ };
 
 export function loadAllstarItems(legacyDir) {
     const entries = readItemCfg(path.join(legacyDir, 'item.cfg'));
@@ -359,6 +359,8 @@ export function loadAllstarItems(legacyDir) {
     const twohanded = dat('twohanded.dat');
     const sellable = dat('sellable.dat');
     const item4 = readItem4(path.join(legacyDir, 'Item4.java'));
+    // Item.java 398-561: itemSellable[id] = true after the .dat loop (all ids >= 7956)
+    const sellableOverrides = new Set([...fs.readFileSync(path.join(legacyDir, 'Item.java'), 'latin1').matchAll(/itemSellable\[(\d+)\]\s*=\s*true;/g)].map(m => Number(m[1])));
 
     // Item.java: arrays of 20000, ids beyond the .dat files keep Java's default false
     const inDat = (buf, id) => id >= 0 && id < buf.length;
@@ -366,8 +368,7 @@ export function loadAllstarItems(legacyDir) {
         stackable: id => inDat(stackable, id) && stackable[id] !== 0,
         note: id => inDat(notes, id) && notes[id] === 0,
         twohanded: id => inDat(twohanded, id) && twohanded[id] !== 0,
-        // the sellable overrides (Item.java 398-561) are all ids >= 7956
-        sellable: id => inDat(sellable, id) && sellable[id] === 0
+        sellable: id => (inDat(sellable, id) && sellable[id] === 0) || sellableOverrides.has(id)
     };
 
     const name = id => first.get(id)?.name ?? `!! NOT EXISTING ITEM !!! - ID:${id}`;
@@ -408,6 +409,69 @@ export function loadAllstarItems(legacyDir) {
         reqs,
         flags
     };
+}
+
+// ---- params, as obj config lines (also used by gen/customitems.mjs for ids >= 7956) ----
+
+// Bonuses, wear requirements and the wield data of an item that is not a note. seq(id) gives a
+// seq debugname.
+export function wornParams(data, id, seq) {
+    const lines = [];
+    const bonuses = data.bonuses(id);
+    BONUS_PARAMS.forEach((param, i) => {
+        if (bonuses[i] !== 0) {
+            lines.push(`param=${param},${bonuses[i]}`);
+        }
+    });
+    const reqs = data.reqs(id);
+    for (const skill of REQ_SKILLS) {
+        if (reqs[skill] !== 1) {
+            lines.push(`param=allstar_req_${skill},${reqs[skill]}`);
+        }
+    }
+    if (data.flags.twohanded(id)) {
+        lines.push('param=allstar_twohanded,yes');
+    }
+    if (data.slot(id) === 3 && weaponTab(data.name(id)) !== 2423) {
+        lines.push(`param=allstar_weapon_tab,${weaponTab(data.name(id))}`);
+    }
+    if (TWO_HANDERZ.includes(id)) {
+        lines.push(`param=allstar_twohanderz,${TWO_HANDERZ.indexOf(id)}`);
+    }
+    // stand/walk/run anims set when the item is wielded (only read for the weapon slot)
+    if (standAnim(id) !== 808) lines.push(`param=allstar_stand_anim,${seq(standAnim(id))}`);
+    if (walkAnim(id) !== 819) lines.push(`param=allstar_walk_anim,${seq(walkAnim(id))}`);
+    if (runAnim(id) !== 824) lines.push(`param=allstar_run_anim,${seq(runAnim(id))}`);
+    if (sledExempt(id)) lines.push('param=allstar_walk_sled_exempt,yes');
+    const wield = WIELD_OVERRIDES[id];
+    if (wield) {
+        lines.push(`param=allstar_wield_walk_anim,${seq(wield.walk)}`, `param=allstar_wield_run_anim,${seq(wield.run)}`);
+    }
+    const login = LOGIN_OVERRIDES[id];
+    if (login) {
+        if (login.stand) lines.push(`param=allstar_login_stand_anim,${seq(login.stand)}`);
+        lines.push(`param=allstar_login_walk_anim,${seq(login.walk)}`, `param=allstar_login_run_anim,${seq(login.run)}`);
+    }
+    return lines;
+}
+
+// Shop value, server name (only where it differs from shownName, the name the client shows),
+// sellable and untradeable: every item, notes too.
+export function itemParams(data, id, shownName) {
+    const lines = [];
+    if (data.value(id) !== 1) {
+        lines.push(`param=allstar_value,${data.value(id)}`);
+    }
+    if (data.name(id) !== shownName) {
+        lines.push(`param=allstar_name,${data.name(id)}`);
+    }
+    if (data.flags.sellable(id)) {
+        lines.push('param=allstar_sellable,yes');
+    }
+    if (id === 6384) {
+        lines.push('param=allstar_untradeable,yes');
+    }
+    return lines;
 }
 
 // ---- obj config rewriting ----
@@ -501,58 +565,16 @@ export default function items({ root, content, packs, report }) {
                 }
                 stats.wearable++;
             }
-            const bonuses = data.bonuses(id);
-            BONUS_PARAMS.forEach((param, i) => {
-                if (bonuses[i] !== 0) {
-                    lines.push(`param=${param},${bonuses[i]}`);
-                }
-            });
-            const reqs = data.reqs(id);
-            for (const skill of REQ_SKILLS) {
-                if (reqs[skill] !== 1) {
-                    lines.push(`param=allstar_req_${skill},${reqs[skill]}`);
-                    stats.reqs++;
-                }
-            }
-            if (data.flags.twohanded(id)) {
-                lines.push('param=allstar_twohanded,yes');
-            }
-            if (data.slot(id) === 3 && weaponTab(data.name(id)) !== 2423) {
-                lines.push(`param=allstar_weapon_tab,${weaponTab(data.name(id))}`);
-            }
-            if (TWO_HANDERZ.includes(id)) {
-                lines.push(`param=allstar_twohanderz,${TWO_HANDERZ.indexOf(id)}`);
-            }
-            // stand/walk/run anims set when the item is wielded (only read for the weapon slot)
-            if (standAnim(id) !== 808) lines.push(`param=allstar_stand_anim,${seq(standAnim(id))}`);
-            if (walkAnim(id) !== 819) lines.push(`param=allstar_walk_anim,${seq(walkAnim(id))}`);
-            if (runAnim(id) !== 824) lines.push(`param=allstar_run_anim,${seq(runAnim(id))}`);
-            if (sledExempt(id)) lines.push('param=allstar_walk_sled_exempt,yes');
-            const wield = WIELD_OVERRIDES[id];
-            if (wield) {
-                lines.push(`param=allstar_wield_walk_anim,${seq(wield.walk)}`, `param=allstar_wield_run_anim,${seq(wield.run)}`);
-            }
-            const login = LOGIN_OVERRIDES[id];
-            if (login) {
-                if (login.stand) lines.push(`param=allstar_login_stand_anim,${seq(login.stand)}`);
-                lines.push(`param=allstar_login_walk_anim,${seq(login.walk)}`, `param=allstar_login_run_anim,${seq(login.run)}`);
-            }
+            const worn = wornParams(data, id, seq);
+            stats.reqs += worn.filter(l => l.startsWith('param=allstar_req_')).length;
+            lines.push(...worn);
         }
 
-        if (data.value(id) !== 1) {
-            lines.push(`param=allstar_value,${data.value(id)}`);
-        }
         const shownName = certlink === undefined ? get(body, 'name') : get(blocks.get(certlink) ?? [], 'name');
         if (data.name(id) !== shownName) {
-            lines.push(`param=allstar_name,${data.name(id)}`);
             stats.renamed++;
         }
-        if (data.flags.sellable(id)) {
-            lines.push('param=allstar_sellable,yes');
-        }
-        if (id === 6384) {
-            lines.push('param=allstar_untradeable,yes');
-        }
+        lines.push(...itemParams(data, id, shownName));
         if (data.flags.note(id)) {
             lines.push('param=allstar_is_note,yes');
             stats.notes++;

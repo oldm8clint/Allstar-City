@@ -14,7 +14,6 @@ members=yes
 cost=1
 wearpos=righthand
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:9540
-param=allstar_sellable,no
 param=stabattack_anim,human_stake
 param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
@@ -40,8 +39,8 @@ recol3d=25185
 members=yes
 cost=100000
 wearpos=righthand
+param=allstar_value,100000
 param=allstar_name,Prayer Cape
-param=allstar_sellable,no
 param=stabattack_anim,human_stake
 param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
@@ -69,8 +68,8 @@ recol3d=30653
 members=yes
 cost=100000
 wearpos=righthand
+param=allstar_value,100000
 param=allstar_name,Prayer Hood
-param=allstar_sellable,no
 param=stabattack_anim,human_stake
 param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
@@ -94,8 +93,8 @@ womanwear2=obj_3rd_age_robe_top_womanwear2
 members=yes
 cost=1000000
 wearpos=righthand
+param=allstar_value,1000000
 param=allstar_name,3rd Age Robetop
-param=allstar_sellable,no
 param=stabattack_anim,human_stake
 param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
@@ -116,8 +115,8 @@ womanwear=obj_3rd_age_robe_womanwear,0
 members=yes
 cost=900000
 wearpos=righthand
+param=allstar_value,900000
 param=allstar_name,3rd Age Robe
-param=allstar_sellable,no
 param=stabattack_anim,human_stake
 param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
@@ -140,7 +139,6 @@ members=yes
 cost=1
 wearpos=back
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:11192
-param=allstar_sellable,no
 
 [allstar_item_13595]
 name=Bronze defender
@@ -161,9 +159,9 @@ recol2d=8354
 members=yes
 cost=30000
 wearpos=lefthand
-param=allstar_name,Bronze Defender
-param=allstar_sellable,no
 param=strengthbonus,1
+param=allstar_value,30000
+param=allstar_name,Bronze Defender
 
 [allstar_item_13596]
 name=Iron defender
@@ -184,9 +182,9 @@ recol2d=33
 members=yes
 cost=50000
 wearpos=lefthand
-param=allstar_name,Iron Defender
-param=allstar_sellable,no
 param=strengthbonus,1
+param=allstar_value,50000
+param=allstar_name,Iron Defender
 
 [allstar_item_13597]
 name=Steel defender
@@ -207,10 +205,10 @@ recol2d=61
 members=yes
 cost=121222
 wearpos=lefthand
-param=allstar_name,Steel Defender
-param=allstar_sellable,no
-param=allstar_req_defence,5
 param=strengthbonus,1
+param=allstar_req_defence,5
+param=allstar_value,121222
+param=allstar_name,Steel Defender
 
 [allstar_item_13598]
 name=Black defender
@@ -231,9 +229,9 @@ recol2d=0
 members=yes
 cost=32432
 wearpos=lefthand
-param=allstar_name,Black Defender
-param=allstar_sellable,no
 param=strengthbonus,2
+param=allstar_value,32432
+param=allstar_name,Black Defender
 
 [allstar_item_13599]
 name=Mithril defender
@@ -254,10 +252,10 @@ recol2d=6346
 members=yes
 cost=99554
 wearpos=lefthand
-param=allstar_name,Mithril Defender
-param=allstar_sellable,no
-param=allstar_req_defence,20
 param=strengthbonus,3
+param=allstar_req_defence,20
+param=allstar_value,99554
+param=allstar_name,Mithril Defender
 
 [allstar_item_13600]
 name=Adamant defender
@@ -278,9 +276,10 @@ recol2d=6438
 members=yes
 cost=145321
 wearpos=lefthand
+param=strengthbonus,5
+param=allstar_value,145321
 param=allstar_name,Adament Defender
 param=allstar_sellable,yes
-param=strengthbonus,5
 
 [allstar_item_13601]
 name=Rune defender
@@ -301,10 +300,11 @@ recol2d=6478
 members=yes
 cost=334222
 wearpos=lefthand
-param=allstar_name,Rune Defender
-param=allstar_sellable,yes
 param=strengthbonus,10
 param=prayerbonus,10
+param=allstar_value,334222
+param=allstar_name,Rune Defender
+param=allstar_sellable,yes
 
 [allstar_item_13640]
 name=Black mask
@@ -323,8 +323,6 @@ womanhead=obj_black_mask_womanhead
 members=yes
 cost=30000000
 wearpos=hat
-param=allstar_name,Black Mask
-param=allstar_sellable,no
 param=stabdefence,1
 param=slashdefence,2
 param=crushdefence,3
@@ -332,6 +330,8 @@ param=magicdefence,4
 param=rangedefence,5
 param=strengthbonus,6
 param=prayerbonus,9
+param=allstar_value,30000000
+param=allstar_name,Black Mask
 
 [allstar_item_14023]
 name=Proselyte tasset
@@ -353,10 +353,9 @@ recol3d=24961
 members=yes
 cost=716321
 wearpos=legs
-param=allstar_name,Proselyte tasset
-param=allstar_sellable,no
 param=strengthbonus,2
 param=prayerbonus,5
+param=allstar_value,716321
 
 [allstar_item_14073]
 name=Attack cape
@@ -377,13 +376,13 @@ recol3d=8192
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Att Cape
-param=allstar_sellable,no
-param=allstar_req_attack,99
 param=stabattack,7
 param=slashattack,7
 param=crushattack,7
 param=strengthbonus,4
+param=allstar_req_attack,99
+param=allstar_value,100000
+param=allstar_name,Att Cape
 
 [allstar_item_14074]
 name=Attack cape(t)
@@ -404,13 +403,13 @@ recol3d=31297
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Att Cape (t)
-param=allstar_sellable,no
-param=allstar_req_attack,99
 param=stabattack,7
 param=slashattack,7
 param=crushattack,7
 param=strengthbonus,4
+param=allstar_req_attack,99
+param=allstar_value,200000
+param=allstar_name,Att Cape (t)
 
 [allstar_item_14075]
 name=Attack hood
@@ -435,13 +434,13 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Att Hood
-param=allstar_sellable,no
-param=allstar_req_attack,99
 param=stabattack,2
 param=slashattack,2
 param=crushattack,2
 param=strengthbonus,1
+param=allstar_req_attack,99
+param=allstar_value,100000
+param=allstar_name,Att Hood
 
 [allstar_item_14076]
 name=Strength cape
@@ -462,10 +461,10 @@ recol3d=324
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Str Cape
-param=allstar_sellable,no
-param=allstar_req_strength,99
 param=strengthbonus,10
+param=allstar_req_strength,99
+param=allstar_value,100000
+param=allstar_name,Str Cape
 
 [allstar_item_14077]
 name=Strength cape(t)
@@ -486,13 +485,13 @@ recol3d=14336
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Str Cape (t)
-param=allstar_sellable,no
-param=allstar_req_strength,99
 param=crushattack,2
 param=magicattack,2
 param=rangeattack,2
 param=strengthbonus,10
+param=allstar_req_strength,99
+param=allstar_value,200000
+param=allstar_name,Str Cape (t)
 
 [allstar_item_14078]
 name=Strength hood
@@ -517,13 +516,13 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Str Hood
-param=allstar_sellable,no
-param=allstar_req_strength,99
 param=stabattack,1
 param=slashattack,1
 param=crushattack,1
 param=strengthbonus,2
+param=allstar_req_strength,99
+param=allstar_value,100000
+param=allstar_name,Str Hood
 
 [allstar_item_14079]
 name=Defence cape
@@ -544,9 +543,6 @@ recol3d=6453
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Def Cape
-param=allstar_sellable,no
-param=allstar_req_defence,99
 param=stabdefence,5
 param=slashdefence,5
 param=crushdefence,5
@@ -554,6 +550,9 @@ param=magicdefence,5
 param=rangedefence,5
 param=strengthbonus,5
 param=prayerbonus,5
+param=allstar_req_defence,99
+param=allstar_value,100000
+param=allstar_name,Def Cape
 
 [allstar_item_14080]
 name=Defence cape(t)
@@ -574,15 +573,15 @@ recol3d=30646
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Def Cape (t)
-param=allstar_sellable,no
-param=allstar_req_defence,99
 param=slashdefence,5
 param=crushdefence,5
 param=magicdefence,5
 param=rangedefence,5
 param=strengthbonus,5
 param=prayerbonus,5
+param=allstar_req_defence,99
+param=allstar_value,200000
+param=allstar_name,Def Cape (t)
 
 [allstar_item_14081]
 name=Defence hood
@@ -607,15 +606,15 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Def Hood
-param=allstar_sellable,no
-param=allstar_req_defence,99
 param=stabdefence,2
 param=slashdefence,2
 param=crushdefence,2
 param=magicdefence,2
 param=rangedefence,2
 param=strengthbonus,2
+param=allstar_req_defence,99
+param=allstar_value,100000
+param=allstar_name,Def Hood
 
 [allstar_item_14082]
 name=Ranging cape
@@ -636,10 +635,10 @@ recol3d=6464
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Range Cape
-param=allstar_sellable,no
-param=allstar_req_ranged,99
 param=rangeattack,15
+param=allstar_req_ranged,99
+param=allstar_value,100000
+param=allstar_name,Range Cape
 
 [allstar_item_14083]
 name=Ranging cape(t)
@@ -660,10 +659,10 @@ recol3d=15520
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Range Cape (t)
-param=allstar_sellable,no
-param=allstar_req_ranged,99
 param=rangeattack,15
+param=allstar_req_ranged,99
+param=allstar_value,200000
+param=allstar_name,Range Cape (t)
 
 [allstar_item_14084]
 name=Ranging hood
@@ -688,10 +687,10 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Range Hood
-param=allstar_sellable,no
-param=allstar_req_ranged,99
 param=rangeattack,4
+param=allstar_req_ranged,99
+param=allstar_value,100000
+param=allstar_name,Range Hood
 
 [allstar_item_14085]
 name=Prayer cape
@@ -712,9 +711,9 @@ recol3d=28539
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Pray Cape
-param=allstar_sellable,no
 param=allstar_req_prayer,99
+param=allstar_value,100000
+param=allstar_name,Pray Cape
 
 [allstar_item_14086]
 name=Prayer cape(t)
@@ -735,9 +734,9 @@ recol3d=25185
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Prayer Cape (t)
-param=allstar_sellable,no
 param=allstar_req_prayer,99
+param=allstar_value,200000
+param=allstar_name,Prayer Cape (t)
 
 [allstar_item_14087]
 name=Prayer hood
@@ -762,9 +761,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Pray Hood
-param=allstar_sellable,no
 param=allstar_req_prayer,99
+param=allstar_value,100000
+param=allstar_name,Pray Hood
 
 [allstar_item_14088]
 name=Magic cape
@@ -785,11 +784,11 @@ recol3d=17900
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Magic Cape
-param=allstar_sellable,no
-param=allstar_req_magic,99
 param=magicattack,12
 param=prayerbonus,5
+param=allstar_req_magic,99
+param=allstar_value,100000
+param=allstar_name,Magic Cape
 
 [allstar_item_14089]
 name=Magic cape(t)
@@ -810,11 +809,11 @@ recol3d=1069
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Magic Cape (t)
-param=allstar_sellable,no
-param=allstar_req_magic,99
 param=rangeattack,12
 param=prayerbonus,5
+param=allstar_req_magic,99
+param=allstar_value,200000
+param=allstar_name,Magic Cape (t)
 
 [allstar_item_14090]
 name=Magic hood
@@ -839,11 +838,11 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Magic Hood
-param=allstar_sellable,no
-param=allstar_req_magic,99
 param=magicattack,3
 param=prayerbonus,2
+param=allstar_req_magic,99
+param=allstar_value,100000
+param=allstar_name,Magic Hood
 
 [allstar_item_14091]
 name=Runecraft cape
@@ -864,8 +863,8 @@ recol3d=17968
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Runecrafting Cape 
-param=allstar_sellable,no
 
 [allstar_item_14092]
 name=Runecraft cape(t)
@@ -886,8 +885,8 @@ recol3d=24961
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Runecrafting Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14093]
 // undefined in item.cfg (0 bonuses, 1 gp) but handed out at 99 Runecrafting and sold in the Hood Shop
@@ -914,7 +913,6 @@ wearpos=hat
 wearpos2=head
 wearpos3=jaw
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:14093
-param=allstar_sellable,no
 
 [allstar_item_14094]
 // OSRS graphically updated this cape; no 2007 model available
@@ -936,9 +934,9 @@ recol3d=21141
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Hp Cape
-param=allstar_sellable,no
 param=allstar_req_hitpoints,99
+param=allstar_value,100000
+param=allstar_name,Hp Cape
 
 [allstar_item_14095]
 // OSRS graphically updated this cape; no 2007 model available
@@ -960,9 +958,9 @@ recol3d=11297
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Hitpoints Cape (t)
-param=allstar_sellable,no
 param=allstar_req_hitpoints,99
+param=allstar_value,200000
+param=allstar_name,Hitpoints Cape (t)
 
 [allstar_item_14096]
 name=Hitpoints hood
@@ -987,9 +985,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,HP Hood
-param=allstar_sellable,no
 param=allstar_req_hitpoints,99
+param=allstar_value,100000
+param=allstar_name,HP Hood
 
 [allstar_item_14097]
 name=Agility cape
@@ -1010,8 +1008,8 @@ recol3d=2123
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Agility Cape
-param=allstar_sellable,no
 
 [allstar_item_14098]
 name=Agility cape(t)
@@ -1032,8 +1030,8 @@ recol3d=12288
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Agility Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14099]
 name=Agility hood
@@ -1056,8 +1054,8 @@ recol3d=2123
 members=yes
 cost=200000
 wearpos=hat
+param=allstar_value,200000
 param=allstar_name,Agility Hood
-param=allstar_sellable,no
 
 [allstar_item_14100]
 name=Herblore cape
@@ -1078,8 +1076,8 @@ recol3d=192
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Herblore Cape
-param=allstar_sellable,no
 
 [allstar_item_14101]
 name=Herblore cape(t)
@@ -1100,8 +1098,8 @@ recol3d=29377
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Herblore Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14102]
 name=Herblore hood
@@ -1126,8 +1124,8 @@ cost=200000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,200000
 param=allstar_name,Herblore Hood
-param=allstar_sellable,no
 
 [allstar_item_14103]
 name=Thieving cape
@@ -1148,9 +1146,9 @@ recol3d=7205
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Thieve Cape
-param=allstar_sellable,no
 param=allstar_req_thieving,99
+param=allstar_value,100000
+param=allstar_name,Thieve Cape
 
 [allstar_item_14104]
 name=Thieving cape(t)
@@ -1171,9 +1169,9 @@ recol3d=0
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Thieving Cape (t)
-param=allstar_sellable,no
 param=allstar_req_thieving,99
+param=allstar_value,200000
+param=allstar_name,Thieving Cape (t)
 
 [allstar_item_14105]
 name=Thieving hood
@@ -1198,9 +1196,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Thieve Hood
-param=allstar_sellable,no
 param=allstar_req_thieving,99
+param=allstar_value,100000
+param=allstar_name,Thieve Hood
 
 [allstar_item_14106]
 // item.cfg calls it "Crafting Cape (t)"; the id is the untrimmed cape
@@ -1222,8 +1220,8 @@ recol3d=9345
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Crafting Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14107]
 name=Crafting cape(t)
@@ -1244,8 +1242,8 @@ recol3d=24961
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Crafting Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14108]
 name=Crafting hood
@@ -1270,8 +1268,8 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,100000
 param=allstar_name,Crafting Hood
-param=allstar_sellable,no
 
 [allstar_item_14109]
 name=Fletching cape
@@ -1292,9 +1290,9 @@ recol3d=66
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Fletch Cape
-param=allstar_sellable,no
 param=allstar_req_fletching,99
+param=allstar_value,100000
+param=allstar_name,Fletch Cape
 
 [allstar_item_14110]
 name=Fletching cape(t)
@@ -1315,9 +1313,9 @@ recol3d=24961
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Fletching Cape (t)
-param=allstar_sellable,no
 param=allstar_req_fletching,99
+param=allstar_value,200000
+param=allstar_name,Fletching Cape (t)
 
 [allstar_item_14111]
 name=Fletching hood
@@ -1342,9 +1340,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Fletch Hood
-param=allstar_sellable,no
 param=allstar_req_fletching,99
+param=allstar_value,100000
+param=allstar_name,Fletch Hood
 
 [allstar_item_14112]
 name=Slayer cape
@@ -1365,9 +1363,9 @@ recol3d=0
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Slayer Cape
-param=allstar_sellable,no
 param=allstar_req_slayer,99
+param=allstar_value,100000
+param=allstar_name,Slayer Cape
 
 [allstar_item_14113]
 name=Slayer cape(t)
@@ -1388,9 +1386,9 @@ recol3d=6144
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Slayer Cape (t)
-param=allstar_sellable,no
 param=allstar_req_slayer,99
+param=allstar_value,200000
+param=allstar_name,Slayer Cape (t)
 
 [allstar_item_14114]
 name=Slayer hood
@@ -1415,9 +1413,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Slayer Hood
-param=allstar_sellable,no
 param=allstar_req_slayer,99
+param=allstar_value,100000
+param=allstar_name,Slayer Hood
 
 [allstar_item_14115]
 name=Construct. cape
@@ -1438,8 +1436,8 @@ recol3d=15786
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Construct. Cape
-param=allstar_sellable,no
 
 [allstar_item_14116]
 name=Construct. cape(t)
@@ -1460,8 +1458,8 @@ recol3d=21857
 members=yes
 cost=20000000
 wearpos=back
+param=allstar_value,20000000
 param=allstar_name,Construct. Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14117]
 name=Construct. hood
@@ -1486,8 +1484,8 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,100000
 param=allstar_name,Construct. Hood
-param=allstar_sellable,no
 
 [allstar_item_14118]
 name=Mining cape
@@ -1508,8 +1506,8 @@ recol3d=4226
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Mining Cape
-param=allstar_sellable,no
 
 [allstar_item_14119]
 name=Mining cape(t)
@@ -1530,8 +1528,8 @@ recol3d=5586
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Mining Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14120]
 name=Mining hood
@@ -1556,8 +1554,8 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,100000
 param=allstar_name,Mining Hood
-param=allstar_sellable,no
 
 [allstar_item_14121]
 name=Smithing cape
@@ -1578,8 +1576,8 @@ recol3d=5283
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Smith Cape
-param=allstar_sellable,no
 
 [allstar_item_14122]
 name=Smithing cape(t)
@@ -1600,8 +1598,8 @@ recol3d=24961
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Smithing Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14123]
 name=Smithing hood
@@ -1626,8 +1624,8 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,100000
 param=allstar_name,Smith Hood
-param=allstar_sellable,no
 
 [allstar_item_14124]
 name=Fishing cape
@@ -1648,9 +1646,9 @@ recol3d=7603
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Fish Cape
-param=allstar_sellable,no
 param=allstar_req_fishing,99
+param=allstar_value,200000
+param=allstar_name,Fish Cape
 
 [allstar_item_14125]
 name=Fishing cape(t)
@@ -1671,9 +1669,9 @@ recol3d=24961
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Fishing Cape (t)
-param=allstar_sellable,no
 param=allstar_req_fishing,99
+param=allstar_value,200000
+param=allstar_name,Fishing Cape (t)
 
 [allstar_item_14126]
 name=Fishing hood
@@ -1698,9 +1696,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Fish Hood
-param=allstar_sellable,no
 param=allstar_req_fishing,99
+param=allstar_value,100000
+param=allstar_name,Fish Hood
 
 [allstar_item_14127]
 name=Cooking cape
@@ -1721,9 +1719,9 @@ recol3d=4102
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Cook Cape
-param=allstar_sellable,no
 param=allstar_req_cooking,99
+param=allstar_value,100000
+param=allstar_name,Cook Cape
 
 [allstar_item_14128]
 name=Cooking cape(t)
@@ -1744,9 +1742,9 @@ recol3d=12288
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Cooking Cape (t)
-param=allstar_sellable,no
 param=allstar_req_cooking,99
+param=allstar_value,200000
+param=allstar_name,Cooking Cape (t)
 
 [allstar_item_14129]
 name=Cooking hood
@@ -1771,9 +1769,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Cook Hood
-param=allstar_sellable,no
 param=allstar_req_cooking,99
+param=allstar_value,100000
+param=allstar_name,Cook Hood
 
 [allstar_item_14130]
 name=Firemaking cape
@@ -1794,8 +1792,8 @@ recol3d=26913
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Firemaking Cape
-param=allstar_sellable,no
 
 [allstar_item_14131]
 name=Firemaking cape(t)
@@ -1816,8 +1814,8 @@ recol3d=24961
 members=yes
 cost=200000
 wearpos=back
+param=allstar_value,200000
 param=allstar_name,Firemaking Cape (t)
-param=allstar_sellable,no
 
 [allstar_item_14132]
 name=Firemaking hood
@@ -1842,8 +1840,8 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,100000
 param=allstar_name,Firemaking Hood
-param=allstar_sellable,no
 
 [allstar_item_14133]
 name=Woodcutting cape
@@ -1864,9 +1862,9 @@ recol3d=12545
 members=yes
 cost=100000
 wearpos=back
-param=allstar_name,Wc Cape
-param=allstar_sellable,no
 param=allstar_req_woodcutting,99
+param=allstar_value,100000
+param=allstar_name,Wc Cape
 
 [allstar_item_14134]
 name=Woodcut. cape(t)
@@ -1887,9 +1885,9 @@ recol3d=226
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Woodcutting Cape (t)
-param=allstar_sellable,no
 param=allstar_req_woodcutting,99
+param=allstar_value,200000
+param=allstar_name,Woodcutting Cape (t)
 
 [allstar_item_14135]
 name=Woodcutting hood
@@ -1914,9 +1912,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Wc Hood
-param=allstar_sellable,no
 param=allstar_req_woodcutting,99
+param=allstar_value,100000
+param=allstar_name,Wc Hood
 
 [allstar_item_14136]
 name=Farming cape
@@ -1937,9 +1935,9 @@ recol3d=2306
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Farming Cape
-param=allstar_sellable,no
 param=allstar_req_farming,99
+param=allstar_value,200000
+param=allstar_name,Farming Cape
 
 [allstar_item_14137]
 name=Farming cape(t)
@@ -1960,9 +1958,9 @@ recol3d=15976
 members=yes
 cost=200000
 wearpos=back
-param=allstar_name,Farming Cape (t)
-param=allstar_sellable,no
 param=allstar_req_farming,99
+param=allstar_value,200000
+param=allstar_name,Farming Cape (t)
 
 [allstar_item_14138]
 name=Farming hood
@@ -1987,9 +1985,9 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Farming Hood
-param=allstar_sellable,no
 param=allstar_req_farming,99
+param=allstar_value,100000
+param=allstar_name,Farming Hood
 
 [allstar_item_14139]
 name=Quest point cape
@@ -2010,8 +2008,8 @@ recol3d=23259
 members=yes
 cost=20000000
 wearpos=back
+param=allstar_value,20000000
 param=allstar_name,Quest Points Cape
-param=allstar_sellable,no
 
 [allstar_item_14140]
 name=Quest point hood
@@ -2036,8 +2034,8 @@ cost=100000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,100000
 param=allstar_name,Quest Point Hood
-param=allstar_sellable,no
 
 [allstar_item_14503]
 name=3rd age range top
@@ -2056,8 +2054,6 @@ womanwear2=obj_3rd_age_range_top_womanwear2
 members=yes
 cost=34000000
 wearpos=torso
-param=allstar_name,3rd Age Topp
-param=allstar_sellable,yes
 param=stabattack,35
 param=slashattack,35
 param=crushattack,35
@@ -2070,6 +2066,9 @@ param=magicdefence,35
 param=rangedefence,35
 param=strengthbonus,35
 param=prayerbonus,35
+param=allstar_value,34000000
+param=allstar_name,3rd Age Topp
+param=allstar_sellable,yes
 
 [allstar_item_14504]
 name=3rd age range legs
@@ -2085,8 +2084,6 @@ womanwear=obj_3rd_age_range_legs_womanwear,0
 members=yes
 cost=27000000
 wearpos=legs
-param=allstar_name,3rd age Legs
-param=allstar_sellable,yes
 param=stabattack,31
 param=slashattack,31
 param=crushattack,31
@@ -2099,6 +2096,9 @@ param=magicdefence,31
 param=rangedefence,31
 param=strengthbonus,31
 param=prayerbonus,31
+param=allstar_value,27000000
+param=allstar_name,3rd age Legs
+param=allstar_sellable,yes
 
 [allstar_item_14505]
 name=3rd age range coif
@@ -2121,8 +2121,6 @@ womanhead2=obj_leather_cowl_womanhead2
 members=yes
 cost=25000000
 wearpos=hat
-param=allstar_name,3rd Age Coif
-param=allstar_sellable,yes
 param=stabattack,22
 param=slashattack,22
 param=crushattack,22
@@ -2135,6 +2133,9 @@ param=magicdefence,22
 param=rangedefence,22
 param=strengthbonus,22
 param=prayerbonus,22
+param=allstar_value,25000000
+param=allstar_name,3rd Age Coif
+param=allstar_sellable,yes
 
 [allstar_item_14506]
 name=3rd age vambraces
@@ -2152,13 +2153,13 @@ womanwear=obj_3rd_age_vambraces_womanwear,0
 members=yes
 cost=15000000
 wearpos=hands
-param=allstar_name,3rd age vambraces
-param=allstar_sellable,yes
 param=rangeattack,30
 param=slashdefence,30
 param=crushdefence,30
 param=magicdefence,30
 param=rangedefence,30
+param=allstar_value,15000000
+param=allstar_sellable,yes
 
 [allstar_item_14507]
 name=3rd age robe top
@@ -2177,6 +2178,7 @@ womanwear2=obj_3rd_age_robe_top_womanwear2
 members=yes
 cost=600000
 wearpos=torso
+param=allstar_value,600000
 param=allstar_name,3rd Age Robe Top
 param=allstar_sellable,yes
 
@@ -2194,6 +2196,7 @@ womanwear=obj_3rd_age_robe_womanwear,0
 members=yes
 cost=600000
 wearpos=legs
+param=allstar_value,600000
 param=allstar_name,3rd Age Robe
 param=allstar_sellable,yes
 
@@ -2235,6 +2238,7 @@ womanwear=obj_3rd_age_platelegs_womanwear,0
 members=yes
 cost=900000
 wearpos=legs
+param=allstar_value,900000
 param=allstar_name,3rd Age Platelegs
 param=allstar_sellable,yes
 
@@ -2252,6 +2256,7 @@ womanwear2=obj_3rd_age_platebody_womanwear2
 members=yes
 cost=1000000
 wearpos=torso
+param=allstar_value,1000000
 param=allstar_name,3rd Age Platebody
 param=allstar_sellable,yes
 
@@ -2272,6 +2277,7 @@ womanhead2=obj_leather_cowl_womanhead2
 members=yes
 cost=600000
 wearpos=hat
+param=allstar_value,600000
 param=allstar_name,3rd Age Fullhelm
 param=allstar_sellable,yes
 
@@ -2290,6 +2296,7 @@ womanwear=obj_3rd_age_kiteshield_manwear,6
 members=yes
 cost=600000
 wearpos=lefthand
+param=allstar_value,600000
 param=allstar_name,3rd Age Kiteshield
 param=allstar_sellable,yes
 
@@ -2315,8 +2322,6 @@ recol2d=32767
 members=yes
 cost=30000000
 wearpos=front
-param=allstar_name,Amulet of glory(t)
-param=allstar_sellable,yes
 param=stabattack,8
 param=slashattack,8
 param=crushattack,8
@@ -2329,6 +2334,9 @@ param=magicdefence,6
 param=rangedefence,6
 param=strengthbonus,7
 param=prayerbonus,8
+param=allstar_value,30000000
+param=allstar_name,Amulet of glory(t)
+param=allstar_sellable,yes
 
 [allstar_item_14520]
 // trimmed strength amulet
@@ -2349,8 +2357,6 @@ recol2s=8321
 recol2d=32767
 cost=30000000
 wearpos=front
-param=allstar_name,Amulet of strength(t)
-param=allstar_sellable,yes
 param=stabattack,5
 param=slashattack,5
 param=crushattack,5
@@ -2362,6 +2368,9 @@ param=crushdefence,3
 param=rangedefence,3
 param=strengthbonus,16
 param=prayerbonus,5
+param=allstar_value,30000000
+param=allstar_name,Amulet of strength(t)
+param=allstar_sellable,yes
 
 [allstar_item_14521]
 // trimmed magic amulet
@@ -2383,9 +2392,10 @@ recol2s=8321
 recol2d=32767
 cost=30000000
 wearpos=front
+param=magicdefence,25
+param=allstar_value,30000000
 param=allstar_name,Amulet of magic(t)
 param=allstar_sellable,yes
-param=magicdefence,25
 
 [allstar_item_14522]
 // OSRS recoloured the bracers; 2007 colours unknown
@@ -2409,14 +2419,15 @@ recol3d=4096
 members=yes
 cost=1000000
 wearpos=hands
-param=allstar_name,Zamorak Bracers
-param=allstar_sellable,yes
 param=magicattack,-10
 param=rangeattack,11
 param=stabdefence,6
 param=slashdefence,5
 param=crushdefence,7
 param=magicdefence,8
+param=allstar_value,1000000
+param=allstar_name,Zamorak Bracers
+param=allstar_sellable,yes
 
 [allstar_item_14523]
 name=Zamorak d'hide
@@ -2446,8 +2457,6 @@ recol6d=22625
 members=yes
 cost=5000000
 wearpos=torso
-param=allstar_name,Zamorak Dragonhide
-param=allstar_sellable,yes
 param=magicattack,-15
 param=rangeattack,30
 param=stabdefence,55
@@ -2455,6 +2464,9 @@ param=slashdefence,47
 param=crushdefence,60
 param=magicdefence,50
 param=rangedefence,55
+param=allstar_value,5000000
+param=allstar_name,Zamorak Dragonhide
+param=allstar_sellable,yes
 
 [allstar_item_14524]
 name=Zamorak chaps
@@ -2481,8 +2493,6 @@ recol6d=22625
 members=yes
 cost=3000000
 wearpos=legs
-param=allstar_name,Zamorak Chaps
-param=allstar_sellable,yes
 param=magicattack,-10
 param=rangeattack,17
 param=stabdefence,31
@@ -2490,6 +2500,9 @@ param=slashdefence,25
 param=crushdefence,33
 param=magicdefence,28
 param=rangedefence,31
+param=allstar_value,3000000
+param=allstar_name,Zamorak Chaps
+param=allstar_sellable,yes
 
 [allstar_item_14525]
 name=Zamorak coif
@@ -2524,8 +2537,6 @@ recol6d=22625
 members=yes
 cost=2000000
 wearpos=hat
-param=allstar_name,Zamorak Coif
-param=allstar_sellable,yes
 param=magicattack,-1
 param=rangeattack,7
 param=stabdefence,4
@@ -2533,6 +2544,9 @@ param=slashdefence,7
 param=crushdefence,10
 param=magicdefence,4
 param=rangedefence,8
+param=allstar_value,2000000
+param=allstar_name,Zamorak Coif
+param=allstar_sellable,yes
 
 [allstar_item_14526]
 // OSRS recoloured the bracers; 2007 colours unknown
@@ -2552,14 +2566,15 @@ recol1d=14127
 members=yes
 cost=1000000
 wearpos=hands
-param=allstar_name,Guthix Bracers
-param=allstar_sellable,yes
 param=magicattack,-10
 param=rangeattack,11
 param=stabdefence,6
 param=slashdefence,5
 param=crushdefence,7
 param=magicdefence,8
+param=allstar_value,1000000
+param=allstar_name,Guthix Bracers
+param=allstar_sellable,yes
 
 [allstar_item_14527]
 name=Guthix dragonhide
@@ -2581,8 +2596,6 @@ recol2d=17103
 members=yes
 cost=5000000
 wearpos=torso
-param=allstar_name,Guthix Dragonhide
-param=allstar_sellable,yes
 param=magicattack,-15
 param=rangeattack,30
 param=stabdefence,55
@@ -2590,6 +2603,9 @@ param=slashdefence,47
 param=crushdefence,60
 param=magicdefence,50
 param=rangedefence,55
+param=allstar_value,5000000
+param=allstar_name,Guthix Dragonhide
+param=allstar_sellable,yes
 
 [allstar_item_14528]
 name=Guthix chaps
@@ -2610,8 +2626,6 @@ recol3d=17103
 members=yes
 cost=3000000
 wearpos=legs
-param=allstar_name,Guthix Chaps
-param=allstar_sellable,yes
 param=magicattack,-10
 param=rangeattack,17
 param=stabdefence,31
@@ -2619,6 +2633,9 @@ param=slashdefence,25
 param=crushdefence,33
 param=magicdefence,28
 param=rangedefence,31
+param=allstar_value,3000000
+param=allstar_name,Guthix Chaps
+param=allstar_sellable,yes
 
 [allstar_item_14529]
 name=Guthix coif
@@ -2647,8 +2664,6 @@ recol3d=17103
 members=yes
 cost=2000000
 wearpos=hat
-param=allstar_name,Guthix Coif
-param=allstar_sellable,yes
 param=magicattack,-1
 param=rangeattack,7
 param=stabdefence,4
@@ -2656,6 +2671,9 @@ param=slashdefence,7
 param=crushdefence,10
 param=magicdefence,4
 param=rangedefence,8
+param=allstar_value,2000000
+param=allstar_name,Guthix Coif
+param=allstar_sellable,yes
 
 [allstar_item_14530]
 // OSRS recoloured the bracers; 2007 colours unknown
@@ -2679,14 +2697,15 @@ recol3d=4
 members=yes
 cost=1000000
 wearpos=hands
-param=allstar_name,Saradomin Bracers
-param=allstar_sellable,yes
 param=magicattack,-10
 param=rangeattack,11
 param=stabdefence,6
 param=slashdefence,5
 param=crushdefence,7
 param=magicdefence,8
+param=allstar_value,1000000
+param=allstar_name,Saradomin Bracers
+param=allstar_sellable,yes
 
 [allstar_item_14531]
 name=Saradomin d'hide
@@ -2714,8 +2733,6 @@ recol5d=3509
 members=yes
 cost=5000000
 wearpos=torso
-param=allstar_name,Saradomin Dragonhide
-param=allstar_sellable,yes
 param=magicattack,-15
 param=rangeattack,30
 param=stabdefence,55
@@ -2723,6 +2740,9 @@ param=slashdefence,47
 param=crushdefence,60
 param=magicdefence,50
 param=rangedefence,55
+param=allstar_value,5000000
+param=allstar_name,Saradomin Dragonhide
+param=allstar_sellable,yes
 
 [allstar_item_14532]
 name=Saradomin chaps
@@ -2749,8 +2769,6 @@ recol6d=3509
 members=yes
 cost=3000000
 wearpos=legs
-param=allstar_name,Saradomin Chaps
-param=allstar_sellable,yes
 param=magicattack,-10
 param=rangeattack,17
 param=stabdefence,31
@@ -2758,6 +2776,9 @@ param=slashdefence,25
 param=crushdefence,33
 param=magicdefence,28
 param=rangedefence,31
+param=allstar_value,3000000
+param=allstar_name,Saradomin Chaps
+param=allstar_sellable,yes
 
 [allstar_item_14533]
 name=Saradomin coif
@@ -2792,8 +2813,6 @@ recol6d=3509
 members=yes
 cost=2000000
 wearpos=hat
-param=allstar_name,Saradomin Coif
-param=allstar_sellable,yes
 param=magicattack,-1
 param=rangeattack,7
 param=stabdefence,4
@@ -2801,6 +2820,9 @@ param=slashdefence,7
 param=crushdefence,10
 param=magicdefence,4
 param=rangedefence,8
+param=allstar_value,2000000
+param=allstar_name,Saradomin Coif
+param=allstar_sellable,yes
 
 [allstar_item_14561]
 name=Saradomin cloak
@@ -2817,11 +2839,12 @@ womanwear=obj_saradomin_cloak_womanwear,0
 members=yes
 cost=600000
 wearpos=back
-param=allstar_name,Saradomin Cloak
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Saradomin Cloak
+param=allstar_sellable,yes
 
 [allstar_item_14562]
 name=Guthix cloak
@@ -2838,11 +2861,11 @@ womanwear=obj_guthix_cloak_womanwear,0
 members=yes
 cost=600000
 wearpos=back
-param=allstar_name,Guthix Cloak
-param=allstar_sellable,no
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Guthix Cloak
 
 [allstar_item_14563]
 name=Zamorak cloak
@@ -2859,11 +2882,12 @@ womanwear=obj_zamorak_cloak_womanwear,0
 members=yes
 cost=600000
 wearpos=back
-param=allstar_name,Zamorak Cloak
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Zamorak Cloak
+param=allstar_sellable,yes
 
 [allstar_item_14564]
 name=Saradomin mitre
@@ -2891,11 +2915,12 @@ recol3d=8465
 members=yes
 cost=600000
 wearpos=hat
-param=allstar_name,Saradomin Mitre
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Saradomin Mitre
+param=allstar_sellable,yes
 
 [allstar_item_14565]
 // undefined in item.cfg (0 bonuses, 1 gp) but sold in the God Shop
@@ -2947,11 +2972,12 @@ womanhead2=obj_leather_cowl_womanhead2
 members=yes
 cost=600000
 wearpos=hat
-param=allstar_name,Zamorak Mitre
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Zamorak Mitre
+param=allstar_sellable,yes
 
 [allstar_item_14567]
 name=Saradomin robe top
@@ -2972,11 +2998,12 @@ members=yes
 cost=600000
 wearpos=torso
 wearpos2=arms
-param=allstar_name,Saradomin Robe Top
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Saradomin Robe Top
+param=allstar_sellable,yes
 
 [allstar_item_14568]
 name=Zamorak robe top
@@ -2993,11 +3020,12 @@ members=yes
 cost=600000
 wearpos=torso
 wearpos2=arms
-param=allstar_name,Zamorak Robe Top
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Zamorak Robe Top
+param=allstar_sellable,yes
 
 [allstar_item_14569]
 name=Guthix robe top
@@ -3018,11 +3046,12 @@ members=yes
 cost=600000
 wearpos=torso
 wearpos2=arms
-param=allstar_name,Guthix Robe top
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Guthix Robe top
+param=allstar_sellable,yes
 
 [allstar_item_14570]
 name=Saradomin robe leg
@@ -3041,11 +3070,12 @@ recol2d=6
 members=yes
 cost=600000
 wearpos=legs
-param=allstar_name,Saradomin Robe Legs
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Saradomin Robe Legs
+param=allstar_sellable,yes
 
 [allstar_item_14571]
 name=Guthix robe legs
@@ -3064,11 +3094,12 @@ recol2d=192
 members=yes
 cost=600000
 wearpos=legs
-param=allstar_name,Guthix Robe Legs
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Guthix Robe Legs
+param=allstar_sellable,yes
 
 [allstar_item_14572]
 name=Zamorak robe legs
@@ -3083,11 +3114,12 @@ womanwear=obj_saradomin_robe_legs_womanwear,0
 members=yes
 cost=600000
 wearpos=legs
-param=allstar_name,Zamorak Robe Legs
-param=allstar_sellable,yes
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Zamorak Robe Legs
+param=allstar_sellable,yes
 
 [allstar_item_14575]
 // item.cfg calls it "Guthix Mitre" (weapon slot); the client showed the Zamorak stole
@@ -3106,11 +3138,11 @@ womanwear=obj_zamorak_stole_womanwear,0
 members=yes
 cost=600000
 wearpos=righthand
-param=allstar_name,Guthix Mitre
-param=allstar_sellable,no
 param=magicattack,4
 param=rangedefence,4
 param=prayerbonus,4
+param=allstar_value,600000
+param=allstar_name,Guthix Mitre
 param=stabattack_anim,human_stake
 param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
@@ -3133,10 +3165,11 @@ members=yes
 cost=965432
 wearpos=torso
 wearpos2=arms
-param=allstar_name,Fighter Torso
-param=allstar_sellable,yes
 param=rangedefence,10
 param=strengthbonus,10
+param=allstar_value,965432
+param=allstar_name,Fighter Torso
+param=allstar_sellable,yes
 
 [allstar_item_14643]
 // undefined in item.cfg (its line is typo id 146143); reward for Ice giant key 1543
@@ -3156,7 +3189,6 @@ recol1d=24609
 cost=1
 wearpos=lefthand
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:14643
-param=allstar_sellable,no
 
 [allstar_item_14644]
 // undefined in item.cfg (typo id 146144); reward for key 1545
@@ -3175,7 +3207,6 @@ recol1d=31649
 cost=1
 wearpos=lefthand
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:14644
-param=allstar_sellable,no
 
 [allstar_item_14645]
 // undefined in item.cfg (typo id 146145); reward for key 1546
@@ -3195,7 +3226,6 @@ recol1d=1080
 cost=1
 wearpos=lefthand
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:14645
-param=allstar_sellable,no
 
 [allstar_item_14646]
 // undefined in item.cfg (typo id 146146); reward for key 1548
@@ -3215,7 +3245,6 @@ recol1d=800
 cost=1
 wearpos=lefthand
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:14646
-param=allstar_sellable,no
 
 [allstar_item_14724]
 // low-confidence identification (OSRS-nulled RS2 range); item.cfg "Hunter Cape"
@@ -3237,8 +3266,8 @@ recol3d=14761
 members=yes
 cost=1000000
 wearpos=back
+param=allstar_value,1000000
 param=allstar_name,Hunter Cape
-param=allstar_sellable,no
 
 [allstar_item_14819]
 // unidentified; only in the Mod & Admin shop (no NPC opens it); server name, stand-in model (casket)
@@ -3252,8 +3281,6 @@ model=obj_casket
 members=yes
 cost=1
 wearpos=righthand
-param=allstar_name,!! NOT EXISTING ITEM !!! - ID:14819
-param=allstar_sellable,no
 param=stabattack_anim,human_stake
 param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
@@ -3276,8 +3303,6 @@ womanhead=obj_helm_of_neitiznot_womanhead
 members=yes
 cost=15000000
 wearpos=hat
-param=allstar_name,Helmet of Neitznot
-param=allstar_sellable,yes
 param=stabattack,25
 param=slashattack,25
 param=crushattack,25
@@ -3290,6 +3315,9 @@ param=magicdefence,25
 param=rangedefence,25
 param=strengthbonus,25
 param=prayerbonus,25
+param=allstar_value,15000000
+param=allstar_name,Helmet of Neitznot
+param=allstar_sellable,yes
 
 [allstar_item_14868]
 // only in the Mod & Admin shop (no NPC opens it)
@@ -3375,10 +3403,6 @@ womanwear=obj_barrelchest_anchor_manwear,6
 members=yes
 cost=11232321
 wearpos=righthand
-param=allstar_name,Barrelchest Anchor
-param=allstar_sellable,no
-param=allstar_blocks_shield,yes
-param=allstar_req_attack,60
 param=stabattack,31
 param=slashattack,21
 param=crushattack,35
@@ -3391,12 +3415,16 @@ param=magicdefence,13
 param=rangedefence,12
 param=strengthbonus,65
 param=prayerbonus,13
+param=allstar_req_attack,60
+param=allstar_twohanderz,3
+param=allstar_stand_anim,barrow_dharok_ready
+param=allstar_walk_anim,barrow_dharok_walk
+param=allstar_value,11232321
+param=allstar_name,Barrelchest Anchor
 param=stabattack_anim,human_dhsword_chop
 param=slashattack_anim,human_dhsword_chop
 param=crushattack_anim,human_dhsword_chop
 param=defend_anim,human_rubber_chicken_block
-param=ready_baseanim,barrow_dharok_ready
-param=walk_f_baseanim,barrow_dharok_walk
 
 [allstar_item_15145]
 name=Dragon arrow
@@ -3408,9 +3436,6 @@ iop2=Wield
 members=yes
 cost=1200
 wearpos=quiver
-param=allstar_name,Dragon Arrow
-param=allstar_sellable,no
-param=allstar_req_defence,60
 param=stabattack,35
 param=slashattack,35
 param=crushattack,35
@@ -3423,6 +3448,9 @@ param=magicdefence,35
 param=rangedefence,35
 param=strengthbonus,35
 param=prayerbonus,35
+param=allstar_req_defence,60
+param=allstar_value,1200
+param=allstar_name,Dragon Arrow
 
 [allstar_item_15156]
 name=Dark bow
@@ -3437,9 +3465,6 @@ womanwear=obj_dark_bow_manwear,6
 members=yes
 cost=4000000
 wearpos=righthand
-param=allstar_name,Dark Bow
-param=allstar_sellable,no
-param=allstar_req_ranged,80
 param=stabattack,40
 param=slashattack,40
 param=crushattack,40
@@ -3452,6 +3477,10 @@ param=magicdefence,40
 param=rangedefence,40
 param=strengthbonus,40
 param=prayerbonus,40
+param=allstar_req_ranged,80
+param=allstar_weapon_tab,1764
+param=allstar_value,4000000
+param=allstar_name,Dark Bow
 param=stabattack_anim,human_bow
 param=slashattack_anim,human_bow
 param=crushattack_anim,human_bow
@@ -3472,7 +3501,6 @@ womanhead=obj_cavalier_mask_womanhead
 members=yes
 cost=1
 wearpos=hands
-param=allstar_name,!! NOT EXISTING ITEM !!! - ID:15181
 param=allstar_sellable,yes
 
 [allstar_item_15183]
@@ -3492,7 +3520,6 @@ members=yes
 cost=1
 wearpos=hands
 param=allstar_name,!! NOT EXISTING ITEM !!! - ID:15183
-param=allstar_sellable,no
 
 [allstar_item_15185]
 name=Dragonfire shield
@@ -3509,9 +3536,6 @@ womanwear=obj_dragonfire_shield_manwear,6
 members=yes
 cost=40000000
 wearpos=lefthand
-param=allstar_name,Dragon fire Shield
-param=allstar_sellable,yes
-param=allstar_req_defence,60
 param=stabattack,75
 param=slashattack,75
 param=crushattack,75
@@ -3524,6 +3548,10 @@ param=magicdefence,75
 param=rangedefence,75
 param=strengthbonus,75
 param=prayerbonus,75
+param=allstar_req_defence,60
+param=allstar_value,40000000
+param=allstar_name,Dragon fire Shield
+param=allstar_sellable,yes
 
 [allstar_item_15195]
 // OSRS recoloured the spikes grey -> white; the OSRS recolour is dropped
@@ -3544,9 +3572,6 @@ cost=20000000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Dragon Full Helm
-param=allstar_sellable,yes
-param=allstar_req_defence,60
 param=stabattack,50
 param=slashattack,50
 param=crushattack,50
@@ -3559,6 +3584,10 @@ param=magicdefence,50
 param=rangedefence,50
 param=strengthbonus,50
 param=prayerbonus,50
+param=allstar_req_defence,60
+param=allstar_value,20000000
+param=allstar_name,Dragon Full Helm
+param=allstar_sellable,yes
 
 [allstar_item_15333]
 name=Armadyl godsword
@@ -3575,8 +3604,6 @@ womanwear=obj_armadyl_godsword_manwear,5
 members=yes
 cost=13200000
 wearpos=righthand
-param=allstar_name,Armadyl Godsword 
-param=allstar_sellable,yes
 param=stabattack,3
 param=slashattack,4
 param=crushattack,13
@@ -3589,6 +3616,9 @@ param=magicdefence,12
 param=rangedefence,6
 param=strengthbonus,120
 param=prayerbonus,11
+param=allstar_value,13200000
+param=allstar_name,Armadyl Godsword 
+param=allstar_sellable,yes
 param=stabattack_anim,human_dhsword_chop
 param=slashattack_anim,human_dhsword_chop
 param=crushattack_anim,human_dhsword_chop
@@ -3609,9 +3639,6 @@ womanwear=obj_bandos_godsword_manwear,5
 members=yes
 cost=65000000
 wearpos=righthand
-param=allstar_name,Bandos Godsword 
-param=allstar_sellable,yes
-param=allstar_req_attack,80
 param=stabattack,3
 param=slashattack,4
 param=crushattack,13
@@ -3624,12 +3651,16 @@ param=magicdefence,12
 param=rangedefence,6
 param=strengthbonus,120
 param=prayerbonus,11
+param=allstar_req_attack,80
+param=allstar_stand_anim,slayer_granite_maul_ready
+param=allstar_walk_anim,slayer_granite_maul_walk
+param=allstar_value,65000000
+param=allstar_name,Bandos Godsword 
+param=allstar_sellable,yes
 param=stabattack_anim,human_dhsword_slash
 param=slashattack_anim,human_dhsword_slash
 param=crushattack_anim,human_dhsword_slash
 param=defend_anim,human_rubber_chicken_block
-param=ready_baseanim,slayer_granite_maul_ready
-param=walk_f_baseanim,slayer_granite_maul_walk
 
 [allstar_item_15335]
 name=Saradomin godsword
@@ -3646,8 +3677,6 @@ womanwear=obj_saradomin_godsword_manwear,5
 members=yes
 cost=13200000
 wearpos=righthand
-param=allstar_name,Saradomin Godsword 
-param=allstar_sellable,yes
 param=stabattack,3
 param=slashattack,4
 param=crushattack,13
@@ -3660,6 +3689,9 @@ param=magicdefence,12
 param=rangedefence,6
 param=strengthbonus,120
 param=prayerbonus,11
+param=allstar_value,13200000
+param=allstar_name,Saradomin Godsword 
+param=allstar_sellable,yes
 param=stabattack_anim,human_dhsword_chop
 param=slashattack_anim,human_dhsword_chop
 param=crushattack_anim,human_dhsword_chop
@@ -3680,9 +3712,6 @@ womanwear=obj_zamorak_godsword_manwear,5
 members=yes
 cost=70000000
 wearpos=righthand
-param=allstar_name,Zamorak GodSword
-param=allstar_sellable,yes
-param=allstar_req_attack,80
 param=stabattack,31
 param=slashattack,21
 param=crushattack,35
@@ -3695,12 +3724,16 @@ param=magicdefence,13
 param=rangedefence,12
 param=strengthbonus,65
 param=prayerbonus,13
+param=allstar_req_attack,80
+param=allstar_stand_anim,slayer_granite_maul_ready
+param=allstar_walk_anim,slayer_granite_maul_walk
+param=allstar_value,70000000
+param=allstar_name,Zamorak GodSword
+param=allstar_sellable,yes
 param=stabattack_anim,human_dhsword_slash
 param=slashattack_anim,human_dhsword_slash
 param=crushattack_anim,human_dhsword_slash
 param=defend_anim,human_rubber_chicken_block
-param=ready_baseanim,slayer_granite_maul_ready
-param=walk_f_baseanim,slayer_granite_maul_walk
 
 [allstar_item_15345]
 // OSRS remade the female model
@@ -3721,8 +3754,6 @@ cost=130000000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
-param=allstar_name,Armadyl Helmettttt
-param=allstar_sellable,yes
 param=stabattack,60
 param=slashattack,60
 param=crushattack,60
@@ -3735,6 +3766,9 @@ param=magicdefence,60
 param=rangedefence,60
 param=strengthbonus,60
 param=prayerbonus,60
+param=allstar_value,130000000
+param=allstar_name,Armadyl Helmettttt
+param=allstar_sellable,yes
 
 [allstar_item_15346]
 // OSRS updated the worn model
@@ -3754,8 +3788,6 @@ members=yes
 cost=130000000
 wearpos=torso
 wearpos2=arms
-param=allstar_name,Armadyl chestplate
-param=allstar_sellable,yes
 param=stabattack,60
 param=slashattack,60
 param=crushattack,60
@@ -3768,6 +3800,8 @@ param=magicdefence,60
 param=rangedefence,60
 param=strengthbonus,60
 param=prayerbonus,60
+param=allstar_value,130000000
+param=allstar_sellable,yes
 
 [allstar_item_15347]
 // OSRS name "Armadyl chainskirt" (renamed Aug 2010); OSRS updated the worn model
@@ -3785,8 +3819,6 @@ womanwear=obj_armadyl_chainskirt_womanwear,0
 members=yes
 cost=130000000
 wearpos=legs
-param=allstar_name,Armadyl Plate legs
-param=allstar_sellable,yes
 param=stabattack,60
 param=slashattack,60
 param=crushattack,60
@@ -3799,6 +3831,9 @@ param=magicdefence,60
 param=rangedefence,60
 param=strengthbonus,60
 param=prayerbonus,60
+param=allstar_value,130000000
+param=allstar_name,Armadyl Plate legs
+param=allstar_sellable,yes
 
 [allstar_item_15348]
 name=Bandos chestplate
@@ -3817,8 +3852,6 @@ womanwear2=obj_bandos_chestplate_womanwear2
 members=yes
 cost=45000000
 wearpos=torso
-param=allstar_name,Bandos Chestplate
-param=allstar_sellable,yes
 param=stabattack,75
 param=slashattack,75
 param=crushattack,75
@@ -3831,6 +3864,9 @@ param=magicdefence,75
 param=rangedefence,75
 param=strengthbonus,75
 param=prayerbonus,75
+param=allstar_value,45000000
+param=allstar_name,Bandos Chestplate
+param=allstar_sellable,yes
 
 [allstar_item_15349]
 name=Bandos tassets
@@ -3847,8 +3883,6 @@ womanwear=obj_bandos_tassets_womanwear,0
 members=yes
 cost=32000000
 wearpos=legs
-param=allstar_name,Bandos Tasset
-param=allstar_sellable,yes
 param=stabattack,45
 param=slashattack,45
 param=crushattack,45
@@ -3861,6 +3895,9 @@ param=magicdefence,45
 param=rangedefence,45
 param=strengthbonus,45
 param=prayerbonus,45
+param=allstar_value,32000000
+param=allstar_name,Bandos Tasset
+param=allstar_sellable,yes
 
 [allstar_item_15350]
 name=Bandos boots
@@ -3875,8 +3912,6 @@ womanwear=obj_bandos_boots_womanwear,0
 members=yes
 cost=15000000
 wearpos=feet
-param=allstar_name,Bandos Boots
-param=allstar_sellable,yes
 param=stabattack,30
 param=slashattack,30
 param=crushattack,30
@@ -3889,6 +3924,9 @@ param=magicdefence,30
 param=rangedefence,30
 param=strengthbonus,30
 param=prayerbonus,30
+param=allstar_value,15000000
+param=allstar_name,Bandos Boots
+param=allstar_sellable,yes
 
 [allstar_item_15352]
 name=Dragon boots
@@ -3903,9 +3941,6 @@ womanwear=obj_dragon_boots_womanwear,0
 members=yes
 cost=162362
 wearpos=feet
-param=allstar_name,Dragon Boots
-param=allstar_sellable,yes
-param=allstar_req_defence,60
 param=stabattack,71
 param=slashattack,90
 param=crushattack,11
@@ -3918,6 +3953,10 @@ param=magicdefence,72
 param=rangedefence,45
 param=strengthbonus,11
 param=prayerbonus,37
+param=allstar_req_defence,60
+param=allstar_value,162362
+param=allstar_name,Dragon Boots
+param=allstar_sellable,yes
 
 [allstar_item_15713]
 // RS2 12169; no model available, stand-in: Hunter cape model recoloured blue/white
@@ -3955,8 +3994,8 @@ recol11d=18335
 members=yes
 cost=20000000
 wearpos=back
+param=allstar_value,20000000
 param=allstar_name,Summoning Cape
-param=allstar_sellable,no
 
 [allstar_item_15714]
 // RS2 12170; stand-in: Hunter cape(t) model recoloured
@@ -3994,8 +4033,6 @@ recol11d=18335
 members=yes
 cost=20000000
 wearpos=back
-param=allstar_name,Summoning Skillcape
-param=allstar_sellable,no
 param=stabattack,10
 param=slashattack,10
 param=crushattack,10
@@ -4008,6 +4045,8 @@ param=magicdefence,10
 param=rangedefence,10
 param=strengthbonus,10
 param=prayerbonus,10
+param=allstar_value,20000000
+param=allstar_name,Summoning Skillcape
 
 [allstar_item_15715]
 // RS2 12171; the shared skillcape hood model recoloured (colours approximate)
@@ -4033,5 +4072,5 @@ cost=4000000
 wearpos=hat
 wearpos2=head
 wearpos3=jaw
+param=allstar_value,4000000
 param=allstar_name,Summoning Skillhood
-param=allstar_sellable,no

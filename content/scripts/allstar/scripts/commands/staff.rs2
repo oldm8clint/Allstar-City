@@ -114,25 +114,30 @@ if (.findname($name) = true) {
     mes("<$name>'s ip address is <.ipaddress>");
 }
 
-// ::god (rights >= 2): the walk and run animations become 1851 and the stand animation (playerSE)
-// 1501 from the next resetAnimation; energy 99,999,999. The hitpoints write was undone next cycle.
+// ::god (rights >= 2): playerSE 1501, playerSEW/SER 1851. The walk and run animations change at once,
+// the stand animation (pEmote) at the next resetAnimation; energy 99,999,999. The hitpoints write
+// was undone next cycle.
 [proc,allstar_cmd_god]
 ~allstar_anim_id(1500);
-%allstar_godmode = 1;
-walkanim(enum(int, seq, allstar_seq_ids, 1851));
-runanim(enum(int, seq, allstar_seq_ids, 1851));
+%allstar_anim_stand = enum(int, seq, allstar_seq_ids, 1501);
+%allstar_anim_walk = enum(int, seq, allstar_seq_ids, 1851);
+%allstar_anim_run = %allstar_anim_walk;
+walkanim(%allstar_anim_walk);
+runanim(%allstar_anim_run);
 healenergy(10000);
 %allstar_energy_text = 2;
 if_settext(controls:com_1, "99999999%");
 mes("God mode on");
 buildappearance(worn);
 
-// ::godoff (rights >= 2)
+// ::godoff (rights >= 2): playerSE/SEW/SER back to 808/819/824, whatever is wielded
 [proc,allstar_cmd_godoff]
 mes("god mode off");
-%allstar_godmode = 0;
-walkanim(human_walk_f);
-runanim(human_running);
+%allstar_anim_stand = human_ready;
+%allstar_anim_walk = human_walk_f;
+%allstar_anim_run = human_running;
+walkanim(%allstar_anim_walk);
+runanim(%allstar_anim_run);
 healenergy(10000);
 %allstar_energy_text = 2;
 if_settext(controls:com_1, "100%");

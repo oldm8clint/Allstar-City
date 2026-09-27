@@ -32,10 +32,6 @@ if (%allstar_eat_pending > 0) {
     }
 }
 
-// actionTimer, for skills that set it (bones wait for it to reach 0)
-[proc,allstar_set_action_timer](int $cycles)
-%allstar_action_timer = $cycles;
-
 // L17060-17107: a skill 0-6 above its base level loses 1 when its potTimer is 0, and the timer
 // waits 250 cycles. BUG: Strength adds its 250 to the Defence timer, so boosted Strength drops
 // every cycle and each drop delays the Defence decay.
