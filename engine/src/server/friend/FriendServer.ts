@@ -71,7 +71,7 @@ export class FriendServer {
     private socketByWorld: Record<number, WebSocket> = {};
 
     constructor() {
-        this.server = new WebSocketServer({ port: Environment.friend.port, host: '0.0.0.0' }, () => {
+        this.server = new WebSocketServer({ port: Environment.friend.port, host: '127.0.0.1' } /* Allstar-City: unauthenticated, this machine only */, () => {
             printInfo(`Friend server listening on port ${Environment.friend.port}`);
         });
 

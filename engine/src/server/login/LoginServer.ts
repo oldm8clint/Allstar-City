@@ -145,7 +145,7 @@ export default class LoginServer {
 
         InvType.load('data/pack');
 
-        this.server = new WebSocketServer({ port: Environment.login.port, host: '0.0.0.0' }, () => {
+        this.server = new WebSocketServer({ port: Environment.login.port, host: '127.0.0.1' } /* Allstar-City: unauthenticated, this machine only */, () => {
             printInfo(`Login server listening on port ${Environment.login.port}`);
         });
 

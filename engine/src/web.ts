@@ -6,6 +6,7 @@ import Fastify from 'fastify';
 import FastifyStatic from '@fastify/static';
 import FastifyView from '@fastify/view';
 import FastifyWebsocket from '@fastify/websocket';
+import type { FastifyRequest } from 'fastify';
 import { register } from 'prom-client';
 
 import { CrcBuffer, CrcTable } from '#/cache/CrcTable.js';
@@ -76,6 +77,23 @@ await fastify.register(FastifyWebsocket, {
     }
 });
 
+// Allstar-City: a tunnel or reverse proxy on this machine (cloudflared, Tailscale Funnel, Caddy)
+// connects from loopback, so the player's own address comes from the header it adds. Headers are
+// ignored on direct connections, where a player could forge them.
+function playerAddress(req: FastifyRequest): string {
+    const peer = req.socket.remoteAddress ?? 'unknown';
+    if (peer !== '127.0.0.1' && peer !== '::1' && peer !== '::ffff:127.0.0.1') {
+        return peer;
+    }
+    const cloudflare = req.headers['cf-connecting-ip'];
+    if (typeof cloudflare === 'string' && cloudflare.trim().length > 0) {
+        return cloudflare.trim();
+    }
+    const forwarded = req.headers['x-forwarded-for'];
+    const first = (Array.isArray(forwarded) ? forwarded[0] : forwarded)?.split(',')[0]?.trim();
+    return first && first.length > 0 ? first : peer;
+}
+
 // general routes
 
 fastify.route({
@@ -97,7 +115,7 @@ fastify.route({
                     socket.terminate();
                 }
             },
-            req.socket.remoteAddress ?? 'unknown'
+            playerAddress(req)
         );
 
         socket.on('message', (message: Buffer<ArrayBufferLike>) => {
@@ -344,5 +362,6 @@ management.put('/setup/config', async req => {
 });
 
 export async function startManagementWeb() {
-    await management.listen({ port: Environment.web.managementPort, host: '0.0.0.0' });
+    // Allstar-City: no authentication, so this machine only
+    await management.listen({ port: Environment.web.managementPort, host: '127.0.0.1' });
 }

@@ -10,7 +10,7 @@ export default class LoggerServer {
     private server: WebSocketServer;
 
     constructor() {
-        this.server = new WebSocketServer({ port: Environment.logger.port, host: '0.0.0.0' }, () => {
+        this.server = new WebSocketServer({ port: Environment.logger.port, host: '127.0.0.1' } /* Allstar-City: unauthenticated, this machine only */, () => {
             printInfo(`Logger server listening on port ${Environment.logger.port}`);
         });
 
