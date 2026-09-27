@@ -114,6 +114,7 @@ export default class Bot {
     side = -1;
     chat = -1;
     overlay = -1;
+    pid = -1; // this player's slot, for opPlayer on it
     tutorial = -1;
     rebootTimer = -1;
     region = { x: -1, z: -1 };
@@ -254,17 +255,17 @@ export default class Bot {
                 this.messages.push(buf.gjstr());
                 break;
             case ServerGameProt.IF_SETTEXT: {
-                const com = buf.g2_alt3();
+                const com = buf.g2();
                 this.texts.set(com, buf.gjstr());
                 break;
             }
             case ServerGameProt.IF_OPENMAIN:
-                this.main = buf.g2_alt3();
+                this.main = buf.g2();
                 this.side = -1;
                 break;
             case ServerGameProt.IF_OPENMAIN_SIDE:
-                this.main = buf.g2_alt2();
-                this.side = buf.g2_alt3();
+                this.main = buf.g2();
+                this.side = buf.g2();
                 break;
             case ServerGameProt.IF_OPENOVERLAY: {
                 const com = buf.g2();
@@ -272,10 +273,10 @@ export default class Bot {
                 break;
             }
             case ServerGameProt.UPDATE_REBOOT_TIMER:
-                this.rebootTimer = buf.g2_alt1();
+                this.rebootTimer = buf.g2();
                 break;
             case ServerGameProt.TUT_OPEN: {
-                const com = buf.g2_alt1();
+                const com = buf.g2();
                 this.tutorial = com === 65535 ? -1 : com;
                 break;
             }
@@ -325,11 +326,14 @@ export default class Bot {
                 break;
             }
             case ServerGameProt.REBUILD_NORMAL: {
+                const x = buf.g2();
                 const z = buf.g2();
-                const x = buf.g2_alt3();
                 this.region = { x, z };
                 break;
             }
+            case ServerGameProt.UPDATE_PID:
+                this.pid = buf.g2();
+                break;
             case ServerGameProt.LOGOUT:
                 this.close();
                 break;
@@ -400,6 +404,45 @@ export default class Bot {
             buf.p2(obj);
             buf.p2(slot);
             buf.p2(com);
+        });
+    }
+
+    // "Use" useObj (useSlot of useCom) on obj (slot of com)
+    opHeldU(obj: number, slot: number, com: number, useObj: number, useSlot: number, useCom: number) {
+        this.send(ClientGameProt.OPHELDU, buf => {
+            buf.p2(obj);
+            buf.p2(slot);
+            buf.p2(com);
+            buf.p2(useObj);
+            buf.p2(useSlot);
+            buf.p2(useCom);
+        });
+    }
+
+    opObj(op: number, x: number, z: number, obj: number) {
+        const prot = [ClientGameProt.OPOBJ1, ClientGameProt.OPOBJ2, ClientGameProt.OPOBJ3, ClientGameProt.OPOBJ4, ClientGameProt.OPOBJ5][op - 1];
+        this.send(prot, buf => {
+            buf.p2(x);
+            buf.p2(z);
+            buf.p2(obj);
+        });
+    }
+
+    // playerSlot: the target's pid (UPDATE_PID)
+    opPlayer(op: number, playerSlot: number) {
+        const prot = [ClientGameProt.OPPLAYER1, ClientGameProt.OPPLAYER2, ClientGameProt.OPPLAYER3, ClientGameProt.OPPLAYER4, ClientGameProt.OPPLAYER5][op - 1];
+        this.send(prot, buf => buf.p2(playerSlot));
+    }
+
+    // "Use" useObj (useSlot of useCom) on a loc
+    opLocU(x: number, z: number, loc: number, useObj: number, useSlot: number, useCom: number) {
+        this.send(ClientGameProt.OPLOCU, buf => {
+            buf.p2(x);
+            buf.p2(z);
+            buf.p2(loc);
+            buf.p2(useObj);
+            buf.p2(useSlot);
+            buf.p2(useCom);
         });
     }
 

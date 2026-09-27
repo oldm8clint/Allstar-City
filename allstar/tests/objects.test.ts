@@ -53,14 +53,7 @@ function locsAt(x: number, z: number, level: number): { id: number; shape: numbe
 
 // use an inventory item on a loc (OPLOCU)
 function useOnLoc(bot: Bot, obj: number, slot: number, x: number, z: number, loc: number) {
-    (bot as unknown as { send(prot: ClientGameProt, write: (buf: Packet) => void): void }).send(ClientGameProt.OPLOCU, buf => {
-        buf.p2_alt1(loc);
-        buf.p2_alt1(INV);
-        buf.p2_alt1(obj);
-        buf.p2_alt1(z);
-        buf.p2(slot);
-        buf.p2_alt3(x);
-    });
+    bot.opLocU(x, z, loc, obj, slot, INV);
 }
 
 async function coordIs(bot: Bot, x: number, z: number, level = 0, timeout = 4000) {

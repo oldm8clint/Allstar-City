@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 
 import Bot from './Bot.js';
 import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
-import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
 
 const PORT = Number(process.env.ITEMS_PORT ?? 43614);
 const WEB = Number(process.env.ITEMS_WEB ?? 8114);
@@ -64,18 +63,6 @@ for (const line of csv.slice(1)) {
 bonusesOf.set(773, new Array(12).fill(10000)); // allstar/QUIRKS.md Q6
 
 // ---- bot helpers ----
-// UPDATE_PID (the player's slot, needed to target another player) is not recorded by Bot.ts
-{
-    const handle = (Bot.prototype as any).handle;
-    (Bot.prototype as any).handle = function (this: any, prot: ServerGameProt, buf: any, length: number) {
-        if (prot === ServerGameProt.UPDATE_PID) {
-            buf.g1();
-            this.pid = buf.g2_alt1();
-            return;
-        }
-        return handle.call(this, prot, buf, length);
-    };
-}
 async function login(tag: string): Promise<Bot> {
     const bot = await Bot.connect({ username: `it${tag}${Date.now() % 100000}`, port: PORT, webPort: WEB });
     await bot.until(() => (bot.invs.get(WORN)?.length ?? 0) > 0 && bot.stats.length > 5, 10000, 'login state');
@@ -123,14 +110,7 @@ async function useOn(bot: Bot, used: number, target: number) {
     const useSlot = slotOf(bot, used);
     const slot = slotOf(bot, target);
     if (useSlot < 0 || slot < 0) throw new Error(`items ${used}/${target} not both in inventory`);
-    send(bot, ClientGameProt.OPHELDU, buf => {
-        buf.p2(target);
-        buf.p2_alt1(useSlot);
-        buf.p2_alt1(used);
-        buf.p2_alt3(INV);
-        buf.p2_alt2(slot);
-        buf.p2_alt2(INV);
-    });
+    bot.opHeldU(target, slot, INV, used, useSlot, INV);
     await cycles(1);
 }
 async function countDialog(bot: Bot, value: number) {
@@ -547,11 +527,7 @@ function bonusTextsMatch(bot: Bot): boolean {
     await held(bot, 5, 379);
     check(slotOf(bot, 379) < 0, 'lobster dropped');
     const here = await bot.coord();
-    send(bot, ClientGameProt.OPOBJ3, buf => {
-        buf.p2_alt3(379);
-        buf.p2_alt3(here.x);
-        buf.p2_alt2(here.z);
-    });
+    bot.opObj(3, here.x, here.z, 379);
     await cycles(2);
     check(slotOf(bot, 379) >= 0, 'lobster picked up while standing on it');
 
@@ -576,12 +552,7 @@ function bonusTextsMatch(bot: Bot): boolean {
     const spot = await bot.coord();
     await held(bot, 5, 379);
     await cheat(bot, `tele ${spot.level},${spot.x >> 6},${spot.z >> 6},${(spot.x & 63) + 1},${spot.z & 63}`);
-    const take = () =>
-        send(bot, ClientGameProt.OPOBJ3, buf => {
-            buf.p2_alt3(379);
-            buf.p2_alt3(spot.x);
-            buf.p2_alt2(spot.z);
-        });
+    const take = () => bot.opObj(3, spot.x, spot.z, 379);
     take();
     await cycles(3);
     const c0 = await bot.coord();
@@ -630,8 +601,8 @@ function bonusTextsMatch(bot: Bot): boolean {
 {
     const a = await login('tra');
     const b = await login('trb');
-    const pid = (bot: Bot) => (bot as any).pid as number;
-    const opPlayer4 = (bot: Bot, target: number) => send(bot, ClientGameProt.OPPLAYER4, buf => buf.p2_alt1(target));
+    const pid = (bot: Bot) => bot.pid;
+    const opPlayer4 = (bot: Bot, target: number) => bot.opPlayer(4, target);
     await clearInv(a);
     await clearInv(b);
 
