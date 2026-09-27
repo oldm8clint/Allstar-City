@@ -1,0 +1,37 @@
+out/
+.env
+tsconfig.tsbuildinfo
+
+data/pack/
+data/src/
+data/unpack/
+data/config/
+
+dump/
+
+data/players/
+
+node_modules/
+
+db.sqlite
+db.sqlite-journal
+
+# coverage reports
+coverage/
+
+# intellij
+.idea/
+
+# these are artifacts generated from other repos
+public/loader.jar
+public/runescape*.jar
+public/client/*.js.map
+
+### Windows ###
+Thumbs.db
+[Dd]esktop.ini
+*.lnk
+
+### macOS ###
+.DS_Store
+._*
