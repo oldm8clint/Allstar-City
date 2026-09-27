@@ -410,18 +410,19 @@ export default function shops({ legacy, packs, content, writeGenerated, report }
     enumBlock('allstar_shop_sellable', 'obj', 'boolean', 'no', objIds.filter(id => flags.sellable(id)).map(id => [objName(id), 'yes']));
     enumBlock('allstar_shop_isnote', 'obj', 'boolean', 'no', objIds.filter(id => flags.isNote(id)).map(id => [objName(id), 'yes']));
     enumBlock('allstar_shop_stackable', 'obj', 'boolean', 'no', objIds.filter(id => flags.stackable(id)).map(id => [objName(id), 'yes']));
+    // GetUnnotedItem: item 0 unless the note's description is not the usual one
     enumBlock(
         'allstar_shop_unnote',
         'obj',
         'namedobj',
-        'null',
-        objIds.filter(id => flags.isNote(id)).map(id => [objName(id), objName(unnote(id))])
+        objName(0),
+        objIds.filter(id => flags.isNote(id) && unnote(id) !== 0).map(id => [objName(id), objName(unnote(id))])
     );
     writeGenerated('configs/shops.enum', enums);
 
     // ---- inventories ----
-    // Model and clock: slot shop*101+j is ShopItems[shop][j]; model count = ShopItemsN + 1 so an
-    // empty default slot can be stored, clock count = restock origin tick + 1.
+    // Model and clock: slot shop*101+j is ShopItems[shop][j]; model count = ShopItemsN + 1 so a
+    // sold-out default slot can be stored, clock count = restock origin cycle + 1,000,000.
     const invs = [
         '[allstar_shop_items]',
         'scope=shared',
