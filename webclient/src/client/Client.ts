@@ -11851,10 +11851,8 @@ export class Client extends GameShell {
     }
 
     private addChat(type: number, text: string, sender: string): void {
-        if (type === 0 && this.tutComId !== -1) {
-            this.tutComMessage = text;
-            this.mouseClickButton = 0;
-        }
+        // Allstar-City: no tutorial island. The only sticky chat interfaces are Allstar-Scape's level-up
+        // boxes, which never turned game messages into "Click to continue" boxes or swallowed the click.
 
         if (this.chatModalId === -1) {
             this.redrawChat = true;
