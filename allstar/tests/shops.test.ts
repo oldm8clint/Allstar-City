@@ -7,15 +7,17 @@ const PORT = Number(process.env.PORT ?? 43611);
 const WEB_PORT = Number(process.env.WEB_PORT ?? 8111);
 
 // Bot.ts reads IF_OPENMAIN_SIDE and IF_SETTEXT with plain g2; the engine writes p2_alt2/p2_alt3.
+// Both forms are accepted so this keeps working once Bot.ts decodes them.
 const alt2 = (v: number) => (v & 0xff00) | ((v + 128) & 0xff);
 const alt3 = (v: number) => (((v + 128) & 0xff) << 8) | ((v >> 8) & 0xff);
+const comText = (com: number) => bot.texts.get(com) ?? bot.texts.get(alt3(com));
 
 const SHOP = 3900; // shop_template:inv
 const SIDE = 3823; // shop_template_side:inv
 const INV = 3214;
-const TITLE = alt3(3901); // shop_template:com_76
-const MAIN = alt2(3824); // shop_template
-const SIDE_PANEL = alt3(3822); // shop_template_side
+const TITLE = 3901; // shop_template:com_76
+const MAIN = 3824; // shop_template
+const SIDE_PANEL = 3822; // shop_template_side
 
 // ids
 const COINS = 995;
@@ -68,9 +70,11 @@ async function openShop(npc: string, op: number, title: string) {
     const id = await nid(npc);
     bot.invs.delete(SHOP);
     bot.texts.delete(TITLE);
+    bot.texts.delete(alt3(TITLE));
     bot.main = bot.side = -1;
     bot.opNpc(op, id);
-    await bot.until(() => bot.main === MAIN && bot.side === SIDE_PANEL && bot.texts.get(TITLE) === title && bot.invs.has(SHOP), 15000, `${npc} op${op} shop "${title}"`);
+    const open = () => [MAIN, alt2(MAIN)].includes(bot.main) && [SIDE_PANEL, alt3(SIDE_PANEL)].includes(bot.side);
+    await bot.until(() => open() && comText(TITLE) === title && bot.invs.has(SHOP), 15000, `${npc} op${op} shop "${title}"`);
     await sleep(600);
 }
 
@@ -98,8 +102,8 @@ check(view().filter(o => o).length === 24, `shop 2 shows 24 items (${view().filt
 check(view()[0]?.id === 2595 && view()[0]?.count === 100, 'shop 2 slot 0 = 2595 x100');
 check(view()[5]?.id === 2583 && view()[5]?.count === 1000, 'shop 2 slot 5 = 2583 x1000');
 check(bot.invs.has(SIDE), 'inventory sent to the shop side panel (3823)');
-check(bot.texts.get(alt3(3903)) === '@whi@Right click to buy, Choose ammount you want, Click item for the price.', 'shop hint text (3903)');
-check(bot.texts.get(alt3(3902)) === '@whi@Closewindow', 'close text (3902)');
+check(comText(3903) === '@whi@Right click to buy, Choose ammount you want, Click item for the price.', 'shop hint text (3903)');
+check(comText(3902) === '@whi@Closewindow', 'close text (3902)');
 
 // value messages (packet 145): price = floor(item.cfg col4 of the last line), with K / million
 let text = await message(/currently costs/, () => bot.invButton(1, 2595, 0, SHOP));
