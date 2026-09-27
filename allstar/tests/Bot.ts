@@ -776,6 +776,11 @@ export default class Bot {
         this.send(ClientGameProt.RESUME_PAUSEBUTTON, buf => buf.p2(com));
     }
 
+    // the number typed into an "Enter amount" dialog (p_countdialog)
+    resumePCountDialog(value: number) {
+        this.send(ClientGameProt.RESUME_P_COUNTDIALOG, buf => buf.p4(value));
+    }
+
     // The 289 protocol writes every field as a plain big-endian short, in the same order for all five ops.
     opNpc(op: number, nid: number) {
         const prot = [ClientGameProt.OPNPC1, ClientGameProt.OPNPC2, ClientGameProt.OPNPC3, ClientGameProt.OPNPC4, ClientGameProt.OPNPC5][op - 1];

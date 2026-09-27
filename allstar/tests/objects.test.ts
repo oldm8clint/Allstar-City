@@ -5,9 +5,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
-import Packet from '../../engine/src/io/Packet.js';
-
 import Bot from './Bot.js';
 
 const PORT = Number(process.env.BOT_PORT ?? 43613);
@@ -66,27 +63,21 @@ async function coordIs(bot: Bot, x: number, z: number, level = 0, timeout = 4000
     return c;
 }
 
-// close whatever is open (level-up chat boxes are modal in the 377 engine and block clicks)
-function closeModal(bot: Bot) {
-    (bot as unknown as { send(prot: ClientGameProt, write?: (buf: Packet) => void): void }).send(ClientGameProt.CLOSE_MODAL);
-}
-
-// Level-up chat boxes queue up (one per level) and each one is modal: close them until none is left.
+// Level-up chat boxes queue up (one per level) and each one is modal (they block clicks): close them
+// until none is left.
 async function settle(bot: Bot) {
     for (let i = 0; i < 20; i++) {
         await sleep(700);
         if (bot.chat === -1 && bot.main === -1) {
             return;
         }
-        closeModal(bot);
-        bot.chat = -1;
-        bot.main = -1;
+        bot.closeModal();
     }
 }
 
 // ::tele level,mx,mz,lx,lz from absolute coordinates
 async function at(bot: Bot, x: number, z: number, level = 0) {
-    closeModal(bot);
+    bot.closeModal();
     bot.cheat(`tele ${level},${x >> 6},${z >> 6},${x & 63},${z & 63}`);
     const c = await coordIs(bot, x, z, level, 6000);
     if (c.x !== x || c.z !== z || c.level !== level) {

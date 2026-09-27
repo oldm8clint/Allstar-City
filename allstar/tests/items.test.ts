@@ -5,7 +5,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import Bot from './Bot.js';
-import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
 
 const PORT = Number(process.env.ITEMS_PORT ?? 43614);
 const WEB = Number(process.env.ITEMS_WEB ?? 8114);
@@ -71,9 +70,6 @@ async function login(tag: string): Promise<Bot> {
     await closeModals(bot);
     return bot;
 }
-function send(bot: Bot, prot: ClientGameProt, write: (buf: any) => void = () => {}) {
-    (bot as any).send(prot, write);
-}
 const inv = (bot: Bot) => bot.invs.get(INV) ?? [];
 const worn = (bot: Bot) => bot.invs.get(WORN) ?? [];
 const slotOf = (bot: Bot, id: number) => inv(bot).findIndex(o => o?.id === id);
@@ -90,7 +86,7 @@ async function cheat(bot: Bot, text: string) {
     if (text.startsWith('setstat')) await closeModals(bot);
 }
 async function closeModals(bot: Bot) {
-    send(bot, ClientGameProt.CLOSE_MODAL);
+    bot.closeModal();
     await cycles(1);
 }
 async function give(bot: Bot, name: string, count = 1) {
@@ -114,7 +110,7 @@ async function useOn(bot: Bot, used: number, target: number) {
     await cycles(1);
 }
 async function countDialog(bot: Bot, value: number) {
-    send(bot, ClientGameProt.RESUME_P_COUNTDIALOG, buf => buf.p4(value));
+    bot.resumePCountDialog(value);
     await cycles(1);
 }
 async function getvar(bot: Bot, varp: string): Promise<number> {
@@ -630,7 +626,7 @@ function bonusTextsMatch(bot: Bot): boolean {
 
     fromA = a.messages.length;
     fromB = b.messages.length;
-    send(a, ClientGameProt.CLOSE_MODAL);
+    a.closeModal();
     await cycles(2);
     check(since(a, fromA).includes('You decline the trade.') && since(b, fromB).some(m => m.toLowerCase() === `${a.username} declined the trade.`) && countOf(a, 379) === 3, `decline messages, offer returned (${JSON.stringify(since(b, fromB))})`);
 
