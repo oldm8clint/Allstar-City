@@ -13,6 +13,7 @@ minimap_toggle(0); //reset minimap state on login
 
 ~allstar_new_player;
 ~allstar_login_rights;
+~allstar_combat_login;
 
 // right-click options on other players (client.run L10923-10957)
 set_player_op("@whi@T@gre@r@whi@a@gre@d@whi@e @whi@w@gre@i@whi@t@gre@h", 4, ^false);

@@ -1059,6 +1059,25 @@ const ScriptOpcodePointers: {
     [ScriptOpcode.IPADDRESS]: {
         require: ['active_player'],
         require2: ['active_player2']
+    },
+
+    // Allstar-City combat
+    [ScriptOpcode.LASTMOVE]: {
+        require: ['active_player'],
+        require2: ['active_player2']
+    },
+    [ScriptOpcode.STAT_XP]: {
+        require: ['active_player'],
+        require2: ['active_player2']
+    },
+    [ScriptOpcode.P_OPCLICKED]: {
+        require: ['active_player']
+    },
+    [ScriptOpcode.P_TARGETNPC]: {
+        require: ['active_player']
+    },
+    [ScriptOpcode.P_TARGETPLAYER]: {
+        require: ['active_player']
     }
 };
 

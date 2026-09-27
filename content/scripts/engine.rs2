@@ -1103,3 +1103,16 @@
 [command,world_reboot](int $seconds)
 // info: Append a line to engine/data/allstar/logs/<file>.txt (Allstar-Scape logs/*.txt)
 [command,allstar_log](string $file, string $line)
+
+// ---- Allstar-City combat engine commands (engine/src/engine/script/handlers/AllstarOps.ts) ----
+// info: The cycle after the player's last step: lastmove = map_clock means they stepped during the previous cycle
+[command,lastmove]()(int)
+[command,.lastmove]()(int)
+// info: A stat's experience (whole xp with NODE_ALLSTAR_XP)
+[command,stat_xp](stat $stat)(int)
+[command,.stat_xp](stat $stat)(int)
+// info: True when the player's current interaction came from a client click, false after p_opnpc/p_opplayer
+[command,p_opclicked]()(boolean)
+// info: The npc (or player) the player is currently interacting with or walking to, null for anything else
+[command,p_targetnpc]()(npc_uid)
+[command,p_targetplayer]()(player_uid)

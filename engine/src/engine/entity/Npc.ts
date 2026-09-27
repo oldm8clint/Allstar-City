@@ -36,9 +36,13 @@ import ScriptState from '#/engine/script/ScriptState.js';
 import ServerTriggerType from '#/engine/script/ServerTriggerType.js';
 import World from '#/engine/World.js';
 import LinkList from '#/datastruct/LinkList.js';
+import Environment from '#/util/Environment.js';
 import { printError } from '#/util/Logger.js';
 
 export default class Npc extends PathingEntity {
+    // Allstar-City: called when a dead NPC comes back (set by AllstarCombat, NODE_ALLSTAR_COMBAT)
+    static onRespawn: ((npc: Npc) => void) | null = null;
+
     // constructor properties
     nid: number;
     uid: number;
@@ -75,7 +79,8 @@ export default class Npc extends PathingEntity {
     heroPoints: HeroPoints = new HeroPoints(16); // be sure to reset when stats are recovered/reset
 
     constructor(level: number, x: number, z: number, width: number, length: number, lifecycle: EntityLifeCycle, nid: number, type: number, blockWalk: BlockWalk) {
-        super(level, x, z, width, length, lifecycle, blockWalk, MoveStrategy.NAIVE, NpcInfoProt.FACE_COORD, NpcInfoProt.FACE_ENTITY);
+        // Allstar-City: Allstar-Scape NPCs step by sign towards their destination with no clipping at all
+        super(level, x, z, width, length, lifecycle, blockWalk, Environment.NODE_ALLSTAR_COMBAT ? MoveStrategy.FLY : MoveStrategy.NAIVE, NpcInfoProt.FACE_COORD, NpcInfoProt.FACE_ENTITY);
         this.nid = nid;
         this.baseType = type;
         this.type = type;
@@ -124,6 +129,7 @@ export default class Npc extends PathingEntity {
                     // Respawn NPC (npc_del)
                     if (!this.isActive) {
                         World.addNpc(this, -1, false);
+                        Npc.onRespawn?.(this);
                     }
                     // Revert NPC (npc_changetype)
                     else {
@@ -526,6 +532,10 @@ export default class Npc extends PathingEntity {
 
     // --- Npc turn
     private processRegen() {
+        // Allstar-City: Allstar-Scape NPCs never regenerate hitpoints
+        if (Environment.NODE_ALLSTAR_COMBAT) {
+            return;
+        }
         if (++this.regenClock >= this.regenInterval) {
             // Every time we regen, let's reload regen interval from NPC type
             // This seems to match NPC behavior for when they change type, the regenrate doesn't update until a regen happens

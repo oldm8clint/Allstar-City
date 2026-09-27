@@ -1,0 +1,370 @@
+// Allstar-Scape player combat against NPCs and the per-cycle player routine (client.process).
+// allstar/spec/npcs_rules.md sections 2.5, 3.1-3.2, 3.8.
+
+// client.initialize: special energy starts at 100 on every login, FightType accurate, the rest of the
+// combat state is not saved.
+[proc,allstar_combat_login]
+%as_special = 100;
+%sa_energy = 1000;
+%sa_attack = ^false;
+%as_fighttype = 1;
+%as_spellbook = 0;
+softtimer(allstar_process, 1);
+
+// ---- client.process(), the parts that belong to combat, in the original order ----
+[softtimer,allstar_process]
+~allstar_zone_overlay;
+~allstar_spec2_cycle;
+~allstar_special_regen;
+~allstar_ancient_staff;
+~allstar_area_hazards;
+~allstar_player_poison;
+~allstar_poison_wears_off;
+~allstar_prayer_drain;
+~allstar_dropsitem;
+if (%as_dead = 0) {
+    ~allstar_attack_player_cycle;
+    ~allstar_attack_npc_cycle;
+}
+~allstar_ringoflife_cycle;
+if (%as_dead = 1) {
+    %as_dead = 2;
+    strongqueue(allstar_apply_dead, 0, 0);
+}
+
+// PlayerHandler update: the player's one pending hit (NewHP = HP - hitDiff). The engine runs this for
+// every player after the players have acted (NODE_ALLSTAR_COMBAT).
+[proc,allstar_player_update]
+if (%as_phit = 0) {
+    return;
+}
+def_int $hit = calc(%as_phit - 1);
+def_int $type = %as_phittype;
+%as_phit = 0;
+%as_phittype = 0;
+if ($hit > 0) {
+    damage(uid, $type, $hit);
+} else {
+    damage(uid, ^hitmark_block, 0);
+}
+if (stat(hitpoints) <= 0 & %as_dead = 0) {
+    %as_dead = 1;
+}
+
+// Store a hit for the update (Player.hitDiff). Within a cycle the last hit written wins.
+[proc,allstar_player_hit](int $damage, int $type)
+%as_phit = calc(max(0, $damage) + 1);
+%as_phittype = $type;
+
+// client.inCombat: LogoutDelay = 2 ("You must wait 10 seconds after combat to log out!")
+[proc,allstar_incombat]
+%as_logoutdelay = calc(map_clock + 2);
+
+// ---- attacking an NPC (packet 72, client.java L19647-19774) ----
+[opnpc2,_] @allstar_attack_npc;
+[apnpc2,_] @allstar_attack_npc;
+
+[label,allstar_attack_npc]
+if (p_opclicked = false) {
+    return;
+}
+if (%as_approach = npc_uid) {
+    // arrived: the 317 client walked the player here after the click (packet 72 already ran)
+    %as_approach = null;
+    %as_movecheck = lastmove;
+    return;
+}
+def_boolean $walk = false;
+if (npc_range(coord) > 1) {
+    // the client walked first: the walk packet resets any attack (C:20284-20295)
+    $walk = true;
+    ~allstar_reset_attack_player;
+    ~allstar_reset_attack_npc;
+}
+if (%as_atknpc ! null) {
+    mes("You are already attacking an npc!");
+    return;
+}
+if (~allstar_attack_npc_requirement(npc_type) = false) {
+    ~allstar_reset_attack_npc;
+    return;
+}
+// Summoned NPCs (::follownpc) are not ported; every NPC is free to attack.
+~allstar_arm_npc;
+%as_atknpc = npc_uid;
+%as_movecheck = lastmove;
+facesquare(npc_coord);
+if ($walk = true) {
+    %as_approach = npc_uid;
+    p_aprange(1);
+}
+
+// NPC side of an attack click / spell: StartKilling = player, RandomWalk = false, IsUnderAttack = true
+[proc,allstar_arm_npc]
+%asn_killing = uid;
+%asn_nowalk = 1;
+%asn_attacked = 1;
+
+// C:19680-19740 level gates, checked against current levels
+[proc,allstar_attack_npc_requirement](npc $type)(boolean)
+switch_npc ($type) {
+    case chicken :
+        if (stat(slayer) < 5) {
+            mes("You need a slayer level of 5 to attack chickens.");
+            return(false);
+        }
+    case skeleton_unagressive :
+        if (stat(slayer) < 20) {
+            mes("You need a slayer level of 20 to attack skeletons.");
+            return(false);
+        }
+    case slayer_crawling_hand_1 :
+        if (stat(slayer) < 30) {
+            mes("You need a slayer level of 30 to attack crawling hands.");
+            return(false);
+        }
+    case swamp_cave_bug :
+        if (stat(slayer) < 40) {
+            mes("You need a slayer level of 40 to attack cave bugs.");
+            return(false);
+        }
+    case slayer_jelly_1 :
+        if (stat(slayer) < 50) {
+            mes("You need a slayer level of 50 to attack jellys.");
+            return(false);
+        }
+    case slayer_abberant_spectre_1 :
+        if (stat(slayer) < 65) {
+            mes("You need a slayer level of 65 to attack aberrant specters.");
+            return(false);
+        }
+    case slayer_abyssal :
+        if (stat(slayer) < 82) {
+            mes("You need a slayer level of 82 to attack abbysal demons.");
+            return(false);
+        }
+    case mourning_dark_beast :
+        if (stat(slayer) < 99) {
+            mes("You need a slayer level of 99 to attack dark beasts.");
+            return(false);
+        }
+    case king_dragon :
+        if (stat(strength) < 75) {
+            mes("You need a strength level of 75 to attack King Black Dragon's.");
+            return(false);
+        }
+    case jogre :
+        if (stat(attack) < 55) {
+            mes("You need a attack level of 55 to attack Jogre's.");
+            return(false);
+        }
+}
+return(true);
+
+// client.ResetAttackNPC: the NPC stops being "under attack"
+[proc,allstar_reset_attack_npc]
+if (%as_atknpc ! null) {
+    if (npc_finduid(%as_atknpc) = true) {
+        %asn_attacked = 0;
+    }
+}
+%as_atknpc = null;
+%as_approach = null;
+
+// process(): "if (IsAttackingNPC && !IsDead) AttackNPC() / ResetAttackNPC()"
+[proc,allstar_attack_npc_cycle]
+if (%as_atknpc = null) {
+    return;
+}
+if (%as_approach ! null) {
+    if (p_targetnpc ! %as_approach) {
+        // the player clicked something else while walking up to the NPC (a new walk packet)
+        ~allstar_reset_attack_npc;
+        return;
+    }
+} else if (lastmove ! %as_movecheck) {
+    // walked away (walk packet)
+    ~allstar_reset_attack_npc;
+    return;
+}
+if (npc_finduid(%as_atknpc) = false) {
+    ~allstar_reset_attack_npc;
+    return;
+}
+if (%asn_dead > 0) {
+    ~allstar_reset_attack_npc;
+    return;
+}
+~allstar_attack_npc_step;
+
+// client.AttackNPC (C:28713), with the active npc being attacked
+[proc,allstar_attack_npc_step]
+def_int $wep = ~allstar_weapon;
+def_int $enemyhp = npc_stat(hitpoints);
+def_int $hit = randominc(~allstar_maxhit);
+facesquare(npc_coord);
+if ($wep = 1333) {
+    // rune scimitar: actionTimer = 8
+    %as_actiontimer = calc(map_clock + 8);
+}
+if ($wep = 15156 & %as_actiontimer <= map_clock) {
+    // dark bow: a stronger hit whenever actionTimer is 0
+    %as_actiontimer = calc(map_clock + 8);
+    $hit = calc(4 + randominc(20));
+}
+def_boolean $usebow = ~allstar_is_bow($wep);
+if ($usebow = true) {
+    ~allstar_incombat;
+    $hit = randominc(15);
+}
+if (~allstar_gooddistance(npc_coord, coord, 1) = false & ~allstar_pvm_any_range($wep) = false) {
+    return;
+}
+if (%as_loopatt > map_clock) {
+    return;
+}
+if ($usebow = false) {
+    anim(~allstar_weapon_anim, 0);
+    if ($hit > $enemyhp) {
+        $hit = $enemyhp;
+    }
+    if (%sa_attack = ^true) {
+        $hit = ~allstar_special_npc($wep, $hit);
+    }
+    $hit = ~allstar_oneshot($wep, $hit, $enemyhp);
+    %as_loopatt = calc(map_clock + ~allstar_pvm_delay($wep) - 1);
+    ~allstar_npc_hit($hit, ^hitmark_damage);
+    npc_heropoints($hit);
+    ~allstar_incombat;
+    ~allstar_melee_xp($hit);
+    %as_actiontimer = calc(map_clock + 7);
+    npc_anim(~allstar_npc_block_anim(npc_type), 0);
+    return;
+}
+if (~allstar_has_arrows($wep) = false) {
+    mes("There's no arrows left in your quiver");
+    return;
+}
+%as_loopatt = calc(map_clock + ~allstar_pvm_delay($wep) - 1);
+~allstar_delete_arrow($wep, npc_coord);
+anim(human_bow, 0);
+~allstar_npc_hit($hit, ^hitmark_damage);
+npc_heropoints($hit);
+stat_advance(ranged, calc(820 * $hit));
+stat_advance(hitpoints, calc(300 * $hit));
+~allstar_incombat;
+%as_actiontimer = calc(map_clock + 4);
+npc_anim(~allstar_npc_block_anim(npc_type), 0);
+
+// C:29116-29142: 750 xp per damage to the style's skill (controlled: 700 to Strength), 200 Hitpoints
+[proc,allstar_melee_xp](int $hit)
+switch_int (~allstar_fighttype) {
+    case 1 : stat_advance(attack, calc(750 * $hit));
+    case 2 : stat_advance(strength, calc(750 * $hit));
+    case 4 : stat_advance(defence, calc(750 * $hit));
+    case 3 : stat_advance(strength, calc(700 * $hit));
+}
+stat_advance(hitpoints, calc(200 * $hit));
+
+// client.CheckArrows (C:4476): the loop over 880-892 keeps only the last test, so only Rune arrows
+// (892) count as ammo, or a crystal bow (BUG, reproduced)
+[proc,allstar_has_arrows](int $wep)(boolean)
+if (~allstar_objid(inv_getobj(worn, ^wearpos_quiver)) = 892 | $wep = 4214) {
+    return(true);
+}
+return(false);
+
+// client.DeleteArrow + the dropped arrow under the target (owned by the shooter)
+[proc,allstar_delete_arrow](int $wep, coord $target)
+if ($wep = 4214) {
+    return;
+}
+def_obj $arrows = inv_getobj(worn, ^wearpos_quiver);
+if ($arrows = null) {
+    return;
+}
+// the last arrow is not dropped (the count is checked after the decrement)
+if (inv_total(worn, $arrows) > 1) {
+    inv_dropitem(worn, $target, $arrows, 1, ^as_drop_duration);
+} else {
+    inv_del(worn, $arrows, 1);
+}
+
+// ---- the rest of client.process ----
+
+// C:16952, WriteWildyLevel: walkable interface 197 says "@gre@Safe" in safe zones, "@red@Wild" elsewhere
+[proc,allstar_zone_overlay]
+if (~allstar_nonwild(coord) = true) {
+    if (%as_zone ! 1) {
+        %as_zone = 1;
+        if_openoverlay(wilderness_overlay);
+        if_settext(wilderness_overlay:com_1, "@gre@Safe");
+    }
+} else if (%as_zone ! 2) {
+    %as_zone = 2;
+    if_openoverlay(wilderness_overlay);
+    if_settext(wilderness_overlay:com_1, "@red@Wild");
+}
+
+// C:17002: +1 special energy every 4 cycles up to 100
+[proc,allstar_special_regen]
+if (%as_special <= 99 & %as_specdelay <= 0) {
+    %as_special = calc(%as_special + 1);
+    %as_specdelay = 4;
+    ~allstar_special_bar;
+}
+%as_specdelay = calc(%as_specdelay - 1);
+
+// C:17054: wielding the Ancient staff switches to the ancient spellbook (client.emotes)
+[proc,allstar_ancient_staff]
+if (~allstar_weapon = 4675 & %as_spellbook = 0) {
+    %as_spellbook = 2;
+    if_settab(inter_267, ^tab_magic);
+}
+
+// C:17477: the Chaos Elemental's weapon strip happens on the player's next cycle
+[proc,allstar_dropsitem]
+if (%as_dropsitem = 0) {
+    return;
+}
+if (inv_getobj(worn, ^wearpos_rhand) = null) {
+    return;
+}
+%as_dropsitem = 0;
+strongqueue(allstar_chaos_strip, 0, 0);
+
+[queue,allstar_chaos_strip]
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+if ($weapon ! null & inv_freespace(inv) > 0) {
+    inv_moveitem(worn, inv, $weapon, inv_total(worn, $weapon));
+    ~update_all($weapon);
+}
+mes("The Chaos Elemental removes your weapon!");
+~allstar_poison_player;
+
+// Ring of life (C:17795 + ApplyRingOfLife C:25679): at HP <= (int)(max HP / 10 + 0.5) the ring saves
+// the player: anim 1816, message, ring destroyed, 4 cycles later a teleport to 3254,3420.
+// SafeMyLife is only cleared by a death teleport, so after a save the player is sent back to
+// 3254,3420 every cycle until they die or log out (BUG, reproduced).
+[proc,allstar_ringoflife_cycle]
+if (inv_getobj(worn, ^wearpos_ring) = ring_of_life & stat(hitpoints) <= calc((stat_base(hitpoints) * 10 + 50) / 100)) {
+    %as_saveme = 1;
+}
+if (%as_saveme = 0) {
+    return;
+}
+if (%as_ringtele = 0) {
+    %as_ringtele = calc(map_clock + 4);
+    ~allstar_reset_attack_player;
+    anim(human_teleport_other_impact, 0);
+    mes("Ring of Life saved your life !");
+    inv_del(worn, ring_of_life, 1);
+    return;
+}
+if (%as_actiontimer <= map_clock & map_clock >= %as_ringtele) {
+    strongqueue(allstar_ringoflife_tele, 0, 0);
+}
+
+[queue,allstar_ringoflife_tele]
+anim(null, 0);
+p_telejump(0_50_53_54_28);

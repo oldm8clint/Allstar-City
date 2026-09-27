@@ -5,3 +5,37 @@ NPC spawns: 486 placed, 6 skipped
   - autospawn.cfg:56 npc 2026 at 3553,3000 is outside the map
   - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
   - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map
+  - combat: item 8447 not defined yet (allstar_item_8447); ~allstar_objid cannot see it
+  - combat: item 10229 not defined yet (allstar_item_10229); ~allstar_objid cannot see it
+  - combat: item 10431 not defined yet (allstar_item_10431); ~allstar_objid cannot see it
+  - combat: item 14915 not defined yet (allstar_item_14915); ~allstar_objid cannot see it
+  - combat: item 15156 not defined yet (allstar_item_15156); ~allstar_objid cannot see it
+  - combat: item 15333 not defined yet (allstar_item_15333); ~allstar_objid cannot see it
+  - combat: item 15334 not defined yet (allstar_item_15334); ~allstar_objid cannot see it
+  - combat: item 15335 not defined yet (allstar_item_15335); ~allstar_objid cannot see it
+  - combat: item 15336 not defined yet (allstar_item_15336); ~allstar_objid cannot see it
+Combat: 181 npc.cfg hitpoints, 37 wandering spawn tiles, 43 drop tables, 67 safe rectangles
+  - drop item 14860 not defined yet (randomjelly)
+  - drop item 11192 not defined yet (randomdarkbeast)
+  - drop item 14507 not defined yet (randombattlemagesara, randombattlemagezammy, randombattlemageguthix, randomSkeleton_Hellhound)
+  - drop item 14508 not defined yet (randombattlemagesara, randombattlemagezammy, randombattlemageguthix, randomSkeleton_Hellhound)
+  - drop item 14513 not defined yet (randombattlemagesara)
+  - drop item 14512 not defined yet (randombattlemagezammy)
+  - drop item 14511 not defined yet (randombattlemageguthix)
+  - drop item 15352 not defined yet (randomJogre, randomKBD)
+  - drop item 15345 not defined yet (randomArzinian_Being_of_Bordanzan)
+  - drop item 14521 not defined yet (randomArzinian_Being_of_Bordanzan)
+  - drop item 15346 not defined yet (randomArzinian_Being_of_Bordanzan, randomwell)
+  - drop item 14506 not defined yet (randomSkeleton_Hellhound)
+  - drop item 14509 not defined yet (randomSkeleton_Hellhound)
+  - drop item 14503 not defined yet (randomBlack_Demon)
+  - drop item 14505 not defined yet (randomBlack_Demon)
+  - drop item 14504 not defined yet (randomBlack_Demon)
+  - drop item 15185 not defined yet (randomDagannoth_Supreme, randomwell)
+  - drop item 15195 not defined yet (randomDagannoth_Supreme, randomKBD, randomwell)
+  - drop item 15350 not defined yet (randomDagannoth_Prime)
+  - drop item 15334 not defined yet (randomDagannoth_Prime, randomKBD, randomwell)
+  - drop item 15348 not defined yet (randomDagannoth_Rex, randomwell)
+  - drop item 15349 not defined yet (randomDagannoth_Rex)
+  - drop item 14519 not defined yet (randomKBD)
+  - drop item 14520 not defined yet (randomwell)

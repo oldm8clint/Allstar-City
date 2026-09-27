@@ -983,10 +983,19 @@ export default class Player extends PathingEntity {
             return false;
         }
         // The follow interaction doesn't do anything
-        if (this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3) {
+        if (this.isFollowOp()) {
             return false;
         }
         return true;
+    }
+
+    // Player op 3 is the engine's follow. Allstar-City puts Allstar-Scape's "Attack" on op 3, so with
+    // NODE_ALLSTAR_COMBAT every player op is an ordinary scripted op.
+    isFollowOp() {
+        if (Environment.NODE_ALLSTAR_COMBAT) {
+            return false;
+        }
+        return this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3;
     }
 
     getOpTrigger() {
@@ -1062,7 +1071,7 @@ export default class Player extends PathingEntity {
             return;
         }
 
-        if (this.isLastWaypoint() && (this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3)) {
+        if (this.isLastWaypoint() && this.isFollowOp()) {
             this.queueWaypoint(this.target.followX, this.target.followZ);
             return;
         }
@@ -1255,7 +1264,7 @@ export default class Player extends PathingEntity {
         this.followZ = this.lastStepZ;
         this.nextTarget = null;
 
-        const followOp = this.targetOp === ServerTriggerType.APPLAYER3 || this.targetOp === ServerTriggerType.OPPLAYER3;
+        const followOp = this.isFollowOp();
 
         let interacted = false;
 

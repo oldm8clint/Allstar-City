@@ -10,53 +10,7 @@ anim(human_death, 0);
 p_delay(3);
 %death = ^false;
 
-[queue,player_death_default]
-if (~in_castlewars_game(coord) = true) {
-    @player_death_castlewars;
-}
-if (~in_castlewars_waitingroom(coord) = true) {
-    @player_death_castlewars_waitingroom;
-}
-
-~player_death;
-midi_jingle(death2);
-// https://storage.googleapis.com/tannerdino/images/6543.jpg
-// https://youtu.be/gWmwSYxzUfo
-mes("Oh dear you are dead!");
-
-~combat_clearqueue;
-clearqueue(player_death_default);
-
-if (.finduid(%duel2accept) = true) {
-    if (~.in_duel_arena(.coord) = true & ~in_duel_arena(coord) = true) {
-        @player_death_duel;
-        return;
-    }
-}
-
-def_obj $prev_wep = inv_getobj(worn, ^wearpos_rhand);
-if (findhero = true) {
-    ~pvp_death_lose_items;
-    session_log(^log_moderator, "Player died to <.displayname>");
-} else {
-    ~player_death_lose_items;
-    // todo: what npc killed the player
-    session_log(^log_moderator, "Player died");
-}
-p_teleport(map_findsquare(0_50_50_21_18, 0, 2, ^map_findsquare_lineofwalk));
-buildappearance(worn);
-~prayer_deactivate_all;
-~follower_death;
-anim(null, 0);
-p_stopaction;
-
-~stat_reset_all;
-healenergy(10000);
-~clear_pk_skull;
-~clear_poison;
-~update_all($prev_wep);
-~initalltabs;
-~player_end_poison;
+// Allstar-City: [queue,player_death_default] is Allstar-Scape's death (allstar/combat/scripts/player_death.rs2).
 
 [proc,player_death_lose_items]
 if (staffmodlevel > 1 & map_live = true) { return; }

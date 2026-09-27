@@ -47,6 +47,8 @@ import { NpcEventRequest, NpcEventType } from '#/engine/entity/NpcEventRequest.j
 import { NpcStat } from '#/engine/entity/NpcStat.js';
 import Obj from '#/engine/entity/Obj.js';
 import Player from '#/engine/entity/Player.js';
+// Allstar-City: imported after the entity classes (AllstarCombat pulls in ScriptRunner, whose handlers need them)
+import { ALLSTAR_OBJ_REVEAL, applyAllstarNpcTypes, processAllstarNpcs, processAllstarUpdates, respawnAllstarNpc } from '#/engine/AllstarCombat.js';
 import { PlayerLoading } from '#/engine/entity/PlayerLoading.js';
 import { EntityQueueState, PlayerQueueType } from '#/engine/entity/PlayerQueueRequest.js';
 import { PlayerStat } from '#/engine/entity/PlayerStat.js';
@@ -219,6 +221,8 @@ class World {
         SpotanimType.load('data/pack');
         CategoryType.load('data/pack');
         EnumType.load('data/pack');
+        applyAllstarNpcTypes();
+        Npc.onRespawn = Environment.NODE_ALLSTAR_COMBAT ? respawnAllstarNpc : null;
         StructType.load('data/pack');
         InvType.load('data/pack');
 
@@ -374,6 +378,9 @@ class World {
             // - movement
             // - close interface if attempting to logout
             this.processPlayers();
+
+            // Allstar-City: pending Allstar-Scape hits (NODE_ALLSTAR_COMBAT)
+            processAllstarUpdates();
 
             // player logout
             this.processLogouts();
@@ -571,6 +578,9 @@ class World {
                 console.error(err);
             }
         }
+
+        // Allstar-City: NPCHandler.process() for every npc (NODE_ALLSTAR_COMBAT)
+        processAllstarNpcs();
 
         // - npc hunt players if not busy
         if (this.getTotalPlayers() > 0) {
@@ -1308,7 +1318,8 @@ class World {
         }
 
         const zone = this.gameMap.getZone(npc.x, npc.z, npc.level);
-        const adjustedDuration = this.scaleByPlayerCount(duration);
+        // Allstar-City: Allstar-Scape respawn times do not depend on the player count
+        const adjustedDuration = Environment.NODE_ALLSTAR_COMBAT ? duration : this.scaleByPlayerCount(duration);
         zone.leave(npc);
         npc.isActive = false;
 
@@ -1487,8 +1498,8 @@ class World {
             obj.setLifeCycle(duration);
             obj.receiver64 = receiver64;
 
-            // Reveal Obj in 100 ticks
-            obj.reveal = Obj.REVEAL;
+            // Reveal Obj in 100 ticks (Allstar-City: 60 cycles)
+            obj.reveal = Environment.NODE_ALLSTAR_COMBAT ? ALLSTAR_OBJ_REVEAL : Obj.REVEAL;
         }
         // If the obj is dropped to all
         else {

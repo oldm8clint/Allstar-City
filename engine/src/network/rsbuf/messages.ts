@@ -299,15 +299,17 @@ export class NpcInfoDamage implements InfoMessage {
         private readonly baseHitpoints: number
     ) {}
 
+    // Allstar-City: damage and hitpoints are 2 bytes so NPCs can have more than 255 hitpoints
+    // (Allstar-Scape NPCs have up to 5000); the client reads them with g2.
     encode(buf: Packet): void {
-        buf.p1_alt1(this.damage);
+        buf.p2(this.damage);
         buf.p1_alt1(this.damageType);
-        buf.p1(this.currentHitpoints);
-        buf.p1_alt3(this.baseHitpoints);
+        buf.p2(this.currentHitpoints);
+        buf.p2(this.baseHitpoints);
     }
 
     test(): number {
-        return 4;
+        return 7;
     }
 
     persists(): boolean {
@@ -323,15 +325,16 @@ export class NpcInfoDamage2 implements InfoMessage {
         private readonly baseHitpoints: number
     ) {}
 
+    // Allstar-City: 2-byte damage and hitpoints, see NpcInfoDamage
     encode(buf: Packet): void {
-        buf.p1_alt3(this.damage);
+        buf.p2(this.damage);
         buf.p1_alt3(this.damageType);
-        buf.p1(this.currentHitpoints);
-        buf.p1_alt2(this.baseHitpoints);
+        buf.p2(this.currentHitpoints);
+        buf.p2(this.baseHitpoints);
     }
 
     test(): number {
-        return 4;
+        return 7;
     }
 
     persists(): boolean {

@@ -1,0 +1,31 @@
+// Temporary: filled in by the PvP, special attack, prayer and hazard scripts.
+[proc,allstar_reset_attack_player]
+%as_atkplayer = null;
+
+[proc,allstar_attack_player_cycle]
+
+[proc,allstar_spec2_cycle]
+
+[proc,allstar_special_bar]
+%sa_energy = calc(%as_special * 10);
+
+[proc,allstar_special_npc](int $wep, int $hit)(int)
+return($hit);
+
+[proc,allstar_oneshot](int $wep, int $hit, int $enemyhp)(int)
+if ($wep = 747 | $wep = 6527) {
+    return($enemyhp);
+}
+return($hit);
+
+[proc,allstar_area_hazards]
+
+[proc,allstar_player_poison]
+
+[proc,allstar_poison_wears_off]
+
+[proc,allstar_poison_player]
+
+[proc,allstar_prayer_drain]
+
+[proc,allstar_prayer_reset]

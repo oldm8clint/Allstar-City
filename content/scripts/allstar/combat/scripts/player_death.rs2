@@ -1,0 +1,221 @@
+// Allstar-Scape player death (client.ApplyDead C:25392, youdied C:9123, PKz C:25287,
+// checkPKReward C:966; npcs_rules.md sections 4.3-4.4). Instant: no death animation delay.
+
+// Every other way a player can die (Lost City damage_self callers) ends up here too.
+[queue,player_death_default]
+~allstar_apply_dead;
+
+[queue,allstar_apply_dead]
+~allstar_apply_dead;
+
+[proc,allstar_apply_dead]
+%as_dead = 0;
+~allstar_reset_attack_player;
+~allstar_reset_attack_npc;
+~allstar_prayer_reset;
+
+// keepItem1-3: "highest" is declared inside the loop, so each pass keeps the LAST inventory slot whose
+// item is worth something (item.cfg value >= 1), each with an id different from the ones before
+// (BUG, reproduced). Equipment is never kept.
+def_obj $keep1 = ~allstar_keep_item(null, null);
+def_int $count1 = 0;
+if ($keep1 ! null) {
+    $count1 = ~allstar_keep_count($keep1);
+}
+def_obj $keep2 = ~allstar_keep_item($keep1, null);
+def_int $count2 = 0;
+if ($keep2 ! null) {
+    $count2 = ~allstar_keep_count($keep2);
+}
+def_obj $keep3 = ~allstar_keep_item($keep1, $keep2);
+def_int $count3 = 0;
+if ($keep3 ! null) {
+    $count3 = ~allstar_keep_count($keep3);
+}
+inv_clear(deathkeep);
+if ($keep1 ! null) {
+    inv_moveitem(inv, deathkeep, $keep1, $count1);
+}
+if ($keep2 ! null) {
+    inv_moveitem(inv, deathkeep, $keep2, $count2);
+}
+if ($keep3 ! null) {
+    inv_moveitem(inv, deathkeep, $keep3, $count3);
+}
+
+// youdied: everything worn and carried drops on the death tile, owned by KillerId
+def_obj $weapon = inv_getobj(worn, ^wearpos_rhand);
+~allstar_drop_all(worn);
+~allstar_drop_all(inv);
+mes("ROFL BETTER LUCK NEXT TIME!");
+~allstar_pkz;
+
+p_telejump(movecoord(^as_home, 0, coordy(coord), 0));
+anim(null, 0);
+stat_heal(hitpoints, calc(stat_base(hitpoints) - stat(hitpoints)), 0);
+%as_poisondelay = 0;
+%as_killer = null;
+%as_saveme = 0;
+%as_ringtele = 0;
+// the kept stacks come back in order (addItem: first free slots)
+if ($keep1 ! null) {
+    inv_moveitem(deathkeep, inv, $keep1, $count1);
+}
+if ($keep2 ! null) {
+    inv_moveitem(deathkeep, inv, $keep2, $count2);
+}
+if ($keep3 ! null) {
+    inv_moveitem(deathkeep, inv, $keep3, $count3);
+}
+inv_clear(deathkeep);
+buildappearance(worn);
+~update_all($weapon);
+
+// the last inventory slot holding an item worth >= 1 that is neither $not1 nor $not2
+[proc,allstar_keep_item](obj $not1, obj $not2)(obj)
+def_obj $keep = null;
+def_int $slot = 0;
+def_obj $obj = null;
+while ($slot < inv_size(inv)) {
+    $obj = inv_getobj(inv, $slot);
+    if ($obj ! null & $obj ! $not1 & $obj ! $not2 & enum(obj, int, allstar_item_worthless, $obj) = 0) {
+        $keep = $obj;
+    }
+    $slot = calc($slot + 1);
+}
+return($keep);
+
+// keepItemAmount: the amount in that last slot (a whole stack, or 1)
+[proc,allstar_keep_count](obj $keep)(int)
+def_int $slot = calc(inv_size(inv) - 1);
+while ($slot >= 0) {
+    if (inv_getobj(inv, $slot) = $keep) {
+        return(inv_getnum(inv, $slot));
+    }
+    $slot = calc($slot - 1);
+}
+return(0);
+
+// PKz: pk points for KillerId (1 if stronger than the victim, 2 if equal, 3 if weaker), no points for
+// the same victim twice in a row. killcount is a static field shared by every player (BUG,
+// reproduced as one world counter), and deathcount is set to 1 instead of incremented (BUG, reproduced).
+[proc,allstar_pkz]
+if (%as_killer = null) {
+    %allstar_deaths = 1;
+    return;
+}
+if (.finduid(%as_killer) = false) {
+    return;
+}
+def_string $victim = displayname;
+def_int $mine = ~allstar_combat_level;
+def_int $theirs = ~.allstar_combat_level_other;
+def_int $points = 2;
+if ($theirs > $mine) {
+    $points = 1;
+} else if ($theirs < $mine) {
+    $points = 3;
+}
+if (compare(lowercase(.%as_lastkill), lowercase($victim)) = 0) {
+    .mes("You recieve no pk points as you have pked <$victim> twice in a row");
+} else {
+    .%allstar_pkpoints = calc(.%allstar_pkpoints + $points);
+    %allstar_killcount = calc(%allstar_killcount + 1);
+    .%allstar_kills = %allstar_killcount;
+    .mes("You recieve <tostring($points)> player-kill, you now have <tostring(.%allstar_pkpoints)> player-kill points.");
+    .mes("You now have a total of <tostring(%allstar_killcount)> player kills.");
+    ~allstar_pk_reward;
+    .%as_lastkill = $victim;
+    world_broadcast("<.displayname> has FUCKEN OWNED <$victim>, <.displayname> now has <tostring(.%allstar_pkpoints)> pk points and <tostring(%allstar_killcount)> kills!");
+}
+%allstar_deaths = 1;
+
+// checkPKReward: rewards when the points hit a value exactly (points go up 1-3 at a time)
+[proc,allstar_pk_reward]
+def_int $pk = .%allstar_pkpoints;
+if ($pk = 500000) {
+    ~.allstar_pk_reward_item(red_partyhat, "Have a phat =)");
+}
+if ($pk = 750000) {
+    ~.allstar_pk_reward_item(yellow_partyhat, "Have a phat =)");
+}
+if ($pk = 100000) {
+    ~.allstar_pk_reward_item(blue_partyhat, "Have a phat =)");
+}
+if ($pk = 150000) {
+    ~.allstar_pk_reward_item(green_partyhat, "Have a phat =)");
+}
+if ($pk = 200000) {
+    ~.allstar_pk_reward_item(purple_partyhat, "Have a phat =)");
+}
+if ($pk = 300000) {
+    ~.allstar_pk_reward_item(white_partyhat, "Have a phat =)");
+}
+if ($pk = 500000) {
+    ~.allstar_pk_reward_item(tzhaar_cape_fire, "Have a firecape =)");
+}
+
+[proc,.allstar_pk_reward_item](namedobj $obj, string $text)
+~.allstar_additem($obj, 1);
+.mes("Congratz on getting <tostring(.%allstar_pkpoints)> pk points! <$text>");
+
+// Player combat level (Player.java P:897-926) from base levels on the Allstar curve:
+// base = 0.25 Def + 0.25 HP + 0.125 Prayer; if 1.5 Magic > Att + Str: + 0.4875 Magic, else if
+// 1.5 Ranged > Att + Str: + 0.4875 Ranged, else + 0.325 (Att + Str); truncated.
+[proc,allstar_combat_level]()(int)
+return(~allstar_combat_formula(stat_base(attack), stat_base(defence), stat_base(strength), stat_base(hitpoints), stat_base(ranged), stat_base(prayer), stat_base(magic)));
+
+[proc,.allstar_combat_level_other]()(int)
+return(~allstar_combat_formula(.stat_base(attack), .stat_base(defence), .stat_base(strength), .stat_base(hitpoints), .stat_base(ranged), .stat_base(prayer), .stat_base(magic)));
+
+[proc,allstar_combat_formula](int $att, int $def, int $str, int $hp, int $rng, int $pray, int $mage)(int)
+def_int $base = calc($def * 2500 + $hp * 2500 + $pray * 1250);
+def_int $attstr = calc($att + $str);
+if (calc($mage * 3 / 2) > $attstr) {
+    return(calc(($base + $mage * 4875) / 10000));
+}
+if (calc($rng * 3 / 2) > $attstr) {
+    return(calc(($base + $rng * 4875) / 10000));
+}
+return(calc(($base + $attstr * 3250) / 10000));
+
+// ItemHandler.addItem(item, x, y, amount, KillerId) for every item: the killer (.active_player) sees
+// them first; with no other killer they belong to the player.
+[proc,allstar_drop_all](inv $inv)
+def_coord $tile = coord;
+def_int $slot = 0;
+if (%as_killer ! null) {
+    if (.finduid(%as_killer) = true) {
+        while ($slot < inv_size($inv)) {
+            if (inv_getobj($inv, $slot) ! null) {
+                both_dropslot($inv, $tile, $slot, ^as_drop_duration);
+            }
+            $slot = calc($slot + 1);
+        }
+        return;
+    }
+}
+while ($slot < inv_size($inv)) {
+    if (inv_getobj($inv, $slot) ! null) {
+        inv_dropslot($inv, $tile, $slot, ^as_drop_duration);
+    }
+    $slot = calc($slot + 1);
+}
+
+// core.rs2 ~allstar_additem for the secondary player (client.addItem)
+[proc,.allstar_additem](namedobj $obj, int $count)(boolean)
+if (.inv_freespace(inv) < 1) {
+    .mes("Not enough space in your inventory.");
+    return (false);
+}
+if (oc_stackable($obj) = false | $count < 1) {
+    $count = 1;
+}
+def_int $total = .inv_total(inv, $obj);
+if (calc($total + $count) >= 999999999 | calc($total + $count) < 0) {
+    $count = calc(999999999 - $total);
+}
+if ($count > 0) {
+    .inv_add(inv, $obj, $count);
+}
+return (true);
