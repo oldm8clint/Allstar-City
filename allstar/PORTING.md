@@ -44,7 +44,7 @@ Status: `todo` / `wip` / `done` / `n/a`.
 | Emote-tab teleports | button handler | todo | |
 | Skills | `client.*` skill methods | todo | |
 | Items (eat, drink, bury, ...) | packet handlers | todo | |
-| Custom items (id >= 7956) | `item.cfg` | todo | need models from later caches |
+| Custom items (id >= 7956) | `item.cfg`, `Item4.java`, `client.GetCL*` | done | 154 objs `allstar_item_<id>` (obj id = Allstar id), enum `allstar_items`; models converted from the OSRS cache by `allstar/tools/models` (which can also take the players' 317 client cache); stand-ins: Summoning cape/(t)/hood, 9540, 14819, 15181 |
 | Clue scrolls, quests | `Clues.java`, `client.quest/clue` | todo | |
 | Minigames | | todo | |
 | Remove Lost City-only gameplay | | todo | quests, tutorial, random events, etc. |
