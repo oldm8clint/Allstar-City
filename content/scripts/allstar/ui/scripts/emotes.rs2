@@ -46,8 +46,7 @@ while (.huntnext = true) {
 // Cry (161): capeEmote (C:1066). Per worn cape: graphics on the player's tile, an animation, an
 // overhead text and the skill's current level set to its base level + 1. (The level was also
 // written to 317 component 4016; the 377 stats tab draws its own numbers.) Most capes are Allstar
-// custom items (from the customitems workstream, allstar_item_<id>): their entries are commented
-// out until those objs exist.
+// custom items (allstar_item_<id>).
 [proc,allstar_cape_emote]
 def_obj $cape = inv_getobj(worn, ^wearpos_back);
 if ($cape = null) {
@@ -64,94 +63,94 @@ switch_obj ($cape) {
     case poh_wooden_shield :
         ~allstar_cape_gfx(350, 448, 474, -1);
         say("A hunter skill cape.");
-    // case allstar_item_14073, allstar_item_14074 :
-    //     ~allstar_cape_gfx(346, 427, 83, -1);
-    //     ~allstar_anim_id(2890);
-    //     say("An attack skill cape.");
-    //     ~allstar_cape_boost(attack);
-    // case allstar_item_14076, allstar_item_14077 :
-    //     ~allstar_cape_gfx(406, 327, 436, -1);
-    //     ~allstar_anim_id(750);
-    //     say("A strength skill cape.");
-    //     ~allstar_cape_boost(strength);
-    // case allstar_item_14079, allstar_item_14080 :
-    //     ~allstar_cape_gfx(8, 57, 240, -1);
-    //     ~allstar_anim_id(2720);
-    //     say("A defence skill cape.");
-    //     ~allstar_cape_boost(defence);
-    // case allstar_item_14094, allstar_item_14095 :
-    //     ~allstar_cape_gfx(444, 574, 199, 293);
-    //     ~allstar_anim_id(1500);
-    //     say("A hitpoints skill cape.");
-    //     ~allstar_cape_boost(hitpoints);
-    // case allstar_item_14082, allstar_item_14083 :
-    //     ~allstar_cape_gfx(472, 474, 325, 0);
-    //     ~allstar_anim_id(426);
-    //     say("A ranging skill cape.");
-    //     ~allstar_cape_boost(ranged);
-    // case allstar_item_14085, allstar_item_14086 :
-    //     ~allstar_cape_gfx(293, 281, 327, 431);
-    //     ~allstar_anim_id(1331);
-    //     say("A prayer skill cape.");
-    //     ~allstar_cape_boost(prayer);
-    // case allstar_item_14088 :
-    //     ~allstar_cape_gfx(409, 498, 497, -1);
-    //     ~allstar_anim_id(811);
-    //     say("A magic skill cape.");
-    //     ~allstar_cape_boost(magic);
-    // case allstar_item_14127, allstar_item_14128 :
-    //     // one tile north
-    //     ~allstar_gfx_id(563, coordx(coord), calc(coordz(coord) + 1));
-    //     ~allstar_anim_id(883);
-    //     say("A cooking skill cape.");
-    //     ~allstar_cape_boost(cooking);
-    // case allstar_item_14133, allstar_item_14134 :
-    //     ~allstar_cape_gfx(187, 247, -1, -1);
-    //     say("A woodcutting skill cape.");
-    //     ~allstar_cape_boost(woodcutting);
-    // case allstar_item_14109, allstar_item_14110 :
-    //     ~allstar_cape_gfx(588, -1, -1, -1);
-    //     say("A fletching skill cape.");
-    //     ~allstar_cape_boost(fletching);
-    // case allstar_item_14124 :
-    //     // pEmote = 0x2575: no such stand animation in the 377 cache
-    //     ~allstar_cape_gfx(68, -1, -1, -1);
-    //     say("A fishing skill cape.");
-    //     ~allstar_cape_boost(fishing);
-    // case allstar_item_14130 :
-    //     ~allstar_cape_gfx(453, 446, -1, -1);
-    //     say("A firemaking skill cape.");
-    // case allstar_item_14105 :
-    //     // the Thieve Hood
-    //     ~allstar_cape_gfx(239, -1, -1, -1);
-    //     say("A crafting skill cape.");
-    // case allstar_item_14121 :
-    //     ~allstar_cape_gfx(436, -1, -1, -1);
-    //     say("A smithing skill cape.");
-    //     ~allstar_cape_boost(smithing);
-    // case allstar_item_14118 :
-    //     ~allstar_cape_gfx(287, -1, -1, -1);
-    //     say("A mining skill cape.");
-    // case allstar_item_14103, allstar_item_14104 :
-    //     ~allstar_cape_gfx(421, 143, -1, -1);
-    //     say("A thieving skill cape.");
-    //     ~allstar_cape_boost(thieving);
-    // case allstar_item_14112, allstar_item_14113 :
-    //     ~allstar_cape_gfx(466, 468, -1, -1);
-    //     say("A slayer skill cape.");
-    //     ~allstar_cape_boost(slayer);
-    // case allstar_item_14136 :
-    //     ~allstar_cape_gfx(568, 569, 593, -1);
-    //     say("A farming skill cape.");
-    // case allstar_item_14091 :
-    //     ~allstar_cape_gfx(111, 185, 186, -1);
-    //     say("A runecrafting skill cape.");
-    // case allstar_item_15713, allstar_item_15714 :
-    //     // the Summoning cape boosts Attack
-    //     ~allstar_cape_gfx(346, 427, 83, -1);
-    //     ~allstar_anim_id(2890);
-    //     say("A Summoning skill cape.");
-    //     ~allstar_cape_boost(attack);
+    case allstar_item_14073, allstar_item_14074 :
+        ~allstar_cape_gfx(346, 427, 83, -1);
+        ~allstar_anim_id(2890);
+        say("An attack skill cape.");
+        ~allstar_cape_boost(attack);
+    case allstar_item_14076, allstar_item_14077 :
+        ~allstar_cape_gfx(406, 327, 436, -1);
+        ~allstar_anim_id(750);
+        say("A strength skill cape.");
+        ~allstar_cape_boost(strength);
+    case allstar_item_14079, allstar_item_14080 :
+        ~allstar_cape_gfx(8, 57, 240, -1);
+        ~allstar_anim_id(2720);
+        say("A defence skill cape.");
+        ~allstar_cape_boost(defence);
+    case allstar_item_14094, allstar_item_14095 :
+        ~allstar_cape_gfx(444, 574, 199, 293);
+        ~allstar_anim_id(1500);
+        say("A hitpoints skill cape.");
+        ~allstar_cape_boost(hitpoints);
+    case allstar_item_14082, allstar_item_14083 :
+        ~allstar_cape_gfx(472, 474, 325, 0);
+        ~allstar_anim_id(426);
+        say("A ranging skill cape.");
+        ~allstar_cape_boost(ranged);
+    case allstar_item_14085, allstar_item_14086 :
+        ~allstar_cape_gfx(293, 281, 327, 431);
+        ~allstar_anim_id(1331);
+        say("A prayer skill cape.");
+        ~allstar_cape_boost(prayer);
+    case allstar_item_14088 :
+        ~allstar_cape_gfx(409, 498, 497, -1);
+        ~allstar_anim_id(811);
+        say("A magic skill cape.");
+        ~allstar_cape_boost(magic);
+    case allstar_item_14127, allstar_item_14128 :
+        // one tile north
+        ~allstar_gfx_id(563, coordx(coord), calc(coordz(coord) + 1));
+        ~allstar_anim_id(883);
+        say("A cooking skill cape.");
+        ~allstar_cape_boost(cooking);
+    case allstar_item_14133, allstar_item_14134 :
+        ~allstar_cape_gfx(187, 247, -1, -1);
+        say("A woodcutting skill cape.");
+        ~allstar_cape_boost(woodcutting);
+    case allstar_item_14109, allstar_item_14110 :
+        ~allstar_cape_gfx(588, -1, -1, -1);
+        say("A fletching skill cape.");
+        ~allstar_cape_boost(fletching);
+    case allstar_item_14124 :
+        // pEmote = 0x2575: no such stand animation in the 377 cache
+        ~allstar_cape_gfx(68, -1, -1, -1);
+        say("A fishing skill cape.");
+        ~allstar_cape_boost(fishing);
+    case allstar_item_14130 :
+        ~allstar_cape_gfx(453, 446, -1, -1);
+        say("A firemaking skill cape.");
+    case allstar_item_14105 :
+        // the Thieve Hood
+        ~allstar_cape_gfx(239, -1, -1, -1);
+        say("A crafting skill cape.");
+    case allstar_item_14121 :
+        ~allstar_cape_gfx(436, -1, -1, -1);
+        say("A smithing skill cape.");
+        ~allstar_cape_boost(smithing);
+    case allstar_item_14118 :
+        ~allstar_cape_gfx(287, -1, -1, -1);
+        say("A mining skill cape.");
+    case allstar_item_14103, allstar_item_14104 :
+        ~allstar_cape_gfx(421, 143, -1, -1);
+        say("A thieving skill cape.");
+        ~allstar_cape_boost(thieving);
+    case allstar_item_14112, allstar_item_14113 :
+        ~allstar_cape_gfx(466, 468, -1, -1);
+        say("A slayer skill cape.");
+        ~allstar_cape_boost(slayer);
+    case allstar_item_14136 :
+        ~allstar_cape_gfx(568, 569, 593, -1);
+        say("A farming skill cape.");
+    case allstar_item_14091 :
+        ~allstar_cape_gfx(111, 185, 186, -1);
+        say("A runecrafting skill cape.");
+    case allstar_item_15713, allstar_item_15714 :
+        // the Summoning cape boosts Attack
+        ~allstar_cape_gfx(346, 427, 83, -1);
+        ~allstar_anim_id(2890);
+        say("A Summoning skill cape.");
+        ~allstar_cape_boost(attack);
 }
 
 // up to four stillgfx on the player's tile (-1: none)
