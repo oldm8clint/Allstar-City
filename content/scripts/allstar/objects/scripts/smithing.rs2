@@ -1,0 +1,5 @@
+// Allstar-Scape anvil smithing (initSmithing and the smithing column buttons, client.java L6983,
+// L22711-L23300). Filled in below.
+
+[label,allstar_init_smithing](obj $bar)
+mes("TODO smithing <oc_name($bar)>");

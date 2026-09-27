@@ -1,0 +1,97 @@
+// Allstar-Scape object infrastructure: timers, teleports and small client.java helpers shared by the
+// object handlers (allstar/spec/objects_buttons.md section 0).
+
+// actionTimer == 0
+[proc,allstar_action_ready]()(boolean)
+if (map_clock >= %allstar_action_timer) {
+    return(true);
+}
+return(false);
+
+// actionTimer = $cycles
+[proc,allstar_action_timer](int $cycles)
+%allstar_action_timer = calc(map_clock + $cycles);
+
+// theifTimer == 0
+[proc,allstar_thief_ready]()(boolean)
+if (map_clock >= %allstar_thief_timer) {
+    return(true);
+}
+return(false);
+
+// teleportToX/Y from a handler: happens the same cycle, no animation, height kept. $level is the new
+// heightLevel; the 317 client only kept its low 2 bits (heightLevel - 1 on level 0 showed plane 3).
+[proc,allstar_obj_tele](int $x, int $z, int $level)
+def_coord $dest = movecoord(coord, calc($x - coordx(coord)), calc(and($level, 3) - coordy(coord)), calc($z - coordz(coord)));
+p_telejump($dest);
+// client.process() ran KBDLair() and Dungeon1() for everyone; the check runs while inside them
+if (~allstar_zone_kbd($dest) = true | ~allstar_zone_dungeon($dest) = true) {
+    ~allstar_zone_start;
+}
+
+[proc,allstar_obj_tele_here](int $x, int $z)
+~allstar_obj_tele($x, $z, coordy(coord));
+
+// GoodDistance(objectX, objectY, playerX, playerY, distance): Chebyshev distance to the loc origin
+[proc,allstar_gooddistance](coord $loc, int $distance)(boolean)
+if (distance(coord, $loc) <= $distance) {
+    return(true);
+}
+return(false);
+
+// GoodDistance2: same row or column only, within $distance
+[proc,allstar_gooddistance2](coord $loc, int $distance)(boolean)
+def_int $dx = abs(calc(coordx(coord) - coordx($loc)));
+def_int $dz = abs(calc(coordz(coord) - coordz($loc)));
+if ($dx = 0 & $dz <= $distance) {
+    return(true);
+}
+if ($dz = 0 & $dx <= $distance) {
+    return(true);
+}
+return(false);
+
+// stillgfx(id, absY, absX): spotanim on the player's tile, height 0
+[proc,allstar_stillgfx](spotanim $spotanim)
+spotanim_map($spotanim, coord, 0, 0);
+
+// pEmote: the stand animation (playerSE is restored by resetAnimation)
+[proc,allstar_standanim](seq $seq)
+readyanim($seq);
+buildappearance(worn);
+
+[proc,allstar_reset_standanim]
+~update_bas;
+
+// deleteItem(id, getItemSlot(id), 1) on a non-stackable item: removes one if carried
+[proc,allstar_delone](obj $obj)
+if (inv_total(inv, $obj) > 0) {
+    inv_del(inv, $obj, 1);
+}
+
+// statName[] as used in "You need a <skill> level of ..." messages
+[proc,allstar_statname](stat $stat)(string)
+switch_stat ($stat) {
+    case attack : return("attack");
+    case defence : return("defence");
+    case strength : return("strength");
+    case hitpoints : return("hitpoints");
+    case ranged : return("ranged");
+    case prayer : return("prayer");
+    case magic : return("magic");
+    case cooking : return("cooking");
+    case woodcutting : return("woodcutting");
+    case fletching : return("fletching");
+    case fishing : return("fishing");
+    case firemaking : return("firemaking");
+    case crafting : return("crafting");
+    case smithing : return("smithing");
+    case mining : return("mining");
+    case herblore : return("herblore");
+    case agility : return("agility");
+    case thieving : return("thieving");
+    case slayer : return("slayer");
+    case farming : return("farming");
+    case runecraft : return("runecrafting");
+    case default : return("");
+}

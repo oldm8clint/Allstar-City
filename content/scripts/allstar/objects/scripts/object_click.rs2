@@ -1,0 +1,554 @@
+// Allstar-Scape object clicks (client.java packets 132 / 252 / 70 -> objectClick / objectClick2 /
+// objectClick3, allstar/spec/objects_buttons.md sections 2-4).
+//
+// Allstar-Scape ran a handler as soon as the player was within Chebyshev distance 2 of the clicked
+// loc's coordinate (GoodDistance: no line of sight, height ignored), otherwise it walked the player
+// there first. Every loc id with a case behaves the same wherever it is; locs without a case do
+// nothing, silently. The ap triggers reproduce the reach (p_aprange keeps the player walking) and the
+// op triggers catch locs the ap check cannot see (behind walls, doors). A loc without an Allstar
+// handler is left to the op triggers (p_aprange 0), so specific [oploc*,<loc>] scripts still run.
+
+[aploc1,_]
+def_int $range = ~allstar_objectclick1_range(loc_type);
+if (distance(coord, loc_coord) > $range) {
+    p_aprange($range);
+    return;
+}
+@allstar_objectclick1(true);
+
+[oploc1,_]
+if (distance(coord, loc_coord) > ~allstar_objectclick1_range(loc_type)) {
+    return;
+}
+@allstar_objectclick1(false);
+
+[aploc2,_]
+def_int $range = ~allstar_objectclick23_range(loc_type);
+if (distance(coord, loc_coord) > $range) {
+    p_aprange($range);
+    return;
+}
+@allstar_objectclick2(true);
+
+[oploc2,_]
+if (distance(coord, loc_coord) > ~allstar_objectclick23_range(loc_type)) {
+    return;
+}
+@allstar_objectclick2(false);
+
+[aploc3,_]
+def_int $range = ~allstar_objectclick23_range(loc_type);
+if (distance(coord, loc_coord) > $range) {
+    p_aprange($range);
+    return;
+}
+@allstar_objectclick3(true);
+
+[oploc3,_]
+if (distance(coord, loc_coord) > ~allstar_objectclick23_range(loc_type)) {
+    return;
+}
+@allstar_objectclick3(false);
+
+// packet 234 (fourth option) only printed debug output and the fifth option had no handler
+[oploc4,_]
+[oploc5,_]
+
+// destinationRange: 2, but 6912 needed 3 and the first option of the Tears of Guthix rocks 1
+[proc,allstar_objectclick1_range](loc $loc)(int)
+if ($loc = lost_tribe_hole_2) {
+    return(3);
+}
+if ($loc = tog_climbing_rocks_down | $loc = tog_climbing_rocks_up) {
+    return(1);
+}
+return(2);
+
+[proc,allstar_objectclick23_range](loc $loc)(int)
+if ($loc = lost_tribe_hole_2) {
+    return(3);
+}
+return(2);
+
+// A loc without an Allstar-Scape handler: an ap trigger lets the op triggers have it.
+[label,allstar_objectclick_none](boolean $ap)
+if ($ap = true) {
+    p_aprange(0);
+}
+
+// true when the clicked loc is at (x, z) on any level (Allstar-Scape compared objectX/objectY only)
+[proc,allstar_objat](int $x, int $z)(boolean)
+if (coordx(loc_coord) = $x & coordz(loc_coord) = $z) {
+    return(true);
+}
+return(false);
+
+// ---- objectClick (client.java L2540) ----
+[label,allstar_objectclick1](boolean $ap)
+switch_loc (loc_type) {
+    // QUEST_1 objects
+    case slayer_dungeon_entrance :
+        if (~allstar_objat(2797, 3614) = true) {
+            mes("You crawl through the cave");
+            ~allstar_obj_tele_here(2772, 10231);
+        }
+    case skullcavebarrel :
+        if (~allstar_objat(2863, 9881) = true) {
+            mes("You smash the barrel and climb into pk area click pk to get back on emote tab");
+            ~allstar_obj_tele_here(2863, 9880);
+        }
+    case trollromance_snow_cavewall_crevis :
+        if (~allstar_objat(2772, 10233) = true) {
+            mes("You crawl through the cravass");
+            ~allstar_obj_tele_here(2795, 3614);
+        }
+    // QUEST_3 objects: both mage guild doors fall through into the generic door code below
+    case magicguild_door_l :
+        @allstar_magicguild_door(3087);
+    case magicguild_door_r :
+        @allstar_magicguild_door(3088);
+    case fai_wiztower_poor_door, loc_1537, famcrest_doorh2, famcrest_doorg2h1 :
+        @allstar_door_idminus1;
+    case loc_1536 :
+        @allstar_door_1536;
+    case loc_1553, loc_1551, loc_1552, loc_1556 :
+        @allstar_double_gate;
+    case loc_1516, loc_1517, loc_1519, loc_1520 :
+        @allstar_large_door;
+    case bankbooth :
+        @allstar_bankbooth_talk($ap);
+    case dt_zaros_altar :
+        @allstar_ancient_altar;
+    case bananatreefull, bananatreefour, bananatreethree, bananatreetwo, bananatreeone, bananatreeempty :
+        ~allstar_give(banana, 1);
+        mes("You pick a banana.");
+    case trapdoor, trapdoor_level1, trapdoor_open, trapdoor_open_level1, loc_1759, loc_1762, climbing_rope_top, loc_1764, loc_2113, troll_stronghold_door, tunnelstairs, tunnelstairs2, goblin_cave_entrance, vampire_trap1, loc_1754, volcano_entrance, wizards_tower_laddertop, thrttavernbasementladder, loc_5130, loc_9358, zanarisladderout2 :
+        // Edgeville trapdoor to the dungeon, every other one straight down
+        if (~allstar_objat(3097, 3468) = true) {
+            ~allstar_obj_tele_here(3096, 9867);
+        } else {
+            ~allstar_obj_tele_here(coordx(coord), calc(coordz(coord) + 6400));
+        }
+    case loc_2559 :
+        ~allstar_replaceobject(loc_coord, loc_1531, -2);
+    // Slayer Tower
+    case slayertower_door :
+        @allstar_slayertower_door;
+    case loc_4495 :
+        ~allstar_obj_tele(3417, 3541, calc(coordy(coord) + 1));
+    case loc_4496 :
+        ~allstar_obj_tele(3412, 3540, calc(coordy(coord) - 1));
+    case loc_9319 :
+        ~allstar_obj_tele(coordx(coord), coordz(coord), calc(coordy(coord) + 1));
+    case loc_9320 :
+        ~allstar_obj_tele(coordx(coord), coordz(coord), calc(coordy(coord) - 1));
+    case loc_4494 :
+        ~allstar_obj_tele(3438, 3538, calc(coordy(coord) - 1));
+    case loc_4493 :
+        ~allstar_obj_tele(3433, 3537, 1);
+    case loc_10527 :
+        @allstar_slayertower_upper_door(3426, 1);
+    case loc_10529 :
+        @allstar_slayertower_upper_door(3427, 1);
+    case loc_5126 :
+        @allstar_slayertower_top_door;
+    // Mage Arena
+    case magearena_lever_from_cellar :
+        if (coordz(coord) = 4712) {
+            if (%allstar_teleblock = 1) {
+                mes("A magical force stops you from teleporting.");
+            } else {
+                ~allstar_obj_tele_here(3090, 3956);
+            }
+        }
+    case magearena_lever_to_cellar :
+        // no break: the lever also runs the members gate code and turns into loc 2630
+        if (coordz(coord) = 3956) {
+            if (%allstar_teleblock = 1) {
+                mes("A magical force stops you from teleporting.");
+            } else {
+                ~allstar_obj_tele_here(2539, 4712);
+            }
+        }
+        @allstar_membergate_l;
+    case membergatel :
+        @allstar_membergate_l;
+    case membergater :
+        @allstar_membergate_r;
+    case magearena_waterportal1 :
+        ~allstar_obj_tele_here(2509, 4689);
+    case magearena_waterportal2 :
+        ~allstar_obj_tele_here(2542, 4718);
+    case loc_2557 :
+        // objectID = +2: the door turns into loc 2
+        ~allstar_replaceobject(loc_coord, mcannoncave, 0);
+    case loc_1765 :
+        if (~allstar_objat(3017, 3849) = true) {
+            ~allstar_obj_tele_here(2773, 9341);
+            mes("You climb down the ladder to find a secret cave!");
+        }
+    case shaman_entrance_caver :
+        if (~allstar_objat(2773, 9342) = true) {
+            ~allstar_obj_tele_here(3016, 3848);
+            mes("You climb out of the cave back into the wilderness.");
+        }
+    case shaman_entrance_cavel :
+        if (~allstar_objat(2772, 9342) = true) {
+            ~allstar_obj_tele_here(3016, 3848);
+            mes("You climb out of the cave back into the wilderness.");
+        }
+    case bookcase_bamboo :
+        if (~allstar_objat(2790, 9341) = true) {
+            ~allstar_obj_tele_here(2800, 9341);
+            mes("You search the bookcase a crawl through a hidden crack in the rock.");
+        }
+    case shaman_cave_crevice :
+        if (~allstar_objat(2799, 9341) = true) {
+            ~allstar_obj_tele_here(2790, 9340);
+            mes("You crawl through the crack in the rock.");
+        }
+    case bigweb_slashable :
+        @allstar_magebank_web;
+    case magearena_lever_out :
+        ~allstar_obj_tele_here(3105, 3956);
+        mes("You teleport inside...");
+    case magearena_lever_in :
+        ~allstar_obj_tele_here(3105, 3951);
+        mes("You teleport inside...");
+    case loc_2321 :
+        @allstar_monkeybars;
+    case loc_2303 :
+        @allstar_balancing_ledge;
+    case loc_2558, loc_1557, loc_1558 :
+        @allstar_door_idplus2;
+    case loc_1533 :
+        if (~allstar_objat(3183, 3434) = true) {
+            ~allstar_replaceobject(loc_coord, loc_1531, -1);
+        } else {
+            ~allstar_replaceobject(loc_coord, mcannoncave, 0);
+        }
+    case loc_1530 :
+        @allstar_door_1530;
+    case loc_2112, loc_1512 :
+        ~allstar_replaceobject(loc_coord, mcannoncave, -2);
+    case loc_1728 :
+        @allstar_trap_stairs;
+    case hidey_unbuilt_bush_easy :
+        @allstar_juna;
+    case magearena_statue_saradomin :
+        ~allstar_takecape("Saradomin", agility, agility, saradomin_cape);
+    case magearena_statue_guthix :
+        // no break: falls into the Zamorak statue
+        ~allstar_takecape("Guthix", herblore, herblore, guthix_cape);
+        ~allstar_takecape("Zamorak", runecraft, runecraft, zamorak_cape);
+    case magearena_statue_zamorak :
+        ~allstar_takecape("Zamorak", runecraft, runecraft, zamorak_cape);
+    case loc_2309, loc_2307, loc_2308 :
+        // wilderness course gates: objectID = +2
+        ~allstar_replaceobject(loc_coord, mcannoncave, -1);
+    case mourner_hideout_door3 :
+        if (coordz(coord) = 4634 | coordz(coord) = 4633) {
+            ~allstar_obj_tele_here(2037, 4634);
+        }
+    case mourner_hideout_door2 :
+        if (coordz(coord) = 4634 | coordz(coord) = 4633) {
+            ~allstar_obj_tele_here(2042, 4634);
+        }
+    case mourner_hideout_door4 :
+        if (coordx(coord) = 2034) {
+            ~allstar_obj_tele_here(2033, 4636);
+        } else if (coordx(coord) = 2033) {
+            ~allstar_obj_tele_here(2034, 4636);
+        }
+    case loc_1755 :
+        // Edgeville dungeon ladder to the surface, every other one straight up
+        if (~allstar_objat(3097, 9867) = true) {
+            ~allstar_obj_tele_here(3096, 3468);
+        } else {
+            ~allstar_obj_tele_here(coordx(coord), calc(coordz(coord) - 6400));
+        }
+    case laddertop, loc_1740, ahoy_tower_stairs_lv1_top, loc_1749 :
+        ~allstar_obj_tele(coordx(coord), calc(coordz(coord) - 1), calc(coordy(coord) - 1));
+    case wilderness_rope_swing :
+        ~allstar_agility("You swing from the rope.", 3006, 3958, 1, multiply(8, stat(agility)));
+    case wilderness_stepping_stone :
+        ~allstar_agility("You cross the lava.", 2996, 3960, 1, multiply(6, stat(agility)));
+    case wilderness_log_balance :
+        ~allstar_agility("You walk across the log.", 2994, 3945, 1, multiply(14, stat(agility)));
+    case wilderness_rocks :
+        ~allstar_agility("You climb the rocks.", 2996, 3932, 1, multiply(10, stat(agility)));
+    case wilderness_obstacle_pipe :
+        ~allstar_agility("You squeeze through the pipe.", 3004, 3950, 1, multiply(8, stat(agility)));
+    case fat_cow :
+        stat_advance(farming, multiply(12, stat(farming)));
+        ~allstar_give(bucket_milk, 1);
+        mes("You get some milk");
+    case crate2 :
+        ~allstar_theifstall("secret crate", "and recieve an item", 99, multiply(20, stat(thieving)), uncut_dragonstone, 1, 40);
+    case crate3 :
+        ~allstar_theifstall("crate", "and steal a gnome", 1, multiply(10, stat(thieving)), pickpocket_guide_gnome, 1, 40);
+    case boxes3 :
+        ~allstar_theifstall("crate", "and steal a cup of tea", 1, multiply(10, stat(thieving)), chinacup_of_nettletea, 1, 40);
+    case boxes :
+        ~allstar_theifstall("boxes", "and steal a basket of eggs", 1, multiply(10, stat(thieving)), chinacup_of_nettletea, 1, 40);
+    case potteryoven :
+        if (~allstar_action_ready = true) {
+            stat_advance(crafting, multiply(8, stat(crafting)));
+            ~allstar_give(murderpot, 1);
+            mes("You make a pot.");
+            anim(human_sapphirecutting, 0);
+            ~allstar_action_timer(15);
+        }
+    case eadgar_kitchen_drawers, abyss_exit_to_nature, loc_2513, furnace1, barbarian_obstacle_pipe, gemrock, loc_2193, fairy_chest_closed :
+        @allstar_skill_chest;
+    case digsitebush :
+        if (~allstar_action_ready = true) {
+            mes("You dig in the bushes");
+            stat_advance(farming, multiply(25, stat(farming)));
+            ~allstar_give(cert_magic_cabbage, 3);
+            ~allstar_action_timer(15);
+            mes("You manage to find some kind of seeds.");
+        }
+    case tree, lighttree, tree2, tree3, lighttree2, deadtree1, deadtree1_large, deadtree4, lightdeadtree1, deadtree2, deadtree2_dark, deadtree3, deadtree2_snowy, evergreen, evergreen_large, evergreen_vsnowy_large, evergreen_snowy_large, snowtree1, snowtree2, snowtree3, deadtree2_swamp, deadtree6, deadtree_burnt, leprechauntree, newbietree, newbietree2, newbiedeadtree, newbiedeadtree2, regicide_tree_large2, regicide_tree_large3, regicide_tree_small, mdaughter_impassable_tree, mdaughter_impassable_tree2, mdaughter_passable_tree :
+        ~allstar_woodcutting("tree", 1, multiply(500, stat(woodcutting)), 15000, 25);
+    case oaktree, newbieoaktree :
+        ~allstar_woodcutting("oak", 15, multiply(1000, stat(woodcutting)), 30000, 35);
+    case willowtree, loc_5551, loc_5552, loc_5553 :
+        ~allstar_woodcutting("willow", 35, multiply(1500, stat(woodcutting)), 55000, 45);
+    case mapletree, misc_dummy_mapletree :
+        ~allstar_woodcutting("maple", 45, multiply(2000, stat(woodcutting)), 2000000, 60);
+    case yewtree :
+        ~allstar_woodcutting("yew", 60, multiply(2500, stat(woodcutting)), 85000, 85);
+    case dramentree, magictree :
+        ~allstar_woodcutting("magic", 90, multiply(3000, stat(woodcutting)), 5000000, 100);
+    case loc_1733 :
+        @allstar_goldsmith_stairs;
+    case wildinlever :
+        if (%allstar_teleblock = 1) {
+            mes("A magical force stops you from teleporting to ::home.");
+        } else {
+            mes("You pull the lever...");
+            anim(goblin_cavewall_flowinggungywater, 0);
+            ~allstar_obj_tele_here(3153, 3923);
+            mes("And get teleported into the wilderness.");
+        }
+    case wildoutlever :
+        if (%allstar_teleblock = 1) {
+            mes("A magical force stops you from Going Back to ::home...");
+        } else {
+            mes("You pull the lever...");
+            anim(goblin_cavewall_flowinggungywater, 0);
+            ~allstar_obj_tele_here(2561, 3311);
+            mes("And get teleported back to Ardougne!");
+        }
+    case sarim_crate :
+        if (~allstar_action_ready = true) {
+            mes("You find some roids.");
+            anim(caged, 0);
+            stat_advance(strength, multiply(20, stat(strength)));
+            ~allstar_action_timer(20);
+        }
+    case laddermiddle :
+        if (~allstar_action_ready = true) {
+            ~allstar_obj_tele(3286, 3191, 0);
+            ~allstar_action_timer(2);
+        }
+    case sarim_crate3 :
+        if (~allstar_action_ready = true) {
+            mes("You find some Steroids.");
+            anim(caged, 0);
+            stat_advance(strength, multiply(20, stat(strength)));
+            ~allstar_action_timer(20);
+        }
+    case shantay_pass_henge_doorway :
+        if (~allstar_action_ready = true) {
+            mes("You Got tele'd to the Deadly Biotch!.. Beware...");
+            ~allstar_obj_tele_here(3483, 9490);
+            ~allstar_action_timer(200);
+        }
+    case loc_2416, ikov_chestopen, goal_gnomeball_game, arena_guard_chest_shut, haystack2 :
+        @allstar_training_dummy;
+    case thrantaxaltar :
+        // prayer restored to the level for its xp
+        stat_add(prayer, calc(stat_base(prayer) - stat(prayer)), 0);
+        anim(human_pray, 0);
+        mes("You recharge your prayer");
+    case firetemple_exit_portal :
+        ~allstar_obj_tele_here(3088, 3493);
+        mes("You Go To The Edge");
+    // portals
+    case rd_portal_room6_entrance :
+        ~allstar_obj_tele_here(2572, 3852);
+        mes("You teleport to the Fishing area.");
+    case lawtemple_exit_portal :
+        if (%allstar_rights >= 1) {
+            ~allstar_obj_tele_here(3281, 2766);
+            mes("Welcome to the Mod & Admin Zone.");
+        } else {
+            mes("Sorry You Are Not A Mod Or Admin");
+            mes("You May Have Luck If You Work For It");
+        }
+    case rd_portal_room7_entrance :
+        ~allstar_obj_tele_here(2502, 3011);
+        mes("You teleport to the Enchanted Minigame.");
+    case rd_portal_room3_entrance :
+        if (stat(strength) >= 99) {
+            ~allstar_obj_tele_here(3492, 9670);
+            mes("You teleport to the Strength Guild!");
+        } else {
+            mes("You need 99 strength in order to enter this portal.");
+        }
+    case rd_portal_room3_exit :
+        if (stat(ranged) >= 99) {
+            ~allstar_obj_tele_here(3243, 9361);
+            mes("You teleport to the Range/Magic Guild!");
+        } else {
+            mes("You need 99 Range and Magic in order to enter this portal.");
+        }
+    case rd_portal_room4_exit :
+        ~allstar_obj_tele_here(3565, 3306);
+        mes("You teleport to the Barrows Training!");
+    case castlewars_saradomin_exit :
+        ~allstar_obj_tele_here(2540, 3890);
+        mes("You teleport to Shop's");
+    case rd_portal_room6_exit :
+        ~allstar_obj_tele_here(2607, 3166);
+        mes("You teleport to the Icon Minigame.");
+    case vt_mazeportal_7 :
+        ~allstar_obj_tele_here(2852, 2955);
+        mes("You teleport Home.");
+    case airtemple_exit_portal :
+        ~allstar_obj_tele_here(3209, 2801);
+        mes("You teleport to the Training Area!");
+    case chaostemple_exit_portal :
+        ~allstar_obj_tele_here(3094, 3498);
+        mes("Welcome To Allstar-Scape Sick-like-a-Dick Town!!");
+        mes("You Can Shop Here!");
+        mes(" WHOA! And You Can Pk!!");
+    case loc_3192 :
+        ~allstar_scoreboard;
+        mes("Players Online!");
+        mes("For The Win!");
+    case icegate_right_small :
+        ~allstar_obj_tele_here(3087, 3514);
+        mes("This Nub Goes to The Training Facilities.");
+    case icegate_left_small :
+        ~allstar_obj_tele_here(3087, 3511);
+        mes("Back To da Trainin i c?");
+    case loc_10687, loc_10688, loc_10689, loc_10691, loc_10692, loc_10693, loc_10695 :
+        @allstar_reward_crate;
+    // runecrafting
+    case water_altar :
+        ~allstar_runecraft(1, multiply(3000, stat(runecraft)), waterrune, 30, 45, 60, 80);
+    case earth_altar :
+        ~allstar_runecraft(9, multiply(300, stat(runecraft)), earthrune, 45, 55, 65, 85);
+    case fire_altar :
+        ~allstar_runecraft(14, multiply(350, stat(runecraft)), firerune, 50, 60, 70, 80);
+    case body_altar :
+        ~allstar_runecraft(20, multiply(400, stat(runecraft)), bodyrune, 55, 65, 75, 85);
+    case cosmic_altar :
+        ~allstar_runecraft(27, multiply(450, stat(runecraft)), cosmicrune, 60, 70, 80, 90);
+    case chaos_altar :
+        ~allstar_runecraft(35, multiply(500, stat(runecraft)), chaosrune, 60, 70, 80, 90);
+    case nature_altar :
+        ~allstar_runecraft(44, multiply(550, stat(runecraft)), naturerune, 60, 70, 80, 90);
+    case law_altar :
+        // gives earth runes
+        ~allstar_runecraft(54, multiply(600, stat(runecraft)), earthrune, 65, 75, 85, 95);
+    case abyss_exit_to_air :
+        if (~allstar_objat(3047, 4825) = true) {
+            mes("You step into the mysterious rift and end up in the air temple");
+            ~allstar_obj_tele_here(2845, 4832);
+        }
+    case chestopen_khazard :
+        // the placed chest is at 3231,3499, so only a chest at 3231,3501 would work
+        if (~allstar_objat(3231, 3501) = true) {
+            mes("U G3T TH3 LOOT AND SCRAM");
+            ~allstar_give(devious_bowsword, 1);
+            ~allstar_obj_tele_here(2853, 3591);
+        }
+    case abyss_exit_to_water :
+        if (~allstar_objat(3051, 4833) = true) {
+            mes("You step into the mysterious rift and end up in the water temple");
+            ~allstar_obj_tele_here(2713, 4836);
+        }
+    case abyss_exit_to_earth :
+        if (~allstar_objat(3031, 4825) = true) {
+            mes("You step into the mysterious rift and end up in the earth temple");
+            ~allstar_obj_tele_here(2660, 4839);
+        }
+    case abyss_exit_to_fire :
+        if (~allstar_objat(3029, 4830) = true) {
+            mes("You step into the mysterious rift and end up in the fire temple");
+            ~allstar_obj_tele_here(2584, 4836);
+        }
+    case abyss_exit_to_body :
+        if (~allstar_objat(3039, 4821) = true) {
+            mes("You step into the mysterious rift and end up in the body temple");
+            ~allstar_obj_tele_here(2527, 4833);
+        }
+    case abyss_exit_to_law :
+        if (~allstar_objat(3049, 4839) = true) {
+            mes("You step into the mysterious rift and end up in the law temple");
+            ~allstar_obj_tele_here(2464, 4834);
+        }
+    case abyss_exit_to_cosmic :
+        if (~allstar_objat(3028, 4837) = true) {
+            mes("You step into the mysterious rift and end up in the cosmic temple");
+            ~allstar_obj_tele_here(2162, 4833);
+        }
+    case watertemple_exit_portal :
+        if (~allstar_objat(2862, 3599) = true) {
+            mes("You teleport to the Skill Area!");
+            ~allstar_obj_tele_here(2380, 3427);
+        }
+    case abyss_exit_to_chaos :
+        if (~allstar_objat(3044, 4842) = true) {
+            mes("You step into the mysterious rift and end up in the chaos temple");
+            ~allstar_obj_tele_here(2269, 4843);
+        }
+    case mindtemple_exit_portal :
+        if (~allstar_action_ready = true) {
+            @allstar_clan_portal;
+        }
+    case ladder, loc_1750, loc_1738, stairs, loc_1734, tunnelstairstop, tunnelstairstop2, swamp_cave_climbing_rope, loc_1757, wizards_tower_ladder, agility_ticketpillar, entranaladdertop, thrt_tavern_trap_door, loc_5131, loc_9359, blankrunestone_exit_portal, zanarisdoor, ahoy_tower_stairs_lv1, barrows_stairs_verac, barrows_stairs_torag, barrows_stairs_karil, barrows_stairs_guthan, barrows_stairs_dharok, barrows_stairs_ahrim, mm_bamboo_ladder :
+        anim(human_reachforladder, 0);
+        ~allstar_obj_tele(coordx(coord), coordz(coord), calc(coordy(coord) + 1));
+    case tog_climbing_rocks_down, tog_climbing_rocks_up :
+        @allstar_tog_rocks;
+    case default :
+        @allstar_objectclick_none($ap);
+}
+
+// ---- objectClick2 (client.java L4286) ----
+[label,allstar_objectclick2](boolean $ap)
+switch_loc (loc_type) {
+    case bankbooth, loc_2214, chest_10_coins, newbiebankbooth, ahoy_bankbooth, dwarf_keldagrim_bankbooth, loc_11758 :
+        @openbank;
+    case gem_stall_stealing :
+        ~allstar_theifstall("gem stall", "and recieve 3m", 60, multiply(500, stat(thieving)), coins, 3000000, 30);
+    case mm_stall_scimitar :
+        ~allstar_theifstall("scimitar stall", "and recieve 2m", 40, multiply(300, stat(thieving)), coins, 2000000, 30);
+    case mm_stall_magic :
+        ~allstar_theifstall("magic stall", "and recieve 1m", 20, multiply(125, stat(thieving)), coins, 1000000, 30);
+    case mm_stall_general :
+        ~allstar_theifstall("general stall", "and recieve 500k", 1, multiply(70, stat(thieving)), coins, 500000, 15);
+    case silk_stall_stealing :
+        ~allstar_theifstall("silk stall", "and recieve 9m", 99, multiply(20, stat(thieving)), coins, 9000000, 30);
+    case misc_fish_market :
+        ~allstar_theifstall("Fish stall", "and recieve a manta ray", 1, multiply(500, stat(thieving)), raw_mantaray, 1, 30);
+    case misc_veg_market :
+        ~allstar_theifstall("Veg Stall", "and recieve money???", 1, multiply(500, stat(thieving)), coins, 100000, 30);
+    case silver_stall_stealing :
+        ~allstar_theifstall("silver stall", "and recieve 5m", 80, multiply(750, stat(thieving)), coins, 5000000, 30);
+    case tea_stall :
+        ~allstar_theifstall(".", ".", 1, multiply(5, stat(thieving)), coins, 250, 30);
+    // loc_1739 only changed the server's heightLevel without telling the client (JUNK, not ported).
+    // The clue scroll steps on drawers1 / crate_old / crate2_old belong to the clue scroll system.
+    case default :
+        @allstar_objectclick_none($ap);
+}
+
+// ---- objectClick3 (client.java L4387): loc_1739 heightLevel-- only (JUNK, not ported) ----
+[label,allstar_objectclick3](boolean $ap)
+@allstar_objectclick_none($ap);

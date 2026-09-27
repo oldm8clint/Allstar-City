@@ -5,3 +5,91 @@ NPC spawns: 486 placed, 6 skipped
   - autospawn.cfg:56 npc 2026 at 3553,3000 is outside the map
   - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
   - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map
+World objects: 509 placements (27 exact duplicates, 1 overwritten, 0 removed again), 67 removals
+  479 tiles placed on levels 0-3, 2 skipped
+  - skipped client.java:1829 loc 61 at 2854,3957: no map square
+  - skipped client.java:2119 loc 6473 at 3444,9792: no map square
+  - overwritten client.java:1879 6477 at 3101,3513 replaced by client.java:2029 6472
+  Lost City locs replaced by placements (14):
+    0 2572,3853 816 pier_shadow_on_water shape 10 -> 9398
+    0 2892,9907 1757 loc_1757 shape 10 -> 4626
+    0 2373,3433 1187 blueflower shape 10 -> 4877
+    0 2373,3437 1187 blueflower shape 11 -> 2565
+    1 3426,3536 4519 slayer_corpse2 shape 10 -> 2213
+    0 3286,3211 631 gemmarket shape 10 -> 2562
+    1 2513,3857 4245 viking_abode_poor_roof_corner2 shape 10 -> 210
+    0 3078,3552 14516 wild0_tree_stump shape 10 -> 6472
+    1 2853,2957 1113 stool_bamboo shape 11 -> 2213
+    1 2851,2957 1113 stool_bamboo shape 11 -> 2213
+    0 3442,3520 3457 ornaterailing shape 9 -> 1032
+    0 2378,3427 1187 blueflower shape 11 -> 12120
+    0 3248,9364 6420 fd_firedungeon_shutchest shape 10 -> 10689
+    2 2758,3493 821 cannon shape 10 -> 11758
+  Lost City locs removed by Deleteobjects/Deletewalls (65):
+    0 2895,3513 1738 loc_1738 shape 10
+    0 2885,3515 1289 deadtree2_dark shape 10
+    0 2883,3511 1289 deadtree2_dark shape 10
+    0 2886,3514 1315 evergreen shape 10
+    0 2883,3512 1316 evergreen_large shape 10
+    0 2883,3508 1316 evergreen_large shape 10
+    0 2886,3506 1315 evergreen shape 10
+    0 2886,3510 1289 deadtree2_dark shape 10
+    0 2785,3175 1401 jungleplant2 shape 10
+    0 2891,3511 1516 loc_1516 shape 0
+    0 2891,3510 1519 loc_1519 shape 0
+    0 2790,3177 1534 loc_1534 shape 0
+    0 2794,3180 1534 loc_1534 shape 0
+    0 2816,3183 1597 membergater shape 0
+    0 2816,3182 1596 membergatel shape 0
+    0 2847,9637 2608 elvarg_gate_left shape 0
+    0 2847,9636 2607 elvarg_gate_right shape 0
+    0 2836,9600 2606 dragonsecretdoor shape 0
+    0 2811,3170 2626 grubordoor shape 0
+    0 3292,3167 1506 loc_1506 shape 0
+    0 3287,3171 1508 loc_1508 shape 0
+    0 3293,3167 1508 loc_1508 shape 0
+    0 3298,3171 1506 loc_1506 shape 0
+    0 2799,3154 612 counter shape 10
+    0 2798,3156 612 counter shape 10
+    0 2797,3156 885 barpumps shape 10
+    0 2796,3156 885 barpumps shape 10
+    0 2795,3156 885 barpumps shape 10
+    0 2794,3156 364 barrelwithtap shape 10
+    0 2791,3157 364 barrelwithtap shape 10
+    0 2794,3157 1100 barstool shape 10
+    0 2796,3157 1100 barstool shape 10
+    0 2797,3157 1100 barstool shape 10
+    0 2799,3157 271 anchor shape 10
+    0 2795,3159 1088 chair shape 10
+    0 2794,3160 1088 chair shape 10
+    0 2794,3161 1088 chair shape 10
+    0 2795,3160 594 bigtable shape 10
+    0 2797,3161 1088 chair shape 10
+    0 2798,3159 1089 smashedchair shape 10
+    0 2799,3160 1088 chair shape 10
+    0 2799,3161 1089 smashedchair shape 10
+    0 2798,3160 594 bigtable shape 10
+    0 2791,3160 363 barrel_fish shape 10
+    0 2791,3161 227 pileofrope shape 10
+    0 2791,3162 227 pileofrope shape 10
+    0 2791,3164 271 anchor shape 10
+    0 2799,3164 362 barrel shape 10
+    0 2799,3165 362 barrel shape 10
+    0 2799,3166 362 barrel shape 10
+    0 2799,3169 374 hatstand shape 10
+    0 2798,3169 364 barrelwithtap shape 10
+    0 2797,3169 227 pileofrope shape 10
+    0 2791,3167 599 smashedtable shape 10
+    0 2791,3166 1089 smashedchair shape 10
+    0 2793,3166 1088 chair shape 10
+    0 2794,3166 1088 chair shape 10
+    0 2795,3166 1088 chair shape 10
+    0 2796,3166 1088 chair shape 10
+    0 2793,3165 594 bigtable shape 10
+    0 2795,3165 594 bigtable shape 10
+    0 2793,3164 1088 chair shape 10
+    0 2794,3164 1088 chair shape 10
+    0 2795,3164 1088 chair shape 10
+    0 2796,3164 1088 chair shape 10
+  - no effect: client.java:1626 Deletewalls type 0 at 2895,3513: no loc of that class on any level
+  - no effect: client.java:1627 Deletewalls type 0 at 2892,9907: no loc of that class on any level
