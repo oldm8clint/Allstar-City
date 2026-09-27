@@ -52,6 +52,18 @@ export default class FloType {
                 this.occlude = false;
             } else if (code === 6) {
                 this.debugname = dat.gjstr();
+            } else if (code === 7) {
+                // Allstar-City: 377 mapcolour, a different colour for the minimap (overlayHsl) only
+                const hue = this.hue;
+                const saturation = this.saturation;
+                const lightness = this.lightness;
+                const underlayHue = this.underlayHue;
+                this.getHsl(dat.g3());
+                this.hue = hue;
+                this.saturation = saturation;
+                this.lightness = lightness;
+                this.underlayHue = underlayHue;
+                this.chroma = underlayHue; // sic, as the 377 client does
             } else {
                 console.log('Error unrecognised config code: ', code);
             }
@@ -59,6 +71,11 @@ export default class FloType {
     }
 
     private getHsl(rgb: number): void {
+        if (rgb === 0xff00ff) {
+            // Allstar-City: 377 treats magenta (hidden overlay) as black for its colours
+            rgb = 0;
+        }
+
         const red: number = ((rgb >> 16) & 0xff) / 256.0;
         const green: number = ((rgb >> 8) & 0xff) / 256.0;
         const blue: number = (rgb & 0xff) / 256.0;

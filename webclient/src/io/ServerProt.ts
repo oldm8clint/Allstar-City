@@ -21,6 +21,11 @@ export const enum ServerProt {
     IF_SETPOSITION = 79,
     IF_SETSCROLLPOS = 184,
 
+    // Allstar-City: 377 interface packets carried over to the 289 protocol
+    IF_OPENFULL = 5,
+    IF_SETANGLE = 186,
+    IF_SETROTATION = 3,
+
     // tutorial area
     TUT_FLASH = 181,
     TUT_OPEN = 12,
@@ -97,7 +102,7 @@ export const enum ServerProt {
 
 // prettier-ignore
 export const ServerProtSizes = [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 6, 0, 4, 0, 0, 0, 0,
     0, 0, 2, 3, 0, 0, 0, 0, 6, 0,
     0, -1, 0, 0, 0, 0, 0, 0, 2, 4,
     2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -115,7 +120,7 @@ export const ServerProtSizes = [
     0, 0, 0, 0, 6, 2, 0, 0, 0, 0,
     4, 0, 0, 0, 0, 0, 0, 0, 9, 0,
     0, 0, 0, 0, 0, 0, 7, 5, 0, 0,
-    0, 1, 0, 0, 4, 0, 0, 2, -2, 1,
+    0, 1, 0, 0, 4, 0, 8, 2, -2, 1,
     0, 0, 0, 0, 2, 1, -1, 0, 0, 0,
     0, 0, 0, 0, 2, 0, 0, 0, 4, 0,
     0, 4, 0, 0, 0, 0, 0, 0, 0, 4,

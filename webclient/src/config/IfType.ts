@@ -24,6 +24,7 @@ export const enum ComponentType {
     TYPE_GRAPHIC = 5,
     TYPE_MODEL = 6,
     TYPE_INV_TEXT = 7,
+    TYPE_TOOLTIP = 8, // Allstar-City: 377 (text only, not drawn by the 377 client either)
 };
 
 export const enum ButtonType {
@@ -95,6 +96,7 @@ export default class IfType {
     modelZoom: number = 0;
     modelXAn: number = 0;
     modelYAn: number = 0;
+    modelRotation: number = 0; // Allstar-City: 377 IF_SETROTATION, (xan speed << 16) | yan speed per cycle
     targetVerb: string | null = null;
     targetBase: string | null = null;
     targetMask: number = -1;
@@ -319,6 +321,10 @@ export default class IfType {
                         com.iop[i] = null;
                     }
                 }
+            }
+
+            if (com.type === ComponentType.TYPE_TOOLTIP) {
+                com.text = data.gjstr();
             }
 
             if (com.buttonType === ButtonType.BUTTON_TARGET || com.type === ComponentType.TYPE_INV) {

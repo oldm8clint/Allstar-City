@@ -11,6 +11,7 @@ import Packet from '#/io/Packet.js';
 
 import { TypedArray1d } from '#/util/Arrays.js';
 import type OnDemand from '#/io/OnDemand.js';
+import VarProvider from '#/config/VarProvider.js';
 
 export default class LocType {
     static numDefinitions: number = 0;
@@ -21,6 +22,7 @@ export default class LocType {
     static mc1: LruCache<Model> = new LruCache(500);
     static mc2: LruCache<Model> = new LruCache(30);
     static temp: Model[] = new Array(4);
+    static lowMem: boolean = false; // Allstar-City: 377 low detail loc models
 
     id: number = -1;
 
@@ -59,6 +61,7 @@ export default class LocType {
     raiseobject: number = 0;
     multiloc: Int32Array | null = null;
     multivarbit: number = -1;
+    multivarp: number = -1; // Allstar-City: 377 multilocs can switch on a whole varp
 
     static init(config: JagFile): void {
         this.dat = new Packet(config.read('loc.dat'));
@@ -138,6 +141,7 @@ export default class LocType {
         this.raiseobject = -1;
         this.multiloc = null;
         this.multivarbit = -1;
+        this.multivarp = -1;
     }
 
     decode(dat: Packet): void {
@@ -149,15 +153,21 @@ export default class LocType {
             }
 
             if (code === 1) {
+                // Allstar-City: 377 writes the high detail models first and may repeat the opcode with
+                // low detail models, which only replace them in low memory mode
                 const count: number = dat.g1();
-                if (count > 0) {
-                    this.model = new Int32Array(count);
-                    this.shape = new Int32Array(count);
+                if (this.model === null || LocType.lowMem) {
+                    if (count > 0) {
+                        this.model = new Int32Array(count);
+                        this.shape = new Int32Array(count);
 
-                    for (let i: number = 0; i < count; i++) {
-                        this.model[i] = dat.g2();
-                        this.shape[i] = dat.g1();
+                        for (let i: number = 0; i < count; i++) {
+                            this.model[i] = dat.g2();
+                            this.shape[i] = dat.g1();
+                        }
                     }
+                } else {
+                    dat.pos += count * 3;
                 }
             } else if (code === 2) {
                 this.name = dat.gjstr();
@@ -166,11 +176,15 @@ export default class LocType {
             } else if (code === 5) {
                 const count: number = dat.g1();
                 if (count > 0) {
-                    this.model = new Int32Array(count);
-                    this.shape = null;
+                    if (this.model === null || LocType.lowMem) {
+                        this.model = new Int32Array(count);
+                        this.shape = null;
 
-                    for (let i: number = 0; i < count; i++) {
-                        this.model[i] = dat.g2();
+                        for (let i: number = 0; i < count; i++) {
+                            this.model[i] = dat.g2();
+                        }
+                    } else {
+                        dat.pos += count * 2;
                     }
                 }
             } else if (code === 14) {
@@ -251,7 +265,17 @@ export default class LocType {
             } else if (code === 75) {
                 this.raiseobject = dat.g1();
             } else if (code === 77) {
+                // Allstar-City: 377 multiloc (varbit, varp)
                 this.multivarbit = dat.g2();
+                if (this.multivarbit === 65535) {
+                    this.multivarbit = -1;
+                }
+
+                this.multivarp = dat.g2();
+                if (this.multivarp === 65535) {
+                    this.multivarp = -1;
+                }
+
                 const count: number = dat.g1();
                 this.multiloc = new Int32Array(count + 1);
 
@@ -284,6 +308,20 @@ export default class LocType {
         if (this.raiseobject === -1) {
             this.raiseobject = this.blockwalk ? 1 : 0;
         }
+    }
+
+    // Allstar-City: the variant a 377 multiloc currently shows, or null when hidden
+    getMultiLoc(): LocType | null {
+        if (this.multiloc === null) {
+            return this;
+        }
+
+        const index = VarProvider.getMultiIndex(this.multivarbit, this.multivarp);
+        if (index < 0 || index >= this.multiloc.length || this.multiloc[index] === -1) {
+            return null;
+        }
+
+        return LocType.list(this.multiloc[index]);
     }
 
     checkModel(shape: number): boolean {

@@ -227,7 +227,7 @@ export default class ClientPlayer extends ClientEntity {
         buf.pos = 0;
 
         this.gender = buf.g1();
-        this.headicons = buf.g1();
+        this.headicons = buf.g2(); // Allstar-City: 16 head icon bits
         this.transmog = null;
         this.team = 0;
 

@@ -285,7 +285,8 @@ export default class ClientBuild {
                                         overlay = Pix3D.getTextureAverage(texture);
                                         t2Colour = -1;
                                     } else if (flo.colour === Colour.MAGENTA) {
-                                        overlay = 0;
+                                        // Allstar-City: 377 still draws hidden overlays on the minimap (flo mapcolour)
+                                        overlay = Pix3D.colourTable[ClientBuild.getOCol(flo.overlayHsl, 96)];
                                         t2Colour = -2;
                                         texture = -1;
                                     } else {

@@ -2,7 +2,6 @@ import { Client } from '#/client/Client.js';
 
 import LocType from '#/config/LocType.js';
 import SeqType from '#/config/SeqType.js';
-import VarBitType from '#/config/VarBitType.js';
 
 import type Model from '#/dash3d/Model.js';
 import ModelSource from '#/dash3d/ModelSource.js';
@@ -17,7 +16,6 @@ export default class ClientLocAnim extends ModelSource {
     readonly heightSE: number;
     readonly heightNE: number;
     readonly heightNW: number;
-    readonly multivarbit: number;
     readonly multiloc: Int32Array | null;
     anim: SeqType | null = null;
     animFrame: number = 0;
@@ -47,7 +45,6 @@ export default class ClientLocAnim extends ModelSource {
         }
 
         const loc = LocType.list(index);
-        this.multivarbit = loc.multivarbit;
         this.multiloc = loc.multiloc;
     }
 
@@ -82,22 +79,10 @@ export default class ClientLocAnim extends ModelSource {
             frame = this.anim.frames[this.animFrame];
         }
 
-        let loc: LocType;
-        if (this.multiloc === null) {
-            loc = LocType.list(this.index);
-        } else {
-            const varbit = VarBitType.list[this.multivarbit];
-            const basevar = varbit.basevar;
-            const startbit = varbit.startbit;
-            const endbit = varbit.endbit;
-            const mask = Client.readbit[endbit - startbit];
-            const index = (ClientLocAnim.app.var[basevar] >> startbit) & mask;
-
-            if (index < 0 || index >= this.multiloc.length || this.multiloc[index] === -1) {
-                return null;
-            }
-
-            loc = LocType.list(this.multiloc[index]);
+        // Allstar-City: 377 multilocs resolve by varbit or varp
+        const loc: LocType | null = LocType.list(this.index).getMultiLoc();
+        if (!loc) {
+            return null;
         }
 
         return loc.getModel(this.shape, this.angle, this.heightSW, this.heightSE, this.heightNE, this.heightNW, frame);

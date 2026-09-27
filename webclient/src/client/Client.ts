@@ -19,6 +19,7 @@ import IdkType from '#/config/IdkType.js';
 import SpotType from '#/config/SpotType.js';
 import VarpType from '#/config/VarpType.js';
 import VarBitType from '#/config/VarBitType.js';
+import VarProvider from '#/config/VarProvider.js';
 import IfType from '#/config/IfType.js';
 import { ComponentType, ButtonType } from '#/config/IfType.js';
 
@@ -254,7 +255,10 @@ export class Client extends GameShell {
     private mapscene: (Pix8 | null)[] = new TypedArray1d(50, null);
     private mapfunction: (Pix32 | null)[] = new TypedArray1d(50, null);
     private hitmarks: (Pix32 | null)[] = new TypedArray1d(20, null);
-    private headicons: (Pix32 | null)[] = new TypedArray1d(20, null);
+    // Allstar-City: player head icon bits -> 377 sprites (headicons_pk, headicons_prayer, headicons_hint,
+    // overlay_multiway). Bits 0-7 are the 289 layout the content uses; 8-13 are 377's extra prayer icons.
+    private headicons: (Pix32 | null)[] = new TypedArray1d(32, null);
+    private headiconsPrayer: (Pix32 | null)[] = new TypedArray1d(32, null); // npc headicon= (377)
     private mapmarker1: Pix32 | null = null;
     private mapmarker2: Pix32 | null = null;
     private cross: (Pix32 | null)[] = new TypedArray1d(8, null);
@@ -262,6 +266,7 @@ export class Client extends GameShell {
     private mapdots2: Pix32 | null = null;
     private mapdots3: Pix32 | null = null;
     private mapdots4: Pix32 | null = null;
+    private mapdots5: Pix32 | null = null; // Allstar-City: 377 team dot
     private scrollbar1: Pix8 | null = null;
     private scrollbar2: Pix8 | null = null;
     private modIcons: Pix8[] = [];
@@ -593,6 +598,7 @@ export class Client extends GameShell {
         Pix3D.lowMem = true;
         Client.lowMem = true;
         ClientBuild.lowMem = true;
+        LocType.lowMem = true;
     }
 
     static setHighMem(): void {
@@ -600,6 +606,7 @@ export class Client extends GameShell {
         Pix3D.lowMem = false;
         Client.lowMem = false;
         ClientBuild.lowMem = false;
+        LocType.lowMem = false;
     }
 
     saveMidi(data: Uint8Array, fading: boolean) {
@@ -1042,12 +1049,46 @@ export class Client extends GameShell {
                 // empty
             }
 
+            // Allstar-City: 377 head icon sheets
+            const headiconsPk: (Pix32 | null)[] = new TypedArray1d(32, null);
+            const headiconsHint: (Pix32 | null)[] = new TypedArray1d(32, null);
             try {
-                for (let i: number = 0; i < 20; i++) {
-                    this.headicons[i] = Pix32.depack(media, 'headicons', i);
+                for (let i: number = 0; i < 32; i++) {
+                    headiconsPk[i] = Pix32.depack(media, 'headicons_pk', i);
                 }
             } catch (_e) {
                 // empty
+            }
+            try {
+                for (let i: number = 0; i < 32; i++) {
+                    this.headiconsPrayer[i] = Pix32.depack(media, 'headicons_prayer', i);
+                }
+            } catch (_e) {
+                // empty
+            }
+            try {
+                for (let i: number = 0; i < 32; i++) {
+                    headiconsHint[i] = Pix32.depack(media, 'headicons_hint', i);
+                }
+            } catch (_e) {
+                // empty
+            }
+            let overlayMultiway: Pix32 | null = null;
+            try {
+                overlayMultiway = Pix32.depack(media, 'overlay_multiway', 0);
+            } catch (_e) {
+                // empty
+            }
+            this.headicons[0] = headiconsPk[0]; // skull
+            this.headicons[1] = overlayMultiway; // multiway (also the multi-combat indicator)
+            this.headicons[2] = headiconsHint[0]; // hint arrow
+            this.headicons[3] = this.headiconsPrayer[0]; // protect from melee
+            this.headicons[4] = this.headiconsPrayer[1]; // protect from missiles
+            this.headicons[5] = this.headiconsPrayer[2]; // protect from magic
+            this.headicons[6] = headiconsPk[1]; // duel
+            this.headicons[7] = headiconsHint[1]; // player hint arrow
+            for (let i: number = 3; i < 9; i++) {
+                this.headicons[i + 5] = this.headiconsPrayer[i]; // 8 retribution, 9 smite, 10 redemption, ...
             }
 
             this.mapmarker1 = Pix32.depack(media, 'mapmarker', 0);
@@ -1061,6 +1102,11 @@ export class Client extends GameShell {
             this.mapdots2 = Pix32.depack(media, 'mapdots', 1);
             this.mapdots3 = Pix32.depack(media, 'mapdots', 2);
             this.mapdots4 = Pix32.depack(media, 'mapdots', 3);
+            try {
+                this.mapdots5 = Pix32.depack(media, 'mapdots', 4);
+            } catch (_e) {
+                this.mapdots5 = this.mapdots4;
+            }
 
             this.scrollbar1 = Pix8.depack(media, 'scrollbar', 0);
             this.scrollbar2 = Pix8.depack(media, 'scrollbar', 1);
@@ -1235,6 +1281,7 @@ export class Client extends GameShell {
             World.resetVisCalc(distance, 500, 800, 512, 334);
             WordFilter.unpack(wordenc);
             ClientLocAnim.app = this;
+            VarProvider.vars = this.var; // Allstar-City: 377 multilocs and multinpcs
 
             if (!this.mouseTrackingInterval) {
                 this.mouseTrackingInterval = setInterval(() => {
@@ -4590,11 +4637,12 @@ export class Client extends GameShell {
             if (index >= this.playerCount) {
                 const npc = (entity as ClientNpc).type;
 
-                if (npc && npc.headicon >= 0 && npc.headicon < this.headicons.length) {
+                if (npc && npc.headicon >= 0 && npc.headicon < this.headiconsPrayer.length) {
                     this.getOverlayPosEntity(entity, entity.height + 15);
 
                     if (this.projectX > -1) {
-                        this.headicons[npc.headicon]?.plotSprite(this.projectX - 12, this.projectY - 30);
+                        // Allstar-City: 377 npc head icons are prayer icons
+                        this.headiconsPrayer[npc.headicon]?.plotSprite(this.projectX - 12, this.projectY - 30);
                     }
                 }
 
@@ -4613,7 +4661,7 @@ export class Client extends GameShell {
                     this.getOverlayPosEntity(entity, entity.height + 15);
 
                     if (this.projectX > -1) {
-                        for (let icon: number = 0; icon < 8; icon++) {
+                        for (let icon: number = 0; icon < 16; icon++) {
                             if ((player.headicons & (0x1 << icon)) !== 0) {
                                 this.headicons[icon]?.plotSprite(this.projectX - 12, this.projectY - y);
                                 y -= 25;
@@ -6149,6 +6197,63 @@ export class Client extends GameShell {
                 return true;
             }
 
+            // Allstar-City: 377 IF_SETANGLE
+            if (this.ptype === ServerProt.IF_SETANGLE) {
+                const comId: number = this.in.g2();
+                const xan: number = this.in.g2();
+                const yan: number = this.in.g2();
+                const zoom: number = this.in.g2();
+
+                IfType.list[comId].modelXAn = xan;
+                IfType.list[comId].modelYAn = yan;
+                IfType.list[comId].modelZoom = zoom;
+
+                this.ptype = -1;
+                return true;
+            }
+
+            // Allstar-City: 377 IF_SETROTATION (model spins by these angles every cycle)
+            if (this.ptype === ServerProt.IF_SETROTATION) {
+                const comId: number = this.in.g2();
+                const xSpeed: number = this.in.g2();
+                const ySpeed: number = this.in.g2();
+
+                IfType.list[comId].modelRotation = (xSpeed << 16) + ySpeed;
+
+                this.ptype = -1;
+                return true;
+            }
+
+            // Allstar-City: 377 IF_OPENFULL. The 377 client draws these over the whole game screen; here the
+            // main interface opens as a normal main modal (no content uses if_openfull yet).
+            if (this.ptype === ServerProt.IF_OPENFULL) {
+                this.in.g2(); // overlay interface
+                const comId: number = this.in.g2();
+                this.ifAnimReset(comId);
+
+                if (this.sideModalId !== -1) {
+                    this.sideModalId = -1;
+                    this.redrawSide = true;
+                    this.redrawIcons = true;
+                }
+
+                if (this.chatModalId !== -1) {
+                    this.chatModalId = -1;
+                    this.redrawChat = true;
+                }
+
+                if (this.dialogInputOpen) {
+                    this.dialogInputOpen = false;
+                    this.redrawChat = true;
+                }
+
+                this.mainModalId = comId;
+                this.resumedPauseButton = false;
+
+                this.ptype = -1;
+                return true;
+            }
+
             if (this.ptype === ServerProt.IF_SETANIM) {
                 const comId: number = this.in.g2();
                 const seqId: number = this.in.g2b();
@@ -6688,7 +6793,7 @@ export class Client extends GameShell {
                 this.statBaseLevel[stat] = 1;
 
                 for (let i: number = 0; i < 98; i++) {
-                    if (xp >= Client.levelExperience[i]) {
+                    if (xp > Client.levelExperience[i]) { // Allstar-City: level needs strictly more xp than its threshold
                         this.statBaseLevel[stat] = i + 2;
                     }
                 }
@@ -8134,7 +8239,7 @@ export class Client extends GameShell {
 
             if (npc) {
                 npc.cycle = Client.loopCycle;
-                npc.type = NpcType.list(buf.gBit(11));
+                npc.type = NpcType.list(buf.gBit(13)); // Allstar-City: 13 bits (377 npc ids)
                 npc.size = npc.type.size;
                 npc.turnspeed = npc.type.turnspeed;
                 npc.walkanim = npc.type.walkanim;
@@ -8143,7 +8248,7 @@ export class Client extends GameShell {
                 npc.walkanim_r = npc.type.walkanim_l;
                 npc.readyanim = npc.type.readyanim;
             } else {
-                buf.gBit(11);
+                buf.gBit(13);
             }
 
             let dx: number = buf.gBit(5);
@@ -9323,20 +9428,10 @@ export class Client extends GameShell {
             lastTypecode = typecode;
 
             if (entityType === 2 && this.world && this.world.typeCode2(this.minusedlevel, x, z, typecode) >= 0) {
-                let loc: LocType = LocType.list(typeId);
-                if (loc.multiloc !== null) {
-                    const varbit = VarBitType.list[loc.multivarbit];
-                    const basevar = varbit.basevar;
-                    const startbit = varbit.startbit;
-                    const endbit = varbit.endbit;
-                    const mask = Client.readbit[endbit - startbit];
-                    const index = (this.var[basevar] >> startbit) & mask;
-
-                    if (index < 0 || index >= loc.multiloc.length || loc.multiloc[index] === -1) {
-                        continue;
-                    }
-
-                    loc = LocType.list(loc.multiloc[index]);
+                // Allstar-City: 377 multilocs resolve by varbit or varp
+                const loc: LocType | null = LocType.list(typeId).getMultiLoc();
+                if (!loc) {
+                    continue;
                 }
 
                 if (this.useMode === 1) {
@@ -10490,7 +10585,7 @@ export class Client extends GameShell {
                     register = this.var[script[pc++]];
                 } else if (opcode === 6) {
                     // stat_xp_remaining {skill}
-                    register = Client.levelExperience[this.statBaseLevel[script[pc++]] - 1];
+                    register = Client.levelExperience[this.statBaseLevel[script[pc++]] - 1] + 1; // Allstar-City: strict thresholds
                 } else if (opcode === 7) {
                     register = ((this.var[script[pc++]] * 100) / 46875) | 0;
                 } else if (opcode === 8) {
@@ -10641,6 +10736,15 @@ export class Client extends GameShell {
                         updated = true;
                     }
                 }
+            }
+
+            // Allstar-City: 377 IF_SETROTATION
+            if (child.type === 6 && child.modelRotation !== 0) {
+                const xSpeed: number = child.modelRotation >> 16;
+                const ySpeed: number = (child.modelRotation << 16) >> 16;
+                child.modelXAn = (child.modelXAn + delta * xSpeed) & 0x7ff;
+                child.modelYAn = (child.modelYAn + delta * ySpeed) & 0x7ff;
+                updated = true;
             }
         }
 
@@ -11376,7 +11480,9 @@ export class Client extends GameShell {
 
         for (let i: number = 0; i < this.npcCount; i++) {
             const npc: ClientNpc | null = this.npc[this.npcIds[i]];
-            if (npc && npc.isReady() && npc.type && npc.type.minimap) {
+            // Allstar-City: 377 resolves multinpcs and hides inactive npcs
+            const npcType: NpcType | null = npc && npc.type ? npc.type.getMultiNpc() : null;
+            if (npc && npc.isReady() && npcType && npcType.minimap && npcType.active) {
                 anchorX = ((npc.x / 32) | 0) - ((this.localPlayer.x / 32) | 0);
                 anchorY = ((npc.z / 32) | 0) - ((this.localPlayer.z / 32) | 0);
                 this.minimapDrawDot(anchorY, this.mapdots2, anchorX);
@@ -11398,16 +11504,16 @@ export class Client extends GameShell {
                     }
                 }
 
-                if (this.localPlayer.team !== 0 && player.team !== 0) {
-                    if (this.localPlayer.team === player.team) {
-                        friend = true;
-                    } else {
-                        friend = false;
-                    }
+                // Allstar-City: 377 has its own dot for team members
+                let team: boolean = false;
+                if (this.localPlayer.team !== 0 && player.team !== 0 && this.localPlayer.team === player.team) {
+                    team = true;
                 }
 
                 if (friend) {
                     this.minimapDrawDot(anchorY, this.mapdots4, anchorX);
+                } else if (team) {
+                    this.minimapDrawDot(anchorY, this.mapdots5, anchorX);
                 } else {
                     this.minimapDrawDot(anchorY, this.mapdots3, anchorX);
                 }

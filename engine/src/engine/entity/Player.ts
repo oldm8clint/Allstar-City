@@ -1362,7 +1362,7 @@ export default class Player extends PathingEntity {
         const stream = Packet.alloc(0);
 
         stream.p1(this.gender);
-        stream.p1(this.headicons);
+        stream.p2(this.headicons); // Allstar-City: 16 head icon bits (377 prayer icons above bit 7)
 
         // todo: transmog support - write first "slot" with -1, followed by npc ID
 

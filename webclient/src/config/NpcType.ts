@@ -7,6 +7,7 @@ import JagFile from '#/io/JagFile.js';
 import Packet from '#/io/Packet.js';
 
 import { TypedArray1d } from '#/util/Arrays.js';
+import VarProvider from '#/config/VarProvider.js';
 
 export default class NpcType {
     static numDefinitions: number = 0;
@@ -40,6 +41,11 @@ export default class NpcType {
     contrast: number = 0;
     headicon: number = -1;
     turnspeed: number = 32;
+    // Allstar-City: 377 multinpcs (the npc shown depends on a varbit or varp) and active=no
+    multivarbit: number = -1;
+    multivarp: number = -1;
+    multinpc: Int32Array | null = null;
+    active: boolean = true;
 
     static init(config: JagFile): void {
         this.dat = new Packet(config.read('npc.dat'));
@@ -160,11 +166,52 @@ export default class NpcType {
                 this.headicon = dat.g2();
             } else if (code === 103) {
                 this.turnspeed = dat.g2();
+            } else if (code === 106) {
+                this.multivarbit = dat.g2();
+                if (this.multivarbit === 65535) {
+                    this.multivarbit = -1;
+                }
+
+                this.multivarp = dat.g2();
+                if (this.multivarp === 65535) {
+                    this.multivarp = -1;
+                }
+
+                const count: number = dat.g1();
+                this.multinpc = new Int32Array(count + 1);
+                for (let i: number = 0; i <= count; i++) {
+                    this.multinpc[i] = dat.g2();
+                    if (this.multinpc[i] === 65535) {
+                        this.multinpc[i] = -1;
+                    }
+                }
+            } else if (code === 107) {
+                this.active = false;
             }
         }
     }
 
+    // Allstar-City: the npc a 377 multinpc currently shows, or null when hidden
+    getMultiNpc(): NpcType | null {
+        if (this.multinpc === null) {
+            return this;
+        }
+
+        const index = VarProvider.getMultiIndex(this.multivarbit, this.multivarp);
+        if (index < 0 || index >= this.multinpc.length || this.multinpc[index] === -1) {
+            return null;
+        }
+
+        return NpcType.list(this.multinpc[index]);
+    }
+
     getTempModel(primaryTransformId: number, secondaryTransformId: number, seqMask: Int32Array | null): Model | null {
+        if (this.multinpc !== null) {
+            // Allstar-City: 377 multinpc
+            const multi = this.getMultiNpc();
+            return multi === null ? null : multi.getTempModel(primaryTransformId, secondaryTransformId, seqMask);
+        }
+
         let model = NpcType.modelCache.find(BigInt(this.id));
 
         if (!model && this.model) {
@@ -231,6 +278,12 @@ export default class NpcType {
     }
 
     getHead(): Model | null {
+        if (this.multinpc !== null) {
+            // Allstar-City: 377 multinpc
+            const multi = this.getMultiNpc();
+            return multi === null ? null : multi.getHead();
+        }
+
         if (!this.head) {
             return null;
         }
