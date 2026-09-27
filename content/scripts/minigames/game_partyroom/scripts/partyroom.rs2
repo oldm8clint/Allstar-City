@@ -1,8 +1,3 @@
-// https://youtu.be/2Yy0SAxsWxk?si=9ZgEZP5zUYmL4VGg&t=19
-// https://web.archive.org/web/20040607162448/http://www.runehq.com/viewcityguide.php?id=00268, prices changed by https://runescape.wiki/w/Update:Agility,_Potions_and_Parties! (27 Jul 04)
-[oploc1,loc_2416]
-@multi3("Balloon Bonanza.", partyroom_balloons, "Nightly Dance.", partyroom_knights, "No action.", exit);
-
 [label,partyroom_balloons]
 ~mesbox("Balloon Bonanza costs 1000 coins.");
 if(inv_total(inv, coins) < 1000) {

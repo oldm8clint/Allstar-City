@@ -7,6 +7,4 @@ inv_transmit(worn, wornitems:worn);
 if_settab(inventory, ^tab_inventory);
 if_settab(wornitems, ^tab_wornitems);
 
-// https://youtu.be/HxwZF7ZBGos?si=HfkHOPtJ0vjTEfTW&t=66
-[oploc1,loc_9398]
-~allstar_open_deposit_box;
+// Allstar-Scape opens it with ~allstar_open_deposit_box (the deposit box object click).

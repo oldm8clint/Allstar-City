@@ -55,7 +55,7 @@ if (inv_total(inv, thread) >= 2 & inv_total(inv, leather) >= 1 & stat(crafting) 
 [if_button,leather_crafting:com_89] if_close;
 
 [proc,allstar_make_leather](namedobj $product, int $thread, int $factor, string $message)
-~allstar_give($product);
+~allstar_give($product, 1);
 inv_del(inv, thread, $thread);
 inv_del(inv, leather, 1);
 stat_advance(crafting, calc($factor * stat(crafting)));

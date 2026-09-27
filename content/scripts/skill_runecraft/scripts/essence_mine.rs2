@@ -25,18 +25,3 @@ $coord = map_findsquare($coord, 0, 1, ^map_findsquare_lineofsight);
 p_telejump($coord);
 // abyssal_miniquest fill scrying orb
 ~rcu_check_scrying_orb($tele_back_coord);
-
-// portal
-[oploc1,blankrunestone_exit_portal]
-// IncompleteProjectile(id = 109, startHeight = 15, endHeight = 31, delay = 0, angle = 16, distOffset = 128)	| distance = 1, flightDuration = 30, visualStart = Location(x = 9557, y = 3778, z = 0)
-def_int $duration = ~player_projectile(loc_coord, coord, uid, curse_travel, 15, 31, 0, 16, 0, 128, 5);
-spotanim_pl(curse_impact, 124, 30);
-sound_synth(teleport_all, 1, 0);
-p_delay(1);
-if (%exit_essence_mine_coord = null) {
-    %exit_essence_mine_coord = ^essence_mine_to_wizardstower;
-} else if (%exit_essence_mine_coord ! ^essence_mine_to_aubury & %exit_essence_mine_coord ! ^essence_mine_to_wizardstower & map_members = ^false) {
-    %exit_essence_mine_coord = ^essence_mine_to_wizardstower; // in osrs, if you hop to a f2p world from f2p when inside the ess mine, if your exit coord is in a p2p area it reset to sedridor!
-}
-def_coord $coord = map_findsquare(%exit_essence_mine_coord, 0, 2, ^map_findsquare_lineofwalk);
-p_telejump($coord);

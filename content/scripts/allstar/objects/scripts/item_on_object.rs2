@@ -1,0 +1,277 @@
+// Allstar-Scape item on object (packet 192, client.java L18447-L18867,
+// allstar/spec/objects_buttons.md section 5). No distance check: the handler ran the moment the
+// packet arrived. Here it runs as soon as the ap trigger can (within 10 tiles, line of sight).
+//
+// Control flow is reproduced from the braces: an independent whip check, chain 1 (fishing, copper and
+// tin, the key at 3028,3356) and chain 2 (the rest). Chain 2 ends in
+// `else if (995 && 884)` without braces, whose body swallows every later branch: the Kalphite chest,
+// the granite maul portal and chest, shark and manta cooking, the bone grinder, flax, range 2728,
+// fire 2732 and the final "Nothing interesting happens." can never run. Unmatched uses do nothing.
+
+[aplocu,_]
+@allstar_itemonobject(true);
+
+[oplocu,_]
+@allstar_itemonobject(false);
+
+[label,allstar_itemonobject](boolean $ap)
+def_obj $item = last_useitem;
+def_loc $loc = loc_type;
+def_boolean $furnace = false;
+if ($loc = furnace1 | $loc = loc_11666 | $loc = loc_9390) {
+    $furnace = true;
+}
+def_boolean $patch = false;
+if ($loc = farming_herb_patch_2 | $loc = farming_flower_patch_2 | $loc = farming_veg_patch_4 | $loc = farming_veg_patch_3) {
+    $patch = true;
+}
+
+if ($item = abyssal_whip & $loc = loc_1531) {
+    mes("Works fool.");
+    ~allstar_hidden_point(2);
+    return;
+}
+
+// ---- chain 1 ----
+def_boolean $done = true;
+// The fishing branches compared a byte-sum of the raw packet (interface, loc, coordinates, slot,
+// item) with values the author took from his own clicks: harpoon / lobster pot / big net on the
+// Varrock fountain, lobster pot / harpoon on "Well X=2651,3370". The sums cannot be reproduced with
+// this map, so the comments are followed: the Varrock palace fountain and the Ardougne well.
+if ($loc = fountain & ~allstar_objat(3238, 3434) = true & $item = harpoon) {
+    if (stat(fishing) <= 79) {
+        mes("You need to be lvl 80 fishing to catch shark.");
+    } else {
+        ~allstar_fish(raw_shark, "You catch a shark.", 17000);
+    }
+} else if ($loc = fountain & ~allstar_objat(3238, 3434) = true & $item = lobster_pot) {
+    if (stat(fishing) <= 59) {
+        mes("You need to be lvl 60 fishing to catch lobster.");
+    } else {
+        ~allstar_fish(raw_lobster, "You catch a lobster.", 10000);
+    }
+} else if ($loc = fountain & ~allstar_objat(3238, 3434) = true & $item = big_net) {
+    ~allstar_fish(raw_bass, "You catch a bass.", 10);
+} else if ($loc = well & ~allstar_objat(2639, 3369) = true & $item = lobster_pot) {
+    if (stat(fishing) <= 98) {
+        mes("You need to be lvl 99 fishing to catch sea turtle.");
+    } else {
+        ~allstar_fish(raw_seaturtle, "You catch a turtle.", 70);
+    }
+} else if ($loc = well & ~allstar_objat(2639, 3369) = true & $item = harpoon) {
+    if (stat(fishing) <= 110) {
+        mes("You need to be lvl 90 fishing to catch manta rays.");
+    } else {
+        ~allstar_fish(raw_mantaray, "You catch a manta ray.", 200);
+    }
+} else if ($item = copper_ore & $furnace = true) {
+    // tin(): makes a bronze bar and deletes a tin ore (if any)
+    ~allstar_smelt(bronze_bar, tin_ore, 5, "You make a Bronze bar.");
+} else if ($item = tin_ore & $furnace = true) {
+    // Copper(): makes a bronze bar and deletes a copper ore (if any)
+    ~allstar_smelt(bronze_bar, copper_ore, 5, "You make a Bronze bar.");
+} else if ($item = golrie_key_waterfall_quest & ~allstar_objat(3028, 3356) = true) {
+    if (coordz(coord) = 3355) {
+        ~allstar_obj_tele_here(coordx(coord), calc(coordz(coord) + 2));
+    } else {
+        ~allstar_obj_tele_here(3028, 3355);
+    }
+} else {
+    $done = false;
+}
+
+// ---- chain 2 ----
+if ($item = golrie_key_waterfall_quest & ~allstar_objat(3268, 3435) = true) {
+    // black dragon cave
+    ~allstar_obj_tele_here(3255, 9581);
+    mes("No turning back now");
+} else if ($item = iron_ore & $furnace = true) {
+    ~allstar_smelt(iron_bar, iron_ore, 10, "You make an iron bar.");
+} else if ($item = silver_ore & $furnace = true) {
+    ~allstar_smelt(silver_bar, silver_ore, 15, "You make a silver bar.");
+} else if ($item = gold_ore & $furnace = true) {
+    ~allstar_smelt(gold_bar, gold_ore, 15, "You make a gold bar.");
+} else if ($loc = shadechest_silver_bloodred & ($item = keep_key | $item = phoenixkey1 | $item = grandtree_gloughskey | $item = edgevilledungeonkey)) {
+    // godsword minigame reward chest
+    @allstar_gsmini_chest($item);
+} else if ($loc = shadechest_black_bloodred & ($item = mourning_excavation_key | $item = crystal_key | $item = muddy_key)) {
+    // Enchanted minigame reward chest
+    @allstar_enchanted_chest($item);
+} else if ($loc = shadechest_steel_black & ($item = redkey | $item = bluekey | $item = yellowkey | $item = greenkey)) {
+    // Icon minigame reward chest
+    @allstar_icon_chest($item);
+} else if ($item = mithril_ore & $furnace = true) {
+    ~allstar_smelt(mithril_bar, mithril_ore, 20, "You make a mith bar.");
+} else if ($item = adamantite_ore & $furnace = true) {
+    ~allstar_smelt(adamantite_bar, adamantite_ore, 30, "You make a adamant bar.");
+} else if ($item = runite_ore & $furnace = true) {
+    ~allstar_smelt(runite_bar, runite_ore, 45, "You make a rune bar.");
+} else if ($loc = anvil & ($item = bronze_bar | $item = iron_bar | $item = steel_bar | $item = mithril_bar | $item = adamantite_bar | $item = runite_bar)) {
+    @allstar_init_smithing($item);
+} else if ($patch = true & $item = guam_seed) {
+    ~allstar_seed(guam_seed, guam_leaf, 1, 5);
+} else if ($patch = true & $item = marrentill_seed) {
+    ~allstar_seed(marrentill_seed, marentill, 15, 10);
+} else if ($patch = true & $item = tarromin_seed) {
+    ~allstar_seed(tarromin_seed, tarromin, 25, 15);
+} else if ($patch = true & $item = harralander_seed) {
+    ~allstar_seed(harralander_seed, harralander, 30, 38);
+} else if ($patch = true & $item = ranarr_seed) {
+    ~allstar_seed(ranarr_seed, ranarr_weed, 40, 47);
+} else if ($patch = true & $item = toadflax_seed) {
+    ~allstar_seed(toadflax_seed, toadflax, 50, 60);
+} else if ($patch = true & $item = irit_seed) {
+    ~allstar_seed(irit_seed, irit_leaf, 60, 70);
+} else if ($patch = true & $item = avantoe_seed) {
+    ~allstar_seed(avantoe_seed, avantoe, 65, 150);
+} else if ($patch = true & $item = kwuarm_seed) {
+    ~allstar_seed(kwuarm_seed, kwuarm, 75, 200);
+} else if ($patch = true & $item = snapdragon_seed) {
+    ~allstar_seed(snapdragon_seed, snapdragon, 80, 555);
+} else if ($patch = true & $item = cadantine_seed) {
+    ~allstar_seed(cadantine_seed, cadantine, 90, 915);
+} else if ($patch = true & $item = lantadyme_seed) {
+    ~allstar_seed(lantadyme_seed, lantadyme, 95, 1225);
+} else if ($patch = true & $item = dwarf_weed_seed) {
+    ~allstar_seed(dwarf_weed_seed, dwarf_weed, 96, 1375);
+} else if ($patch = true & $item = torstol_seed) {
+    ~allstar_seed(torstol_seed, torstol, 1, 1700);
+} else if ($item = raw_shrimp & $loc = viking_seer_range) {
+    anim(human_potterywheel, 0);
+    ~allstar_delone(raw_shrimp);
+    ~allstar_give(shrimp, 1);
+    stat_advance(cooking, multiply(100, stat(cooking)));
+    mes("You cook a shrimp");
+} else if ($item = raw_lobster & $loc = viking_seer_range) {
+    anim(human_potterywheel, 0);
+    ~allstar_delone(raw_lobster);
+    ~allstar_give(lobster, 1);
+    stat_advance(cooking, multiply(150, stat(cooking)));
+    mes("You cook a lobster");
+} else if ($item = coins & $loc = well) {
+    // wishing well (the brace-less branch that swallows everything after it)
+    if (~allstar_action_timer = 0) {
+        if (inv_total(inv, coins) < 70000000) {
+            mes("You Need 70m to drop in the well");
+        } else {
+            inv_del(inv, coins, 70000000);
+            mes("YOUR WISH HAS CAME TRUE!");
+            ~allstar_randomwell;
+            mes("Unfortanatly you need to wait 1 HOUR to make another wish!");
+            ~allstar_set_action_timer(3600);
+        }
+    }
+} else if ($done = false) {
+    @allstar_objectclick_none($ap);
+}
+
+// make() / lob() / carb() / turtle() / manta(): actionTimer 10, stand animation 0x306
+[proc,allstar_fish](namedobj $fish, string $message, int $xp)
+if (~allstar_action_timer > 0) {
+    return;
+}
+~allstar_give($fish, 1);
+mes($message);
+stat_advance(fishing, multiply($xp, stat(fishing)));
+~allstar_set_action_timer(10);
+~allstar_standanim(human_throwrope);
+
+// iron() / silver2() / gold() / mith() / adam() / rune() / tin() / Copper(): no level, no coal;
+// the bar is added first, then one ore of the given type is deleted if carried.
+[proc,allstar_smelt](namedobj $bar, obj $ore, int $xp, string $message)
+if (~allstar_action_timer > 0) {
+    return;
+}
+~allstar_give($bar, 1);
+mes($message);
+~allstar_delone($ore);
+stat_advance(smithing, multiply($xp, stat(smithing)));
+~allstar_set_action_timer(10);
+anim(human_furnace, 0);
+
+// guamSeed() ... torstolSeed(): instant herb, stand animation 0x831
+[proc,allstar_seed](namedobj $seed, namedobj $herb, int $level, int $xp)
+if (stat(farming) >= $level) {
+    stat_advance(farming, multiply($xp, stat(farming)));
+    ~allstar_give($herb, 1);
+    ~allstar_standanim(human_pick_wall_middle);
+    ~allstar_delone($seed);
+    mes("You put the seed on the patch and get an herb");
+} else {
+    mes("You need atleast <tostring($level)> farming to plant this!");
+}
+
+// Keys on the minigame chests (allstar/spec/npcs_rules.md section 8)
+[label,allstar_gsmini_chest](obj $key)
+mes("Well done, you have just finished your mini game, here's your reward :)");
+// the Brass key gives 0 x magic xp
+if ($key ! edgevilledungeonkey) {
+    stat_advance(magic, multiply(300000, stat(magic)));
+}
+~allstar_delone($key);
+if ($key = keep_key) {
+    // 15336 Zamorak GodSword
+    ~allstar_give(allstar_item_15336, 1);
+} else if ($key = phoenixkey1) {
+    // 15334 Bandos Godsword
+    ~allstar_give(allstar_item_15334, 1);
+} else if ($key = grandtree_gloughskey) {
+    ~allstar_give(coins, 30000000);
+} else {
+    ~allstar_give(coins, 10000000);
+}
+~allstar_obj_tele_here(2845, 4832);
+
+[label,allstar_enchanted_chest](obj $key)
+mes("Well done, you have just finished your mini game, here's your reward :)");
+if ($key = mourning_excavation_key) {
+    ~allstar_delone(mourning_excavation_key);
+    ~allstar_give(enchanted_hat, 1);
+} else if ($key = crystal_key) {
+    ~allstar_delone(crystal_key);
+    ~allstar_give(enchanted_robetop, 1);
+} else {
+    // the Muddy key deletes a New key instead of itself
+    ~allstar_delone(mourning_excavation_key);
+    ~allstar_give(enchanted_robelegs, 1);
+}
+~allstar_obj_tele_here(2853, 3591);
+
+[label,allstar_icon_chest](obj $key)
+mes("Well done, you have just finished your mini game, here's your reward :)");
+~allstar_delone($key);
+if ($key = redkey) {
+    ~allstar_give(allstar_item_14643, 1);
+} else if ($key = bluekey) {
+    ~allstar_give(allstar_item_14645, 1);
+} else if ($key = yellowkey) {
+    ~allstar_give(allstar_item_14644, 1);
+} else {
+    ~allstar_give(allstar_item_14646, 1);
+}
+~allstar_obj_tele_here(2853, 3591);
+
+// Item2.randomwell(): one of 7, uniformly
+[proc,allstar_randomwell]
+switch_int (random(7)) {
+    case 0 :
+        // 15195 Dragon Full Helm
+        ~allstar_give(allstar_item_15195, 1);
+    case 1 :
+        // 15185 Dragon fire Shield
+        ~allstar_give(allstar_item_15185, 1);
+    case 2 :
+        // 15348 Bandos Chestplate
+        ~allstar_give(allstar_item_15348, 1);
+    case 3 :
+        // 14520 Amulet of strength(t)
+        ~allstar_give(allstar_item_14520, 1);
+    case 4 :
+        // 15334 Bandos Godsword
+        ~allstar_give(allstar_item_15334, 1);
+    case 5 :
+        ~allstar_give(hundred_hammer, 1);
+    case 6 :
+        // 15346 Armadyl chestplate
+        ~allstar_give(allstar_item_15346, 1);
+}

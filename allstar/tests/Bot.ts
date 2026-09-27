@@ -18,7 +18,8 @@ import ServerGameZoneProt from '../../engine/src/network/game/server/ServerGameZ
 const ENGINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../engine');
 
 const serverProts = new Map<number, ServerGameProt>();
-// zone packets (OBJ_ADD, MAP_ANIM ...) are also sent on their own
+// zone packets (OBJ_ADD, LOC_ADD_CHANGE, MAP_ANIM ...) can also arrive on their own after
+// UPDATE_ZONE_PARTIAL_FOLLOWS
 for (const value of [...Object.values(ServerGameProt), ...Object.values(ServerGameZoneProt)]) {
     if (value instanceof ServerGameProt) {
         serverProts.set(value.id, value);
@@ -299,8 +300,8 @@ export default class Bot {
                 break;
             }
             case ServerGameProt.REBUILD_NORMAL: {
-                const x = buf.g2();
                 const z = buf.g2();
+                const x = buf.g2_alt3();
                 this.region = { x, z };
                 break;
             }

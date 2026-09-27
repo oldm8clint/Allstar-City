@@ -63,7 +63,7 @@ if ($used = watering_can_8) {
 // the else-if chain
 if ($used = pestle_and_mortar & $with = unicorn_horn) {
     inv_del(inv, unicorn_horn, 1);
-    ~allstar_give(unicorn_horn_dust);
+    ~allstar_give(unicorn_horn_dust, 1);
 } else if ($used = knife & $with = logs) {
     ~allstar_cut_logs(logs, unstrung_longbow, 1, 40);
 } else if ($used = knife & $with = oak_logs) {
@@ -134,7 +134,7 @@ if (stat(fletching) < $level) {
     return;
 }
 inv_del(inv, $log, 1);
-~allstar_give($unstrung);
+~allstar_give($unstrung, 1);
 stat_advance(fletching, calc($factor * stat(fletching)));
 
 // unstrung bow (used) on a bow string: flat xp
@@ -145,11 +145,11 @@ if (stat(fletching) < $level) {
 }
 inv_del(inv, $unstrung, 1);
 inv_del(inv, bow_string, 1);
-~allstar_give($bow);
+~allstar_give($bow, 1);
 stat_advance(fletching, $xp);
 
 // gem on a pink gnome robe piece: both deleted, the new piece added; no level, no xp
 [proc,allstar_dye_robe](namedobj $gem, namedobj $piece, namedobj $result)
 inv_del(inv, $piece, 1);
 inv_del(inv, $gem, 1);
-~allstar_give($result);
+~allstar_give($result, 1);

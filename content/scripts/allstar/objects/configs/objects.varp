@@ -1,0 +1,77 @@
+// Allstar-Scape object state (client.java fields). None of these were saved by Allstar-Scape except
+// character-ancients.
+
+// Timers that client.process() counted down once per cycle. Stored as the map_clock at which the
+// timer reaches 0: "timer == 0" is map_clock >= value (see ~allstar_thief_ready). actionTimer
+// (%allstar_action_timer, items.varp) is shared by every Allstar-Scape system (objects, fishing,
+// smelting, the wishing well, combat, eating, ...), so a wish at the well also blocks the skill
+// chests for 30 minutes.
+
+// theifTimer: stalls, thieving crates and the Mage Arena god statues
+[allstar_thief_timer]
+protect=no
+
+// AgilityTimer: Agility() obstacles
+[allstar_agility_timer]
+protect=no
+
+// Woodcutting (IsWcing, WCTimer, TreeX/TreeY, TreeHP, TreeTimer, WCxp, logAmount).
+// allstar_wc_timer is the map_clock at which WCTimer reaches 0; allstar_wc_chops counts chops
+// (20 - TreeHP).
+[allstar_wcing]
+protect=no
+
+[allstar_wc_timer]
+protect=no
+
+[allstar_wc_tree]
+type=coord
+protect=no
+
+[allstar_wc_chops]
+protect=no
+
+[allstar_wc_treetimer]
+protect=no
+
+[allstar_wc_xp]
+protect=no
+
+[allstar_wc_coins]
+protect=no
+
+// Spellbook altar 6552: playerAncientMagics (Player.java), ancients (saved as character-ancients)
+// and emotes (the spellbook the player update uses: 2 = ancient, 0 = normal).
+[allstar_ancient_magics]
+protect=no
+
+[allstar_ancients]
+scope=perm
+protect=no
+
+[allstar_emotes]
+protect=no
+
+// Two-option chat state shared with the NPC dialogues: NpcDialogue (only 0 and 1340 matter to the
+// objects: button 9157 turns 0 into 1340, button 9158 turns 1340 back into 0), OptionObject
+// (2466 = the clan portal menu is open) and JunaTele (1 / 2 = which side of Juna the player is on).
+[allstar_npcdialogue]
+protect=no
+
+[allstar_option_object]
+protect=no
+
+[allstar_junatele]
+protect=no
+
+// Tears of Guthix climbing rocks (Climbing, ClimbStage)
+[allstar_climb_stage]
+protect=no
+
+// KBDLair() / Dungeon1(): currentHealth (the separate pool) and MonsterDelay (map_clock at which it
+// reaches 0)
+[allstar_current_health]
+protect=no
+
+[allstar_monster_delay]
+protect=no

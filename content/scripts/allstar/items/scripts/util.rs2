@@ -9,6 +9,3 @@ if (compare($name, "") = 0) {
 }
 return($name);
 
-// client.addItem(id, 1) where the caller ignores the result (the item is lost if there is no room)
-[proc,allstar_give](namedobj $obj)
-def_boolean $added = ~allstar_additem($obj, 1);

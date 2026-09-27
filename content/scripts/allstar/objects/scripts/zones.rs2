@@ -1,0 +1,86 @@
+// Allstar-Scape damage zones tied to object content: KBDLair() and Dungeon1() (client.java L9230,
+// L9279), run every cycle by client.process() (allstar/spec/objects_buttons.md section 3.14).
+//
+// They use currentHealth, a second hitpoints pool nothing else touched (filled from the Hitpoints
+// level at login); the Hitpoints stat only showed the hit. When the pool reached 0 the player lost
+// every carried item and every worn item that fitted in the inventory, and was sent away.
+
+// For the login script: client.process() checked the zones every cycle for everyone, so a player who
+// logs in inside one is hit from the start.
+[proc,allstar_objects_login]
+if (~allstar_zone_kbd(coord) = true | ~allstar_zone_dungeon(coord) = true) {
+    ~allstar_zone_start;
+}
+
+// Starts the per-cycle check; stops by itself outside both zones.
+[proc,allstar_zone_start]
+if (%allstar_current_health = 0) {
+    // login: if (currentHealth == 0) currentHealth = playerLevel[3];
+    %allstar_current_health = stat(hitpoints);
+}
+softtimer(allstar_zones, 1);
+
+[proc,allstar_zone_kbd](coord $coord)(boolean)
+def_int $x = coordx($coord);
+def_int $z = coordz($coord);
+if ($z >= 9517 & $z <= 9546 & $x >= 2630 & $x <= 2650) {
+    return(true);
+}
+return(false);
+
+[proc,allstar_zone_dungeon](coord $coord)(boolean)
+def_int $x = coordx($coord);
+def_int $z = coordz($coord);
+if ($z >= 9476 & $z <= 9535 & $x >= 2549 & $x <= 2625) {
+    return(true);
+}
+return(false);
+
+[softtimer,allstar_zones]
+// KBDLair(): 3-81 every 39 cycles (MonsterDelay 40, hit while <= 1)
+if (~allstar_zone_kbd(coord) = true & map_clock >= calc(%allstar_monster_delay - 1)) {
+    ~allstar_zone_hit(calc(3 + randominc(78)));
+    mes("You get hit!");
+    %allstar_monster_delay = calc(map_clock + 40);
+}
+~allstar_zone_death(2889, 3557);
+// Dungeon1(): 3-23 every 19 cycles
+if (~allstar_zone_dungeon(coord) = true & map_clock >= calc(%allstar_monster_delay - 1)) {
+    ~allstar_zone_hit(calc(3 + randominc(20)));
+    mes("Poison from the dungeon starts to kill you!");
+    %allstar_monster_delay = calc(map_clock + 20);
+}
+~allstar_zone_death(3254, 3420);
+if (~allstar_zone_kbd(coord) = false & ~allstar_zone_dungeon(coord) = false & %allstar_current_health > 0) {
+    clearsofttimer(allstar_zones);
+}
+
+// currentHealth -= hitDiff, with the hit splat. The Hitpoints stat is left as it was.
+[proc,allstar_zone_hit](int $damage)
+%allstar_current_health = max(0, calc(%allstar_current_health - $damage));
+def_int $shown = min($damage, stat(hitpoints));
+if ($shown > 0) {
+    // hitmark type 1 (red), then the Hitpoints level is put back
+    damage(uid, 1, $damage);
+    stat_add(hitpoints, $shown, 0);
+}
+
+[proc,allstar_zone_death](int $x, int $z)
+if (%allstar_current_health ! 0) {
+    return;
+}
+if (p_finduid(uid) = false) {
+    return;
+}
+def_int $slot = 0;
+while ($slot < inv_size(worn)) {
+    if (inv_getobj(worn, $slot) ! null & inv_freespace(inv) > 0) {
+        inv_movefromslot(worn, inv, $slot);
+    }
+    $slot = calc($slot + 1);
+}
+inv_clear(inv);
+~update_bas;
+~allstar_obj_tele($x, $z, coordy(coord));
+mes("Oh dear you are dead!");
+%allstar_current_health = 99;
