@@ -1,12 +1,3 @@
-[oplocu,_cooking_oven] @attempt_cook_item(last_useitem);
-[oplocu,_cooking_fire]
-if(oc_param(last_useitem, unlit_arrow) = ^true) { // might not work on every fire?
-    @light_firearrow(last_useitem);
-} else {
-    @attempt_cook_item(last_useitem);
-}
-
-
 [label,attempt_cook_item](obj $uncooked_item)
 // get item data from db
 db_find(cooking_generic:uncooked, $uncooked_item);

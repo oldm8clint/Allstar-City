@@ -14,7 +14,8 @@ if_settab(inventory, ^tab_inventory);
 if_settab(wornitems, ^tab_wornitems);
 
 // https://youtu.be/HxwZF7ZBGos?si=HfkHOPtJ0vjTEfTW&t=66
-[oploc1,loc_9398]
+// Allstar-Scape: opened by the deposit box object click (content/scripts/allstar/objects)
+[label,open_deposit_box]
 if_openmain(inter_95);
 // hide inv and worn
 if_settab(null, 3);

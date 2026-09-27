@@ -74,24 +74,6 @@ if(npc_find(coord, khazard_commander, 5, 0) = true) {
     ~npc_retaliate(0);
 }
 
-[oploc1,chestopen_khazard]
-if(%treequest < ^tree_ballista_fired | %treequest > ^tree_retrieved_orb | inv_total(inv, orb_of_protection) > 0 | inv_total(bank, orb_of_protection) > 0) {
-    mes("You search the chest, but find nothing.");
-    return;
-}
-if(%treequest = ^tree_ballista_fired) {
-    %treequest = ^tree_retrieved_orb;
-}
-inv_add(inv, orb_of_protection, 1);
-~mesbox("You search the chest.|Inside you find the gnomes' stolen orb of protection.");
-if(npc_find(coord, khazard_commander, 5, 0) = true) {
-    npc_say("Oi! You! Hands off the property of General Khazard.");
-    ~npc_retaliate(0);
-}
-
-[oploc2,chestopen_khazard]
-~close_chest(chestclosed_khazard);
-
 [queue,tree_quest_complete]
 %treequest = ^tree_complete;
 inv_add(inv, gnome_amulet, 1);

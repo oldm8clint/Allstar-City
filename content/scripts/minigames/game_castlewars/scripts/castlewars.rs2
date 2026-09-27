@@ -67,10 +67,6 @@ if (~castlewars_conflicting_god(^castlewars_team_guthix) = true) {
 ~castlewars_transmog_reset;
 ~castlewars_exit_tele;
 
-[oploc1,castlewars_saradomin_exit]
-~castlewars_transmog_reset;
-~castlewars_exit_tele;
-
 [proc,castlewars_exit_tele]
 if (inv_total(worn, castlewars_saradomin_banner) > 0) {
     inv_del(worn, castlewars_saradomin_banner, 1);
@@ -191,7 +187,6 @@ while ($i < inv_size(inv)) {
     }
     $i = add($i, 1);
 }
-
 
 // in osrs:
 // -  you can bring in items that are equippable, even if its a members object on a f2p world

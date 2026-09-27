@@ -9,6 +9,10 @@
 // handler is left to the op triggers (p_aprange 0), so specific [oploc*,<loc>] scripts still run.
 
 [aploc1,_]
+// packet 132 opened the deposit box at click time, before any range check
+if (loc_type = loc_9398) {
+    @allstar_deposit_box;
+}
 def_int $range = ~allstar_objectclick1_range(loc_type);
 if (distance(coord, loc_coord) > $range) {
     p_aprange($range);
@@ -17,6 +21,9 @@ if (distance(coord, loc_coord) > $range) {
 @allstar_objectclick1(true);
 
 [oploc1,_]
+if (loc_type = loc_9398) {
+    @allstar_deposit_box;
+}
 if (distance(coord, loc_coord) > ~allstar_objectclick1_range(loc_type)) {
     return;
 }
@@ -69,6 +76,11 @@ if ($loc = lost_tribe_hole_2) {
     return(3);
 }
 return(2);
+
+// openUpDepBox() (client.java L328)
+[label,allstar_deposit_box]
+if_settext(inter_95:com_60, "@whi@The Official Deposit Box Of <displayname>");
+@open_deposit_box;
 
 // A loc without an Allstar-Scape handler: an ap trigger lets the op triggers have it.
 [label,allstar_objectclick_none](boolean $ap)

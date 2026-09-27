@@ -35,26 +35,6 @@
 [inv_button3,smithing:column_claws]
 @attempt_smithing(last_item, 10);
 
-
-[oplocu,anvil]
-if (%tutorial < ^tutorial_complete) {
-    // This happens with any item, not just bars.
-    if (%tutorial < ^newbie_mining_instructor_before_smelt_bronze_bar) {
-        ~mesbox("This is an anvil used for smithing.|You'll lean how to use it soon.");
-        return;
-    }
-
-    if (%tutorial < ^newbie_mining_instructor_smith_a_dagger) {
-        ~mesbox("You need a hammer to work the metal with.|Talk to the mining instructor to get one");
-        return;
-    }
-}
-
-if (last_useitem = gold_bar & %legendsquest >= ^legends_asked_gujuo_holy_water) @make_golden_bowl;
-else if (oc_category(last_useitem) = category_151) @smithing_anvil_interface(last_useitem);
-else if (last_useitem = dragonshield_a | last_useitem = dragonshield_b) @make_dragon_sq;
-else ~displaymessage(^dm_default);
-
 [if_close,smithing]
 inv_stoptransmit(smithing:column1);
 inv_stoptransmit(smithing:column2);

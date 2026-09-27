@@ -1,11 +1,3 @@
-[oploc1,_door_open_and_close]
-// ~loc_shape_debug(loc_shape);
-// mes(tostring(loc_angle));
-if (string_length(loc_param(game_message)) ! 0) {
-    mes(loc_param(game_message));
-}
-~open_and_close_door(loc_param(next_loc_stage), ~check_axis(coord, loc_coord, loc_angle), false);
-
 [proc,open_and_close_door](loc $replacement, boolean $entering, boolean $play_locked_synth)
 def_int $x;
 def_int $z;
