@@ -6,7 +6,7 @@ NPC spawns: 486 placed, 6 skipped
   - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
   - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map
 World objects: 509 placements (27 exact duplicates, 1 overwritten, 0 removed again), 67 removals
-  479 tiles placed on levels 0-3, 2 skipped
+  479 tiles placed on levels 0-3, 2 skipped; 1356 upper-level copies have no floor under them
   - skipped client.java:1829 loc 61 at 2854,3957: no map square
   - skipped client.java:2119 loc 6473 at 3444,9792: no map square
   - overwritten client.java:1879 6477 at 3101,3513 replaced by client.java:2029 6472

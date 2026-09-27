@@ -22,6 +22,14 @@ import { Pack } from '../lib/pack.mjs';
 
 const LEVELS = [0, 1, 2, 3];
 
+// The 377 client draws locs of every level above the player when no roof hides them, so a copy on a
+// level without a floor floats one or more storeys above the level-0 object. Allstar-Scape players
+// on level 0 never saw those copies. Set to true to keep upper-level copies only where that level
+// has a floor (the Q3 party box at 3285,2770 level 1 has one).
+const UPPER_COPIES_NEED_FLOOR = false;
+
+const hasFloor = (maps, level, x, z) => maps.entries('MAP', level, x, z).some(e => /(^| )[ou]\d/.test(e.data));
+
 const isRoof = shape => shape >= 12 && shape <= 21;
 
 function shapeClass(shape) {
@@ -127,6 +135,7 @@ function worldEdits({ packs, maps, report }, lines) {
     const deleted = [];
     const missed = [];
     let placed = 0;
+    let floating = 0;
     for (const t of tiles.values()) {
         if (!maps.has(t.x, t.z)) {
             skipped.push(`client.java:${t.line} ${t.remove ? `${t.fn} type ${t.type}` : `loc ${t.id}`} at ${t.x},${t.z}: no map square`);
@@ -142,6 +151,12 @@ function worldEdits({ packs, maps, report }, lines) {
                 const [id, shape = '10'] = e.data.split(' ');
                 const label = `${level} ${t.x},${t.z} ${id} ${packs.loc.name(Number(id)) ?? '?'} shape ${shape}`;
                 (t.remove ? deleted : replaced).push(t.remove ? label : `${label} -> ${t.id}`);
+            }
+            if (!t.remove && level > 0 && !hasFloor(maps, level, t.x, t.z)) {
+                if (UPPER_COPIES_NEED_FLOOR) {
+                    continue;
+                }
+                floating++;
             }
             removedHere += maps.remove('LOC', level, t.x, t.z, affected);
             if (!t.remove) {
@@ -161,7 +176,7 @@ function worldEdits({ packs, maps, report }, lines) {
 
     report(
         `World objects: ${placements.length} placements (${duplicates} exact duplicates, ${overwritten.length} overwritten, ${cancelled.length} removed again), ${removals.length} removals`,
-        `  ${placed} tiles placed on levels 0-3, ${skipped.length} skipped`,
+        `  ${placed} tiles placed on levels 0-3, ${skipped.length} skipped; ${floating} upper-level copies have no floor under them`,
         ...skipped.map(s => `  - skipped ${s}`),
         ...overwritten.map(s => `  - overwritten ${s}`),
         ...cancelled.map(s => `  - cancelled ${s}`),
