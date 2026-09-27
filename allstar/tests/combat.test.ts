@@ -528,6 +528,39 @@ async function styles() {
     await bot.logout();
 }
 
+// ---- rock crabs: a dead Rock Crab comes back as Rocks, which wake up (Rock Crab again) 2 cycles after a
+// player comes within 2 tiles ----
+async function rockCrab() {
+    const bot = await login('crab');
+    await wield(bot, 'deathdaggerdone', 747);
+    await tele(bot, 2680, 3718);
+    const crab = [...bot.npcs.values()].filter(n => n.type === 1265).sort((a, b) => a.x - b.x || a.z - b.z)[0];
+    check(crab !== undefined, `Rock Crabs spawn awake at the Rellekka crab area (${[...bot.npcs.values()].map(n => n.type).join(',')})`);
+    if (!crab) {
+        await bot.logout();
+        return;
+    }
+    const nid = crab.nid;
+    const spawn = { x: crab.x, z: crab.z };
+    await tele(bot, crab.x, crab.z - 1);
+    const hits = crab.hits.length;
+    bot.opNpc(2, nid);
+    await bot.until(() => crab.hits.slice(hits).some(h => h.hp === 0), 5000, 'kill the crab');
+    check(crab.hits[crab.hits.length - 1].maxHp === 5000, `Rock Crabs have 5000 hitpoints (${crab.hits[crab.hits.length - 1].maxHp})`);
+    // stay more than 2 tiles away while it respawns
+    await tele(bot, spawn.x, spawn.z - 5);
+    await bot.until(() => !bot.npcs.has(nid), 12000, 'crab gone');
+    await bot.until(() => bot.npcs.has(nid), 40000, 'crab respawn');
+    const rocks = bot.npcs.get(nid)!;
+    check(rocks.type === 1266, `it comes back as Rocks (${rocks.type})`);
+    await sleep(2000);
+    check(rocks.type === 1266, 'the Rocks sleep while nobody is within 2 tiles');
+    await tele(bot, spawn.x, spawn.z - 2);
+    await bot.until(() => bot.npcs.get(nid)?.type === 1265, 3000, 'rocks wake up');
+    check(bot.npcs.get(nid)?.type === 1265, 'a player within 2 tiles wakes the Rocks into a Rock Crab');
+    await bot.logout();
+}
+
 // ---- prayers: Protect from Melee drains a point at once, then one every 14 cycles; turning it off stops it ----
 async function prayer() {
     const bot = await login('pray');
@@ -580,6 +613,7 @@ const scenarios: [string, () => Promise<void>][] = [
     ['pvpmagic', pvpMagic],
     ['specials', specials],
     ['styles', styles],
+    ['rockcrab', rockCrab],
     ['prayer', prayer],
     ['poison', poison]
 ];

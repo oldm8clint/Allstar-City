@@ -358,6 +358,16 @@ if (~allstar_weapon = 4675 & %as_spellbook = 0) {
     if_settab(inter_267, ^tab_magic);
 }
 
+// For the ancient altar (object 6552) and the Dark Mage (dialogue 1002): 2 = ancient, 0 = modern. They also
+// kept client.ancients (saved, it picks the tab at login), which belongs to them.
+[proc,allstar_set_spellbook](int $book)
+%as_spellbook = $book;
+if ($book = 2) {
+    if_settab(inter_267, ^tab_magic);
+} else {
+    if_settab(magic, ^tab_magic);
+}
+
 // Ring of life (C:17795 + ApplyRingOfLife C:25679): at HP <= (int)(max HP / 10 + 0.5) the ring saves
 // the player: anim 1816, message, ring destroyed, 4 cycles later a teleport to 3254,3420.
 // SafeMyLife is only cleared by a death teleport, so after a save the player is sent back to
