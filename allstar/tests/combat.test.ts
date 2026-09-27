@@ -126,19 +126,39 @@ async function trainingArea() {
 // ---- a player that keeps moving is neither chased nor hit (TzTok-Jad, aggressive, Varrock square) ----
 async function movingPlayer() {
     const bot = await login('moving');
-    // Jad spawns at 3210,3423 but stays wherever its last fight left it: look it up from outside
-    // its 20-tile aggression range, then arrive 4 tiles east of it and start stepping at once
-    // (a teleport leaves DirectionCount alone, so standing still for 2 cycles would get us hit)
-    await tele(bot, 3240, 3423);
-    const [line] = await debug(bot, '~asnpc 40', /^asnpc .*jad/i);
+    // Jad spawns at 3210,3423 but stays wherever its last fight left it, so first send it back to its
+    // spawn: look it up from far outside its 20-tile aggression range, kill it with the glowing dagger
+    // and wait for the respawn (unless it is already there)
+    await wield(bot, 'deathdaggerdone', 747);
+    await tele(bot, 3300, 3423);
+    // (it may still be dead from an earlier run: wait for the respawn)
+    let line: string | undefined;
+    for (let i = 0; i < 9 && !line; i++) {
+        [line] = await debug(bot, '~asnpc 100', /^asnpc .*jad.* dead=0/i);
+        if (!line) {
+            await sleep(4500);
+        }
+    }
     const at = /(\d+),(\d+) hp=/.exec(line ?? '');
     check(at !== null, `TzTok-Jad near Varrock square (${line})`);
     if (!at) {
         await bot.logout();
         return;
     }
-    const x = Number(at[1]) + 4;
-    const z = Number(at[2]);
+    if (`${at[1]},${at[2]}` !== '3210,3423') {
+        // west of its south-west tile: Jad is 5x5, and Allstar-Scape measured distance from that tile
+        await tele(bot, Number(at[1]) - 1, Number(at[2]));
+        await bot.until(() => bot.nearestNpc(2745) !== undefined, 2000, 'Jad in view');
+        const far = bot.nearestNpc(2745)!;
+        bot.opNpc(2, far.nid);
+        await bot.until(() => far.hits.some(h => h.hp === 0), 5000, `kill Jad at ${far.x},${far.z} from ${bot.self.x},${bot.self.z}: ${JSON.stringify(far.hits)}`);
+        await tele(bot, 3300, 3423);
+        await sleep(37000);
+    }
+    // arrive 4 tiles east of the spawn and start stepping at once (a teleport leaves DirectionCount
+    // alone, so standing still for 2 cycles would get us hit)
+    const x = 3214;
+    const z = 3423;
     bot.cheat(`~astele ${x} ${z}`);
     await bot.until(() => bot.self.x === x && bot.self.z === z, 5000, `tele ${x},${z}`);
     const since = bot.myHits.length;
@@ -152,7 +172,7 @@ async function movingPlayer() {
         bot.walk(x + (i % 2), z);
     }
     await sleep(400);
-    check(bot.myHits.length === since, `Jad never hits a player that keeps moving (${bot.myHits.length - since} hits)`);
+    check(bot.myHits.length === since, `Jad never hits a player that keeps moving (${bot.myHits.length - since} hits: ${JSON.stringify(bot.myHits.slice(since))}, Jad ${jad.x},${jad.z}, player ${bot.self.x},${bot.self.z})`);
     check(`${jad.x},${jad.z}` === start, `Jad did not follow (${jad.x},${jad.z})`);
 
     // stand still: Jad (aggressive within 20 tiles) steps next to the player and attacks every 7 cycles
