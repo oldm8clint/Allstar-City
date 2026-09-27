@@ -76,12 +76,21 @@ sees every raw input first. A trailing `string` parameter receives the rest of t
 
 ```bash
 cd engine
+npm install            # first time
 npm run build          # compile content (incremental)
 npx tsx src/app.ts     # run the server with engine/.env
 npx tsx ../allstar/tests/<name>.test.ts
 ```
 
-`engine/.env` (not committed) for development:
+Play in a browser at `http://localhost:<WEB_PORT>/rs2.cgi` (any username and password on a dev
+world). The web client (`webclient/`, Lost City Client-TS 289 with 377 support) is prebuilt in
+`engine/public/client`; after changing `webclient/src` rebuild it with
+`node allstar/tools/build-webclient.mjs` (needs [Bun](https://bun.sh); `--dev` for a readable
+bundle). On localhost, `rs2.cgi?debug=1` exposes `window.allstar.cheat('home')` for browser
+automation.
+
+`engine/.env` (not committed) for development. It is read on every start and overrides
+`engine/data/config/world.json` (the 289 engine's setup page):
 ```
 BUILD_VERIFY=false
 BUILD_VERIFY_PACK=false
@@ -92,13 +101,14 @@ NODE_PORT=43595
 WEB_PORT=81
 WEB_MANAGEMENT_PORT=8899
 ```
-The Java client connects to `43594 + portOffset` and `80 + portOffset`; the test bot takes
-`port` and `webPort`. Stop your server when you finish testing.
+The web client talks to the server through a WebSocket on `WEB_PORT`; `NODE_PORT` is the TCP port
+of the test bot, which reads both from `engine/.env` (override with `BOT_PORT`, `BOT_WEB_PORT` or
+`Bot.connect({ port, webPort })`). Stop your server when you finish testing.
 
 New config names get ids automatically (`BUILD_VERIFY=false`) and are appended to the tracked
 `content/pack/*.pack` files; do not renumber existing ids.
 
-Bot (`allstar/tests/Bot.ts`): `Bot.connect({ username, port, webPort })`, `cheat(text)`,
+Bot (`allstar/tests/Bot.ts`, 289 protocol): `Bot.connect({ username, port, webPort })`, `cheat(text)`,
 `opNpc(op, nid)`, `opLoc(op, x, z, loc)`, `opHeld(op, obj, slot, com)`, `invButton(...)`,
 `ifButton(com)`, `resumePauseButton(com)`, `waitForMessage(regex, timeout, since)`, `coord()`,
 `messages`, `invs` (inventory = component 3214), `stats`, `main`, `side`, `chat`, `texts`.
