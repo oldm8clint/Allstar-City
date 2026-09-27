@@ -131,7 +131,10 @@ export class Client extends GameShell {
         let acc: number = 0;
         for (let i: number = 0; i < 99; i++) {
             const level: number = i + 1;
-            const delta: number = (level + Math.pow(2.0, level / 7.0) * 300.0) | 0;
+            // Allstar-City: Allstar-Scape's getLevelForXP curve (150, half the xp per level). The
+            // server wrote the skills tab levels itself (setSkillLevel -> sendQuest), so the tab
+            // showed these levels, not the stock client's.
+            const delta: number = (level + Math.pow(2.0, level / 7.0) * 150.0) | 0;
             acc += delta;
             Client.levelExperience[i] = (acc / 4) | 0;
         }
@@ -6957,9 +6960,7 @@ export class Client extends GameShell {
                 this.statBaseLevel[stat] = 1;
 
                 for (let i: number = 0; i < 98; i++) {
-                    // Allstar-City: the Silab client kept the stock 317 table (300 curve, xp >= threshold), so
-                    // the tab shows the standard level of the Allstar xp, not the server's level
-                    if (xp >= Client.levelExperience[i]) {
+                    if (xp > Client.levelExperience[i]) { // Allstar-City: a level needs strictly more xp than its threshold
                         this.statBaseLevel[stat] = i + 2;
                     }
                 }
@@ -10814,7 +10815,7 @@ export class Client extends GameShell {
                     register = this.var[script[pc++]];
                 } else if (opcode === 6) {
                     // stat_xp_remaining {skill}
-                    register = Client.levelExperience[this.statBaseLevel[script[pc++]] - 1];
+                    register = Client.levelExperience[this.statBaseLevel[script[pc++]] - 1] + 1; // Allstar-City: strict thresholds
                 } else if (opcode === 7) {
                     register = ((this.var[script[pc++]] * 100) / 46875) | 0;
                 } else if (opcode === 8) {
