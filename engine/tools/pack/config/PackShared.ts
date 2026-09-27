@@ -320,6 +320,37 @@ export async function readConfigs(
 
 function noOp() {}
 
+export function loadConstants() {
+    CONSTANTS.clear();
+
+    loadDir(`${Environment.build.srcDir}/scripts`, '.constant', src => {
+        for (let i = 0; i < src.length; i++) {
+            if (!src[i] || src[i].startsWith('//')) {
+                continue;
+            }
+
+            const parts = src[i].split('=');
+
+            if (parts.length !== 2) {
+                throw new Error(`Bad constant declaration on line: ${src[i]}`);
+            }
+
+            let name = parts[0].trim();
+            const value = parts[1].trim();
+
+            if (name.startsWith('^')) {
+                name = name.substring(1);
+            }
+
+            if (CONSTANTS.has(name)) {
+                throw new Error(`Duplicate constant found: ${name}`);
+            }
+
+            CONSTANTS.set(name, value);
+        }
+    });
+}
+
 export function shouldBuildConfigOutput(ext: string, out: string) {
     return shouldBuild(`${Environment.build.srcDir}/scripts`, '.constant', out) || shouldBuild(`${Environment.build.srcDir}/scripts`, ext, out) || shouldBuildFileList(getConfigDependencyFiles(ext), out);
 }
@@ -408,34 +439,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
         return;
     }
 
-    CONSTANTS.clear();
-
-    loadDir(`${Environment.build.srcDir}/scripts`, '.constant', src => {
-        for (let i = 0; i < src.length; i++) {
-            if (!src[i] || src[i].startsWith('//')) {
-                continue;
-            }
-
-            const parts = src[i].split('=');
-
-            if (parts.length !== 2) {
-                throw new Error(`Bad constant declaration on line: ${src[i]}`);
-            }
-
-            let name = parts[0].trim();
-            const value = parts[1].trim();
-
-            if (name.startsWith('^')) {
-                name = name.substring(1);
-            }
-
-            if (CONSTANTS.has(name)) {
-                throw new Error(`Duplicate constant found: ${name}`);
-            }
-
-            CONSTANTS.set(name, value);
-        }
-    });
+    loadConstants();
 
     // var domains are global, so we need to check for conflicts
     const names = new Set<string>();
@@ -608,7 +612,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, -2029399626);
+                return Packet.checkcrc(client.data, 0, client.pos, 1122990828);
             }
         );
     }
@@ -633,7 +637,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, -795412965);
+                return Packet.checkcrc(client.data, 0, client.pos, 967458629);
             }
         );
     }
@@ -658,7 +662,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, 960212554);
+                return Packet.checkcrc(client.data, 0, client.pos, 691874834);
             }
         );
     }
@@ -683,7 +687,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, 1145838588);
+                return Packet.checkcrc(client.data, 0, client.pos, 2029068104);
             }
         );
     }
@@ -708,7 +712,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, 424938091);
+                return Packet.checkcrc(client.data, 0, client.pos, 455764595);
             }
         );
     }
@@ -733,7 +737,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, 1565507783);
+                return Packet.checkcrc(client.data, 0, client.pos, 122666554);
             }
         );
     }
@@ -758,7 +762,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, -359342366);
+                return Packet.checkcrc(client.data, 0, client.pos, -182730988);
             }
         );
     }
@@ -783,7 +787,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, 266133304);
+                return Packet.checkcrc(client.data, 0, client.pos, -1587312319);
             }
         );
     }
@@ -808,7 +812,7 @@ export async function packConfigs(cache: FileStream, modelFlags: number[]) {
                 idx.release();
             },
             (client: Packet, _server: Packet): boolean => {
-                return Packet.checkcrc(client.data, 0, client.pos, -1746090972);
+                return Packet.checkcrc(client.data, 0, client.pos, -1350285786);
             }
         );
     }

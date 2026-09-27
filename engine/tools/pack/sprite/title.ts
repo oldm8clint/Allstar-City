@@ -45,7 +45,7 @@ export async function packClientTitle(cache: FileStream) {
     }
 
     const packed = fs.readFileSync('data/pack/client/title');
-    if (Environment.build.verify && !Packet.checkcrc(packed, 0, packed.length, -564448443)) {
+    if (Environment.build.verify && !Packet.checkcrc(packed, 0, packed.length, -1794511643)) {
         throw new Error('title checksum mismatch!\nYou can disable this safety check by setting BUILD_VERIFY=false');
     }
 

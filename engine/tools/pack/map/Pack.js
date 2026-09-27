@@ -175,6 +175,9 @@ function updateModelFlags(npcMap, modelFlags, NpcType) {
     for (const [_key, ids] of npcMap) {
         for (const id of ids) {
             const type = NpcType.get(id);
+            if (!type) {
+                throw new Error(`.jm2: NPC ${id} does not exist`);
+            }
             if (type.models) {
                 for (const model of type.models) {
                     modelFlags[model] |= 0x4;
@@ -481,8 +484,14 @@ export async function packMaps(cache, modelFlags) {
     serverStore.save();
 
     if (rebuildWorldmap) {
-        const packWorldmap = await getPackWorldmap();
-        await packWorldmap();
+        // Allstar-City: the worldmap (map editor only) needs the 289 worldmap fonts (fonts/f*.fm)
+        // that the 377 content does not have; the game does not need it.
+        try {
+            const packWorldmap = await getPackWorldmap();
+            await packWorldmap();
+        } catch (err) {
+            printWarning(`worldmap not packed: ${err instanceof Error ? err.message : err}`);
+        }
     }
 
     return rebuiltAnyMap;

@@ -42,7 +42,7 @@ export function packClientInterface(cache: FileStream, modelFlags: number[]) {
     }
 
     const packed = fs.readFileSync('data/pack/client/interface');
-    if (Environment.build.verify && !Packet.checkcrc(packed, 0, packed.length, 123011849)) {
+    if (Environment.build.verify && !Packet.checkcrc(packed, 0, packed.length, 1433713710)) {
         throw new Error('interface checksum mismatch!\nYou can disable this safety check by setting BUILD_VERIFY=false');
     }
 

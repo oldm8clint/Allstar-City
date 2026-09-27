@@ -36,7 +36,7 @@ export async function packClientTexture(cache: FileStream) {
     }
 
     const packed = fs.readFileSync('data/pack/client/textures');
-    if (Environment.build.verify && !Packet.checkcrc(packed, 0, packed.length, 915347346)) {
+    if (Environment.build.verify && !Packet.checkcrc(packed, 0, packed.length, -1741782021)) {
         throw new Error('textures checksum mismatch!\nYou can disable this safety check by setting BUILD_VERIFY=false');
     }
 

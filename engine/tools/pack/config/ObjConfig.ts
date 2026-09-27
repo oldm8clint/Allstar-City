@@ -4,7 +4,7 @@ import ScriptVarType from '#/cache/config/ScriptVarType.js';
 import ColorConversion from '#/util/ColorConversion.js';
 import { printWarning } from '#/util/Logger.js';
 import { CategoryPack, ModelPack, ObjPack, SeqPack } from '#tools/pack/PackFile.js';
-import { ParamValue, ConfigValue, ConfigLine, PackedData, isConfigBoolean, getConfigBoolean, packStepError } from '#tools/pack/config/PackShared.js';
+import { ParamValue, ConfigValue, ConfigLine, PackedData, isConfigBoolean, getConfigBoolean } from '#tools/pack/config/PackShared.js';
 import { lookupParamValue } from '#tools/pack/config/ParamConfig.js';
 
 export function parseObjConfig(key: string, value: string): ConfigValue | null | undefined {
@@ -206,48 +206,14 @@ export function packObjConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
 
     for (let id = 0; id < ObjPack.max; id++) {
         const debugname = ObjPack.getById(id);
-        let config;
-
-        // todo: cert_ config names get reused... what to do now...
-        if (debugname.startsWith('cert_')) {
-            const uncert = ObjPack.getByName(debugname.substring('cert_'.length));
-            if (uncert === -1) {
-                throw packStepError(debugname, 'Cert does not link to anything based on its name.');
-            }
-
-            config = [
-                { key: 'certlink', value: uncert },
-                { key: 'certtemplate', value: template_for_cert }
-            ];
-        } else {
-            config = configs.get(debugname);
-
-            if (config) {
-                // if no name we fill with the debug name
-                let hasName = false;
-                let hasModel = false;
-                for (let j = 0; j < config.length; j++) {
-                    const key = config[j].key;
-
-                    if (key === 'name') {
-                        hasName = true;
-                    } else if (key === 'model') {
-                        hasModel = true;
-                    }
-                }
-
-                if (!hasName && hasModel) {
-                    const name = debugname.charAt(0).toUpperCase() + debugname.slice(1).replace(/_/g, ' ');
-                    config.push({ key: 'name', value: name });
-                }
-            }
-        }
+        const config = configs.get(debugname);
 
         if (config) {
             // collect these to write at the end
             const recol_s: number[] = [];
             const recol_d: number[] = [];
             let name: string | null = null;
+            let desc: string | null = null;
             const params: ParamValue[] = [];
 
             // used for model_index
@@ -274,8 +240,7 @@ export function packObjConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
                     client.p2(value as number);
                     model.push(value as number);
                 } else if (key === 'desc') {
-                    client.p1(3);
-                    client.pjstr(value as string);
+                    desc = value as string;
                 } else if (key === '2dzoom') {
                     client.p1(4);
                     client.p2(value as number);
@@ -463,6 +428,11 @@ export function packObjConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
             if (name !== null) {
                 client.p1(2);
                 client.pjstr(name);
+            }
+
+            if (desc !== null) {
+                client.p1(3);
+                client.pjstr(desc);
             }
 
             if (params.length > 0) {

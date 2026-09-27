@@ -215,6 +215,10 @@ export default class Component {
                     }
                     break;
                 }
+                case 8: {
+                    com.text = dat.gjstr();
+                    break;
+                }
             }
 
             switch (com.buttonType) {

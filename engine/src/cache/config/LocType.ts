@@ -102,6 +102,7 @@ export default class LocType extends ConfigType {
     breakroutefinding = false;
     raiseobject = -1;
     multivarbit = -1;
+    multivarp = -1;
     multiloc: number[] = [];
 
     // server-side
@@ -205,6 +206,14 @@ export default class LocType extends ConfigType {
             this.raiseobject = dat.g1();
         } else if (code === 77) {
             this.multivarbit = dat.g2();
+            if (this.multivarbit === 65535) {
+                this.multivarbit = -1;
+            }
+
+            this.multivarp = dat.g2();
+            if (this.multivarp === 65535) {
+                this.multivarp = -1;
+            }
 
             const count = dat.g1();
             this.multiloc = new Array(count + 1);

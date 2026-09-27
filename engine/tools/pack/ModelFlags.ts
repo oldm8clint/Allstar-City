@@ -2,13 +2,14 @@ import fs from 'fs';
 
 import Environment from '#/util/Environment.js';
 import Packet from '#/io/Packet.js';
+import ParamType from '#/cache/config/ParamType.js';
 import { packInterface } from '#tools/pack/interface/PackShared.js';
 import { collectMapModelFlags } from '#tools/pack/map/Pack.js';
 import { packIdkConfigs, parseIdkConfig } from '#tools/pack/config/IdkConfig.js';
 import { packLocConfigs, parseLocConfig } from '#tools/pack/config/LocConfig.js';
 import { packNpcConfigs, parseNpcConfig } from '#tools/pack/config/NpcConfig.js';
 import { packObjConfigs, parseObjConfig } from '#tools/pack/config/ObjConfig.js';
-import { readConfigs, readDirTree, shouldBuildConfigOutput } from '#tools/pack/config/PackShared.js';
+import { loadConstants, readConfigs, readDirTree, shouldBuildConfigOutput } from '#tools/pack/config/PackShared.js';
 import { packSpotAnimConfigs, parseSpotAnimConfig } from '#tools/pack/config/SpotAnimConfig.js';
 import { ModelPack, shouldBuildFileAny } from '#tools/pack/PackFile.js';
 import { writeFileIfChanged } from '#tools/pack/FsCache.js';
@@ -112,6 +113,9 @@ function shouldRefreshModelFlagGroup(group: ModelFlagGroup) {
 
 export async function rebuildModelFlags(modelFlags: number[]) {
     clearModelFlags(modelFlags);
+
+    loadConstants();
+    ParamType.load('data/pack');
 
     const dirTree = new Set<string>();
     readDirTree(dirTree, `${Environment.build.srcDir}/scripts`);

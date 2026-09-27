@@ -83,6 +83,7 @@ export default class FloType extends ConfigType {
     texture: number = -1;
     overlay: boolean = false;
     occlude: boolean = true;
+    mapcolour: number = 0; // Allstar-City: 377 minimap colour (flo mapcolour=)
 
     decode(code: number, dat: Packet): void {
         if (code === 1) {
@@ -91,6 +92,8 @@ export default class FloType extends ConfigType {
             this.texture = dat.g1();
         } else if (code === 3) {
             this.overlay = true;
+        } else if (code === 7) {
+            this.mapcolour = dat.g3();
         } else if (code === 5) {
             this.occlude = false;
         } else if (code === 6) {

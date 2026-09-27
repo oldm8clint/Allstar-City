@@ -4,7 +4,7 @@ import { BlockWalk } from '#/engine/entity/BlockWalk.js';
 import { MoveRestrict } from '#/engine/entity/MoveRestrict.js';
 import { NpcMode } from '#/engine/entity/NpcMode.js';
 import ColorConversion from '#/util/ColorConversion.js';
-import { CategoryPack, HuntPack, ModelPack, NpcPack, SeqPack } from '#tools/pack/PackFile.js';
+import { CategoryPack, HuntPack, ModelPack, NpcPack, SeqPack, VarbitPack, VarpPack } from '#tools/pack/PackFile.js';
 import { ParamValue, ConfigValue, ConfigLine, PackedData, isConfigBoolean, getConfigBoolean } from '#tools/pack/config/PackShared.js';
 import { lookupParamValue } from '#tools/pack/config/ParamConfig.js';
 
@@ -12,7 +12,8 @@ export function parseNpcConfig(key: string, value: string): ConfigValue | null |
     // prettier-ignore
     const stringKeys = [
         'name', 'desc',
-        'op1', 'op2', 'op3', 'op4', 'op5'
+        'op1', 'op2', 'op3', 'op4', 'op5',
+        'multivar', 'multinpc', // defer parsing to packing stage
     ];
     // prettier-ignore
     const numberKeys = [
@@ -29,7 +30,8 @@ export function parseNpcConfig(key: string, value: string): ConfigValue | null |
     ];
     // prettier-ignore
     const booleanKeys = [
-        'minimap', 'members', 'givechase', 'alwaysontop'
+        'minimap', 'members', 'givechase', 'alwaysontop',
+        'active'
     ];
 
     if (stringKeys.includes(key)) {
@@ -280,11 +282,16 @@ export function packNpcConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
             const recol_s: number[] = [];
             const recol_d: number[] = [];
             let name: string | null = null;
+            let desc: string | null = null;
             const models: number[] = [];
             const heads: number[] = [];
             const params: ParamValue[] = [];
             const patrol = [];
             let vislevel = false;
+            let multivarp = -1;
+            let multivarbit = -1;
+            const multinpc: number[] = [];
+            let active = true;
 
             for (let j = 0; j < config.length; j++) {
                 const { key, value } = config[j];
@@ -309,8 +316,7 @@ export function packNpcConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
                 } else if (key === 'param') {
                     params.push(value as ParamValue);
                 } else if (key === 'desc') {
-                    client.p1(3);
-                    client.pjstr(value as string);
+                    desc = value as string;
                 } else if (key === 'size') {
                     client.p1(12);
                     client.p1(value as number);
@@ -396,6 +402,30 @@ export function packNpcConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
                 } else if (key === 'turnspeed') {
                     client.p1(103);
                     client.p2(value as number);
+                } else if (key === 'multivar') {
+                    const varpId = VarpPack.getByName(value as string);
+                    if (varpId === -1) {
+                        const varbitId = VarbitPack.getByName(value as string);
+                        if (varbitId === -1) {
+                            throw new Error(`Unknown multivar: ${value}`);
+                        }
+
+                        multivarbit = varbitId;
+                    } else {
+                        multivarp = varpId;
+                    }
+                } else if (key === 'multinpc') {
+                    const [index, npc] = (value as string).split(',');
+                    const npcId = NpcPack.getByName(npc);
+                    if (npcId === -1) {
+                        throw new Error(`Unknown multinpc: ${npc}`);
+                    }
+                    multinpc[parseInt(index)] = npcId;
+                } else if (key === 'active') {
+                    if (value === false) {
+                        client.p1(107);
+                        active = false;
+                    }
                 } else if (key === 'huntrange') {
                     server.p1(202);
                     server.p1(value as number);
@@ -451,13 +481,18 @@ export function packNpcConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
                 }
             }
 
-            if (name === null) {
+            if (name === null && active && multivarbit === -1 && multivarp === -1) {
                 name = debugname;
             }
 
             if (name !== null) {
                 client.p1(2);
                 client.pjstr(name);
+            }
+
+            if (desc !== null) {
+                client.p1(3);
+                client.pjstr(desc);
             }
 
             if (models.length > 0) {
@@ -482,6 +517,21 @@ export function packNpcConfigs(configs: Map<string, ConfigLine[]>, modelFlags: n
                 // TODO: calculate NPC level based on stats
                 client.p1(95);
                 client.p2(1);
+            }
+
+            if (multivarp !== -1 || multivarbit !== -1) {
+                client.p1(106);
+                client.p2(multivarbit);
+                client.p2(multivarp);
+
+                client.p1(multinpc.length - 1);
+                for (let k = 0; k < multinpc.length; k++) {
+                    if (typeof multinpc[k] !== 'undefined') {
+                        client.p2(multinpc[k]);
+                    } else {
+                        client.p2(65535);
+                    }
+                }
             }
 
             if (patrol.length > 0) {

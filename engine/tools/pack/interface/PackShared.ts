@@ -21,6 +21,8 @@ function nameToType(name: string) {
             return 6;
         case 'invtext':
             return 7;
+        case '8':
+            return 8;
     }
 
     return -1;
@@ -145,6 +147,10 @@ function nameToStat(name: string) {
             return 16;
         case 'thieving':
             return 17;
+        case 'slayer':
+            return 18;
+        case 'farming':
+            return 19;
         case 'runecraft':
             return 20;
     }
@@ -603,6 +609,10 @@ export function packInterface(modelFlags: number[]) {
             for (let j = 1; j <= 5; j++) {
                 client.pjstr((src[`option${j}`] as string) ?? '');
             }
+        }
+
+        if (comType === 8) {
+            client.pjstr((src.text as string) ?? '');
         }
 
         if (buttonType === 2 || comType === 2) {

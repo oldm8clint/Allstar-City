@@ -94,6 +94,10 @@ export default class NpcType extends ConfigType {
     contrast = 0;
     headicon = -1;
     turnspeed = 32;
+    multivarbit = -1;
+    multivarp = -1;
+    multinpc: number[] = [];
+    active = true;
 
     // server-side
     regenrate = 100;
@@ -212,6 +216,27 @@ export default class NpcType extends ConfigType {
             this.headicon = dat.g2();
         } else if (code === 103) {
             this.turnspeed = dat.g2();
+        } else if (code === 106) {
+            this.multivarbit = dat.g2();
+            if (this.multivarbit === 65535) {
+                this.multivarbit = -1;
+            }
+
+            this.multivarp = dat.g2();
+            if (this.multivarp === 65535) {
+                this.multivarp = -1;
+            }
+
+            const count = dat.g1();
+            this.multinpc = new Array(count + 1);
+            for (let i = 0; i <= count; i++) {
+                this.multinpc[i] = dat.g2();
+                if (this.multinpc[i] === 65535) {
+                    this.multinpc[i] = -1;
+                }
+            }
+        } else if (code === 107) {
+            this.active = false;
         } else if (code === 202) {
             this.huntrange = dat.g1();
         } else if (code === 203) {
