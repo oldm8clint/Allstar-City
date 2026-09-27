@@ -26,10 +26,10 @@ import { Pack } from '../lib/pack.mjs';
 // placed on level 0 and on every upper level with a floor under them
 const UPPER_LEVEL_LOCS = new Set([10687]);
 
-// Owner's request (2026-09-28): the home prayer altar (chaos altar 61) that Allstar-Scape meant to
-// place at 2854,3597 was typed as 2854,3957, a tile off the map, so it never appeared. It goes where
-// it was meant to be.
-const TYPO_FIXES = [{ x: 2854, z: 3957, id: 61, fixed: { x: 2854, z: 3597 } }];
+// Owner's request (2026-09-28): the home prayer altar (chaos altar 61) that Allstar-Scape placed at
+// 2854,3957, a tile off the map (so it never appeared), stands at home. 2854,3597 (the likely
+// intended tile) put its two tiles in front of the red portal, so it is on the open east side.
+const TYPO_FIXES = [{ x: 2854, z: 3957, id: 61, fixed: { x: 2862, z: 3595 } }];
 
 const hasFloor = (maps, level, x, z) => maps.entries('MAP', level, x, z).some(e => /(^| )[ou]\d/.test(e.data));
 
