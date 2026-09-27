@@ -1,10 +1,4 @@
-[if_button,prayer:prayer_ultimatestrength]
-if_close;
-if (p_finduid(uid) = true) {
-    @activate_prayer_ultimatestrength;
-}
-%prayer10 = %prayer10;
-
+// Allstar-City: the button is Allstar-Scape's (allstar/combat/scripts/prayers.rs2).
 [label,activate_prayer_ultimatestrength]
 p_clearpendingaction;
 def_dbrow $data = ~get_prayer_data(^prayer_ultimatestrength);

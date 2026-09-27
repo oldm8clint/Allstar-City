@@ -784,3 +784,14 @@
 783=as_ringtele
 784=as_dead
 785=as_spellbook
+786=as_approachp
+787=as_moveclicks
+788=as_isattacking
+789=as_killerbow
+790=as_lasthit
+791=as_prayers
+792=as_noprayer
+793=as_protect
+794=as_monsterdelay
+795=as_currenthealth
+796=as_entangle

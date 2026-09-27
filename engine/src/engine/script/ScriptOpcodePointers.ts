@@ -1078,6 +1078,9 @@ const ScriptOpcodePointers: {
     },
     [ScriptOpcode.P_TARGETPLAYER]: {
         require: ['active_player']
+    },
+    [ScriptOpcode.P_MOVECLICKS]: {
+        require: ['active_player']
     }
 };
 

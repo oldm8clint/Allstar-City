@@ -1116,3 +1116,5 @@
 // info: The npc (or player) the player is currently interacting with or walking to, null for anything else
 [command,p_targetnpc]()(npc_uid)
 [command,p_targetplayer]()(player_uid)
+// info: How many move clicks (walk packets) the player has sent this session
+[command,p_moveclicks]()(int)

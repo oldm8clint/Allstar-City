@@ -256,6 +256,57 @@ export default function combat({ legacy, packs, report, writeGenerated }) {
         ...worthless
     ]);
 
+    // ---- client.SendWeapon: the combat tab chosen from the item name (first item.cfg line wins) ----
+    // Only the special attack buttons depend on it: 1698 (axes) fires the dragon battleaxe special,
+    // 1764/8460/2423/2276/12290 toggle usingSpecial, the other tabs have no special button handler.
+    const names = new Map();
+    for (const raw of fs.readFileSync(legacy.file('item.cfg'), 'latin1').split(LINES)) {
+        const eq = raw.indexOf('=');
+        if (!raw.trim().startsWith('item') || eq === -1 || raw.slice(0, eq).trim() !== 'item') {
+            continue;
+        }
+        const cols = raw.slice(eq + 1).trim().split(TABS);
+        const id = Number(cols[0]);
+        if (!names.has(id)) {
+            names.set(id, (cols[1] ?? '').replaceAll('_', ' '));
+        }
+    }
+    const weaponTab = name => {
+        let short = name;
+        for (const metal of ['Bronze', 'Iron', 'Steel', 'Black', 'Mithril', 'Adamant', 'Rune', 'Granite', 'Dragon', 'Crystal']) {
+            short = short.replaceAll(metal, '');
+        }
+        short = short.trim();
+        if (name === 'Unarmed') return 5855;
+        if (name.endsWith('whip')) return 12290;
+        if (name.endsWith('bow') || name.endsWith('Bow') || name.startsWith('crystal_bow') || name.startsWith('seercull')) return 1764;
+        if (name.startsWith('Staff') || name.endsWith('staff')) return 328;
+        if (short.startsWith('dart')) return 4446;
+        if (short.startsWith('dagger')) return 2276;
+        if (short.startsWith('pickaxe')) return 5570;
+        if (short.startsWith('axe') || short.startsWith('battleaxe')) return 1698;
+        if (short.startsWith('halberd')) return 8460;
+        if (short.startsWith('spear')) return 4679;
+        if (short.startsWith('claws')) return 7762;
+        return 2423;
+    };
+    const tabs = [];
+    for (const [id, name] of [...names.entries()].sort((a, b) => a[0] - b[0])) {
+        const tab = weaponTab(name);
+        const obj = id < 7956 ? packs.obj.name(id) : packs.obj.id(`allstar_item_${id}`) !== undefined ? `allstar_item_${id}` : undefined;
+        if (tab !== 2423 && obj) {
+            tabs.push(`val=${obj},${tab}`);
+        }
+    }
+    writeGenerated('combat/configs/weapon_tab.enum', [
+        '// client.SendWeapon: the 317 combat tab of every item.cfg item that does not get the default 2423',
+        '[allstar_weapon_tab]',
+        'inputtype=obj',
+        'outputtype=int',
+        'default=2423',
+        ...tabs
+    ]);
+
     // ---- drop tables ----
     const classes = new Map();
     const missing = new Map();

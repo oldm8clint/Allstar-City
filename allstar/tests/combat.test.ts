@@ -2,6 +2,10 @@
 //   cd engine && npx tsx ../allstar/tests/combat.test.ts
 // Each scenario logs in fresh bots and logs them out again, because Allstar-Scape NPCs stop
 // fighting as soon as ANY online player is 5+ tiles away (NPCHandler.process, reproduced).
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import Bot, { BotNpc } from './Bot.js';
 
 const PORT = Number(process.env.COMBAT_PORT ?? 43615);
@@ -49,6 +53,23 @@ async function walkTo(bot: Bot, x: number, z: number) {
     bot.walk(x, z);
     await bot.until(() => bot.self.x === x && bot.self.z === z, 15000, `walk to ${x},${z}`);
     await sleep(1200);
+}
+
+// interface component ids by name (content/pack/interface.pack)
+const COMS = new Map<string, number>();
+const PACK = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../content/pack/interface.pack');
+for (const line of fs.readFileSync(PACK, 'utf8').split(/\r?\n/)) {
+    const eq = line.indexOf('=');
+    if (eq > 0) {
+        COMS.set(line.slice(eq + 1), Number(line.slice(0, eq)));
+    }
+}
+function com(name: string): number {
+    const id = COMS.get(name);
+    if (id === undefined) {
+        throw new Error(`no component ${name}`);
+    }
+    return id;
 }
 
 const positions = (npcs: BotNpc[]) => npcs.map(n => `${n.nid}@${n.x},${n.z}`).join(' ');
@@ -185,10 +206,119 @@ async function deathAndRespawn() {
     await bot.logout();
 }
 
+// ---- PvP: Attack (option 3) every 6 cycles outside the safe zones, stopped by a protection prayer,
+// by walking away, and not possible in a safe zone; option 2 only prints "You are now following" ----
+async function pvp() {
+    const a = await login('pvpa');
+    const b = await login('pvpb');
+    // Lumbridge, outside every nonWild() rectangle
+    await tele(a, 3222, 3219);
+    await tele(b, 3222, 3220);
+    const target = a.playerByName(b.username);
+    check(target !== undefined, `the attacker sees the target (${[...a.players.values()].map(p => p.name)})`);
+    if (!target) {
+        await a.logout();
+        await b.logout();
+        return;
+    }
+    let since = a.messages.length;
+    a.opPlayer(2, target.pid);
+    const follow = await a.waitForMessage(/^You are now following /, 3000, since).catch(() => '');
+    check(follow.toLowerCase() === `you are now following ${b.username}`, `option 2 prints the follow message (${follow})`);
+
+    const max = await maxHit(a);
+    const hpXp = a.stats[3]?.xp ?? 0;
+    const hitsBefore = b.myHits.length;
+    a.opPlayer(3, target.pid);
+    await sleep(13000);
+    const hits = b.myHits.slice(hitsBefore);
+    check(hits.length >= 4 && hits.length <= 5, `a player hit every 6 cycles (${hits.length} hits in 13 s)`);
+    for (let i = 1; i < hits.length; i++) {
+        const gap = hits[i].at - hits[i - 1].at;
+        check(gap > 2700 && gap < 3300, `PvP attack interval ~3.0 s (${gap} ms)`);
+    }
+    check(hits.every(h => h.damage >= 0 && h.damage <= max), `PvP hits within 0..${max}: ${hits.map(h => h.damage)}`);
+    const dealt = hits.reduce((sum, h) => sum + h.damage, 0);
+    await sleep(600);
+    check((a.stats[3]?.xp ?? 0) - hpXp === dealt, `1 Hitpoints xp per damage (${(a.stats[3]?.xp ?? 0) - hpXp} for ${dealt})`);
+
+    // Protect from Melee: the swings stop landing, the attack stays on
+    b.ifButton(com('prayer:prayer_protectfrommelee'));
+    await sleep(1500);
+    const protectedFrom = b.myHits.length;
+    await sleep(7000);
+    check(b.myHits.length === protectedFrom, `no hits while Protect from Melee is on (${b.myHits.length - protectedFrom})`);
+    b.ifButton(com('prayer:prayer_protectfrommelee'));
+    await sleep(7000);
+    check(b.myHits.length > protectedFrom, `hits again once the prayer is off (${b.myHits.length - protectedFrom})`);
+
+    // walking away resets the attack
+    await walkTo(a, 3222, 3217);
+    const walked = b.myHits.length;
+    await walkTo(a, 3222, 3219);
+    await sleep(7000);
+    check(b.myHits.length === walked, `walking away stopped the attack (${b.myHits.length - walked} hits)`);
+
+    // a safe zone (home): the click does not start an attack
+    since = a.messages.length;
+    await tele(a, 2855, 3591);
+    await tele(b, 2855, 3592);
+    const home = a.playerByName(b.username)!;
+    const safe = b.myHits.length;
+    a.opPlayer(3, home.pid);
+    await sleep(7000);
+    check(b.myHits.length === safe, `no attack in a safe zone (${b.myHits.length - safe} hits)`);
+    await a.logout();
+    await b.logout();
+}
+
+// ---- PvP death: the loser keeps the last 3 valuable stacks, drops the rest for the killer, respawns
+// at home; the killer gets pk points (2 for an equal combat level) and a world message ----
+async function pvpDeath() {
+    const a = await login('pkra');
+    const b = await login('pkrb');
+    for (const item of ['bronze_sword 1', 'iron_sword 1', 'steel_sword 1', 'coins 100']) {
+        b.cheat(`give ${item}`);
+        await sleep(600);
+    }
+    a.cheat('give deathdaggerdone 1');
+    await sleep(1000);
+    const inv = a.invs.get(3214) ?? [];
+    a.opHeld(2, 747, inv.findIndex(o => o?.id === 747), 3214);
+    await sleep(1200);
+    await tele(a, 3222, 3219);
+    await tele(b, 3222, 3220);
+    const target = a.playerByName(b.username)!;
+    const since = a.messages.length;
+    const objs = a.groundObjs.length;
+    a.opPlayer(3, target.pid);
+    await b.until(() => b.self.x === 2853 && b.self.z === 3591, 10000, 'respawn at home');
+    check(true, 'the glowing dagger killed the player; they respawned at 2853,3591');
+    const points = await a.waitForMessage(/^You recieve \d+ player-kill/, 3000, since).catch(() => '');
+    check(points === 'You recieve 2 player-kill, you now have 2 player-kill points.', `pk points for an equal combat level (${points})`);
+    // (the engine's world broadcast wraps long lines: join the pieces)
+    await a.waitForMessage(/has FUCKEN OWNED/, 3000, since).catch(() => '');
+    await sleep(600);
+    const start = a.messages.findIndex((m, i) => i >= since && /has FUCKEN OWNED/.test(m));
+    const world = start === -1 ? '' : a.messages.slice(start, start + 2).join(' ').replace(/\s+/g, ' ');
+    check(new RegExp(`^${a.username} has FUCKEN OWNED ${b.username}, ${a.username} now has 2 pk points and \\d+ kills!`, 'i').test(world), `world message (${world})`);
+    await sleep(1000);
+    // worn items and everything but the kept stacks drop on the death tile, owned by the killer
+    const drop = a.groundObjs.slice(objs).filter(o => o.x === 3222 && o.z === 3220).map(o => o.id);
+    check(drop.includes(1277) && !drop.some(id => [995, 1279, 1281].includes(id)), `the other stacks drop for the killer (${drop})`);
+    check((b.invs.get(1688) ?? []).every(o => !o), 'nothing stays worn');
+    const kept = (b.invs.get(3214) ?? []).filter(o => o).map(o => o!.id).sort((x, y) => x - y);
+    check(JSON.stringify(kept) === JSON.stringify([995, 1279, 1281]), `the last 3 valuable stacks are kept (${kept})`);
+    await a.logout();
+    await b.logout();
+}
+
 const scenarios: [string, () => Promise<void>][] = [
     ['train', trainingArea],
     ['moving', movingPlayer],
-    ['death', deathAndRespawn]
+    ['death', deathAndRespawn],
+    ['pvp', pvp],
+    ['pvpdeath', pvpDeath]
 ];
 for (const [name, run] of scenarios) {
     if (only && only !== name) {

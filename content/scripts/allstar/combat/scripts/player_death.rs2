@@ -12,7 +12,7 @@
 %as_dead = 0;
 ~allstar_reset_attack_player;
 ~allstar_reset_attack_npc;
-~allstar_prayer_reset;
+// no prayer is turned off: the protection flags even survive death
 
 // keepItem1-3: "highest" is declared inside the loop, so each pass keeps the LAST inventory slot whose
 // item is worth something (item.cfg value >= 1), each with an id different from the ones before
@@ -55,8 +55,14 @@ anim(null, 0);
 stat_heal(hitpoints, calc(stat_base(hitpoints) - stat(hitpoints)), 0);
 %as_poisondelay = 0;
 %as_killer = null;
+%as_killerbow = 0;
 %as_saveme = 0;
 %as_ringtele = 0;
+// hitDiff = 0: a hit still waiting for the update shows as 0
+%as_lasthit = 0;
+if (%as_phit > 0) {
+    %as_phit = 1;
+}
 // the kept stacks come back in order (addItem: first free slots)
 if ($keep1 ! null) {
     inv_moveitem(deathkeep, inv, $keep1, $count1);
@@ -100,6 +106,10 @@ return(0);
 // the same victim twice in a row. killcount is a static field shared by every player (BUG,
 // reproduced as one world counter), and deathcount is set to 1 instead of incremented (BUG, reproduced).
 [proc,allstar_pkz]
+if (%as_killerbow = 1) {
+    // KillerId = shooter + 10: no player there
+    return;
+}
 if (%as_killer = null) {
     %allstar_deaths = 1;
     return;

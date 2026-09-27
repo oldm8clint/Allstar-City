@@ -9,7 +9,7 @@ while (npc_findnext = true) {
 
 // the player's combat state
 [debugproc,asme]
-mes("asme clock=<tostring(map_clock)> lastmove=<tostring(lastmove)> movecheck=<tostring(%as_movecheck)> loopatt=<tostring(%as_loopatt)> special=<tostring(%as_special)> fight=<tostring(~allstar_fighttype)> maxhit=<tostring(~allstar_maxhit)>");
+mes("asme clock=<tostring(map_clock)> lastmove=<tostring(lastmove)> moveclicks=<tostring(%as_moveclicks)>/<tostring(p_moveclicks)> pking=<tostring(%as_pking)> attacking=<tostring(%as_isattacking)> prayers=<tostring(%as_prayers)> protect=<tostring(%as_protect)> drain=<tostring(%as_praydrain)> poison=<tostring(%as_poisondelay)>/<tostring(%as_poisonclear)> hp=<tostring(stat(hitpoints))> loopatt=<tostring(%as_loopatt)> special=<tostring(%as_special)> fight=<tostring(~allstar_fighttype)> maxhit=<tostring(~allstar_maxhit)>");
 if (busy = true) {
     mes("asme busy");
 }

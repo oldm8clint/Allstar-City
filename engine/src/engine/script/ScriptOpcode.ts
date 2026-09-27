@@ -475,7 +475,8 @@ export const enum ScriptOpcode {
     STAT_XP, // custom: a stat's xp (NPCHandler.getLevelForXP for the ring of life)
     P_OPCLICKED, // custom: the current interaction is a client click, not a p_op* continuation
     P_TARGETNPC, // custom: uid of the npc the player is interacting with (walking to)
-    P_TARGETPLAYER // custom: uid of the player the player is interacting with (walking to)
+    P_TARGETPLAYER, // custom: uid of the player the player is interacting with (walking to)
+    P_MOVECLICKS // custom: count of the player's move clicks (Allstar-Scape walk packets reset attacks)
 }
 
 export const ScriptOpcodeMap: Map<string, number> = new Map([
@@ -925,7 +926,8 @@ export const ScriptOpcodeMap: Map<string, number> = new Map([
     ['STAT_XP', ScriptOpcode.STAT_XP],
     ['P_OPCLICKED', ScriptOpcode.P_OPCLICKED],
     ['P_TARGETNPC', ScriptOpcode.P_TARGETNPC],
-    ['P_TARGETPLAYER', ScriptOpcode.P_TARGETPLAYER]
+    ['P_TARGETPLAYER', ScriptOpcode.P_TARGETPLAYER],
+    ['P_MOVECLICKS', ScriptOpcode.P_MOVECLICKS]
 ]);
 
 export const ScriptOpcodeNameMap: Map<number, string> = new Map(Array.from(ScriptOpcodeMap.entries()).map(([key, value]) => [value, key]));

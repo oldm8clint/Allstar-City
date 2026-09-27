@@ -9,6 +9,10 @@
 %sa_attack = ^false;
 %as_fighttype = 1;
 %as_spellbook = 0;
+%as_moveclicks = p_moveclicks;
+%as_poisondelay = 0;
+%as_poisonclear = 0;
+%as_currenthealth = stat(hitpoints);
 softtimer(allstar_combat, 1);
 
 // ---- client.process(), the parts that belong to combat, in the original order ----
@@ -19,6 +23,7 @@ softtimer(allstar_combat, 1);
 ~allstar_ancient_staff;
 ~allstar_area_hazards;
 ~allstar_player_poison;
+~allstar_random_event;
 ~allstar_poison_wears_off;
 ~allstar_prayer_drain;
 if (%as_dead = 0) {
@@ -28,7 +33,32 @@ if (%as_dead = 0) {
 ~allstar_ringoflife_cycle;
 if (%as_dead = 1) {
     %as_dead = 2;
-    strongqueue(allstar_apply_dead, 0, 0);
+    if (p_finduid(uid) = true) {
+        ~allstar_apply_dead;
+    } else {
+        strongqueue(allstar_apply_dead, 0, 0);
+    }
+}
+// the packets come after process(): a walk packet resets the attacks
+if (p_moveclicks ! %as_moveclicks) {
+    %as_moveclicks = p_moveclicks;
+    ~allstar_walk_reset;
+}
+
+// Walk packets 98/164/248 (C:20270-20295): resetAnimation, ResetAttack + ResetAttackNPC (faceNPC is
+// never 0 after the first update), and while entangled the player is put back on their tile.
+// The 317 client sent a walk packet with every click on an npc, player or object, so this also
+// clears an attack the same click is about to replace.
+[proc,allstar_walk_reset]
+~allstar_reset_stand;
+~allstar_reset_attack_player;
+~allstar_reset_attack_npc;
+%as_approachp = null;
+if (%as_entangle > map_clock) {
+    if (p_finduid(uid) = true) {
+        p_telejump(coord);
+    }
+    mes("A magical force stops you from moving!");
 }
 
 // PlayerHandler update: the player's one pending hit (NewHP = HP - hitDiff). The engine runs this for
@@ -50,15 +80,28 @@ if (stat(hitpoints) <= 0 & %as_dead = 0) {
     %as_dead = 1;
 }
 
-// Store a hit for the update (Player.hitDiff). Within a cycle the last hit written wins.
+// Store a hit for the update (Player.hitDiff). Within a cycle the last hit written wins. hitDiff is
+// never cleared (only by a death), so %as_lasthit keeps the last value for SpecDamg's clamp.
 [proc,allstar_player_hit](int $damage, int $type)
 %as_phit = calc(max(0, $damage) + 1);
 %as_phittype = $type;
+%as_lasthit = $damage;
+
+[proc,.allstar_player_hit](int $damage, int $type)
+.%as_phit = calc(max(0, $damage) + 1);
+.%as_phittype = $type;
+.%as_lasthit = $damage;
+
+// client.inCombat for the secondary player
+[proc,.allstar_incombat]
+.%allstar_logout_delay = calc(map_clock + 2);
 
 // ---- attacking an NPC (packet 72, client.java L19647-19774) ----
 [opnpc2,_] @allstar_attack_npc;
 [apnpc2,_] @allstar_attack_npc;
 
+// The click's own walk packet has already reset any attack (allstar_walk_reset), so "already
+// attacking" only happens when the client sent no walk packet.
 [label,allstar_attack_npc]
 if (p_opclicked = false) {
     return;
@@ -66,30 +109,21 @@ if (p_opclicked = false) {
 if (%as_approach = npc_uid) {
     // arrived: the 317 client walked the player here after the click (packet 72 already ran)
     %as_approach = null;
-    %as_movecheck = lastmove;
     return;
-}
-def_boolean $walk = false;
-if (npc_range(coord) > 1) {
-    // the client walked first: the walk packet resets any attack (C:20284-20295)
-    $walk = true;
-    ~allstar_reset_attack_player;
-    ~allstar_reset_attack_npc;
 }
 if (%as_atknpc ! null) {
     mes("You are already attacking an npc!");
     return;
 }
 if (~allstar_attack_npc_requirement(npc_type) = false) {
-    ~allstar_reset_attack_npc;
+    %as_atknpc = null;
     return;
 }
 // Summoned NPCs (::follownpc) are not ported; every NPC is free to attack.
 ~allstar_arm_npc;
 %as_atknpc = npc_uid;
-%as_movecheck = lastmove;
 facesquare(npc_coord);
-if ($walk = true) {
+if (npc_range(coord) > 1) {
     %as_approach = npc_uid;
     p_aprange(1);
 }
@@ -171,17 +205,6 @@ if (%as_atknpc ! null) {
 if (%as_atknpc = null) {
     return;
 }
-if (%as_approach ! null) {
-    if (p_targetnpc ! %as_approach) {
-        // the player clicked something else while walking up to the NPC (a new walk packet)
-        ~allstar_reset_attack_npc;
-        return;
-    }
-} else if (lastmove ! %as_movecheck) {
-    // walked away (walk packet)
-    ~allstar_reset_attack_npc;
-    return;
-}
 if (npc_finduid(%as_atknpc) = false) {
     ~allstar_reset_attack_npc;
     return;
@@ -192,7 +215,9 @@ if (%asn_dead > 0) {
 }
 ~allstar_attack_npc_step;
 
-// client.AttackNPC (C:28713), with the active npc being attacked
+// client.AttackNPC (C:28713), with the active npc being attacked. It runs every cycle (only PvP waits
+// for PkingDelay) and sets PkingDelay each time, which keeps packet 73 (attack a player) ignored
+// while an NPC is being attacked.
 [proc,allstar_attack_npc_step]
 def_int $wep = ~allstar_weapon;
 def_int $enemyhp = npc_stat(hitpoints);
@@ -207,9 +232,16 @@ if ($wep = 15156 & ~allstar_action_timer = 0) {
     ~allstar_set_action_timer(8);
     $hit = calc(4 + randominc(20));
 }
+def_int $delay = ~allstar_pvm_delay($wep);
+%as_pking = calc(map_clock + $delay);
+if ($wep = 4214) {
+    // a crystal bow projectile every cycle
+    ~allstar_projectile_npc(249, 50, 80, 43, 31);
+}
 def_boolean $usebow = ~allstar_is_bow($wep);
 if ($usebow = true) {
     ~allstar_incombat;
+    ~allstar_stop_moving;
     $hit = randominc(15);
 }
 if (~allstar_gooddistance(npc_coord, coord, 1) = false & ~allstar_pvm_any_range($wep) = false) {
@@ -227,7 +259,7 @@ if ($usebow = false) {
         $hit = ~allstar_special_npc($wep, $hit);
     }
     $hit = ~allstar_oneshot($wep, $hit, $enemyhp);
-    %as_loopatt = calc(map_clock + ~allstar_pvm_delay($wep) - 1);
+    %as_loopatt = calc(map_clock + $delay - 1);
     ~allstar_npc_hit($hit, ^hitmark_damage);
     npc_heropoints($hit);
     ~allstar_incombat;
@@ -240,7 +272,7 @@ if (~allstar_has_arrows($wep) = false) {
     mes("There's no arrows left in your quiver");
     return;
 }
-%as_loopatt = calc(map_clock + ~allstar_pvm_delay($wep) - 1);
+%as_loopatt = calc(map_clock + $delay - 1);
 ~allstar_delete_arrow($wep, npc_coord);
 anim(human_bow, 0);
 ~allstar_npc_hit($hit, ^hitmark_damage);
@@ -248,8 +280,22 @@ npc_heropoints($hit);
 stat_advance(ranged, calc(820 * $hit));
 stat_advance(hitpoints, calc(300 * $hit));
 ~allstar_incombat;
+~allstar_stop_moving;
 ~allstar_set_action_timer(4);
 npc_anim(~allstar_npc_block_anim(npc_type), 0);
+
+// QUIRKS Q4/Q5 (owner): the glowing dagger (747) and the Tzhaar-ket-em (6527) kill in one hit
+[proc,allstar_oneshot](int $wep, int $hit, int $enemyhp)(int)
+if ($wep = 747 | $wep = 6527) {
+    return($enemyhp);
+}
+return($hit);
+
+// teleportToX = absX, teleportToY = absY: an in-place teleport that drops the walking queue
+[proc,allstar_stop_moving]
+if (p_finduid(uid) = true) {
+    p_telejump(coord);
+}
 
 // C:29116-29142: 750 xp per damage to the style's skill (controlled: 700 to Strength), 200 Hitpoints
 [proc,allstar_melee_xp](int $hit)
@@ -287,7 +333,6 @@ if (inv_total(worn, $arrows) > 1) {
 
 // ---- the rest of client.process ----
 
-// C:16952, WriteWildyLevel: walkable interface 197 says "@gre@Safe" in safe zones, "@red@Wild" elsewhere
 // C:17002: +1 special energy every 4 cycles up to 100
 [proc,allstar_special_regen]
 if (%as_special <= 99 & %as_specdelay <= 0) {

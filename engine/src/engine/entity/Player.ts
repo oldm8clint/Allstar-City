@@ -367,6 +367,7 @@ export default class Player extends PathingEntity {
     refreshModal = false;
     refreshModalClose = false;
     requestModalClose = false;
+    moveClicks = 0; // Allstar-City combat: move clicks received (script command p_moveclicks)
 
     protect: boolean = false; // whether protected access is available
     activeScript: ScriptState | null = null;

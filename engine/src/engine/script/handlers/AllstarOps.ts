@@ -110,6 +110,11 @@ const AllstarOps: CommandHandlers = {
         state.pushInt(target && typeof target.hash64 === 'bigint' ? target.uid : -1);
     },
 
+    // Allstar-City combat: every walk packet reset the attacks (client.java case 98/164/248)
+    [ScriptOpcode.P_MOVECLICKS]: state => {
+        state.pushInt(state.activePlayer.moveClicks);
+    },
+
     [ScriptOpcode.WORLD_REBOOT]: state => {
         const seconds = Math.max(0, state.popInt());
         World.rebootTimer(Math.ceil((seconds * 1000) / Environment.NODE_TICKRATE));

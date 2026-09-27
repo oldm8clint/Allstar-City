@@ -1,0 +1,186 @@
+// Allstar-Scape player versus player: the player options (packets 153 and 73, C:20882-20938) and
+// client.Attack (C:24769-25265). npcs_rules.md sections 3.1, 3.2 and 4.1.
+//
+// The whole map outside the safe zones (~allstar_nonwild) is a PvP area; there are no wilderness
+// levels, no combat level range, no single/multi combat and no skull.
+
+// ---- player option 2: "Follow" (the administrators' "Ban" label sends the same packet 153) ----
+// Player.following is never set, so nobody is ever moved: the option only prints the message.
+[opplayer2,_] @allstar_follow_player;
+[applayer2,_] @allstar_follow_player;
+
+[label,allstar_follow_player]
+if (p_opclicked = false) {
+    return;
+}
+if (%as_approachp = .uid) {
+    %as_approachp = null;
+    return;
+}
+mes("You are now following <.displayname>");
+if (~allstar_gooddistance(coord, .coord, 1) = false) {
+    // the 317 client walked up to the player after the click
+    %as_approachp = .uid;
+    p_aprange(1);
+}
+
+// ---- player option 3: "Attack" (packet 73) ----
+// Ignored while PkingDelay > 1 (it is set every cycle while an NPC is being attacked). AttackingOn is
+// set either way; IsAttacking only when neither player is in a safe zone.
+[opplayer3,_] @allstar_attack_player;
+[applayer3,_] @allstar_attack_player;
+
+[label,allstar_attack_player]
+if (p_opclicked = false) {
+    return;
+}
+if (%as_approachp = .uid) {
+    // arrived where the 317 client walked the player after the click (packet 73 already ran)
+    %as_approachp = null;
+    return;
+}
+if (map_clock >= calc(%as_pking - 1)) {
+    %as_atkplayer = .uid;
+    if (~allstar_nonwild(coord) = false & ~allstar_nonwild(.coord) = false) {
+        %as_isattacking = 1;
+        ~allstar_incombat;
+        ~.allstar_incombat;
+        if (~allstar_gooddistance(coord, .coord, 1) = true) {
+            anim(~allstar_weapon_anim, 0);
+        }
+        facesquare(.coord);
+    }
+}
+if (~allstar_gooddistance(coord, .coord, 1) = false) {
+    %as_approachp = .uid;
+    p_aprange(1);
+}
+
+// client.ResetAttack
+[proc,allstar_reset_attack_player]
+%as_isattacking = 0;
+%as_atkplayer = null;
+~allstar_reset_stand;
+
+// process(): "if (IsAttacking && !IsDead && PkingDelay <= 0)" Attack(), or ResetAttack() when the
+// target is gone or dead
+[proc,allstar_attack_player_cycle]
+if (%as_isattacking = 0) {
+    return;
+}
+if (map_clock < %as_pking) {
+    return;
+}
+if (%as_atkplayer = null) {
+    ~allstar_reset_attack_player;
+    return;
+}
+if (.finduid(%as_atkplayer) = false) {
+    ~allstar_reset_attack_player;
+    return;
+}
+if (.%as_dead ! 0) {
+    ~allstar_reset_attack_player;
+    return;
+}
+~allstar_attack_player_step;
+
+// client.Attack, with .active_player the target. Every call sets PkingDelay (6 for melee, 5 for the
+// magic shortbow), so it runs once per 6 (5) cycles whether or not a hit lands. A swing silently does
+// nothing when either player is in a safe zone or the target has any protection prayer on; IsAttacking
+// stays set. Only the magic shortbow (861) uses arrows here; every other bow hits like a melee weapon,
+// 859, 4214 and 839-857 from any distance. Special attacks are melee only.
+[proc,allstar_attack_player_step]
+def_int $wep = ~allstar_weapon;
+def_int $enemyhp = .stat(hitpoints);
+~allstar_reset_stand;
+def_int $hit = randominc(~allstar_maxhit);
+facesquare(.coord);
+if ($wep = 1333) {
+    // rune scimitar: actionTimer = 8
+    ~allstar_set_action_timer(8);
+}
+if ($wep = 15156 & ~allstar_action_timer = 0) {
+    // dark bow: a stronger hit whenever actionTimer is 0
+    ~allstar_set_action_timer(8);
+    $hit = calc(4 + randominc(20));
+}
+if ($wep = 4214) {
+    ~allstar_projectile_player(249, 50, 80, 43, 31);
+}
+def_int $delay = 6;
+def_boolean $usebow = false;
+if ($wep = 861) {
+    $delay = 5;
+    $usebow = true;
+    ~allstar_incombat;
+    ~allstar_stop_moving;
+    $hit = randominc(20);
+}
+%as_pking = calc(map_clock + $delay);
+if (~allstar_nonwild(coord) = true | ~allstar_nonwild(.coord) = true | .%as_protect ! 0) {
+    return;
+}
+if (~allstar_gooddistance(.coord, coord, 1) = false & ~allstar_pvp_any_range($wep) = false) {
+    return;
+}
+if (%as_loopatt > map_clock) {
+    return;
+}
+if (.inv_getobj(worn, ^wearpos_ring) = ring_of_life & $enemyhp <= calc((.stat_base(hitpoints) * 10 + 50) / 100)) {
+    .%as_saveme = 1;
+    return;
+}
+if (.%as_dead ! 0) {
+    return;
+}
+if ($usebow = false) {
+    anim(~allstar_weapon_anim, 0);
+    if ($wep = 5698) {
+        // DDS: every hit poisons and the hit is rolled again
+        ~.allstar_poison_player;
+        $hit = randominc(~allstar_maxhit);
+    }
+    .%as_killer = uid;
+    .%as_killerbow = 0;
+    ~.allstar_incombat;
+    .anim(~allstar_block_anim(.inv_getobj(worn, ^wearpos_rhand)), 0);
+    %as_loopatt = calc(map_clock + $delay - 1);
+    if (calc($enemyhp - $hit) < 0) {
+        $hit = $enemyhp;
+    }
+    $hit = ~allstar_oneshot($wep, $hit, $enemyhp);
+    stat_advance(hitpoints, $hit);
+    ~.allstar_player_hit($hit, ^hitmark_damage);
+    if (%sa_attack = ^true) {
+        ~allstar_special_player($wep);
+    }
+    return;
+}
+if (~allstar_has_arrows($wep) = false) {
+    mes("There's no arrows left in your quiver");
+    return;
+}
+~allstar_delete_arrow($wep, .coord);
+anim(human_bow, 0);
+// KillerId = playerId + 10: the kill is credited to whoever has the player slot 10 above the shooter,
+// in practice nobody (BUG; no pk points, and the drop is not given to the shooter)
+.%as_killer = null;
+.%as_killerbow = 1;
+~.allstar_incombat;
+~allstar_incombat;
+~allstar_stop_moving;
+.anim(~allstar_block_anim(.inv_getobj(worn, ^wearpos_rhand)), 0);
+%as_loopatt = calc(map_clock + $delay - 1);
+if (calc($enemyhp - $hit) < 0) {
+    $hit = $enemyhp;
+}
+stat_advance(hitpoints, $hit);
+~.allstar_player_hit($hit, ^hitmark_damage);
+
+// Weapons that hit players from any distance in Attack (the magic shortbow too, unlike PvM)
+[proc,allstar_pvp_any_range](int $wep)(boolean)
+switch_int ($wep) {
+    case 859, 4214, 839, 841, 843, 845, 847, 849, 851, 853, 855, 857, 861 : return(true);
+    case default : return(false);
+}

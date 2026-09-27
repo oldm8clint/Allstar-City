@@ -1,10 +1,4 @@
-[if_button,prayer:prayer_protectfrommissiles]
-if_close;
-if (p_finduid(uid) = true) {
-    @activate_prayer_protectfrommissiles;
-}
-%prayer13 = %prayer13;
-
+// Allstar-City: the button is Allstar-Scape's (allstar/combat/scripts/prayers.rs2).
 [label,activate_prayer_protectfrommissiles]
 p_clearpendingaction;
 def_dbrow $data = ~get_prayer_data(^prayer_protectfrommissiles);
