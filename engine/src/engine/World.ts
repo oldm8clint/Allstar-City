@@ -747,6 +747,11 @@ class World {
                 // world shutdown or x-logged / timed out for 60s: force logout
                 player.loggingOut = true;
                 force = true;
+            } else if (!isClientConnected(player)) {
+                // Allstar-City: Allstar-Scape saved and removed a disconnected player straight away
+                // (PlayerHandler.process), in combat or not
+                player.loggingOut = true;
+                force = true;
             } else if (this.currentTick - player.lastConnected >= World.TIMEOUT_NO_CONNECTION) {
                 // connection lost for 30s: request idle logout
                 player.requestIdleLogout = true;
