@@ -1,0 +1,77 @@
+{
+  "name": "engine-ts",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "imports": {
+    "#3rdparty/*": "./src/3rdparty/*",
+    "#/*": "./src/*",
+    "#tools/*": "./tools/*"
+  },
+  "scripts": {
+    "build": "tsx tools/pack/Build.ts",
+    "clean": "tsx tools/pack/Clean.ts",
+    "db:migrate": "tsx tools/server/prisma-multi.ts migrate deploy",
+    "db:reset": "tsx tools/server/prisma-multi.ts migrate reset --force",
+    "db:schema": "tsx tools/server/prisma-multi.ts migrate dev",
+    "dev": "tsx watch src/app.ts",
+    "friend": "tsx src/friend.ts",
+    "lint": "eslint --no-warn-ignored src tools",
+    "logger": "tsx src/logger.ts",
+    "login": "tsx src/login.ts",
+    "prepare": "husky",
+    "quickstart": "tsx src/app.ts",
+    "setup": "npm install && tsx src/setup.ts",
+    "sqlite:migrate": "prisma migrate deploy --schema prisma/singleworld/schema.prisma",
+    "sqlite:reset": "prisma migrate reset --force --schema prisma/singleworld/schema.prisma",
+    "sqlite:schema": "prisma migrate dev --schema prisma/singleworld/schema.prisma",
+    "start": "npm install && tsx src/app.ts"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "prettier --write",
+      "eslint --no-warn-ignored"
+    ]
+  },
+  "dependencies": {
+    "@fastify/static": "10.1.3",
+    "@fastify/view": "12.0.0",
+    "@fastify/websocket": "11.3.0",
+    "@isaacs/ttlcache": "2.1.5",
+    "@jimp/js-png": "1.6.1",
+    "@jimp/plugin-quantize": "1.6.1",
+    "@lostcityrs/runescript": "0.9.7",
+    "bcrypt-ts": "9.0.2",
+    "ejs": "6.0.1",
+    "fastify": "5.11.3",
+    "fflate": "0.8.3",
+    "jimp": "1.6.1",
+    "kleur": "4.1.5",
+    "kysely": "0.29.5",
+    "mysql2": "3.23.3",
+    "node-forge": "1.4.0",
+    "prom-client": "15.1.3",
+    "ws": "8.21.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/ejs": "3.1.5",
+    "@types/node": "^24",
+    "@types/node-forge": "1.3.14",
+    "@types/ws": "8.18.1",
+    "eslint": "10.8.1",
+    "globals": "17.10.0",
+    "husky": "9.1.7",
+    "lint-staged": "17.3.0",
+    "prettier": "3.9.6",
+    "prisma": "6.19.3",
+    "prisma-kysely": "2.3.0",
+    "tsx": "4.23.12",
+    "typescript-eslint": "8.67.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
