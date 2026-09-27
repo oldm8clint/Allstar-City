@@ -458,6 +458,126 @@ async function mizgog(bot: Bot) {
     await closed(bot, 'Mizgog 303 closes');
 }
 
+async function questItems(bot: Bot) {
+    await setvar(bot, 'allstar_cluelevel', 0);
+    await setvar(bot, 'allstar_q1stage', 1);
+    await give(bot, 'runite_ore', 451);
+    await give(bot, 'palm_leaf', 2339);
+    await give(bot, 'bow_string', 1777);
+    await tele(bot, 2377, 3440);
+    await talk(bot, 'horvik_the_armourer', NPCCHAT1, 4885, "Thanks for getting me these, I've updated", 'Horvik 1101');
+    check(bot.texts.get(4886) === 'your quest log for my next request.', 'Horvik 1101 continue line');
+    await sleep(600);
+    check(count(bot, 451) === 0 && count(bot, 2339) === 0 && count(bot, 1777) === 0, 'quest 1 materials taken');
+    check((await getvar(bot, 'allstar_q1stage')) === 2, 'q1stage 2');
+    bot.resumePauseButton(4886);
+    await closed(bot, 'Horvik 1101 closes');
+    await give(bot, 'magictraining_bookofmagic', 6889);
+    await talk(bot, 'horvik_the_armourer', NPCCHAT1, 4885, 'Thanks giving me the Mage Book, now all I need', 'Horvik 1102');
+    check(bot.texts.get(4886) === 'is the Consecration seed to add the power to the armour.', 'Horvik 1102 continue line');
+    bot.resumePauseButton(4886);
+    await sleep(1500);
+    check(bot.chat === NPCCHAT1 && count(bot, 6889) === 0, '1102 stays open on continue, the book is taken');
+    check((await getvar(bot, 'allstar_q1stage')) === 3, 'q1stage 3');
+    // the ghost gives a Scythe at stage 2 only
+    await tele(bot, 2852, 3575);
+    await setvar(bot, 'allstar_q1stage', 3);
+    const ghost = await spawn(bot, 'ahoy_disciple');
+    const since = bot.messages.length;
+    bot.opNpc(1, ghost);
+    await bot.waitForMessage(/^The ghost isn't interested in talking at the moment\.$/, 5000, since);
+    check(true, 'Ghost Disciple refuses outside stage 2');
+    await setvar(bot, 'allstar_q1stage', 2);
+    for (const n of [1, 2]) {
+        await talk(bot, 'ahoy_disciple', NPCCHAT1, 4885, 'Happy Halloween from Mod Allstarscape v3!', `Ghost Disciple 6889 (${n})`);
+        await sleep(600);
+        check(count(bot, 1419) === n, `a Scythe every time (${count(bot, 1419)})`);
+        bot.resumePauseButton(4886);
+        await closed(bot, 'Ghost Disciple closes');
+    }
+}
+
+async function mizgogKalrag(bot: Bot) {
+    await setvar(bot, 'allstar_q3stage', 1);
+    await give(bot, 'ikov_staffofarmardyl', 84);
+    await tele(bot, 2852, 3573);
+    await talk(bot, 'wizard_mizgog', NPCCHAT4, 4904, "Thanks! Now you'll need to get me", 'Mizgog 305', true);
+    check((await getvar(bot, 'allstar_q3stage')) === 2 && count(bot, 84) === 1, 'q3stage 2, the staff is kept');
+    bot.resumePauseButton(4907);
+    await chat(bot, MULTI2, 2462, 'Ok bye.', 'Mizgog menu 306');
+    bot.ifButton(2462);
+    await sleep(1500);
+    check(bot.chat === MULTI2, '"Ok bye." has no handler: the menu stays');
+    bot.ifButton(2461);
+    await chat(bot, NPCCHAT4, 4904, 'Kalrag can be found in Lumbridge Swamp,', 'Mizgog 307');
+    check(bot.texts.get(4905) === `good luck ${bot.username}!` || /^good luck .+!$/.test(bot.texts.get(4905) ?? ''), `307 names the player (${bot.texts.get(4905)})`);
+    bot.resumePauseButton(4907);
+    await closed(bot, 'Mizgog 307 closes');
+}
+
+async function clueNpcs(bot: Bot) {
+    await tele(bot, 2736, 3459);
+    const thessalia = await approach(bot, 'thessalia');
+    let since = bot.messages.length;
+    bot.opNpc(1, thessalia);
+    await bot.waitForMessage(/^Thessalia isn't interested in talking right now\.\.\.$/, 5000, since);
+    check(true, 'Thessalia refuses without the clue step');
+    // clue L2/S5/id2: Louie legs, dialogue 32, rewards on render
+    await setvar(bot, 'allstar_cluelevel', 2);
+    await setvar(bot, 'allstar_cluestage', 5);
+    await setvar(bot, 'allstar_clueid', 2);
+    await give(bot, 'trail_clue_easy_simple006', 2682);
+    await tele(bot, 2852, 3571);
+    const louie = await spawn(bot, 'louie_legs');
+    since = bot.messages.length;
+    bot.opNpc(1, louie);
+    try {
+        await bot.until(() => bot.main === 8134 && bot.texts.get(8145) === '@dbl@Congratz, you have completed the treasure trail!', 6000, 'reward');
+        check(true, 'Louie legs 32 gives the reward scroll');
+    } catch {
+        check(false, `Louie legs 32 (main ${bot.main}, chat ${bot.chat})`);
+    }
+    await sleep(600);
+    check(count(bot, 2682) === 0 && (await getvar(bot, 'allstar_cluelevel')) === 0, 'reward took the scroll and reset the clue');
+    check(bot.texts.get(4885) === 'Congratulations! Heres your last reward!', 'dialogue 32 text');
+}
+
+async function tzhaarBanker(bot: Bot) {
+    await tele(bot, 2852, 3569);
+    const banker = await spawn(bot, 'tzhaar_banker1');
+    bot.opNpc(1, banker);
+    try {
+        await bot.until(() => bot.main === 5292, 5000, 'tzhaar bank');
+        check(true, 'TzHaar-Ket-Zuh Talk-to opens the bank at once');
+    } catch {
+        check(false, `TzHaar-Ket-Zuh (main ${bot.main})`);
+    }
+    const turael = await spawn(bot, 'slayer_master_1');
+    bot.opNpc(1, turael);
+    await sleep(2000);
+    const c = await coord(bot);
+    check(c.x === 2413 && c.z === 5117, `Turael teleport -> ${JSON.stringify(c)}`);
+}
+
+async function level3(bot: Bot) {
+    // level 3 stage 5: a dig anywhere gives the reward; the message needs id 1 on 2352,3294
+    await setvar(bot, 'allstar_cluelevel', 3);
+    await setvar(bot, 'allstar_cluestage', 5);
+    await setvar(bot, 'allstar_clueid', 3);
+    if (count(bot, 952) === 0) {
+        await give(bot, 'spade', 952);
+    }
+    await tele(bot, 2852, 3567);
+    const since = bot.messages.length;
+    bot.opHeld(1, 952, slotOf(bot, 952), INV);
+    try {
+        await bot.until(() => bot.main === 8134 && bot.texts.get(8145) === '@dbl@Congratz, you have completed the treasure trail!', 5000, 'l3 reward');
+        check(!bot.messages.slice(since).includes('Congratulations you have completed the treasure trail!'), 'level 3 stage 5: reward from anywhere, no message');
+    } catch {
+        check(false, `level 3 stage 5 dig anywhere (${JSON.stringify(bot.messages.slice(since))})`);
+    }
+}
+
 async function clues(bot: Bot) {
     await command(bot, 'empty');
     await setvar(bot, 'allstar_cluelevel', 0);
@@ -532,7 +652,8 @@ const bot = await connect('npc');
 await sleep(1500);
 const tests: Record<string, (bot: Bot) => Promise<void>> = {
     quests, hans, hijack, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
-    starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, clues, essence, gnomeBanker, guards
+    starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, questItems, mizgogKalrag, clueNpcs, tzhaarBanker,
+    clues, level3, essence, gnomeBanker, guards
 };
 // ONLY=hans,bankers runs a subset
 const only = process.env.ONLY?.split(',');
