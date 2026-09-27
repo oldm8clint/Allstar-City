@@ -8,19 +8,14 @@
 ~castlewars_logout;
 %last_logout = map_clock;
 
+// Allstar-Scape button 9154: refused only during the logout delay after combat (~allstar_incombat)
 [if_button,logout:try_logout]
 if_close;
+if (map_clock < %allstar_logout_delay) {
+    mes("You must wait 10 seconds after combat to log out!");
+    return;
+}
 if (p_finduid(uid) = true) {
-    if (~in_duel_arena(coord) = true) {
-        mes("You can't log out during a duel."); //https://youtu.be/xLE8au7T50Q?t=227
-        return;
-    }
-
-    if (~inzone_coord_pair_table(gnomeball_zones, coord) = true) {
-        mes("You can't log out on a gnomeball pitch."); // osrs
-        return;
-    }
-
     p_logout;
 }
 

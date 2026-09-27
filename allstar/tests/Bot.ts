@@ -85,6 +85,9 @@ export default class Bot {
     main = -1;
     side = -1;
     chat = -1;
+    overlay = -1;
+    tutorial = -1;
+    rebootTimer = -1;
     region = { x: -1, z: -1 };
     closed = false;
 
@@ -223,17 +226,26 @@ export default class Bot {
                 this.messages.push(buf.gjstr());
                 break;
             case ServerGameProt.IF_SETTEXT: {
-                const com = buf.g2();
+                const com = buf.g2_alt3();
                 this.texts.set(com, buf.gjstr());
                 break;
             }
             case ServerGameProt.IF_OPENMAIN:
-                this.main = buf.g2();
+                this.main = buf.g2_alt3();
                 this.side = -1;
                 break;
             case ServerGameProt.IF_OPENMAIN_SIDE:
-                this.main = buf.g2();
-                this.side = buf.g2();
+                this.main = buf.g2_alt2();
+                this.side = buf.g2_alt3();
+                break;
+            case ServerGameProt.IF_OPENOVERLAY:
+                this.overlay = buf.g2();
+                break;
+            case ServerGameProt.UPDATE_REBOOT_TIMER:
+                this.rebootTimer = buf.g2_alt1();
+                break;
+            case ServerGameProt.TUT_OPEN:
+                this.tutorial = buf.g2_alt1();
                 break;
             case ServerGameProt.IF_OPENCHAT:
                 this.chat = buf.g2();
@@ -314,6 +326,12 @@ export default class Bot {
 
     ifButton(com: number) {
         this.send(ClientGameProt.IF_BUTTON, buf => buf.p2(com));
+    }
+
+    // what the client sends when the player closes an interface or walks
+    closeModal() {
+        this.send(ClientGameProt.CLOSE_MODAL);
+        this.main = this.side = this.chat = -1;
     }
 
     resumePauseButton(com: number) {

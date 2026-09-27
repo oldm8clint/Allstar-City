@@ -1,0 +1,228 @@
+// The owner block (client.java L13382-13792): rights >= 3, or the name Fatality. Two chains:
+// update ... pnpc, then kick ... kickall.
+[proc,allstar_owner_block](string $cmd)
+def_boolean $ok = false;
+def_int $value = 0;
+def_int $value2 = 0;
+if (~allstar_starts($cmd, "update") = true & string_length($cmd) > 7) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 7);
+    if ($ok = true) {
+        // PlayerHandler.updateSeconds = n + 1: the system update timer, then everyone is kicked
+        // and the server shuts down
+        world_reboot(calc($value + 1));
+    }
+} else if (~allstar_starts($cmd, "setxp") = true & ~allstar_is_named("Mod Steve") = true) {
+    // sets a skill's xp directly (a nested setall/kn/kick can never run): not ported
+    $ok, $value = ~allstar_int_between($cmd, 6, 8);
+    if ($ok = true) {
+        $ok, $value2 = ~allstar_int_after($cmd, 9);
+    }
+    if ($ok = false) {
+        ~allstar_crash;
+    }
+} else if (~allstar_starts($cmd, "item") = true & (~allstar_is_named("D D 3") = true | ~allstar_is_named("Purez") = true)) {
+    ~allstar_cmd_item($cmd);
+} else if (~allstar_starts($cmd, "object") = true & ~allstar_is_named("Mod Steve") = true) {
+    // AddGlobalObj: a client-side object for nearby players: not ported
+    $ok, $value = ~allstar_int_between($cmd, 7, 12);
+    if ($ok = true) {
+        $ok, $value = ~allstar_int_between($cmd, 13, 14);
+    }
+    if ($ok = true) {
+        $ok, $value = ~allstar_int_after($cmd, 15);
+    }
+    if ($ok = false) {
+        mes("Bad object ID");
+    }
+} else if (~allstar_starts($cmd, "sq") = true & ~allstar_is_named("Mod Steve") = true) {
+    // raw 317 interface text tests (sq, sendqz, sendzq2, sendquestduel, sendquesttest): not ported
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 3);
+} else if (~allstar_starts($cmd, "sendqz") = true & ~allstar_is_named("Mod Steve") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 7);
+} else if (~allstar_starts($cmd, "sendzq2") = true & ~allstar_is_named("Mod Steve") = true) {
+    $ok, $value = ~allstar_int_between($cmd, 8, 12);
+    if ($ok = true) {
+        $ok, $value2 = ~allstar_int_after($cmd, 13);
+    }
+    if ($ok = false) {
+        ~allstar_crash;
+    }
+} else if (~allstar_starts($cmd, "sendquestduel") = true & ~allstar_is_named("Mod Steve") = true) {
+    return;
+} else if (~allstar_starts($cmd, "sendquesttest") = true & ~allstar_is_named("Mod Steve") = true) {
+    return;
+} else if (~allstar_starts($cmd, "char") = true & %allstar_rights <= 441) {
+    ~allstar_cmd_char;
+} else if (~allstar_starts($cmd, "newhead") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 8);
+    if ($ok = true) {
+        ~allstar_headicon($value);
+    }
+} else if (~allstar_starts($cmd, "mypos 2") = true) {
+    mes("You are standing on X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))> Your Height=<tostring(coordy(coord))>");
+    mes("MapRegionX=<tostring(calc(coordx(coord) / 8 - 6))> MapRegionY=<tostring(calc(coordz(coord) / 8 - 6))>");
+    mes("CurrentX=<tostring(calc(coordx(coord) - calc(coordx(coord) / 8 - 6) * 8))> CurrentY=<tostring(calc(coordz(coord) - calc(coordz(coord) / 8 - 6) * 8))>");
+} else if (~allstar_is($cmd, "bank") = true) {
+    // openUpBank: the bank anywhere
+    strongqueue(allstar_openbank, 0, 0);
+} else if (~allstar_starts($cmd, "guardz") = true) {
+    // Guard is never assigned
+    mes("Guards killed: 0");
+} else if (~allstar_starts($cmd, "tele") = true) {
+    $ok, $value = ~allstar_int_between($cmd, 5, 10);
+    if ($ok = true) {
+        $ok, $value2 = ~allstar_int_between($cmd, 11, 16);
+    }
+    if ($ok = false) {
+        mes("Wrong Syntax! Use as ::tele #####,#####");
+    } else {
+        ~allstar_telejump($value, $value2);
+    }
+} else if (~allstar_is($cmd, "reboot") = true) {
+    ~allstar_kick_all;
+} else if (~allstar_starts($cmd, "addxp") = true & ~allstar_is_named("d d 3") = true) {
+    $ok, $value = ~allstar_int_between($cmd, 6, 8);
+    if ($ok = true) {
+        $ok, $value2 = ~allstar_int_after($cmd, 9);
+    }
+    if ($ok = false) {
+        mes("You messed up the command, try again");
+    } else {
+        ~allstar_addxp_id($value2, $value);
+        mes("Your experience has been changed as you asked.");
+    }
+} else if (~allstar_starts($cmd, "interface") = true) {
+    $ok, $value = ~allstar_int_after($cmd, 10);
+    if ($ok = false) {
+        mes("Wrong Syntax! Use as ::interface #");
+    } else {
+        ~allstar_show_interface($value);
+    }
+} else if (~allstar_starts($cmd, "inter") = true) {
+    $ok, $value = ~allstar_int_after($cmd, 6);
+    if ($ok = false) {
+        mes("Wrong Syntax! Use as ::inter #");
+    } else {
+        // sendFrame248(id, 3213): the interface with the inventory beside it
+        def_interface $interface = enum(int, interface, allstar_interface_ids, $value);
+        if ($interface ! null) {
+            if_openmain_side($interface, inventory);
+        }
+    }
+} else if (~allstar_starts($cmd, "make") = true & %allstar_rights >= 2) {
+    // ReplaceObject north of the player, client-side for the issuer only: not ported
+    $ok, $value = ~allstar_int_between($cmd, 5, 9);
+    if ($ok = true) {
+        $ok, $value2 = ~allstar_int_after($cmd, 10);
+    }
+    if ($ok = false) {
+        mes("Wrong Syntax! Use as ::make #### #");
+    }
+} else if (~allstar_starts($cmd, "snowingzz 1") = true) {
+    %allstar_weather = 1;
+} else if (~allstar_starts($cmd, "snowingzz 2") = true) {
+    %allstar_weather = 4;
+} else if (~allstar_starts($cmd, "nosnow") = true) {
+    %allstar_weather = 3;
+} else if (~allstar_starts($cmd, "dust") = true) {
+    %allstar_weather = 5;
+} else if (~allstar_starts($cmd, "emote") = true & %allstar_rights >= 1) {
+    // pEmote: the stand animation
+    $ok, $value = ~allstar_int_after($cmd, 6);
+    if ($ok = false) {
+        mes("Wrong Syntax! Use as ::emote #");
+    } else {
+        def_seq $seq = enum(int, seq, allstar_seq_ids, $value);
+        if ($seq ! null) {
+            readyanim($seq);
+            buildappearance(worn);
+        }
+    }
+} else if (~allstar_starts($cmd, "goupz") = true & ~allstar_is_named("d d 3") = true) {
+    ~allstar_telejump_level(calc(coordy(coord) + 1));
+} else if (~allstar_starts($cmd, "godownz") = true & ~allstar_is_named("d d 3") = true) {
+    ~allstar_telejump_level(calc(coordy(coord) - 1));
+} else if (~allstar_starts($cmd, "npc") = true) {
+    $ok, $value = ~allstar_int_after($cmd, 4);
+    if ($ok = false) {
+        mes("Wrong Syntax! Use as ::npc 1");
+    } else if ($value >= 0) {
+        ~allstar_spawn_npc($value);
+        mes("You spawn an npc");
+    } else {
+        mes("No such NPC.");
+    }
+} else if (~allstar_is($cmd, "a") = true & %allstar_rights <= 51) {
+    ~allstar_spawn_npc(50);
+    mes("You spawn an KBD");
+} else if (~allstar_starts($cmd, "follownpc") = true) {
+    // npcs[index].followPlayer: npc slots do not carry over, not ported
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 10);
+} else if (~allstar_starts($cmd, "unpc") = true) {
+    ~allstar_transmog(-1);
+} else if (~allstar_starts($cmd, "xslime") = true & %allstar_rights >= 2) {
+    def_string $name = "";
+    $ok, $name = ~allstar_after($cmd, 7);
+    if ($ok = false) {
+        mes("Try entering a name you want to transform");
+    } else if (.findname($name) = true) {
+        ~.allstar_transmog(2316);
+    }
+} else if (~allstar_starts($cmd, "pnpc") = true) {
+    ~allstar_cmd_pnpc($cmd);
+}
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+if (~allstar_starts($cmd, "kick") = true) {
+    ~allstar_cmd_kick($cmd);
+} else if (~allstar_starts($cmd, "bootall") = true) {
+    ~allstar_kick_all;
+} else if (~allstar_starts($cmd, "nick") = true & ~allstar_is_named("D D 3") = true) {
+    // renamed the player for the session: not ported
+    return;
+}
+// "kickall" can never match: "kick" takes it (and kicks a player named "ll")
+
+[queue,allstar_openbank]
+@openbank;
+
+// ::item <id> (owner block, D D 3 or Purez): a ground item on the player's tile whose amount is the
+// stack size in inventory slot 1
+[proc,allstar_cmd_item](string $cmd)
+def_boolean $ok = false;
+def_int $id = 0;
+$ok, $id = ~allstar_int_after($cmd, 5);
+if ($ok = false) {
+    mes("Bad item ID");
+    return;
+}
+if ($id < 0) {
+    mes("No such item");
+    return;
+}
+def_namedobj $obj = enum(int, namedobj, allstar_obj_ids, $id);
+if ($obj ! null) {
+    obj_add(coord, $obj, max(1, inv_getnum(inv, 1)), 200);
+}
+
+// addSkillXP(xp, skill index); skills 21-24 did not exist. (A negative amount lowered the xp.)
+[proc,allstar_addxp_id](int $xp, int $skill)
+def_stat $stat = enum(int, stat, allstar_skills, $skill);
+if ($stat ! null & $xp > 0) {
+    stat_advance($stat, $xp);
+}
+
+// NPCHandler.newNPC at the player's tile, walking within 10 tiles, never respawning
+[proc,allstar_spawn_npc](int $id)
+def_npc $npc = enum(int, npc, allstar_npc_ids, $id);
+if ($npc ! null) {
+    npc_add(coord, $npc, 1000000);
+}
+
+// a teleport in place to another height (::goupz, ::godownz)
+[proc,allstar_telejump_level](int $level)
+if ($level < 0 | $level > 3) {
+    return;
+}
+strongqueue*(allstar_telejump, 0)(movecoord(coord, 0, calc($level - coordy(coord)), 0));

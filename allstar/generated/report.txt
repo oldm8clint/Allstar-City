@@ -5,3 +5,5 @@ NPC spawns: 486 placed, 6 skipped
   - autospawn.cfg:56 npc 2026 at 3553,3000 is outside the map
   - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
   - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map
+Id enums: 7932 objs, 3852 npcs, 3997 seqs, 666 spotanims, 390 interfaces
+TextHandler: 368 writes, 355 sent, not text in 377: 332 (combat_staff_2:com_3, graphic), 340 (combat_staff_2:com_11, graphic), 341 (inter_14, no type), 342 (combat_staff_2:com_13, model), 351 (combat_staff_2:com_22, model), 354 (inter_14:com_0, rect), 343 (combat_staff_2:com_14, model), 344 (combat_staff_2:com_15, model), 345 (combat_staff_2:com_16, model), 346 (combat_staff_2:com_17, model), 347 (combat_staff_2:com_18, model), 348 (combat_staff_2:com_19, model), 1336 (magic:com_184, model)

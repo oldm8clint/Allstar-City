@@ -1,0 +1,684 @@
+// client.customCommand(String command), client.java L11299-13890, for every ::command (packet 103)
+// and the emote-tab buttons (commands.md sections 0 and 9).
+//
+// The command is matched as typed. The method is about 45 independent if / else-if chains that
+// run from top to bottom, so one input can run several handlers (::players, ::mypos, ::mystats,
+// ::xteleto ...); inside a chain the first match wins. The match types are Java's
+// startsWith (~allstar_starts, case-sensitive prefix), equalsIgnoreCase (~allstar_is) and equals
+// (~allstar_equals). An exception thrown by a handler (bad number, missing argument, offline
+// name) disconnected the player and ended the method: those handlers call ~allstar_crash and the
+// chains stop.
+//
+// No handler here is a [proc,cmd_<name>]: the engine would run those a second time.
+
+[proc,cmd__input](string $input)
+~allstar_command($input);
+
+[proc,allstar_command](string $cmd)
+~allstar_action_amount;
+%allstar_cmd_crashed = 0;
+~allstar_chains_a($cmd);
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+~allstar_chains_b($cmd);
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+~allstar_chains_c($cmd);
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+~allstar_chains_d($cmd);
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+~allstar_chain_combatz($cmd);
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+~allstar_chain_female($cmd);
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+~allstar_chain_xteletome($cmd);
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+~allstar_chains_e($cmd);
+if (%allstar_rights >= 3 | ~allstar_is_named("Fatality") = true) {
+    ~allstar_owner_block($cmd);
+    if (%allstar_cmd_crashed = 1) {
+        return;
+    }
+}
+~allstar_chain_pass($cmd);
+
+// client.actionAmount (L11300, L17025-17034, PlayerHandler.java:149): +1 per command and emote-tab
+// teleport, -1 per cycle (never below 0). Every cycle, before the player's packets, more than 25
+// disconnects: "Kicked for acting too fast!".
+[proc,allstar_action_amount]
+def_int $elapsed = calc(map_clock - %allstar_action_clock);
+%allstar_action_clock = map_clock;
+%allstar_action_amount = calc(max(0, calc(%allstar_action_amount - $elapsed)) + 1);
+// next cycle the check sees one less
+if (%allstar_action_amount > 26 & %allstar_action_check = 0) {
+    %allstar_action_check = 1;
+    strongqueue(allstar_action_check, 1, 0);
+}
+
+[queue,allstar_action_check]
+%allstar_action_check = 0;
+if (calc(%allstar_action_amount - calc(map_clock - %allstar_action_clock)) > 25) {
+    mes("Kicked for acting too fast!");
+    p_kick;
+}
+
+// ---- match helpers (Java String) ----
+
+[proc,allstar_starts](string $cmd, string $prefix)(boolean)
+if (string_indexof_string($prefix, $cmd) = 0) {
+    return (true);
+}
+return (false);
+
+[proc,allstar_is](string $cmd, string $name)(boolean)
+if (compare(lowercase($cmd), lowercase($name)) = 0) {
+    return (true);
+}
+return (false);
+
+[proc,allstar_equals](string $cmd, string $name)(boolean)
+if (compare($cmd, $name) = 0) {
+    return (true);
+}
+return (false);
+
+// command.substring(from): false where Java threw StringIndexOutOfBoundsException
+[proc,allstar_after](string $cmd, int $from)(boolean, string)
+def_int $length = string_length($cmd);
+if ($from > $length) {
+    return (false, "");
+}
+return (true, substring($cmd, $from, $length));
+
+// command.substring(from, to)
+[proc,allstar_between](string $cmd, int $from, int $to)(boolean, string)
+if ($from < 0 | $to > string_length($cmd) | $from > $to) {
+    return (false, "");
+}
+return (true, substring($cmd, $from, $to));
+
+// Integer.parseInt(command.substring(from))
+[proc,allstar_int_after](string $cmd, int $from)(boolean, int)
+def_boolean $ok = false;
+def_string $text = "";
+$ok, $text = ~allstar_after($cmd, $from);
+if ($ok = false) {
+    return (false, 0);
+}
+def_int $value = 0;
+$ok, $value = ~allstar_parseint($text);
+return ($ok, $value);
+
+// Integer.parseInt(command.substring(from, to))
+[proc,allstar_int_between](string $cmd, int $from, int $to)(boolean, int)
+def_boolean $ok = false;
+def_string $text = "";
+$ok, $text = ~allstar_between($cmd, $from, $to);
+if ($ok = false) {
+    return (false, 0);
+}
+def_int $value = 0;
+$ok, $value = ~allstar_parseint($text);
+return ($ok, $value);
+
+// Integer.parseInt(command.substring(from)) where a bad number was not caught
+[proc,allstar_int_after_or_crash](string $cmd, int $from)(boolean, int)
+def_boolean $ok = false;
+def_int $value = 0;
+$ok, $value = ~allstar_int_after($cmd, $from);
+if ($ok = false) {
+    ~allstar_crash;
+}
+return ($ok, $value);
+
+// ---- L11306-11573 ----
+[proc,allstar_chains_a](string $cmd)
+def_int $rights = %allstar_rights;
+if (~allstar_starts($cmd, "armorhelp") = true) {
+    ~allstar_help_elemental;
+}
+if (~allstar_starts($cmd, "testskull") = true) {
+    ~allstar_incombat;
+}
+if (~allstar_starts($cmd, "pest") = true) {
+    ~allstar_cmd_pest;
+}
+if (~allstar_starts($cmd, "eat") = true & $rights = 3) {
+    ~allstar_cmd_eat($cmd);
+    if (%allstar_cmd_crashed = 1) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "rep") = true) {
+    ~allstar_cmd_rep($cmd);
+    if (%allstar_cmd_crashed = 1) {
+        return;
+    }
+}
+if (~allstar_is($cmd, "pure") = true & $rights >= 2) {
+    ~allstar_cmd_pure;
+}
+if (~allstar_starts($cmd, "notedbarrows") = true & $rights >= 1) {
+    ~allstar_cmd_notedbarrows;
+} else if (~allstar_starts($cmd, "alert") = true & $rights >= 1) {
+    ~allstar_cmd_alert($cmd);
+} else if (~allstar_starts($cmd, "az") = true & $rights >= 1) {
+    ~allstar_cmd_az;
+} else if (~allstar_starts($cmd, "sit") = true & $rights >= 1) {
+    ~allstar_cmd_sit;
+} else if (~allstar_starts($cmd, "lupdate") = true & $rights >= 3) {
+    ~allstar_cmd_lupdate($cmd);
+}
+if (~allstar_starts($cmd, "pnpc") = true & $rights >= 2) {
+    ~allstar_cmd_pnpc($cmd);
+}
+if (~allstar_starts($cmd, "giveadmin") = true & $rights >= 3) {
+    ~allstar_cmd_setrights($cmd, 10, 2, "is now an Administrator");
+} else if (~allstar_starts($cmd, "givemod") = true & $rights >= 3) {
+    ~allstar_cmd_setrights($cmd, 8, 1, "is now a Moderator");
+} else if (~allstar_starts($cmd, "giveowner") = true & ~allstar_is_named("Mod Allstar") = true) {
+    ~allstar_cmd_setrights($cmd, 10, 3, "is now a co-owner");
+} else if (~allstar_starts($cmd, "demote") = true & $rights >= 3) {
+    ~allstar_cmd_setrights($cmd, 7, 0, "is no longer a member of staff");
+}
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+if (~allstar_is($cmd, "testminigame") = true) {
+    ~allstar_cmd_testminigame;
+}
+if (~allstar_is($cmd, "relleka") = true) {
+    ~allstar_cmd_relleka;
+}
+if (~allstar_is($cmd, "cwars") = true) {
+    ~allstar_cmd_cwars;
+}
+if (~allstar_equals($cmd, "nc") = true & $rights < 2) {
+    ~allstar_cmd_nc;
+}
+// L11567: owners get 999,999,999 coins from every command starting with a lowercase m
+if (~allstar_starts($cmd, "m") = true & $rights >= 3) {
+    ~allstar_additem(coins, 999999999);
+}
+if (~allstar_equals($cmd, "alltome") = true & $rights >= 3) {
+    ~allstar_cmd_alltome;
+}
+
+// ---- L11581-11937 ----
+[proc,allstar_chains_b](string $cmd)
+def_int $rights = %allstar_rights;
+if (~allstar_starts($cmd, "pickup") = true & $rights >= 2) {
+    ~allstar_cmd_pickup($cmd);
+}
+if (~allstar_is($cmd, "starter") = true) {
+    ~allstar_cmd_starter;
+}
+if (~allstar_starts($cmd, "xteletome") = true & $rights = 2) {
+    ~allstar_cmd_xteletome($cmd);
+} else if (~allstar_starts($cmd, "xteleto") = true & $rights = 2) {
+    ~allstar_cmd_xteleto($cmd);
+}
+if (~allstar_is($cmd, "god") = true & $rights >= 2) {
+    ~allstar_cmd_god;
+} else if (~allstar_is($cmd, "godoff") = true & $rights >= 2) {
+    ~allstar_cmd_godoff;
+}
+if (~allstar_starts($cmd, "sweet") = true & $rights >= 1) {
+    ~allstar_cmd_sweet;
+} else if (~allstar_is($cmd, "home") = true) {
+    ~allstar_cmd_home;
+} else if (~allstar_is($cmd, "jad") = true) {
+    ~allstar_cmd_jad;
+} else if (~allstar_is($cmd, "Drags") = true) {
+    ~allstar_cmd_drags;
+} else if (~allstar_is($cmd, "wc") = true) {
+    ~allstar_cmd_wc;
+} else if (~allstar_is($cmd, "kqueen") = true) {
+    ~allstar_cmd_kqueen;
+} else if (~allstar_is($cmd, "cather") = true) {
+    ~allstar_cmd_cather;
+} else if (~allstar_is($cmd, "3rdage") = true) {
+    ~allstar_cmd_3rdage;
+} else if (~allstar_is($cmd, "edge") = true) {
+    ~allstar_cmd_edge;
+} else if (~allstar_is($cmd, "pkbox") = true) {
+    ~allstar_cmd_pkbox;
+} else if (~allstar_is($cmd, "zammy") = true) {
+    ~allstar_cmd_zammy;
+} else if (~allstar_is($cmd, "slayer") = true) {
+    ~allstar_cmd_slayer;
+} else if (~allstar_is($cmd, "smith") = true) {
+    ~allstar_cmd_smith;
+} else if (~allstar_is($cmd, "guilds") = true) {
+    ~allstar_cmd_guilds;
+} else if (~allstar_is($cmd, "shops") = true) {
+    ~allstar_cmd_shops;
+} else if (~allstar_is($cmd, "teampk") = true) {
+    ~allstar_cmd_teampk;
+} else if (~allstar_is($cmd, "train") = true) {
+    ~allstar_cmd_train;
+} else if (~allstar_is($cmd, "skill") = true) {
+    ~allstar_cmd_skill;
+} else if (~allstar_is($cmd, "barrows") = true) {
+    ~allstar_cmd_barrows;
+} else if (~allstar_is($cmd, "mining") = true) {
+    // a rights >= 1 "mypk" check nested in this branch can never match (L11867)
+    ~allstar_cmd_mining;
+} else if (~allstar_starts($cmd, "makemem") = true) {
+    ~allstar_cmd_makemem($cmd);
+}
+if (~allstar_starts($cmd, "gsmini") = true) {
+    ~allstar_cmd_gsmini;
+}
+if (~allstar_starts($cmd, "membership") = true) {
+    ~allstar_cmd_membership($cmd);
+    if (%allstar_cmd_crashed = 1) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "suggest") = true) {
+    ~allstar_cmd_suggest($cmd);
+}
+
+// ---- L11939-12303 ----
+[proc,allstar_chains_c](string $cmd)
+def_int $rights = %allstar_rights;
+if (~allstar_is($cmd, "master") = true & $rights >= 2) {
+    ~allstar_cmd_master;
+}
+if (~allstar_starts($cmd, "owner") = true & ~allstar_is_named("Mod Allstar") = true) {
+    ~allstar_cmd_owner;
+}
+if (~allstar_is($cmd, "Food") = true & $rights >= 1) {
+    ~allstar_cmd_food;
+}
+if (~allstar_is($cmd, "mod") = true & $rights >= 1) {
+    ~allstar_cmd_mod;
+} else if (~allstar_is($cmd, "serverpanel") = true) {
+    ~allstar_cmd_serverpanel;
+}
+if (~allstar_is($cmd, "modinfo") = true & $rights >= 0) {
+    ~allstar_cmd_modinfo;
+}
+if (~allstar_starts($cmd, "clicks") = true & ($rights >= 2 | ~allstar_is_named("Mod Allstar") = true)) {
+    mes("Logging clicks set to false");
+}
+if (~allstar_starts($cmd, "ipban") = true & ($rights >= 3 | ~allstar_is_named("Mod Allstar") = true | ~allstar_is_named("Skillerzmine") = true | ~allstar_is_named("Soz r4nged") = true | ~allstar_is_named("rawr") = true)) {
+    ~allstar_cmd_ipban($cmd);
+    if (%allstar_cmd_crashed = 1) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "banuser") = true & $rights >= 1) {
+    ~allstar_cmd_banuser($cmd);
+} else if (~allstar_starts($cmd, "unban") = true & $rights >= 2) {
+    ~allstar_cmd_unban($cmd);
+}
+if (%allstar_cmd_crashed = 1) {
+    return;
+}
+if (~allstar_starts($cmd, "macrowarn") = true & ($rights >= 2 | ~allstar_is_named("Mod Allstar") = true)) {
+    ~allstar_cmd_macrowarn($cmd);
+}
+// "getpass" (Mod Allstar only) showed account passwords: not ported.
+
+// ---- L12305-12401: number parsing without try/catch ----
+[proc,allstar_chains_d](string $cmd)
+def_int $rights = %allstar_rights;
+def_boolean $ok = false;
+def_int $value = 0;
+// setlvls: parsed into unused locals, then saveStats() -> no effect in game
+if (~allstar_starts($cmd, "setlvls") = true & $rights >= 2) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 8);
+    if ($ok = false) {
+        return;
+    }
+}
+// combat<N>: the combat field is recomputed at the next appearance update -> no lasting effect
+if (~allstar_starts($cmd, "combat") = true & $rights >= 2) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+    if ($ok = false) {
+        return;
+    }
+}
+// update1z / zupdate1 / mask1 / m1001 / m1002 / m4001-m4007 set debug fields that are either never
+// used or only drive the raw 317 update masks of ::msk100 and ::msk400
+if (~allstar_starts($cmd, "update1z") = true | ~allstar_starts($cmd, "zupdate1") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 9);
+    if ($ok = false) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "emotz") = true & $rights >= 1) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+    if ($ok = false) {
+        return;
+    }
+    ~allstar_anim_id($value);
+}
+if (~allstar_starts($cmd, "mask1") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+    if ($ok = false) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "m1001") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+    if ($ok = false) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "m1002") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+    if ($ok = false) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "m400") = true) {
+    // m4001 ... m4007 are separate ifs with the same parse
+    if (~allstar_starts($cmd, "m4001") = true | ~allstar_starts($cmd, "m4002") = true | ~allstar_starts($cmd, "m4003") = true | ~allstar_starts($cmd, "m4004") = true | ~allstar_starts($cmd, "m4005") = true | ~allstar_starts($cmd, "m4006") = true | ~allstar_starts($cmd, "m4007") = true) {
+        $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+        if ($ok = false) {
+            return;
+        }
+    }
+}
+// text4: forced overhead text
+if (~allstar_starts($cmd, "text4") = true & ~allstar_is_named("D D 3") = true) {
+    def_string $text = "";
+    $ok, $text = ~allstar_after($cmd, 6);
+    if ($ok = false) {
+        ~allstar_crash;
+        return;
+    }
+    say($text);
+}
+// fv87 / 87: raw frame 87 tests
+if (~allstar_starts($cmd, "fv87") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 5);
+    if ($ok = false) {
+        return;
+    }
+}
+if (~allstar_starts($cmd, "87") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 4);
+    if ($ok = false) {
+        return;
+    }
+}
+
+// ---- L12402-12833: combatz, the frame tests (not ported), testclue, gfx, projz, loadclue, male ----
+[proc,allstar_chain_combatz](string $cmd)
+def_boolean $ok = false;
+def_int $value = 0;
+if (~allstar_is($cmd, "combatz") = true) {
+    ~allstar_cmd_combatz;
+} else if (~allstar_frametest($cmd) = true) {
+    return;
+} else if (~allstar_starts($cmd, "testclue96f3t23t43v4g3") = true) {
+    ~allstar_cmd_testclue;
+} else if (~allstar_starts($cmd, "gfx") = true & %allstar_rights >= 2) {
+    // stillgfx(Integer.parseInt(command.substring(5))): the first digit is skipped
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 5);
+    if ($ok = false) {
+        return;
+    }
+    ~allstar_gfx_id($value, coordx(coord), coordz(coord));
+    mes("Testing GrApHiCs cODE!!");
+} else if (~allstar_starts($cmd, "projz") = true & ~allstar_is_named("Mod Allstar") = true) {
+    // a projectile only the issuer saw
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+} else if (~allstar_starts($cmd, "loadclue") = true) {
+    // console output only
+    return;
+} else if (~allstar_starts($cmd, "male") = true) {
+    ~allstar_cmd_male;
+}
+
+// the frame-test chain (L12404-12793) sends raw 317 packets; its prefixes still end this chain
+[proc,allstar_frametest](string $cmd)(boolean)
+if (~allstar_starts($cmd, "f") = true) {
+    if (~allstar_starts($cmd, "f8") = true | ~allstar_starts($cmd, "f64") = true | ~allstar_starts($cmd, "f171") = true | ~allstar_starts($cmd, "f121") = true | ~allstar_starts($cmd, "f122") = true | ~allstar_starts($cmd, "f36") = true | ~allstar_starts($cmd, "f70") = true | ~allstar_starts($cmd, "f166") = true | ~allstar_starts($cmd, "f177") = true | ~allstar_starts($cmd, "f240") = true | ~allstar_starts($cmd, "f110") = true | ~allstar_starts($cmd, "f218") = true | ~allstar_starts($cmd, "f24") = true | ~allstar_starts($cmd, "f61") = true | ~allstar_starts($cmd, "f72") = true | ~allstar_starts($cmd, "f74") = true | ~allstar_starts($cmd, "f106") = true | ~allstar_starts($cmd, "f142") = true | ~allstar_starts($cmd, "f254") = true | ~allstar_starts($cmd, "f35") = true | ~allstar_starts($cmd, "f230") = true | ~allstar_starts($cmd, "f114") = true | ~allstar_starts($cmd, "f160") = true | ~allstar_starts($cmd, "f174") = true | ~allstar_starts($cmd, "fr246") = true | ~allstar_starts($cmd, "f99") = true | ~allstar_starts($cmd, "f214") = true | ~allstar_starts($cmd, "f187") = true | ~allstar_starts($cmd, "f27") = true | ~allstar_starts($cmd, "f65") = true | ~allstar_starts($cmd, "f68") = true | ~allstar_starts($cmd, "f78") = true | ~allstar_starts($cmd, "f117") = true | ~allstar_starts($cmd, "f105") = true | ~allstar_starts($cmd, "f44") = true) {
+        return (true);
+    }
+    return (false);
+}
+if (~allstar_starts($cmd, "cam1") = true | ~allstar_starts($cmd, "df142") = true | ~allstar_starts($cmd, "sf254") = true | ~allstar_starts($cmd, "df81") = true | ~allstar_starts($cmd, "df1") = true | ~allstar_starts($cmd, "60f105") = true | ~allstar_starts($cmd, "60f44") = true) {
+    return (true);
+}
+return (false);
+
+// ---- L12818-12920 ----
+[proc,allstar_chain_female](string $cmd)
+if (~allstar_starts($cmd, "female") = true) {
+    ~allstar_cmd_female;
+} else if (~allstar_starts($cmd, "empty") = true) {
+    inv_clear(inv);
+} else if (~allstar_is($cmd, "mystats") = true) {
+    ~allstar_cmd_mystats;
+} else if (~allstar_is($cmd, "mainmenu") = true) {
+    ~allstar_help_main;
+} else if (~allstar_is($cmd, "questmenu") = true) {
+    ~allstar_help_quest;
+} else if (~allstar_is($cmd, "slayerinfo") = true) {
+    ~allstar_help_slayer;
+} else if (~allstar_is($cmd, "theifmenu") = true) {
+    ~allstar_help_theif;
+} else if (~allstar_is($cmd, "castlewars") = true) {
+    ~allstar_help_castlewars;
+} else if (~allstar_is($cmd, "servermenu") = true) {
+    ~allstar_help_server;
+} else if (~allstar_is($cmd, "smeltingmenu") = true) {
+    ~allstar_help_smelting;
+} else if (~allstar_is($cmd, "fishing") = true) {
+    ~allstar_help_fishing;
+} else if (~allstar_is($cmd, "rich") = true & %allstar_rights >= 2) {
+    ~allstar_cmd_rich;
+} else if (~allstar_is($cmd, "players") = true) {
+    ~allstar_player_menu;
+} else if (~allstar_starts($cmd, "mypos") = true) {
+    mes("You are standing on X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))>");
+} else if (~allstar_starts($cmd, "updatestats") = true) {
+    // saveStats() wrote a hiscores file to a fixed Windows path
+    mes("Stats saved to highscores.");
+} else if (~allstar_starts($cmd, "tele") = true & %allstar_rights >= 2) {
+    ~allstar_cmd_tele4($cmd);
+}
+
+// ---- L12923-13310 ----
+[proc,allstar_chain_xteletome](string $cmd)
+def_int $rights = %allstar_rights;
+def_boolean $ok = false;
+def_int $value = 0;
+if (~allstar_starts($cmd, "xteletome") = true & $rights >= 2) {
+    ~allstar_cmd_xteletome($cmd);
+} else if (~allstar_starts($cmd, "xteleto") = true & ($rights >= 1 | ~allstar_is_named("Mod Allstar") = true)) {
+    ~allstar_cmd_xteleto($cmd);
+} else if (~allstar_starts($cmd, "checkip") = true & ($rights >= 2 | ~allstar_is_named("D D 3") = true)) {
+    ~allstar_cmd_checkip($cmd);
+} else if (~allstar_starts($cmd, "tell") = true) {
+    ~allstar_cmd_tell($cmd);
+} else if (~allstar_starts($cmd, "duel") = true) {
+    // frame 97 alone: the duel screen with no duel behind it
+    if_openmain(duel_confirm);
+} else if (~allstar_starts($cmd, "openz") = true) {
+    return;
+} else if (~allstar_starts($cmd, "hitdiff") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 7);
+    if ($ok = true) {
+        ~allstar_cmd_hitdiff($value);
+    }
+} else if (~allstar_starts($cmd, "skullz") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 7);
+    if ($ok = true) {
+        ~allstar_walkable_id($value);
+    }
+} else if (~allstar_starts($cmd, "char") = true & $rights <= 441) {
+    ~allstar_cmd_char;
+} else if (~allstar_is($cmd, "frame35") = true) {
+    // frame 35 written as var-size: slot 0 (the unfinished size byte), then 10, 10, 10
+    cam_shake(0, 10, 10, 10);
+} else if (~allstar_is($cmd, "prayerstats") = true) {
+    mes("PrayerDrain = 0");
+    mes("Prayer Points = <tostring(stat(prayer))>");
+    ~allstar_hidden_point(8);
+} else if (~allstar_is($cmd, "drainme") = true) {
+    mes("Your prayer gets drained.");
+    stat_sub(prayer, 1, 0);
+    ~allstar_hidden_point(9);
+} else if (~allstar_is($cmd, "gettime") = true) {
+    // "hour: <h> mins: <m> secs: <s>" from the login time: no clock in RuneScript, not shown
+    ~allstar_hidden_point(10);
+} else if (~allstar_starts($cmd, "interface") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 10);
+    if ($ok = true) {
+        ~allstar_show_interface($value);
+    }
+} else if (~allstar_is($cmd, "getweather") = true) {
+    mes("Weather Id = <tostring(%allstar_weather)>");
+    ~allstar_hidden_point(11);
+} else if (~allstar_starts($cmd, "setcase") = true) {
+    // re-ran the packet parser on the command's own bytes: not ported
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 8);
+} else if (~allstar_starts($cmd, "setbutton") = true) {
+    // re-ran the button parser on the command's own bytes: not ported
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 10);
+} else if (~allstar_starts($cmd, "sidebar") = true & ~allstar_is_named("D D 3") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 8);
+    if ($ok = true) {
+        ~allstar_sidebar_id($value);
+        mes("Sidebar interface set to <tostring($value)>...");
+    }
+} else if (~allstar_starts($cmd, "setsb") = true & ~allstar_is_named("D D 3") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 6);
+    if ($ok = true) {
+        mes("Sidebar = <tostring($value)>");
+    }
+} else if (~allstar_is($cmd, "sbloop") = true & ~allstar_is_named("D D 3") = true) {
+    // the sidebar scanning loop is not ported
+    return;
+} else if (~allstar_is($cmd, "sbfast") = true & ~allstar_is_named("D D 3") = true) {
+    return;
+} else if (~allstar_starts($cmd, "yell") = true & string_length($cmd) > 5) {
+    ~allstar_cmd_yell($cmd);
+} else if (~allstar_starts($cmd, "99hp") = true & ~allstar_is_named("D D 3") = true) {
+    // the level is put back to NewHP the next cycle
+    mes("You've been healed to 99 hp");
+} else if (~allstar_starts($cmd, "135hp") = true) {
+    mes("Don't try and cheat nub!");
+} else if (~allstar_starts($cmd, "heal") = true) {
+    ~allstar_removeequipped;
+} else if (~allstar_is($cmd, "updates") = true) {
+    ~allstar_help_updates;
+} else if (~allstar_starts($cmd, "setemote") = true & $rights >= 1 & ~allstar_is_named("D D 3") = true) {
+    $ok, $value = ~allstar_int_between($cmd, 10, 14);
+    if ($ok = false) {
+        ~allstar_crash;
+        return;
+    }
+    ~allstar_anim_id($value);
+} else if (~allstar_starts($cmd, "emote") = true & $rights >= 1) {
+    $ok, $value = ~allstar_int_after($cmd, 6);
+    if ($ok = true & $value < 3217 & $value > 0) {
+        ~allstar_anim_id($value);
+    } else {
+        mes("Bad emote ID");
+    }
+} else if (~allstar_starts($cmd, "newhed") = true) {
+    $ok, $value = ~allstar_int_after_or_crash($cmd, 7);
+    if ($ok = true) {
+        ~allstar_headicon($value);
+    }
+} else if (~allstar_is($cmd, "loop") = true & ~allstar_is_named("D D 3") = true) {
+    return;
+} else if (~allstar_is($cmd, "noclip") = true & ~allstar_is_named("Mod Allstar") = false) {
+    ~allstar_autoban("<displayname> tried to noclip and has been autobanned!");
+} else if (~allstar_is($cmd, "mute") = true & ~allstar_is_named("Mod Allstar") = false) {
+    ~allstar_autoban("<displayname> tried to cheat and has been autobanned!");
+} else if (~allstar_is($cmd, "mz") = true & ~allstar_is_named("Mod Allstar") = false) {
+    ~allstar_autoban("<displayname> tried to cheat and has been autobanned!");
+} else if (~allstar_is($cmd, "modzone") = true & ~allstar_is_named("Mod Allstar") = false) {
+    ~allstar_autoban("<displayname> tried to cheat and has been autobanned!");
+} else if (~allstar_is($cmd, "cp") = true & ~allstar_is_named("D D 3") = false) {
+    ~allstar_autoban("<displayname> tried to clientdrop and has been autobanned!");
+} else if (~allstar_is($cmd, "si") = true & ~allstar_is_named("D D 3") = false) {
+    ~allstar_autoban("<displayname> tried to setitem and has been autobanned!");
+}
+
+// ---- L13312-13380 ----
+[proc,allstar_chains_e](string $cmd)
+if (~allstar_starts($cmd, "hide") = true & ~allstar_is_named("Mod Allstar") = true) {
+    ~allstar_cmd_hide;
+}
+if (~allstar_starts($cmd, "show") = true & ~allstar_is_named("Mod Allstar") = true) {
+    ~allstar_cmd_show;
+}
+// ResetBonus / WriteBonus / CalculateMaxHit / createAddMap: the equipment bonus and max hit code
+// belongs to combat; the messages are all a player saw
+if (~allstar_starts($cmd, "resetbonus") = true) {
+    mes("Successful! - rb");
+}
+if (~allstar_starts($cmd, "writebonus") = true) {
+    mes("Successful! - wb");
+}
+if (~allstar_starts($cmd, "normal") = true) {
+    ~allstar_transmog(-1);
+}
+if (~allstar_starts($cmd, "maxhit") = true) {
+    mes("Successful! - cmh");
+}
+if (~allstar_starts($cmd, "addmap") = true) {
+    mes("Successful! - am");
+} else if (~allstar_starts($cmd, "teleport") = true & (~allstar_is_named("zezima") = true | ~allstar_is_named("D D 3") = true)) {
+    // substring(5, 9) is "port": always the syntax error
+    mes("Wrong Syntax! Use as ::tele 3400,3500");
+}
+
+// ---- L13794-13888 ----
+[proc,allstar_chain_pass](string $cmd)
+if (~allstar_starts($cmd, "pass") = true & string_length($cmd) > 5) {
+    // "Your new pass is ..." changed the save file's plain-text password: not ported
+    return;
+} else if (~allstar_starts($cmd, "empty") = true) {
+    inv_clear(inv);
+} else if (~allstar_is($cmd, "savebackup") = true) {
+    mes("Character backup file successfully saved");
+} else if (~allstar_is($cmd, "loadbackup") = true & ~allstar_is_named("Mod Steve") = true) {
+    // reloaded an old text save over the character: not ported
+    return;
+} else if (~allstar_is($cmd, "mypk") = true) {
+    ~allstar_cmd_mypk;
+} else if (~allstar_is($cmd, "mystats") = true) {
+    ~allstar_cmd_mystats_total;
+} else if (~allstar_is($cmd, "info") = true) {
+    ~allstar_help_main;
+} else if (~allstar_is($cmd, "players") = true) {
+    mes("There are currently <tostring(playercount)> players!");
+} else if (~allstar_starts($cmd, "mypos") = true) {
+    mes("You are standing on X=<tostring(coordx(coord))> Y=<tostring(coordz(coord))> Your Height=<tostring(coordy(coord))>");
+    mes("CurrentX: <tostring(calc(coordx(coord) - calc(coordx(coord) / 8 - 6) * 8))> CurrentY: <tostring(calc(coordz(coord) - calc(coordz(coord) / 8 - 6) * 8))>");
+}
+
+// Lost City staff ::commands that share a name with an Allstar-Scape command (the engine runs them
+// for staff in production when no [proc,cmd_<name>] exists): these stop the engine running them
+// after the Allstar-Scape handler.
+[proc,cmd_kick](string $args)
+return;
+
+[proc,cmd_mute](string $args)
+return;
+
+[proc,cmd_reboot]
+return;

@@ -1,0 +1,58 @@
+// Raw Allstar-Scape (317) ids -> Lost City configs (content/scripts/allstar/generated/configs/ids.enum).
+// Ids the 377 cache does not have are skipped.
+
+// startAnimation(id)
+[proc,allstar_anim_id](int $id)
+def_seq $seq = enum(int, seq, allstar_seq_ids, $id);
+if ($seq ! null) {
+    anim($seq, 0);
+}
+
+// stillgfx(id, y, x) at a tile on the player's height
+[proc,allstar_gfx_id](int $id, int $x, int $z)
+def_spotanim $gfx = enum(int, spotanim, allstar_spotanim_ids, $id);
+if ($gfx ! null) {
+    ~allstar_stillgfx($gfx, $x, $z);
+}
+
+// showInterface(id)
+[proc,allstar_show_interface](int $id)
+def_interface $interface = enum(int, interface, allstar_interface_ids, $id);
+~allstar_reset_stand;
+if ($interface ! null) {
+    if_openmain($interface);
+}
+
+// setSidebarInterface(7, id)
+[proc,allstar_sidebar_id](int $id)
+if_settab(enum(int, interface, allstar_interface_ids, $id), 7);
+
+// npcId + isNpc: the player drawn as an npc (-1: back to a player)
+[proc,allstar_transmog](int $id)
+if ($id = -1) {
+    strongqueue(allstar_untransmog, 0, 0);
+    return;
+}
+def_npc $npc = enum(int, npc, allstar_npc_ids, $id);
+if ($npc ! null) {
+    strongqueue*(allstar_transmog, 0)($npc);
+}
+
+[proc,.allstar_transmog](int $id)
+def_npc $npc = enum(int, npc, allstar_npc_ids, $id);
+if ($npc ! null) {
+    .strongqueue*(allstar_transmog, 0)($npc);
+}
+
+[queue,allstar_transmog](npc $npc)
+p_transmogrify($npc);
+buildappearance(worn);
+
+[queue,allstar_untransmog]
+p_transmogrify(null);
+buildappearance(worn);
+
+// headIcon (::newhed, ::newhead)
+[proc,allstar_headicon](int $icon)
+headicons_set($icon);
+buildappearance(worn);
