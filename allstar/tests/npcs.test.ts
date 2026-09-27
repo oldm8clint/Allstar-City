@@ -246,6 +246,17 @@ async function aubury(bot: Bot) {
     check(bot.texts.get(4886) === 'send them my way.', 'Aubury 6 continue line');
     bot.resumePauseButton(4886);
     await closed(bot, 'Aubury 6 closes');
+    // "Yes please!" opens shop 2
+    await talk(bot, 'aubury', NPCCHAT1, 4885, 'Do you want to buy some runes?', 'Aubury 3 again');
+    bot.resumePauseButton(4886);
+    await chat(bot, MULTI2, 2461, 'Yes please!', 'Aubury menu 4 again');
+    bot.ifButton(2461);
+    try {
+        await bot.until(() => bot.main === 3824 && bot.texts.get(3901) === 'Gold & Trimmed Armor', 5000, 'shop 2');
+        check(true, 'Aubury "Yes please!" opens shop 2 Gold & Trimmed Armor');
+    } catch {
+        check(false, `Aubury shop 2 (main ${bot.main}, title ${bot.texts.get(3901)})`);
+    }
 }
 
 async function lowe(bot: Bot) {
@@ -408,12 +419,12 @@ async function boat(bot: Bot) {
     await bot.waitForMessage(/^You board the ship\.$/, 5000, since);
     await sleep(2000);
     let c = await coord(bot);
-    check(c.x === 9999 && c.z === 9999, `on the boat in the void -> ${JSON.stringify(c)}`);
+    check(c.x === 2852 && c.z === 3584 && c.level === 3, `on the boat: the void is height 3 above the dock -> ${JSON.stringify(c)}`);
     await bot.waitForMessage(/^The boat arrives at Karamja\.$/, 20000, since);
     const secs = (Date.now() - start) / 1000;
     await sleep(600);
     c = await coord(bot);
-    check(c.x === 2956 && c.z === 3146, `boat arrives at Karamja -> ${JSON.stringify(c)}`);
+    check(c.x === 2956 && c.z === 3146 && c.level === 0, `boat arrives at Karamja -> ${JSON.stringify(c)}`);
     check(secs > 13 && secs < 16.5, `trip takes 29 cycles (${secs.toFixed(1)} s)`);
     // the inventory still updates after the ship interface closed
     await give(bot, 'tinderbox', 590);
@@ -659,12 +670,32 @@ async function guards(bot: Bot) {
     check(c.x === 2790 && c.z === 10214, `quest 1 guards throw the player back -> ${JSON.stringify(c)}`);
 }
 
+async function boatAsPlayer(bot: Bot) {
+    await tele(bot, 2852, 3585);
+    await command(bot, 'npcadd customs_officer', 900);
+    const officer = await approach(bot, 'customs_officer');
+    await command(bot, '~npcsstaff 0');
+    bot.opNpc(1, officer);
+    await chat(bot, NPCCHAT4, 4904, 'Do you want to go on a trip to Port Sarim?', 'Customs officer 42 (rank 0)');
+    bot.resumePauseButton(4907);
+    await chat(bot, MULTI2, 2461, 'Yes, please', 'boat menu 43');
+    const since = bot.messages.length;
+    bot.ifButton(2461);
+    await bot.waitForMessage(/^The boat arrives at Port Sarim\.$/, 20000, since);
+    check(!bot.messages.slice(since).includes('Invalid teleport!'), `no "Invalid teleport!" for a player (${JSON.stringify(bot.messages.slice(since))})`);
+    await sleep(900);
+    const pos = bot.messages.length;
+    bot.cheat('mypos');
+    const text = await bot.waitForMessage(/^You are standing on X=/, 5000, pos);
+    check(text === 'You are standing on X=3029 Y=3217', `boat arrives at Port Sarim -> ${text}`);
+}
+
 const bot = await connect('npc');
 await sleep(1500);
 const tests: Record<string, (bot: Bot) => Promise<void>> = {
     quests, hans, hijack, bankers, aubury, lowe, darkMage, pickpocket, paladin, fishing, teleports, nothing,
     starter, makeover, mageOfZamorak, boat, horvik, cook, mizgog, questItems, mizgogKalrag, clueNpcs, tzhaarBanker,
-    clues, level3, essence, gnomeBanker, guards
+    clues, level3, essence, gnomeBanker, guards, boatAsPlayer
 };
 // ONLY=hans,bankers runs a subset
 const only = process.env.ONLY?.split(',');

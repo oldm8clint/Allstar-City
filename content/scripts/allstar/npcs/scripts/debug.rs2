@@ -27,3 +27,8 @@ strongqueue(allstar_debug_ring, 0, 0);
 [queue,allstar_debug_ring]
 %allstar_duelring = 1;
 ~allstar_selectoption("Where would you like to go?", "@whi@J@gre@a@whi@d", "@whi@R@gre@u@whi@n@gre@e@whi@c@gre@r@whi@a@gre@f@whi@t", "");
+
+// ::~npcsstaff <level> sets the engine staff level, so a test can act as a player (rank 0 cannot
+// run debugprocs or dev cheats afterwards)
+[debugproc,npcsstaff](int $level)
+setstaffmodlevel($level);

@@ -41,6 +41,10 @@ protect=no
 [allstar_traveltime]
 protect=no
 
+// the height the player boarded at (the void stand-in is height 3)
+[allstar_travel_level]
+protect=no
+
 // ---- quests (moreinfo [QUESTS]); 0 not started, 1..n in progress, -1 complete ----
 [allstar_q1stage]
 scope=perm

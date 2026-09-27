@@ -41,10 +41,13 @@ allowdesign(true);
 [proc,allstar_board_ship](int $boat)
 %allstar_travelboat = $boat;
 %allstar_traveltime = 30;
+%allstar_travel_level = coordy(coord);
 strongqueue(allstar_boat_trip, 1, 0);
 
 // process(): traveltime drops by 1 every cycle; at 1 or less travel() lands the player, else the
-// player is moved to 9999,9999 and shown the ship interface (sendFrame248(3281, 3213)) again.
+// player is moved to 9999,9999 (same height) and shown the ship interface (sendFrame248(3281,
+// 3213)) again. 9999,9999 has no map, and the engine refuses teleports into unloaded zones for
+// players, so the trip's void is the top floor (height 3) above the tile the player boarded on.
 [queue,allstar_boat_trip]
 while (%allstar_travelboat ! 0) {
     %allstar_traveltime = calc(%allstar_traveltime - 1);
@@ -52,20 +55,23 @@ while (%allstar_travelboat ! 0) {
         ~allstar_boat_arrive;
         return;
     }
-    p_telejump(movecoord(coord, calc(9999 - coordx(coord)), 0, calc(9999 - coordz(coord))));
+    if (coordy(coord) ! 3) {
+        p_telejump(movecoord(coord, 0, calc(3 - coordy(coord)), 0));
+    }
     if_openmain_side(ship_journey, inventory);
     // closing a side interface stops the transmits of its components, the inventory's included
     inv_transmit(inv, inventory:inv);
     p_delay(0);
 }
 
-// travel(1) Karamja / travel(2) Port Sarim; the height is kept
+// travel(1) Karamja / travel(2) Port Sarim, at the height the player boarded at
 [proc,allstar_boat_arrive]
+def_int $up = calc(%allstar_travel_level - coordy(coord));
 if (%allstar_travelboat = 1) {
-    p_telejump(movecoord(coord, calc(2956 - coordx(coord)), 0, calc(3146 - coordz(coord))));
+    p_telejump(movecoord(coord, calc(2956 - coordx(coord)), $up, calc(3146 - coordz(coord))));
     mes("The boat arrives at Karamja.");
 } else {
-    p_telejump(movecoord(coord, calc(3029 - coordx(coord)), 0, calc(3217 - coordz(coord))));
+    p_telejump(movecoord(coord, calc(3029 - coordx(coord)), $up, calc(3217 - coordz(coord))));
     mes("The boat arrives at Port Sarim.");
 }
 %allstar_travelboat = 0;
