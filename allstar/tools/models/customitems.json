@@ -1,0 +1,5755 @@
+{
+  "sources": [
+    "osrs C:\\Users\\clint\\jagexcache\\oldschool\\LIVE"
+  ],
+  "items": {
+    "9540": {
+      "source": "osrs:8013",
+      "standin": true,
+      "model": "model_12324",
+      "2dzoom": 465,
+      "2dxan": 373,
+      "2dyof": -1,
+      "members": true
+    },
+    "10717": {
+      "source": "osrs:9760",
+      "standin": false,
+      "model": "obj_prayer_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_prayer_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_prayer_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          27265
+        ],
+        [
+          16434,
+          31529
+        ],
+        [
+          29404,
+          25185
+        ]
+      ],
+      "members": true
+    },
+    "10718": {
+      "source": "osrs:9761",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          32767
+        ],
+        [
+          992,
+          31710
+        ],
+        [
+          1086,
+          30653
+        ]
+      ],
+      "members": true
+    },
+    "11138": {
+      "source": "osrs:10338",
+      "standin": false,
+      "model": "obj_3rd_age_robe_top",
+      "2dzoom": 2143,
+      "2dxan": 553,
+      "2dxof": 1,
+      "2dyof": 1,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_robe_top_manwear",
+        0
+      ],
+      "manwear2": "obj_3rd_age_robe_top_manwear2",
+      "womanwear": [
+        "obj_3rd_age_robe_top_womanwear",
+        0
+      ],
+      "womanwear2": "obj_3rd_age_robe_top_womanwear2",
+      "members": true
+    },
+    "11139": {
+      "source": "osrs:10340",
+      "standin": false,
+      "model": "obj_3rd_age_robe",
+      "2dzoom": 2083,
+      "2dxan": 438,
+      "2dyof": -1,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_robe_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_robe_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "11192": {
+      "source": "osrs:10446",
+      "standin": false,
+      "model": "obj_saradomin_cloak",
+      "2dzoom": 1827,
+      "2dxan": 364,
+      "2dyan": 992,
+      "2dxof": 3,
+      "2dyof": 12,
+      "manwear": [
+        "obj_saradomin_cloak_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_saradomin_cloak_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "13595": {
+      "source": "osrs:8844",
+      "standin": false,
+      "model": "obj_bronze_defender",
+      "2dzoom": 490,
+      "2dxan": 344,
+      "2dyan": 192,
+      "2dxof": 1,
+      "2dyof": 20,
+      "manwear": [
+        "obj_bronze_defender_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bronze_defender_manwear",
+        6
+      ],
+      "recol": [
+        [
+          7399,
+          3072
+        ],
+        [
+          19026,
+          8354
+        ]
+      ],
+      "members": true
+    },
+    "13596": {
+      "source": "osrs:8845",
+      "standin": false,
+      "model": "obj_bronze_defender",
+      "2dzoom": 490,
+      "2dxan": 344,
+      "2dyan": 192,
+      "2dxof": 1,
+      "2dyof": 20,
+      "manwear": [
+        "obj_bronze_defender_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bronze_defender_manwear",
+        6
+      ],
+      "recol": [
+        [
+          28,
+          12
+        ],
+        [
+          74,
+          33
+        ]
+      ],
+      "members": true
+    },
+    "13597": {
+      "source": "osrs:8846",
+      "standin": false,
+      "model": "obj_bronze_defender",
+      "2dzoom": 490,
+      "2dxan": 344,
+      "2dyan": 192,
+      "2dxof": 1,
+      "2dyof": 20,
+      "manwear": [
+        "obj_bronze_defender_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bronze_defender_manwear",
+        6
+      ],
+      "recol": [
+        [
+          28,
+          37
+        ],
+        [
+          74,
+          61
+        ]
+      ],
+      "members": true
+    },
+    "13598": {
+      "source": "osrs:8847",
+      "standin": false,
+      "model": "obj_bronze_defender",
+      "2dzoom": 490,
+      "2dxan": 344,
+      "2dyan": 192,
+      "2dxof": 1,
+      "2dyof": 20,
+      "manwear": [
+        "obj_bronze_defender_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bronze_defender_manwear",
+        6
+      ],
+      "recol": [
+        [
+          28,
+          0
+        ],
+        [
+          74,
+          0
+        ]
+      ],
+      "members": true
+    },
+    "13599": {
+      "source": "osrs:8848",
+      "standin": false,
+      "model": "obj_bronze_defender",
+      "2dzoom": 490,
+      "2dxan": 344,
+      "2dyan": 192,
+      "2dxof": 1,
+      "2dyof": 20,
+      "manwear": [
+        "obj_bronze_defender_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bronze_defender_manwear",
+        6
+      ],
+      "recol": [
+        [
+          7399,
+          1061
+        ],
+        [
+          19026,
+          6346
+        ]
+      ],
+      "members": true
+    },
+    "13600": {
+      "source": "osrs:8849",
+      "standin": false,
+      "model": "obj_bronze_defender",
+      "2dzoom": 490,
+      "2dxan": 344,
+      "2dyan": 192,
+      "2dxof": 1,
+      "2dyof": 20,
+      "manwear": [
+        "obj_bronze_defender_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bronze_defender_manwear",
+        6
+      ],
+      "recol": [
+        [
+          7399,
+          1153
+        ],
+        [
+          19026,
+          6438
+        ]
+      ],
+      "members": true
+    },
+    "13601": {
+      "source": "osrs:8850",
+      "standin": false,
+      "model": "obj_bronze_defender",
+      "2dzoom": 490,
+      "2dxan": 344,
+      "2dyan": 192,
+      "2dxof": 1,
+      "2dyof": 20,
+      "manwear": [
+        "obj_bronze_defender_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bronze_defender_manwear",
+        6
+      ],
+      "recol": [
+        [
+          7399,
+          1193
+        ],
+        [
+          19026,
+          6478
+        ]
+      ],
+      "members": true
+    },
+    "13640": {
+      "source": "osrs:8921",
+      "standin": false,
+      "model": "obj_black_mask",
+      "2dzoom": 854,
+      "2dxan": 387,
+      "2dyan": 1892,
+      "2dxof": -1,
+      "2dyof": 3,
+      "manwear": [
+        "obj_black_mask_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_black_mask_womanwear",
+        0
+      ],
+      "manhead": "obj_black_mask_manhead",
+      "womanhead": "obj_black_mask_womanhead",
+      "members": true
+    },
+    "14023": {
+      "source": "osrs:9678",
+      "standin": false,
+      "model": "obj_black_plateskirt_trim",
+      "2dzoom": 1100,
+      "2dxan": 620,
+      "2dxof": 5,
+      "2dyof": 5,
+      "manwear": [
+        "obj_black_plateskirt_trim_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_black_plateskirt_trim_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          61,
+          99
+        ],
+        [
+          2340,
+          21140
+        ],
+        [
+          14798,
+          24961
+        ]
+      ],
+      "members": true
+    },
+    "14073": {
+      "source": "osrs:9747",
+      "standin": false,
+      "model": "obj_attack_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_attack_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          13345
+        ],
+        [
+          16434,
+          12288
+        ],
+        [
+          29404,
+          8192
+        ]
+      ],
+      "members": true
+    },
+    "14074": {
+      "source": "osrs:9748",
+      "standin": false,
+      "model": "obj_attack_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_attack_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          31457
+        ],
+        [
+          16434,
+          31297
+        ],
+        [
+          29404,
+          31297
+        ]
+      ],
+      "members": true
+    },
+    "14075": {
+      "source": "osrs:9749",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          13345
+        ],
+        [
+          992,
+          12288
+        ],
+        [
+          1086,
+          6144
+        ]
+      ],
+      "members": true
+    },
+    "14076": {
+      "source": "osrs:9750",
+      "standin": false,
+      "model": "obj_strength_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_strength_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_strength_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          390
+        ],
+        [
+          16434,
+          324
+        ],
+        [
+          29404,
+          324
+        ]
+      ],
+      "members": true
+    },
+    "14077": {
+      "source": "osrs:9751",
+      "standin": false,
+      "model": "obj_strength_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_strength_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_strength_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          18465
+        ],
+        [
+          16434,
+          16417
+        ],
+        [
+          29404,
+          14336
+        ]
+      ],
+      "members": true
+    },
+    "14078": {
+      "source": "osrs:9752",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          390
+        ],
+        [
+          992,
+          390
+        ],
+        [
+          1086,
+          324
+        ]
+      ],
+      "members": true
+    },
+    "14079": {
+      "source": "osrs:9753",
+      "standin": false,
+      "model": "obj_defence_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_defence_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_defence_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          15929
+        ],
+        [
+          16434,
+          8567
+        ],
+        [
+          29404,
+          6453
+        ]
+      ],
+      "members": true
+    },
+    "14080": {
+      "source": "osrs:9754",
+      "standin": false,
+      "model": "obj_defence_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_defence_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_defence_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          26420
+        ],
+        [
+          16434,
+          30646
+        ],
+        [
+          29404,
+          30646
+        ]
+      ],
+      "members": true
+    },
+    "14081": {
+      "source": "osrs:9755",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          15929
+        ],
+        [
+          992,
+          11736
+        ],
+        [
+          1086,
+          8567
+        ]
+      ],
+      "members": true
+    },
+    "14082": {
+      "source": "osrs:9756",
+      "standin": false,
+      "model": "obj_ranging_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_ranging_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_ranging_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          8578
+        ],
+        [
+          16434,
+          7521
+        ],
+        [
+          29404,
+          6464
+        ]
+      ],
+      "members": true
+    },
+    "14083": {
+      "source": "osrs:9757",
+      "standin": false,
+      "model": "obj_ranging_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_ranging_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_ranging_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          18691
+        ],
+        [
+          16434,
+          15520
+        ],
+        [
+          29404,
+          15520
+        ]
+      ],
+      "members": true
+    },
+    "14084": {
+      "source": "osrs:9758",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          8578
+        ],
+        [
+          992,
+          7521
+        ],
+        [
+          1086,
+          6464
+        ]
+      ],
+      "members": true
+    },
+    "14085": {
+      "source": "osrs:9759",
+      "standin": false,
+      "model": "obj_prayer_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_prayer_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_prayer_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          32767
+        ],
+        [
+          16434,
+          31710
+        ],
+        [
+          29404,
+          28539
+        ]
+      ],
+      "members": true
+    },
+    "14086": {
+      "source": "osrs:9760",
+      "standin": false,
+      "model": "obj_prayer_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_prayer_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_prayer_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          27265
+        ],
+        [
+          16434,
+          31529
+        ],
+        [
+          29404,
+          25185
+        ]
+      ],
+      "members": true
+    },
+    "14087": {
+      "source": "osrs:9761",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          32767
+        ],
+        [
+          992,
+          31710
+        ],
+        [
+          1086,
+          30653
+        ]
+      ],
+      "members": true
+    },
+    "14088": {
+      "source": "osrs:9762",
+      "standin": false,
+      "model": "obj_magic_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_magic_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_magic_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          22128
+        ],
+        [
+          16434,
+          20014
+        ],
+        [
+          29404,
+          17900
+        ]
+      ],
+      "members": true
+    },
+    "14089": {
+      "source": "osrs:9763",
+      "standin": false,
+      "model": "obj_magic_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_magic_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_magic_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          5299
+        ],
+        [
+          16434,
+          3183
+        ],
+        [
+          29404,
+          1069
+        ]
+      ],
+      "members": true
+    },
+    "14090": {
+      "source": "osrs:9764",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          22128
+        ],
+        [
+          992,
+          20014
+        ],
+        [
+          1086,
+          17900
+        ]
+      ],
+      "members": true
+    },
+    "14091": {
+      "source": "osrs:9765",
+      "standin": false,
+      "model": "obj_runecraft_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_runecraft_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_runecraft_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          24310
+        ],
+        [
+          16434,
+          20082
+        ],
+        [
+          29404,
+          17968
+        ]
+      ],
+      "members": true
+    },
+    "14092": {
+      "source": "osrs:9766",
+      "standin": false,
+      "model": "obj_runecraft_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_runecraft_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_runecraft_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          31457
+        ],
+        [
+          16434,
+          24961
+        ],
+        [
+          29404,
+          24961
+        ]
+      ],
+      "members": true
+    },
+    "14093": {
+      "source": "osrs:9767",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          24310
+        ],
+        [
+          992,
+          22196
+        ],
+        [
+          1086,
+          20082
+        ]
+      ],
+      "members": true
+    },
+    "14094": {
+      "source": "osrs:9768",
+      "standin": false,
+      "model": "obj_hitpoints_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_hitpoints_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_hitpoints_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          15858
+        ],
+        [
+          16434,
+          21141
+        ],
+        [
+          29404,
+          21141
+        ]
+      ],
+      "members": true
+    },
+    "14095": {
+      "source": "osrs:9769",
+      "standin": false,
+      "model": "obj_hitpoints_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_hitpoints_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_hitpoints_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          21537
+        ],
+        [
+          16434,
+          11297
+        ],
+        [
+          29404,
+          11297
+        ]
+      ],
+      "members": true
+    },
+    "14096": {
+      "source": "osrs:9770",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          31673
+        ],
+        [
+          992,
+          29559
+        ],
+        [
+          1086,
+          27445
+        ]
+      ],
+      "members": true
+    },
+    "14097": {
+      "source": "osrs:9771",
+      "standin": false,
+      "model": "obj_agility_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_agility_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_agility_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          5294
+        ],
+        [
+          16434,
+          3180
+        ],
+        [
+          29404,
+          2123
+        ]
+      ],
+      "members": true
+    },
+    "14098": {
+      "source": "osrs:9772",
+      "standin": false,
+      "model": "obj_agility_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_agility_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_agility_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          15459
+        ],
+        [
+          16434,
+          14402
+        ],
+        [
+          29404,
+          12288
+        ]
+      ],
+      "members": true
+    },
+    "14099": {
+      "source": "osrs:9773",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          5294
+        ],
+        [
+          992,
+          3180
+        ],
+        [
+          1086,
+          2123
+        ]
+      ],
+      "members": true
+    },
+    "14100": {
+      "source": "osrs:9774",
+      "standin": false,
+      "model": "obj_herblore_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_herblore_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_herblore_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          352
+        ],
+        [
+          16434,
+          256
+        ],
+        [
+          29404,
+          192
+        ]
+      ],
+      "members": true
+    },
+    "14101": {
+      "source": "osrs:9775",
+      "standin": false,
+      "model": "obj_herblore_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_herblore_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_herblore_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          28321
+        ],
+        [
+          16434,
+          31491
+        ],
+        [
+          29404,
+          29377
+        ]
+      ],
+      "members": true
+    },
+    "14102": {
+      "source": "osrs:9776",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          352
+        ],
+        [
+          992,
+          320
+        ],
+        [
+          1086,
+          256
+        ]
+      ],
+      "members": true
+    },
+    "14103": {
+      "source": "osrs:9777",
+      "standin": false,
+      "model": "obj_thieving_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_thieving_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_thieving_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          12490
+        ],
+        [
+          16434,
+          12490
+        ],
+        [
+          29404,
+          7205
+        ]
+      ],
+      "members": true
+    },
+    "14104": {
+      "source": "osrs:9778",
+      "standin": false,
+      "model": "obj_thieving_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_thieving_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_thieving_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          4228
+        ],
+        [
+          16434,
+          0
+        ],
+        [
+          29404,
+          0
+        ]
+      ],
+      "members": true
+    },
+    "14105": {
+      "source": "osrs:9779",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          12490
+        ],
+        [
+          992,
+          11433
+        ],
+        [
+          1086,
+          9319
+        ]
+      ],
+      "members": true
+    },
+    "14106": {
+      "source": "osrs:9780",
+      "standin": false,
+      "model": "obj_crafting_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_crafting_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_crafting_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          15687
+        ],
+        [
+          16434,
+          11459
+        ],
+        [
+          29404,
+          9345
+        ]
+      ],
+      "members": true
+    },
+    "14107": {
+      "source": "osrs:9781",
+      "standin": false,
+      "model": "obj_crafting_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_crafting_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_crafting_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          24961
+        ],
+        [
+          16434,
+          31457
+        ],
+        [
+          29404,
+          24961
+        ]
+      ],
+      "members": true
+    },
+    "14108": {
+      "source": "osrs:9782",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          15687
+        ],
+        [
+          992,
+          13573
+        ],
+        [
+          1086,
+          11459
+        ]
+      ],
+      "members": true
+    },
+    "14109": {
+      "source": "osrs:9783",
+      "standin": false,
+      "model": "obj_fletching_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_fletching_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_fletching_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          3369
+        ],
+        [
+          16434,
+          132
+        ],
+        [
+          29404,
+          66
+        ]
+      ],
+      "members": true
+    },
+    "14110": {
+      "source": "osrs:9784",
+      "standin": false,
+      "model": "obj_fletching_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_fletching_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_fletching_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          24961
+        ],
+        [
+          16434,
+          31457
+        ],
+        [
+          29404,
+          24961
+        ]
+      ],
+      "members": true
+    },
+    "14111": {
+      "source": "osrs:9785",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          3369
+        ],
+        [
+          992,
+          198
+        ],
+        [
+          1086,
+          132
+        ]
+      ],
+      "members": true
+    },
+    "14112": {
+      "source": "osrs:9786",
+      "standin": false,
+      "model": "obj_slayer_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_slayer_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_slayer_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          3171
+        ],
+        [
+          16434,
+          0
+        ],
+        [
+          29404,
+          0
+        ]
+      ],
+      "members": true
+    },
+    "14113": {
+      "source": "osrs:9787",
+      "standin": false,
+      "model": "obj_slayer_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_slayer_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_slayer_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          8192
+        ],
+        [
+          16434,
+          12288
+        ],
+        [
+          29404,
+          6144
+        ]
+      ],
+      "members": true
+    },
+    "14114": {
+      "source": "osrs:9788",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          3171
+        ],
+        [
+          992,
+          2114
+        ],
+        [
+          1086,
+          2114
+        ]
+      ],
+      "members": true
+    },
+    "14115": {
+      "source": "osrs:9789",
+      "standin": false,
+      "model": "obj_construct_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_construct_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_construct_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          21071
+        ],
+        [
+          16434,
+          16843
+        ],
+        [
+          29404,
+          15786
+        ]
+      ],
+      "members": true
+    },
+    "14116": {
+      "source": "osrs:9790",
+      "standin": false,
+      "model": "obj_construct_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_construct_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_construct_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          21857
+        ],
+        [
+          16434,
+          26051
+        ],
+        [
+          29404,
+          21857
+        ]
+      ],
+      "members": true
+    },
+    "14117": {
+      "source": "osrs:9791",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          21071
+        ],
+        [
+          992,
+          18957
+        ],
+        [
+          1086,
+          16843
+        ]
+      ],
+      "members": true
+    },
+    "14118": {
+      "source": "osrs:9792",
+      "standin": false,
+      "model": "obj_mining_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_mining_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_mining_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          9511
+        ],
+        [
+          16434,
+          5283
+        ],
+        [
+          29404,
+          4226
+        ]
+      ],
+      "members": true
+    },
+    "14119": {
+      "source": "osrs:9793",
+      "standin": false,
+      "model": "obj_mining_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_mining_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_mining_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          11928
+        ],
+        [
+          16434,
+          7700
+        ],
+        [
+          29404,
+          5586
+        ]
+      ],
+      "members": true
+    },
+    "14120": {
+      "source": "osrs:9794",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          9511
+        ],
+        [
+          992,
+          7397
+        ],
+        [
+          1086,
+          5283
+        ]
+      ],
+      "members": true
+    },
+    "14121": {
+      "source": "osrs:9795",
+      "standin": false,
+      "model": "obj_smithing_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_smithing_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_smithing_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          7397
+        ],
+        [
+          16434,
+          5283
+        ],
+        [
+          29404,
+          5283
+        ]
+      ],
+      "members": true
+    },
+    "14122": {
+      "source": "osrs:9796",
+      "standin": false,
+      "model": "obj_smithing_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_smithing_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_smithing_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          24961
+        ],
+        [
+          16434,
+          31457
+        ],
+        [
+          29404,
+          24961
+        ]
+      ],
+      "members": true
+    },
+    "14123": {
+      "source": "osrs:9797",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          7397
+        ],
+        [
+          992,
+          5283
+        ],
+        [
+          1086,
+          5283
+        ]
+      ],
+      "members": true
+    },
+    "14124": {
+      "source": "osrs:9798",
+      "standin": false,
+      "model": "obj_fishing_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_fishing_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_fishing_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          20287
+        ],
+        [
+          16434,
+          16059
+        ],
+        [
+          29404,
+          7603
+        ]
+      ],
+      "members": true
+    },
+    "14125": {
+      "source": "osrs:9799",
+      "standin": false,
+      "model": "obj_fishing_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_fishing_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_fishing_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          24961
+        ],
+        [
+          16434,
+          31457
+        ],
+        [
+          29404,
+          24961
+        ]
+      ],
+      "members": true
+    },
+    "14126": {
+      "source": "osrs:9800",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          15991
+        ],
+        [
+          992,
+          12854
+        ],
+        [
+          1086,
+          10740
+        ]
+      ],
+      "members": true
+    },
+    "14127": {
+      "source": "osrs:9801",
+      "standin": false,
+      "model": "obj_cooking_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_cooking_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_cooking_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          8298
+        ],
+        [
+          16434,
+          6184
+        ],
+        [
+          29404,
+          4102
+        ]
+      ],
+      "members": true
+    },
+    "14128": {
+      "source": "osrs:9802",
+      "standin": false,
+      "model": "obj_cooking_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_cooking_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_cooking_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          12288
+        ],
+        [
+          16434,
+          15393
+        ],
+        [
+          29404,
+          12288
+        ]
+      ],
+      "members": true
+    },
+    "14129": {
+      "source": "osrs:9803",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          8298
+        ],
+        [
+          992,
+          7241
+        ],
+        [
+          1086,
+          6184
+        ]
+      ],
+      "members": true
+    },
+    "14130": {
+      "source": "osrs:9804",
+      "standin": false,
+      "model": "obj_firemaking_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_firemaking_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_firemaking_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          31105
+        ],
+        [
+          16434,
+          28961
+        ],
+        [
+          29404,
+          26913
+        ]
+      ],
+      "members": true
+    },
+    "14131": {
+      "source": "osrs:9805",
+      "standin": false,
+      "model": "obj_firemaking_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_firemaking_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_firemaking_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          24961
+        ],
+        [
+          16434,
+          31457
+        ],
+        [
+          29404,
+          24961
+        ]
+      ],
+      "members": true
+    },
+    "14132": {
+      "source": "osrs:9806",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          31105
+        ],
+        [
+          992,
+          28961
+        ],
+        [
+          1086,
+          26913
+        ]
+      ],
+      "members": true
+    },
+    "14133": {
+      "source": "osrs:9807",
+      "standin": false,
+      "model": "obj_woodcutting_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_woodcutting_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_woodcutting_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          18887
+        ],
+        [
+          16434,
+          14659
+        ],
+        [
+          29404,
+          12545
+        ]
+      ],
+      "members": true
+    },
+    "14134": {
+      "source": "osrs:9808",
+      "standin": false,
+      "model": "obj_woodcutting_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_woodcutting_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_woodcutting_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          3397
+        ],
+        [
+          16434,
+          3364
+        ],
+        [
+          29404,
+          226
+        ]
+      ],
+      "members": true
+    },
+    "14135": {
+      "source": "osrs:9809",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          18887
+        ],
+        [
+          992,
+          16773
+        ],
+        [
+          1086,
+          14659
+        ]
+      ],
+      "members": true
+    },
+    "14136": {
+      "source": "osrs:9810",
+      "standin": false,
+      "model": "obj_farming_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_farming_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_farming_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          4420
+        ],
+        [
+          16434,
+          192
+        ],
+        [
+          29404,
+          2306
+        ]
+      ],
+      "members": true
+    },
+    "14137": {
+      "source": "osrs:9811",
+      "standin": false,
+      "model": "obj_farming_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_farming_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_farming_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          15976
+        ],
+        [
+          16434,
+          20204
+        ],
+        [
+          29404,
+          15976
+        ]
+      ],
+      "members": true
+    },
+    "14138": {
+      "source": "osrs:9812",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          4420
+        ],
+        [
+          992,
+          2306
+        ],
+        [
+          1086,
+          192
+        ]
+      ],
+      "members": true
+    },
+    "14139": {
+      "source": "osrs:9813",
+      "standin": false,
+      "model": "obj_quest_point_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_quest_point_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_quest_point_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          22198
+        ],
+        [
+          16434,
+          24316
+        ],
+        [
+          29404,
+          23259
+        ]
+      ],
+      "members": true
+    },
+    "14140": {
+      "source": "osrs:9814",
+      "standin": false,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          24316
+        ],
+        [
+          992,
+          22198
+        ],
+        [
+          1086,
+          22198
+        ]
+      ],
+      "members": true
+    },
+    "14503": {
+      "source": "osrs:10330",
+      "standin": false,
+      "model": "obj_3rd_age_range_top",
+      "2dzoom": 1503,
+      "2dxan": 553,
+      "2dxof": -5,
+      "2dyof": -1,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_range_top_manwear",
+        0
+      ],
+      "manwear2": "obj_3rd_age_range_top_manwear2",
+      "womanwear": [
+        "obj_3rd_age_range_top_womanwear",
+        0
+      ],
+      "womanwear2": "obj_3rd_age_range_top_womanwear2",
+      "members": true
+    },
+    "14504": {
+      "source": "osrs:10332",
+      "standin": false,
+      "model": "obj_3rd_age_range_legs",
+      "2dzoom": 1827,
+      "2dxan": 438,
+      "2dyof": -1,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_range_legs_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_range_legs_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14505": {
+      "source": "osrs:10334",
+      "standin": false,
+      "model": "obj_3rd_age_range_coif",
+      "2dzoom": 789,
+      "2dxan": 194,
+      "2dyan": 1784,
+      "2dzan": 2047,
+      "2dxof": 2,
+      "2dyof": -35,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_range_coif_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_range_coif_womanwear",
+        0
+      ],
+      "manhead": "obj_3rd_age_range_coif_manhead",
+      "manhead2": "obj_leather_cowl_manhead2",
+      "womanhead": "obj_3rd_age_range_coif_manhead",
+      "womanhead2": "obj_leather_cowl_womanhead2",
+      "members": true
+    },
+    "14506": {
+      "source": "osrs:10336",
+      "standin": false,
+      "model": "obj_3rd_age_vambraces",
+      "2dzoom": 740,
+      "2dxan": 196,
+      "2dyan": 1784,
+      "2dxof": 7,
+      "2dyof": -33,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_vambraces_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_vambraces_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14507": {
+      "source": "osrs:10338",
+      "standin": false,
+      "model": "obj_3rd_age_robe_top",
+      "2dzoom": 2143,
+      "2dxan": 553,
+      "2dxof": 1,
+      "2dyof": 1,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_robe_top_manwear",
+        0
+      ],
+      "manwear2": "obj_3rd_age_robe_top_manwear2",
+      "womanwear": [
+        "obj_3rd_age_robe_top_womanwear",
+        0
+      ],
+      "womanwear2": "obj_3rd_age_robe_top_womanwear2",
+      "members": true
+    },
+    "14508": {
+      "source": "osrs:10340",
+      "standin": false,
+      "model": "obj_3rd_age_robe",
+      "2dzoom": 2083,
+      "2dxan": 438,
+      "2dyof": -1,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_robe_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_robe_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14509": {
+      "source": "osrs:10342",
+      "standin": false,
+      "model": "obj_3rd_age_mage_hat",
+      "2dzoom": 917,
+      "2dxan": 212,
+      "2dyan": 1883,
+      "2dzan": 2047,
+      "2dxof": 7,
+      "2dyof": -23,
+      "contrast": 20,
+      "manwear": [
+        "obj_3rd_age_mage_hat_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_mage_hat_womanwear",
+        0
+      ],
+      "manhead": "obj_3rd_age_mage_hat_manhead",
+      "manhead2": "obj_leather_cowl_manhead2",
+      "womanhead": "obj_3rd_age_mage_hat_manhead",
+      "womanhead2": "obj_leather_cowl_womanhead2",
+      "members": true
+    },
+    "14511": {
+      "source": "osrs:10346",
+      "standin": false,
+      "model": "obj_3rd_age_platelegs",
+      "2dzoom": 1740,
+      "2dxan": 444,
+      "2dyof": 11,
+      "manwear": [
+        "obj_3rd_age_platelegs_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_platelegs_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14512": {
+      "source": "osrs:10348",
+      "standin": false,
+      "model": "obj_3rd_age_platebody",
+      "2dzoom": 1190,
+      "2dxan": 476,
+      "manwear": [
+        "obj_3rd_age_platebody_manwear",
+        0
+      ],
+      "manwear2": "obj_3rd_age_platebody_manwear2",
+      "womanwear": [
+        "obj_3rd_age_platebody_womanwear",
+        0
+      ],
+      "womanwear2": "obj_3rd_age_platebody_womanwear2",
+      "members": true
+    },
+    "14513": {
+      "source": "osrs:10350",
+      "standin": false,
+      "model": "obj_3rd_age_full_helmet",
+      "2dzoom": 720,
+      "2dxan": 28,
+      "2dyan": 1892,
+      "manwear": [
+        "obj_3rd_age_full_helmet_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_full_helmet_womanwear",
+        0
+      ],
+      "manhead": "obj_3rd_age_full_helmet_manhead",
+      "manhead2": "obj_leather_cowl_manhead2",
+      "womanhead": "obj_3rd_age_full_helmet_manhead",
+      "womanhead2": "obj_leather_cowl_womanhead2",
+      "members": true
+    },
+    "14514": {
+      "source": "osrs:10352",
+      "standin": false,
+      "model": "obj_3rd_age_kiteshield",
+      "2dzoom": 2030,
+      "2dxan": 364,
+      "2dyan": 56,
+      "2dxof": 3,
+      "2dyof": 27,
+      "manwear": [
+        "obj_3rd_age_kiteshield_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_3rd_age_kiteshield_manwear",
+        6
+      ],
+      "members": true
+    },
+    "14519": {
+      "source": "osrs:10362",
+      "standin": false,
+      "model": "obj_amulet_of_glory_t",
+      "2dzoom": 415,
+      "2dxan": 282,
+      "2dyan": 73,
+      "2dzan": 69,
+      "2dxof": 4,
+      "2dyof": 100,
+      "ambient": -30,
+      "manwear": [
+        "obj_amulet_of_glory_t_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_amulet_of_glory_t_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          13537,
+          32767
+        ],
+        [
+          8321,
+          32767
+        ]
+      ],
+      "members": true
+    },
+    "14520": {
+      "source": "osrs:10364",
+      "standin": false,
+      "model": "obj_strength_amulet_t",
+      "2dzoom": 465,
+      "2dxan": 292,
+      "2dyan": 74,
+      "2dxof": 5,
+      "2dyof": 100,
+      "manwear": [
+        "obj_strength_amulet_t_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_strength_amulet_t_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          13537,
+          32767
+        ],
+        [
+          8321,
+          32767
+        ]
+      ],
+      "members": false
+    },
+    "14521": {
+      "source": "osrs:10366",
+      "standin": false,
+      "model": "obj_amulet_of_magic_t",
+      "2dzoom": 400,
+      "2dxan": 284,
+      "2dyan": 90,
+      "2dzan": 111,
+      "2dxof": 4,
+      "2dyof": 100,
+      "manwear": [
+        "obj_amulet_of_magic_t_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_amulet_of_magic_t_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          13537,
+          32767
+        ],
+        [
+          8321,
+          32767
+        ]
+      ],
+      "members": false
+    },
+    "14522": {
+      "source": "osrs:10368",
+      "standin": false,
+      "model": "obj_zamorak_bracers",
+      "2dzoom": 740,
+      "2dxan": 196,
+      "2dyan": 1784,
+      "2dxof": 7,
+      "2dyof": -33,
+      "manwear": [
+        "obj_zamorak_bracers_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_bracers_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          1185,
+          10306
+        ],
+        [
+          8192,
+          30786
+        ],
+        [
+          128,
+          4096
+        ]
+      ],
+      "members": true
+    },
+    "14523": {
+      "source": "osrs:10370",
+      "standin": false,
+      "model": "obj_zamorak_d_hide_body",
+      "2dzoom": 1180,
+      "2dxan": 452,
+      "2dxof": -1,
+      "2dyof": -1,
+      "manwear": [
+        "obj_zamorak_d_hide_body_manwear",
+        0
+      ],
+      "manwear2": "obj_zamorak_d_hide_body_manwear2",
+      "womanwear": [
+        "obj_zamorak_d_hide_body_womanwear",
+        0
+      ],
+      "womanwear2": "obj_zamorak_d_hide_body_womanwear2",
+      "recol": [
+        [
+          2370,
+          10306
+        ],
+        [
+          3136,
+          30786
+        ],
+        [
+          2275,
+          7168
+        ],
+        [
+          1185,
+          5153
+        ],
+        [
+          12288,
+          30786
+        ],
+        [
+          8192,
+          22625
+        ]
+      ],
+      "members": true
+    },
+    "14524": {
+      "source": "osrs:10372",
+      "standin": false,
+      "model": "obj_zamorak_chaps",
+      "2dzoom": 1827,
+      "2dxan": 444,
+      "2dyof": -1,
+      "manwear": [
+        "obj_zamorak_chaps_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_chaps_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          2370,
+          10306
+        ],
+        [
+          3136,
+          30786
+        ],
+        [
+          2275,
+          7168
+        ],
+        [
+          1185,
+          5153
+        ],
+        [
+          12288,
+          30786
+        ],
+        [
+          8192,
+          22625
+        ]
+      ],
+      "members": true
+    },
+    "14525": {
+      "source": "osrs:10374",
+      "standin": false,
+      "model": "obj_zamorak_coif",
+      "2dzoom": 789,
+      "2dxan": 194,
+      "2dyan": 1784,
+      "2dzan": 2047,
+      "2dyof": -35,
+      "manwear": [
+        "obj_zamorak_coif_manwear",
+        0
+      ],
+      "manwear2": "obj_feud_desert_disguise_manwear",
+      "womanwear": [
+        "obj_zamorak_coif_womanwear",
+        0
+      ],
+      "womanwear2": "obj_feud_desert_disguise_womanwear",
+      "manhead": "obj_leather_cowl_manhead2",
+      "manhead2": "obj_zamorak_coif_manhead2",
+      "womanhead": "obj_leather_cowl_womanhead2",
+      "womanhead2": "obj_zamorak_coif_manhead2",
+      "recol": [
+        [
+          2370,
+          10306
+        ],
+        [
+          3136,
+          30786
+        ],
+        [
+          2275,
+          7168
+        ],
+        [
+          1185,
+          5153
+        ],
+        [
+          12288,
+          30786
+        ],
+        [
+          8192,
+          22625
+        ]
+      ],
+      "members": true
+    },
+    "14526": {
+      "source": "osrs:10376",
+      "standin": false,
+      "model": "obj_zamorak_bracers",
+      "2dzoom": 740,
+      "2dxan": 196,
+      "2dyan": 1784,
+      "2dxof": 7,
+      "2dyof": -33,
+      "manwear": [
+        "obj_zamorak_bracers_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_bracers_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          8192,
+          14127
+        ]
+      ],
+      "members": true
+    },
+    "14527": {
+      "source": "osrs:10378",
+      "standin": false,
+      "model": "obj_guthix_d_hide_body",
+      "2dzoom": 1180,
+      "2dxan": 452,
+      "2dxof": -1,
+      "2dyof": -1,
+      "manwear": [
+        "obj_guthix_d_hide_body_manwear",
+        0
+      ],
+      "manwear2": "obj_zamorak_d_hide_body_manwear2",
+      "womanwear": [
+        "obj_guthix_d_hide_body_womanwear",
+        0
+      ],
+      "womanwear2": "obj_zamorak_d_hide_body_womanwear2",
+      "recol": [
+        [
+          8192,
+          14127
+        ],
+        [
+          3136,
+          17103
+        ]
+      ],
+      "members": true
+    },
+    "14528": {
+      "source": "osrs:10380",
+      "standin": false,
+      "model": "obj_zamorak_chaps",
+      "2dzoom": 1827,
+      "2dxan": 444,
+      "2dyof": -1,
+      "manwear": [
+        "obj_zamorak_chaps_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_chaps_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          12288,
+          11089
+        ],
+        [
+          8192,
+          14127
+        ],
+        [
+          3136,
+          17103
+        ]
+      ],
+      "members": true
+    },
+    "14529": {
+      "source": "osrs:10382",
+      "standin": false,
+      "model": "obj_zamorak_coif",
+      "2dzoom": 789,
+      "2dxan": 194,
+      "2dyan": 1784,
+      "2dzan": 2047,
+      "2dyof": -35,
+      "manwear": [
+        "obj_zamorak_coif_manwear",
+        0
+      ],
+      "manwear2": "obj_feud_desert_disguise_manwear",
+      "womanwear": [
+        "obj_zamorak_coif_womanwear",
+        0
+      ],
+      "womanwear2": "obj_feud_desert_disguise_womanwear",
+      "manhead": "obj_leather_cowl_manhead2",
+      "manhead2": "obj_guthix_coif_manhead2",
+      "womanhead": "obj_leather_cowl_womanhead2",
+      "womanhead2": "obj_guthix_coif_manhead2",
+      "recol": [
+        [
+          12288,
+          11089
+        ],
+        [
+          8192,
+          14127
+        ],
+        [
+          3136,
+          17103
+        ]
+      ],
+      "members": true
+    },
+    "14530": {
+      "source": "osrs:10384",
+      "standin": false,
+      "model": "obj_zamorak_bracers",
+      "2dzoom": 740,
+      "2dxan": 196,
+      "2dyan": 1784,
+      "2dxof": 7,
+      "2dyof": -33,
+      "manwear": [
+        "obj_zamorak_bracers_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_bracers_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          1185,
+          2122
+        ],
+        [
+          8192,
+          2364
+        ],
+        [
+          128,
+          4
+        ]
+      ],
+      "members": true
+    },
+    "14531": {
+      "source": "osrs:10386",
+      "standin": false,
+      "model": "obj_saradomin_d_hide_body",
+      "2dzoom": 1180,
+      "2dxan": 452,
+      "2dxof": -1,
+      "2dyof": -1,
+      "manwear": [
+        "obj_saradomin_d_hide_body_manwear",
+        0
+      ],
+      "manwear2": "obj_zamorak_d_hide_body_manwear2",
+      "womanwear": [
+        "obj_saradomin_d_hide_body_womanwear",
+        0
+      ],
+      "womanwear2": "obj_zamorak_d_hide_body_womanwear2",
+      "recol": [
+        [
+          2370,
+          2122
+        ],
+        [
+          3136,
+          2364
+        ],
+        [
+          2275,
+          2151
+        ],
+        [
+          1185,
+          1061
+        ],
+        [
+          8192,
+          3509
+        ]
+      ],
+      "members": true
+    },
+    "14532": {
+      "source": "osrs:10388",
+      "standin": false,
+      "model": "obj_zamorak_chaps",
+      "2dzoom": 1827,
+      "2dxan": 444,
+      "2dyof": -1,
+      "manwear": [
+        "obj_zamorak_chaps_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_chaps_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          2370,
+          2122
+        ],
+        [
+          3136,
+          2364
+        ],
+        [
+          2275,
+          2151
+        ],
+        [
+          1185,
+          1061
+        ],
+        [
+          12288,
+          4541
+        ],
+        [
+          8192,
+          3509
+        ]
+      ],
+      "members": true
+    },
+    "14533": {
+      "source": "osrs:10390",
+      "standin": false,
+      "model": "obj_zamorak_coif",
+      "2dzoom": 789,
+      "2dxan": 194,
+      "2dyan": 1784,
+      "2dzan": 2047,
+      "2dyof": -35,
+      "manwear": [
+        "obj_zamorak_coif_manwear",
+        0
+      ],
+      "manwear2": "obj_feud_desert_disguise_manwear",
+      "womanwear": [
+        "obj_zamorak_coif_womanwear",
+        0
+      ],
+      "womanwear2": "obj_feud_desert_disguise_womanwear",
+      "manhead": "obj_leather_cowl_manhead2",
+      "manhead2": "obj_saradomin_coif_manhead2",
+      "womanhead": "obj_leather_cowl_womanhead2",
+      "womanhead2": "obj_saradomin_coif_manhead2",
+      "recol": [
+        [
+          2370,
+          2122
+        ],
+        [
+          3136,
+          2364
+        ],
+        [
+          2275,
+          2151
+        ],
+        [
+          1185,
+          1061
+        ],
+        [
+          12288,
+          4541
+        ],
+        [
+          8192,
+          3509
+        ]
+      ],
+      "members": true
+    },
+    "14561": {
+      "source": "osrs:10446",
+      "standin": false,
+      "model": "obj_saradomin_cloak",
+      "2dzoom": 1827,
+      "2dxan": 364,
+      "2dyan": 992,
+      "2dxof": 3,
+      "2dyof": 12,
+      "manwear": [
+        "obj_saradomin_cloak_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_saradomin_cloak_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14562": {
+      "source": "osrs:10448",
+      "standin": false,
+      "model": "obj_guthix_cloak",
+      "2dzoom": 1827,
+      "2dxan": 364,
+      "2dyan": 992,
+      "2dxof": 3,
+      "2dyof": 12,
+      "manwear": [
+        "obj_guthix_cloak_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_guthix_cloak_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14563": {
+      "source": "osrs:10450",
+      "standin": false,
+      "model": "obj_zamorak_cloak",
+      "2dzoom": 1827,
+      "2dxan": 364,
+      "2dyan": 992,
+      "2dxof": 3,
+      "2dyof": 12,
+      "manwear": [
+        "obj_zamorak_cloak_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_cloak_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14564": {
+      "source": "osrs:10452",
+      "standin": false,
+      "model": "obj_saradomin_mitre",
+      "2dzoom": 659,
+      "2dxan": 184,
+      "2dyan": 225,
+      "2dxof": -3,
+      "manwear": [
+        "obj_saradomin_mitre_manwear",
+        0
+      ],
+      "manwear2": "obj_feud_desert_disguise_manwear",
+      "womanwear": [
+        "obj_saradomin_mitre_womanwear",
+        0
+      ],
+      "womanwear2": "obj_feud_desert_disguise_womanwear",
+      "manhead": "obj_saradomin_mitre_manhead",
+      "manhead2": "obj_leather_cowl_manhead2",
+      "womanhead": "obj_saradomin_mitre_womanhead",
+      "womanhead2": "obj_leather_cowl_womanhead2",
+      "recol": [
+        [
+          10240,
+          10
+        ],
+        [
+          6144,
+          6
+        ],
+        [
+          16681,
+          8465
+        ]
+      ],
+      "members": true
+    },
+    "14565": {
+      "source": "osrs:10454",
+      "standin": false,
+      "model": "obj_saradomin_mitre",
+      "2dzoom": 659,
+      "2dxan": 184,
+      "2dyan": 225,
+      "2dxof": -3,
+      "manwear": [
+        "obj_saradomin_mitre_manwear",
+        0
+      ],
+      "manwear2": "obj_feud_desert_disguise_manwear",
+      "womanwear": [
+        "obj_saradomin_mitre_womanwear",
+        0
+      ],
+      "womanwear2": "obj_feud_desert_disguise_womanwear",
+      "manhead": "obj_saradomin_mitre_manhead",
+      "manhead2": "obj_leather_cowl_manhead2",
+      "womanhead": "obj_saradomin_mitre_womanhead",
+      "womanhead2": "obj_leather_cowl_womanhead2",
+      "recol": [
+        [
+          10240,
+          320
+        ],
+        [
+          6144,
+          192
+        ],
+        [
+          16681,
+          8744
+        ]
+      ],
+      "members": true
+    },
+    "14566": {
+      "source": "osrs:10456",
+      "standin": false,
+      "model": "obj_saradomin_mitre",
+      "2dzoom": 659,
+      "2dxan": 184,
+      "2dyan": 225,
+      "2dxof": -3,
+      "manwear": [
+        "obj_saradomin_mitre_manwear",
+        0
+      ],
+      "manwear2": "obj_feud_desert_disguise_manwear",
+      "womanwear": [
+        "obj_saradomin_mitre_womanwear",
+        0
+      ],
+      "womanwear2": "obj_feud_desert_disguise_womanwear",
+      "manhead": "obj_saradomin_mitre_manhead",
+      "manhead2": "obj_leather_cowl_manhead2",
+      "womanhead": "obj_saradomin_mitre_womanhead",
+      "womanhead2": "obj_leather_cowl_womanhead2",
+      "members": true
+    },
+    "14567": {
+      "source": "osrs:10458",
+      "standin": false,
+      "model": "obj_saradomin_robe_top",
+      "2dzoom": 1190,
+      "2dxan": 476,
+      "manwear": [
+        "obj_saradomin_robe_top_manwear",
+        0
+      ],
+      "manwear2": "obj_saradomin_robe_top_manwear2",
+      "womanwear": [
+        "obj_saradomin_robe_top_womanwear",
+        0
+      ],
+      "womanwear2": "obj_saradomin_robe_top_womanwear2",
+      "recol": [
+        [
+          10240,
+          10
+        ],
+        [
+          6144,
+          6
+        ]
+      ],
+      "members": true
+    },
+    "14568": {
+      "source": "osrs:10460",
+      "standin": false,
+      "model": "obj_saradomin_robe_top",
+      "2dzoom": 1190,
+      "2dxan": 476,
+      "manwear": [
+        "obj_saradomin_robe_top_manwear",
+        0
+      ],
+      "manwear2": "obj_saradomin_robe_top_manwear2",
+      "womanwear": [
+        "obj_saradomin_robe_top_womanwear",
+        0
+      ],
+      "womanwear2": "obj_saradomin_robe_top_womanwear2",
+      "members": true
+    },
+    "14569": {
+      "source": "osrs:10462",
+      "standin": false,
+      "model": "obj_saradomin_robe_top",
+      "2dzoom": 1190,
+      "2dxan": 476,
+      "manwear": [
+        "obj_saradomin_robe_top_manwear",
+        0
+      ],
+      "manwear2": "obj_saradomin_robe_top_manwear2",
+      "womanwear": [
+        "obj_saradomin_robe_top_womanwear",
+        0
+      ],
+      "womanwear2": "obj_saradomin_robe_top_womanwear2",
+      "recol": [
+        [
+          10240,
+          320
+        ],
+        [
+          6144,
+          192
+        ]
+      ],
+      "members": true
+    },
+    "14570": {
+      "source": "osrs:10464",
+      "standin": false,
+      "model": "obj_saradomin_robe_legs",
+      "2dzoom": 1957,
+      "2dxan": 444,
+      "2dyof": -5,
+      "manwear": [
+        "obj_saradomin_robe_legs_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_saradomin_robe_legs_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          10240,
+          10
+        ],
+        [
+          6144,
+          6
+        ]
+      ],
+      "members": true
+    },
+    "14571": {
+      "source": "osrs:10466",
+      "standin": false,
+      "model": "obj_saradomin_robe_legs",
+      "2dzoom": 1957,
+      "2dxan": 444,
+      "2dyof": -5,
+      "manwear": [
+        "obj_saradomin_robe_legs_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_saradomin_robe_legs_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          10240,
+          320
+        ],
+        [
+          6144,
+          192
+        ]
+      ],
+      "members": true
+    },
+    "14572": {
+      "source": "osrs:10468",
+      "standin": false,
+      "model": "obj_saradomin_robe_legs",
+      "2dzoom": 1957,
+      "2dxan": 444,
+      "2dyof": -5,
+      "manwear": [
+        "obj_saradomin_robe_legs_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_saradomin_robe_legs_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14575": {
+      "source": "osrs:10474",
+      "standin": false,
+      "model": "obj_zamorak_stole",
+      "2dzoom": 1697,
+      "2dxan": 373,
+      "2dyan": 73,
+      "2dzan": 69,
+      "2dxof": 9,
+      "2dyof": -8,
+      "manwear": [
+        "obj_zamorak_stole_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_zamorak_stole_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14638": {
+      "source": "osrs:10551",
+      "standin": false,
+      "model": "obj_fighter_torso",
+      "2dzoom": 1178,
+      "2dxan": 498,
+      "2dyan": 1840,
+      "2dyof": 7,
+      "manwear": [
+        "obj_fighter_torso_manwear",
+        0
+      ],
+      "manwear2": "obj_fighter_torso_manwear2",
+      "womanwear": [
+        "obj_fighter_torso_womanwear",
+        0
+      ],
+      "womanwear2": "obj_fighter_torso_womanwear2",
+      "members": true
+    },
+    "14643": {
+      "source": "osrs:10556",
+      "standin": false,
+      "model": "obj_attacker_icon",
+      "2dzoom": 919,
+      "2dxan": 567,
+      "2dyan": 1024,
+      "2dxof": 35,
+      "2dyof": 30,
+      "manwear": [
+        "obj_attacker_icon_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attacker_icon_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          608,
+          24609
+        ]
+      ],
+      "members": false
+    },
+    "14644": {
+      "source": "osrs:10557",
+      "standin": false,
+      "model": "obj_attacker_icon",
+      "2dzoom": 1114,
+      "2dxan": 553,
+      "2dxof": 34,
+      "2dyof": -28,
+      "manwear": [
+        "obj_collector_icon_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_collector_icon_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          608,
+          31649
+        ]
+      ],
+      "members": false
+    },
+    "14645": {
+      "source": "osrs:10558",
+      "standin": false,
+      "model": "obj_attacker_icon",
+      "2dzoom": 1049,
+      "2dxan": 526,
+      "2dyan": 1010,
+      "2dxof": 35,
+      "2dyof": -30,
+      "manwear": [
+        "obj_defender_icon_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_defender_icon_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          608,
+          1080
+        ]
+      ],
+      "members": false
+    },
+    "14646": {
+      "source": "osrs:10559",
+      "standin": false,
+      "model": "obj_attacker_icon",
+      "2dzoom": 1049,
+      "2dxan": 512,
+      "2dyan": 1024,
+      "2dxof": -32,
+      "2dyof": -32,
+      "manwear": [
+        "obj_healer_icon_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_healer_icon_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          608,
+          800
+        ]
+      ],
+      "members": false
+    },
+    "14724": {
+      "source": "osrs:9948",
+      "standin": false,
+      "model": "obj_hunter_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_hunter_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_hunter_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          30776,
+          12647
+        ],
+        [
+          16434,
+          14761
+        ],
+        [
+          29404,
+          14761
+        ]
+      ],
+      "members": true
+    },
+    "14819": {
+      "source": "osrs:405",
+      "standin": true,
+      "model": "obj_casket",
+      "2dzoom": 1410,
+      "2dxan": 164,
+      "2dyan": 1592,
+      "2dxof": 3,
+      "2dyof": -6,
+      "members": true
+    },
+    "14860": {
+      "source": "osrs:10828",
+      "standin": false,
+      "model": "obj_helm_of_neitiznot",
+      "2dzoom": 984,
+      "2dxan": 126,
+      "2dyan": 129,
+      "2dxof": -1,
+      "2dyof": 1,
+      "manwear": [
+        "obj_helm_of_neitiznot_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_helm_of_neitiznot_womanwear",
+        0
+      ],
+      "manhead": "obj_helm_of_neitiznot_manhead",
+      "womanhead": "obj_helm_of_neitiznot_womanhead",
+      "members": true
+    },
+    "14868": {
+      "source": "osrs:10836",
+      "standin": false,
+      "model": "obj_silly_jester_hat",
+      "2dzoom": 919,
+      "2dxan": 539,
+      "2dyan": 166,
+      "2dzan": 235,
+      "2dxof": 11,
+      "2dyof": -3,
+      "ambient": 15,
+      "contrast": 15,
+      "manwear": [
+        "obj_silly_jester_hat_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_silly_jester_hat_womanwear",
+        0
+      ],
+      "manhead": "obj_silly_jester_hat_manhead",
+      "womanhead": "obj_silly_jester_hat_womanhead",
+      "members": true
+    },
+    "14869": {
+      "source": "osrs:10837",
+      "standin": false,
+      "model": "obj_silly_jester_top",
+      "2dzoom": 1243,
+      "2dxan": 567,
+      "2dyan": 1867,
+      "2dzan": 2047,
+      "2dxof": 3,
+      "2dyof": -7,
+      "ambient": 15,
+      "contrast": 15,
+      "manwear": [
+        "obj_silly_jester_top_manwear",
+        0
+      ],
+      "manwear2": "obj_silly_jester_top_manwear2",
+      "womanwear": [
+        "obj_silly_jester_top_womanwear",
+        0
+      ],
+      "womanwear2": "obj_silly_jester_top_womanwear2",
+      "members": true
+    },
+    "14870": {
+      "source": "osrs:10838",
+      "standin": false,
+      "model": "obj_silly_jester_tights",
+      "2dzoom": 1892,
+      "2dxan": 456,
+      "2dyan": 1909,
+      "2dxof": -1,
+      "2dyof": 12,
+      "ambient": 15,
+      "contrast": 15,
+      "manwear": [
+        "obj_silly_jester_tights_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_silly_jester_tights_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "14915": {
+      "source": "osrs:10887",
+      "standin": false,
+      "model": "obj_barrelchest_anchor",
+      "2dzoom": 1104,
+      "2dxan": 321,
+      "2dyan": 24,
+      "2dxof": -5,
+      "2dyof": 2,
+      "manwear": [
+        "obj_barrelchest_anchor_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_barrelchest_anchor_manwear",
+        6
+      ],
+      "members": true
+    },
+    "15145": {
+      "source": "osrs:11212",
+      "standin": false,
+      "model": "obj_dragon_arrow",
+      "2dxan": 432,
+      "2dyan": 180,
+      "members": true
+    },
+    "15156": {
+      "source": "osrs:11235",
+      "standin": false,
+      "model": "obj_dark_bow",
+      "2dzoom": 2128,
+      "2dxan": 591,
+      "2dyan": 1034,
+      "manwear": [
+        "obj_dark_bow_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_dark_bow_manwear",
+        6
+      ],
+      "members": true
+    },
+    "15181": {
+      "source": "osrs:11280",
+      "standin": true,
+      "model": "obj_cavalier_mask",
+      "2dzoom": 724,
+      "2dxan": 111,
+      "2dyof": -9,
+      "manwear": [
+        "obj_cavalier_mask_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_cavalier_mask_womanwear",
+        0
+      ],
+      "manhead": "obj_cavalier_mask_manhead",
+      "womanhead": "obj_cavalier_mask_womanhead",
+      "members": true
+    },
+    "15183": {
+      "source": "osrs:11280",
+      "standin": false,
+      "model": "obj_cavalier_mask",
+      "2dzoom": 724,
+      "2dxan": 111,
+      "2dyof": -9,
+      "manwear": [
+        "obj_cavalier_mask_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_cavalier_mask_womanwear",
+        0
+      ],
+      "manhead": "obj_cavalier_mask_manhead",
+      "womanhead": "obj_cavalier_mask_womanhead",
+      "members": true
+    },
+    "15185": {
+      "source": "osrs:11283",
+      "standin": false,
+      "model": "obj_dragonfire_shield",
+      "2dzoom": 2022,
+      "2dxan": 540,
+      "2dyan": 123,
+      "ambient": 15,
+      "contrast": 15,
+      "manwear": [
+        "obj_dragonfire_shield_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_dragonfire_shield_manwear",
+        6
+      ],
+      "members": true
+    },
+    "15195": {
+      "source": "osrs:11335",
+      "standin": false,
+      "model": "obj_dragon_full_helm",
+      "2dzoom": 789,
+      "2dxan": 135,
+      "2dyan": 123,
+      "2dxof": -1,
+      "manwear": [
+        "obj_dragon_full_helm_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_dragon_full_helm_womanwear",
+        0
+      ],
+      "manhead": "obj_dragon_full_helm_manhead",
+      "womanhead": "obj_dragon_full_helm_manhead",
+      "members": true
+    },
+    "15333": {
+      "source": "osrs:11802",
+      "standin": false,
+      "model": "obj_armadyl_godsword",
+      "2dzoom": 1957,
+      "2dxan": 498,
+      "2dyan": 484,
+      "2dxof": -1,
+      "2dyof": -1,
+      "manwear": [
+        "obj_armadyl_godsword_manwear",
+        2
+      ],
+      "womanwear": [
+        "obj_armadyl_godsword_manwear",
+        5
+      ],
+      "members": true
+    },
+    "15334": {
+      "source": "osrs:11804",
+      "standin": false,
+      "model": "obj_bandos_godsword",
+      "2dzoom": 1957,
+      "2dxan": 498,
+      "2dyan": 484,
+      "2dxof": -1,
+      "2dyof": -1,
+      "manwear": [
+        "obj_bandos_godsword_manwear",
+        2
+      ],
+      "womanwear": [
+        "obj_bandos_godsword_manwear",
+        5
+      ],
+      "members": true
+    },
+    "15335": {
+      "source": "osrs:11806",
+      "standin": false,
+      "model": "obj_saradomin_godsword",
+      "2dzoom": 1957,
+      "2dxan": 498,
+      "2dyan": 484,
+      "2dxof": -1,
+      "2dyof": -1,
+      "manwear": [
+        "obj_saradomin_godsword_manwear",
+        2
+      ],
+      "womanwear": [
+        "obj_saradomin_godsword_manwear",
+        5
+      ],
+      "members": true
+    },
+    "15336": {
+      "source": "osrs:11808",
+      "standin": false,
+      "model": "obj_zamorak_godsword",
+      "2dzoom": 1957,
+      "2dxan": 498,
+      "2dyan": 484,
+      "2dxof": -1,
+      "2dyof": -1,
+      "manwear": [
+        "obj_zamorak_godsword_manwear",
+        2
+      ],
+      "womanwear": [
+        "obj_zamorak_godsword_manwear",
+        5
+      ],
+      "members": true
+    },
+    "15345": {
+      "source": "osrs:11826",
+      "standin": false,
+      "model": "obj_armadyl_helmet",
+      "2dzoom": 789,
+      "2dxan": 66,
+      "2dyan": 372,
+      "2dxof": 9,
+      "manwear": [
+        "obj_armadyl_helmet_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_armadyl_helmet_womanwear",
+        0
+      ],
+      "manhead": "obj_armadyl_helmet_manhead",
+      "womanhead": "obj_armadyl_helmet_womanhead",
+      "members": true
+    },
+    "15346": {
+      "source": "osrs:11828",
+      "standin": false,
+      "model": "obj_armadyl_chestplate",
+      "2dzoom": 854,
+      "2dxan": 453,
+      "2dxof": 1,
+      "2dyof": -5,
+      "manwear": [
+        "obj_armadyl_chestplate_manwear",
+        0
+      ],
+      "manwear2": "obj_armadyl_chestplate_manwear2",
+      "womanwear": [
+        "obj_armadyl_chestplate_womanwear",
+        0
+      ],
+      "womanwear2": "obj_armadyl_chestplate_womanwear2",
+      "members": true
+    },
+    "15347": {
+      "source": "osrs:11830",
+      "standin": false,
+      "model": "obj_armadyl_chainskirt",
+      "2dzoom": 1957,
+      "2dxan": 555,
+      "2dyan": 2036,
+      "2dxof": -1,
+      "2dyof": -3,
+      "manwear": [
+        "obj_armadyl_chainskirt_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_armadyl_chainskirt_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "15348": {
+      "source": "osrs:11832",
+      "standin": false,
+      "model": "obj_bandos_chestplate",
+      "2dzoom": 984,
+      "2dxan": 501,
+      "2dyan": 6,
+      "2dxof": 1,
+      "2dyof": 4,
+      "manwear": [
+        "obj_bandos_chestplate_manwear",
+        0
+      ],
+      "manwear2": "obj_bandos_chestplate_manwear2",
+      "womanwear": [
+        "obj_bandos_chestplate_womanwear",
+        0
+      ],
+      "womanwear2": "obj_bandos_chestplate_womanwear2",
+      "members": true
+    },
+    "15349": {
+      "source": "osrs:11834",
+      "standin": false,
+      "model": "obj_bandos_tassets",
+      "2dzoom": 854,
+      "2dxan": 540,
+      "2dyan": 2039,
+      "2dxof": 3,
+      "2dyof": 3,
+      "manwear": [
+        "obj_bandos_tassets_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bandos_tassets_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "15350": {
+      "source": "osrs:11836",
+      "standin": false,
+      "model": "obj_bandos_boots",
+      "2dzoom": 724,
+      "2dxan": 171,
+      "2dyof": -7,
+      "manwear": [
+        "obj_bandos_boots_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_bandos_boots_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "15352": {
+      "source": "osrs:11840",
+      "standin": false,
+      "model": "obj_dragon_boots",
+      "2dzoom": 595,
+      "2dxan": 96,
+      "2dyof": -1,
+      "manwear": [
+        "obj_dragon_boots_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_dragon_boots_womanwear",
+        0
+      ],
+      "members": true
+    },
+    "15713": {
+      "source": "osrs:9948",
+      "standin": true,
+      "model": "obj_hunter_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_hunter_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_hunter_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          4194,
+          17081
+        ],
+        [
+          10533,
+          16159
+        ],
+        [
+          8419,
+          11864
+        ],
+        [
+          6308,
+          8693
+        ],
+        [
+          22128,
+          2132
+        ],
+        [
+          18957,
+          2127
+        ],
+        [
+          12647,
+          21375
+        ],
+        [
+          2080,
+          6
+        ],
+        [
+          30776,
+          16159
+        ],
+        [
+          16434,
+          17081
+        ],
+        [
+          29404,
+          18335
+        ]
+      ],
+      "members": true
+    },
+    "15714": {
+      "source": "osrs:9949",
+      "standin": true,
+      "model": "obj_hunter_cape",
+      "2dzoom": 2128,
+      "2dxan": 504,
+      "2dyof": 1,
+      "manwear": [
+        "obj_hunter_cape_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_hunter_cape_womanwear",
+        0
+      ],
+      "recol": [
+        [
+          4194,
+          17081
+        ],
+        [
+          10533,
+          16159
+        ],
+        [
+          8419,
+          11864
+        ],
+        [
+          6308,
+          8693
+        ],
+        [
+          22128,
+          2132
+        ],
+        [
+          18957,
+          2127
+        ],
+        [
+          12647,
+          21375
+        ],
+        [
+          2080,
+          6
+        ],
+        [
+          30776,
+          1070
+        ],
+        [
+          16434,
+          1067
+        ],
+        [
+          29404,
+          18335
+        ]
+      ],
+      "members": true
+    },
+    "15715": {
+      "source": "osrs:9950",
+      "standin": true,
+      "model": "obj_attack_hood",
+      "2dzoom": 720,
+      "2dxan": 21,
+      "2dyan": 18,
+      "manwear": [
+        "obj_attack_hood_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_attack_hood_womanwear",
+        0
+      ],
+      "manhead": "obj_attack_hood_manhead",
+      "womanhead": "obj_attack_hood_womanhead",
+      "recol": [
+        [
+          30753,
+          16159
+        ],
+        [
+          992,
+          17081
+        ],
+        [
+          1086,
+          11864
+        ]
+      ],
+      "members": true
+    }
+  },
+  "models": {
+    "obj_casket": {
+      "from": "osrs:2450",
+      "reused377": true
+    },
+    "model_12324": {
+      "from": "osrs:12324",
+      "reused377": true
+    },
+    "obj_bronze_defender": {
+      "from": "osrs:15335",
+      "vertices": 41,
+      "faces": 62
+    },
+    "obj_bronze_defender_manwear": {
+      "from": "osrs:15413",
+      "vertices": 41,
+      "faces": 62
+    },
+    "obj_black_mask": {
+      "from": "osrs:15615",
+      "vertices": 126,
+      "faces": 190
+    },
+    "obj_black_mask_manwear": {
+      "from": "osrs:15935",
+      "vertices": 114,
+      "faces": 236
+    },
+    "obj_black_mask_womanwear": {
+      "from": "osrs:15946",
+      "vertices": 114,
+      "faces": 236
+    },
+    "obj_black_mask_manhead": {
+      "from": "osrs:15921",
+      "vertices": 185,
+      "faces": 300
+    },
+    "obj_black_mask_womanhead": {
+      "from": "osrs:15924",
+      "vertices": 185,
+      "faces": 300
+    },
+    "obj_black_plateskirt_trim": {
+      "from": "osrs:4208",
+      "reused377": true
+    },
+    "obj_black_plateskirt_trim_manwear": {
+      "from": "osrs:4206",
+      "reused377": true
+    },
+    "obj_black_plateskirt_trim_womanwear": {
+      "from": "osrs:4207",
+      "reused377": true
+    },
+    "obj_attack_cape": {
+      "from": "osrs:19047",
+      "vertices": 115,
+      "faces": 167
+    },
+    "obj_attack_cape_manwear": {
+      "from": "osrs:18920",
+      "vertices": 311,
+      "faces": 636
+    },
+    "obj_attack_cape_womanwear": {
+      "from": "osrs:18969",
+      "vertices": 311,
+      "faces": 636
+    },
+    "obj_attack_hood": {
+      "from": "osrs:19058",
+      "vertices": 56,
+      "faces": 110
+    },
+    "obj_attack_hood_manwear": {
+      "from": "osrs:18914",
+      "vertices": 102,
+      "faces": 174
+    },
+    "obj_attack_hood_womanwear": {
+      "from": "osrs:18967",
+      "vertices": 91,
+      "faces": 160
+    },
+    "obj_attack_hood_manhead": {
+      "from": "osrs:18911",
+      "vertices": 220,
+      "faces": 392
+    },
+    "obj_attack_hood_womanhead": {
+      "from": "osrs:18913",
+      "vertices": 220,
+      "faces": 392
+    },
+    "obj_strength_cape": {
+      "from": "osrs:19067",
+      "vertices": 146,
+      "faces": 228
+    },
+    "obj_strength_cape_manwear": {
+      "from": "osrs:18954",
+      "vertices": 342,
+      "faces": 697
+    },
+    "obj_strength_cape_womanwear": {
+      "from": "osrs:18989",
+      "vertices": 342,
+      "faces": 697
+    },
+    "obj_defence_cape": {
+      "from": "osrs:19051",
+      "vertices": 121,
+      "faces": 181
+    },
+    "obj_defence_cape_manwear": {
+      "from": "osrs:18928",
+      "vertices": 314,
+      "faces": 650
+    },
+    "obj_defence_cape_womanwear": {
+      "from": "osrs:18973",
+      "vertices": 314,
+      "faces": 682
+    },
+    "obj_ranging_cape": {
+      "from": "osrs:19063",
+      "vertices": 173,
+      "faces": 261
+    },
+    "obj_ranging_cape_manwear": {
+      "from": "osrs:18948",
+      "vertices": 367,
+      "faces": 730
+    },
+    "obj_ranging_cape_womanwear": {
+      "from": "osrs:18985",
+      "vertices": 369,
+      "faces": 1112
+    },
+    "obj_prayer_cape": {
+      "from": "osrs:19061",
+      "vertices": 129,
+      "faces": 191
+    },
+    "obj_prayer_cape_manwear": {
+      "from": "osrs:18945",
+      "vertices": 323,
+      "faces": 660
+    },
+    "obj_prayer_cape_womanwear": {
+      "from": "osrs:18983",
+      "vertices": 323,
+      "faces": 660
+    },
+    "obj_magic_cape": {
+      "from": "osrs:19059",
+      "vertices": 129,
+      "faces": 185
+    },
+    "obj_magic_cape_manwear": {
+      "from": "osrs:18915",
+      "vertices": 323,
+      "faces": 654
+    },
+    "obj_magic_cape_womanwear": {
+      "from": "osrs:18981",
+      "vertices": 321,
+      "faces": 650
+    },
+    "obj_runecraft_cape": {
+      "from": "osrs:19053",
+      "vertices": 139,
+      "faces": 215
+    },
+    "obj_runecraft_cape_manwear": {
+      "from": "osrs:18950",
+      "vertices": 335,
+      "faces": 684
+    },
+    "obj_runecraft_cape_womanwear": {
+      "from": "osrs:18986",
+      "vertices": 335,
+      "faces": 684
+    },
+    "obj_hitpoints_cape": {
+      "from": "osrs:19057",
+      "vertices": 125,
+      "faces": 189
+    },
+    "obj_hitpoints_cape_manwear": {
+      "from": "osrs:18939",
+      "vertices": 321,
+      "faces": 658
+    },
+    "obj_hitpoints_cape_womanwear": {
+      "from": "osrs:18980",
+      "vertices": 321,
+      "faces": 658
+    },
+    "obj_agility_cape": {
+      "from": "osrs:19046",
+      "vertices": 133,
+      "faces": 171
+    },
+    "obj_agility_cape_manwear": {
+      "from": "osrs:18918",
+      "vertices": 325,
+      "faces": 640
+    },
+    "obj_agility_cape_womanwear": {
+      "from": "osrs:18968",
+      "vertices": 325,
+      "faces": 672
+    },
+    "obj_herblore_cape": {
+      "from": "osrs:19056",
+      "vertices": 132,
+      "faces": 203
+    },
+    "obj_herblore_cape_manwear": {
+      "from": "osrs:18938",
+      "vertices": 328,
+      "faces": 672
+    },
+    "obj_herblore_cape_womanwear": {
+      "from": "osrs:18978",
+      "vertices": 335,
+      "faces": 686
+    },
+    "obj_thieving_cape": {
+      "from": "osrs:19068",
+      "vertices": 121,
+      "faces": 169
+    },
+    "obj_thieving_cape_manwear": {
+      "from": "osrs:18956",
+      "vertices": 317,
+      "faces": 638
+    },
+    "obj_thieving_cape_womanwear": {
+      "from": "osrs:18990",
+      "vertices": 317,
+      "faces": 638
+    },
+    "obj_crafting_cape": {
+      "from": "osrs:19050",
+      "vertices": 143,
+      "faces": 214
+    },
+    "obj_crafting_cape_manwear": {
+      "from": "osrs:18925",
+      "vertices": 346,
+      "faces": 697
+    },
+    "obj_crafting_cape_womanwear": {
+      "from": "osrs:18972",
+      "vertices": 346,
+      "faces": 697
+    },
+    "obj_fletching_cape": {
+      "from": "osrs:19055",
+      "vertices": 162,
+      "faces": 242
+    },
+    "obj_fletching_cape_manwear": {
+      "from": "osrs:18935",
+      "vertices": 358,
+      "faces": 711
+    },
+    "obj_fletching_cape_womanwear": {
+      "from": "osrs:18977",
+      "vertices": 358,
+      "faces": 711
+    },
+    "obj_slayer_cape": {
+      "from": "osrs:19065",
+      "vertices": 134,
+      "faces": 192
+    },
+    "obj_slayer_cape_manwear": {
+      "from": "osrs:18951",
+      "vertices": 330,
+      "faces": 661
+    },
+    "obj_slayer_cape_womanwear": {
+      "from": "osrs:18987",
+      "vertices": 330,
+      "faces": 661
+    },
+    "obj_construct_cape": {
+      "from": "osrs:19045",
+      "vertices": 156,
+      "faces": 240
+    },
+    "obj_construct_cape_manwear": {
+      "from": "osrs:18916",
+      "vertices": 352,
+      "faces": 708
+    },
+    "obj_construct_cape_womanwear": {
+      "from": "osrs:18970",
+      "vertices": 352,
+      "faces": 708
+    },
+    "obj_mining_cape": {
+      "from": "osrs:19060",
+      "vertices": 119,
+      "faces": 162
+    },
+    "obj_mining_cape_manwear": {
+      "from": "osrs:18942",
+      "vertices": 316,
+      "faces": 632
+    },
+    "obj_mining_cape_womanwear": {
+      "from": "osrs:18982",
+      "vertices": 316,
+      "faces": 632
+    },
+    "obj_smithing_cape": {
+      "from": "osrs:19066",
+      "vertices": 150,
+      "faces": 235
+    },
+    "obj_smithing_cape_manwear": {
+      "from": "osrs:18953",
+      "vertices": 346,
+      "faces": 704
+    },
+    "obj_smithing_cape_womanwear": {
+      "from": "osrs:18988",
+      "vertices": 346,
+      "faces": 704
+    },
+    "obj_fishing_cape": {
+      "from": "osrs:19054",
+      "vertices": 182,
+      "faces": 270
+    },
+    "obj_fishing_cape_manwear": {
+      "from": "osrs:18934",
+      "vertices": 378,
+      "faces": 739
+    },
+    "obj_fishing_cape_womanwear": {
+      "from": "osrs:18976",
+      "vertices": 378,
+      "faces": 739
+    },
+    "obj_cooking_cape": {
+      "from": "osrs:19049",
+      "vertices": 166,
+      "faces": 258
+    },
+    "obj_cooking_cape_manwear": {
+      "from": "osrs:18924",
+      "vertices": 362,
+      "faces": 727
+    },
+    "obj_cooking_cape_womanwear": {
+      "from": "osrs:18971",
+      "vertices": 362,
+      "faces": 727
+    },
+    "obj_firemaking_cape": {
+      "from": "osrs:19048",
+      "vertices": 174,
+      "faces": 261
+    },
+    "obj_firemaking_cape_manwear": {
+      "from": "osrs:18932",
+      "vertices": 370,
+      "faces": 730
+    },
+    "obj_firemaking_cape_womanwear": {
+      "from": "osrs:18975",
+      "vertices": 370,
+      "faces": 730
+    },
+    "obj_woodcutting_cape": {
+      "from": "osrs:19064",
+      "vertices": 140,
+      "faces": 216
+    },
+    "obj_woodcutting_cape_manwear": {
+      "from": "osrs:18955",
+      "vertices": 336,
+      "faces": 685
+    },
+    "obj_woodcutting_cape_womanwear": {
+      "from": "osrs:18991",
+      "vertices": 336,
+      "faces": 685
+    },
+    "obj_farming_cape": {
+      "from": "osrs:19052",
+      "vertices": 167,
+      "faces": 260
+    },
+    "obj_farming_cape_manwear": {
+      "from": "osrs:18929",
+      "vertices": 363,
+      "faces": 729
+    },
+    "obj_farming_cape_womanwear": {
+      "from": "osrs:18974",
+      "vertices": 363,
+      "faces": 729
+    },
+    "obj_quest_point_cape": {
+      "from": "osrs:19062",
+      "vertices": 140,
+      "faces": 221
+    },
+    "obj_quest_point_cape_manwear": {
+      "from": "osrs:18946",
+      "vertices": 334,
+      "faces": 690
+    },
+    "obj_quest_point_cape_womanwear": {
+      "from": "osrs:18984",
+      "vertices": 334,
+      "faces": 690
+    },
+    "obj_hunter_cape": {
+      "from": "osrs:19977",
+      "vertices": 154,
+      "faces": 237
+    },
+    "obj_hunter_cape_manwear": {
+      "from": "osrs:19834",
+      "vertices": 350,
+      "faces": 706
+    },
+    "obj_hunter_cape_womanwear": {
+      "from": "osrs:19874",
+      "vertices": 350,
+      "faces": 706
+    },
+    "obj_3rd_age_range_top": {
+      "from": "osrs:20250",
+      "vertices": 128,
+      "faces": 194
+    },
+    "obj_3rd_age_range_top_manwear": {
+      "from": "osrs:20162",
+      "vertices": 103,
+      "faces": 190
+    },
+    "obj_3rd_age_range_top_manwear2": {
+      "from": "osrs:20126",
+      "vertices": 100,
+      "faces": 190
+    },
+    "obj_3rd_age_range_top_womanwear": {
+      "from": "osrs:20208",
+      "vertices": 95,
+      "faces": 182
+    },
+    "obj_3rd_age_range_top_womanwear2": {
+      "from": "osrs:20174",
+      "vertices": 100,
+      "faces": 190
+    },
+    "obj_3rd_age_range_legs": {
+      "from": "osrs:20249",
+      "vertices": 112,
+      "faces": 159
+    },
+    "obj_3rd_age_range_legs_manwear": {
+      "from": "osrs:20145",
+      "vertices": 122,
+      "faces": 198
+    },
+    "obj_3rd_age_range_legs_womanwear": {
+      "from": "osrs:20192",
+      "vertices": 124,
+      "faces": 200
+    },
+    "obj_3rd_age_range_coif": {
+      "from": "osrs:20248",
+      "vertices": 43,
+      "faces": 69
+    },
+    "obj_3rd_age_range_coif_manwear": {
+      "from": "osrs:20136",
+      "vertices": 82,
+      "faces": 133
+    },
+    "obj_3rd_age_range_coif_womanwear": {
+      "from": "osrs:20189",
+      "vertices": 75,
+      "faces": 139
+    },
+    "obj_3rd_age_range_coif_manhead": {
+      "from": "osrs:20106",
+      "vertices": 43,
+      "faces": 69
+    },
+    "obj_leather_cowl_manhead2": {
+      "from": "osrs:63",
+      "reused377": true
+    },
+    "obj_leather_cowl_womanhead2": {
+      "from": "osrs:120",
+      "reused377": true
+    },
+    "obj_3rd_age_vambraces": {
+      "from": "osrs:20251",
+      "vertices": 48,
+      "faces": 60
+    },
+    "obj_3rd_age_vambraces_manwear": {
+      "from": "osrs:20130",
+      "vertices": 72,
+      "faces": 116
+    },
+    "obj_3rd_age_vambraces_womanwear": {
+      "from": "osrs:20182",
+      "vertices": 72,
+      "faces": 116
+    },
+    "obj_3rd_age_robe_top": {
+      "from": "osrs:20245",
+      "vertices": 134,
+      "faces": 200
+    },
+    "obj_3rd_age_robe_top_manwear": {
+      "from": "osrs:20160",
+      "vertices": 117,
+      "faces": 213
+    },
+    "obj_3rd_age_robe_top_manwear2": {
+      "from": "osrs:20124",
+      "vertices": 56,
+      "faces": 100
+    },
+    "obj_3rd_age_robe_top_womanwear": {
+      "from": "osrs:20207",
+      "vertices": 124,
+      "faces": 225
+    },
+    "obj_3rd_age_robe_top_womanwear2": {
+      "from": "osrs:20173",
+      "vertices": 56,
+      "faces": 100
+    },
+    "obj_3rd_age_robe": {
+      "from": "osrs:20244",
+      "vertices": 49,
+      "faces": 76
+    },
+    "obj_3rd_age_robe_manwear": {
+      "from": "osrs:20143",
+      "vertices": 66,
+      "faces": 124
+    },
+    "obj_3rd_age_robe_womanwear": {
+      "from": "osrs:20191",
+      "vertices": 66,
+      "faces": 124
+    },
+    "obj_3rd_age_mage_hat": {
+      "from": "osrs:20243",
+      "vertices": 57,
+      "faces": 99
+    },
+    "obj_3rd_age_mage_hat_manwear": {
+      "from": "osrs:20135",
+      "vertices": 102,
+      "faces": 179
+    },
+    "obj_3rd_age_mage_hat_womanwear": {
+      "from": "osrs:20188",
+      "vertices": 97,
+      "faces": 187
+    },
+    "obj_3rd_age_mage_hat_manhead": {
+      "from": "osrs:20108",
+      "vertices": 65,
+      "faces": 117
+    },
+    "obj_3rd_age_platelegs": {
+      "from": "osrs:20221",
+      "vertices": 89,
+      "faces": 174
+    },
+    "obj_3rd_age_platelegs_manwear": {
+      "from": "osrs:20138",
+      "vertices": 89,
+      "faces": 177
+    },
+    "obj_3rd_age_platelegs_womanwear": {
+      "from": "osrs:20190",
+      "vertices": 93,
+      "faces": 177
+    },
+    "obj_3rd_age_platebody": {
+      "from": "osrs:20223",
+      "vertices": 134,
+      "faces": 199
+    },
+    "obj_3rd_age_platebody_manwear": {
+      "from": "osrs:20154",
+      "vertices": 76,
+      "faces": 128
+    },
+    "obj_3rd_age_platebody_manwear2": {
+      "from": "osrs:20120",
+      "vertices": 100,
+      "faces": 172
+    },
+    "obj_3rd_age_platebody_womanwear": {
+      "from": "osrs:20206",
+      "vertices": 146,
+      "faces": 260
+    },
+    "obj_3rd_age_platebody_womanwear2": {
+      "from": "osrs:20172",
+      "vertices": 48,
+      "faces": 76
+    },
+    "obj_3rd_age_full_helmet": {
+      "from": "osrs:20220",
+      "vertices": 62,
+      "faces": 96
+    },
+    "obj_3rd_age_full_helmet_manwear": {
+      "from": "osrs:20134",
+      "vertices": 99,
+      "faces": 144
+    },
+    "obj_3rd_age_full_helmet_womanwear": {
+      "from": "osrs:20187",
+      "vertices": 105,
+      "faces": 160
+    },
+    "obj_3rd_age_full_helmet_manhead": {
+      "from": "osrs:20105",
+      "vertices": 62,
+      "faces": 96
+    },
+    "obj_3rd_age_kiteshield": {
+      "from": "osrs:20222",
+      "vertices": 55,
+      "faces": 98
+    },
+    "obj_3rd_age_kiteshield_manwear": {
+      "from": "osrs:20167",
+      "vertices": 73,
+      "faces": 136
+    },
+    "obj_amulet_of_glory_t": {
+      "from": "osrs:20219",
+      "vertices": 84,
+      "faces": 133
+    },
+    "obj_amulet_of_glory_t_manwear": {
+      "from": "osrs:20147",
+      "vertices": 60,
+      "faces": 82
+    },
+    "obj_amulet_of_glory_t_womanwear": {
+      "from": "osrs:20203",
+      "vertices": 66,
+      "faces": 97
+    },
+    "obj_strength_amulet_t": {
+      "from": "osrs:20226",
+      "vertices": 90,
+      "faces": 124
+    },
+    "obj_strength_amulet_t_manwear": {
+      "from": "osrs:20149",
+      "vertices": 62,
+      "faces": 82
+    },
+    "obj_strength_amulet_t_womanwear": {
+      "from": "osrs:20205",
+      "vertices": 62,
+      "faces": 85
+    },
+    "obj_amulet_of_magic_t": {
+      "from": "osrs:20225",
+      "vertices": 97,
+      "faces": 163
+    },
+    "obj_amulet_of_magic_t_manwear": {
+      "from": "osrs:20148",
+      "vertices": 77,
+      "faces": 123
+    },
+    "obj_amulet_of_magic_t_womanwear": {
+      "from": "osrs:20204",
+      "vertices": 74,
+      "faces": 119
+    },
+    "obj_zamorak_bracers": {
+      "from": "osrs:20264",
+      "vertices": 60,
+      "faces": 80
+    },
+    "obj_zamorak_bracers_manwear": {
+      "from": "osrs:20129",
+      "vertices": 40,
+      "faces": 60
+    },
+    "obj_zamorak_bracers_womanwear": {
+      "from": "osrs:20180",
+      "vertices": 40,
+      "faces": 60
+    },
+    "obj_zamorak_d_hide_body": {
+      "from": "osrs:20233",
+      "vertices": 94,
+      "faces": 154
+    },
+    "obj_zamorak_d_hide_body_manwear": {
+      "from": "osrs:20157",
+      "vertices": 160,
+      "faces": 230
+    },
+    "obj_zamorak_d_hide_body_manwear2": {
+      "from": "osrs:20121",
+      "vertices": 48,
+      "faces": 84
+    },
+    "obj_zamorak_d_hide_body_womanwear": {
+      "from": "osrs:20213",
+      "vertices": 99,
+      "faces": 142
+    },
+    "obj_zamorak_d_hide_body_womanwear2": {
+      "from": "osrs:20177",
+      "vertices": 52,
+      "faces": 92
+    },
+    "obj_zamorak_chaps": {
+      "from": "osrs:20230",
+      "vertices": 171,
+      "faces": 146
+    },
+    "obj_zamorak_chaps_manwear": {
+      "from": "osrs:20139",
+      "vertices": 276,
+      "faces": 267
+    },
+    "obj_zamorak_chaps_womanwear": {
+      "from": "osrs:20194",
+      "vertices": 277,
+      "faces": 268
+    },
+    "obj_zamorak_coif": {
+      "from": "osrs:20231",
+      "vertices": 60,
+      "faces": 99
+    },
+    "obj_zamorak_coif_manwear": {
+      "from": "osrs:20131",
+      "vertices": 63,
+      "faces": 112
+    },
+    "obj_feud_desert_disguise_manwear": {
+      "from": "osrs:230",
+      "reused377": true
+    },
+    "obj_zamorak_coif_womanwear": {
+      "from": "osrs:20184",
+      "vertices": 62,
+      "faces": 112
+    },
+    "obj_feud_desert_disguise_womanwear": {
+      "from": "osrs:403",
+      "reused377": true
+    },
+    "obj_zamorak_coif_manhead2": {
+      "from": "osrs:23157",
+      "vertices": 70,
+      "faces": 126
+    },
+    "obj_guthix_d_hide_body": {
+      "from": "osrs:20232",
+      "vertices": 100,
+      "faces": 162
+    },
+    "obj_guthix_d_hide_body_manwear": {
+      "from": "osrs:20155",
+      "vertices": 155,
+      "faces": 220
+    },
+    "obj_guthix_d_hide_body_womanwear": {
+      "from": "osrs:20211",
+      "vertices": 93,
+      "faces": 130
+    },
+    "obj_guthix_coif_manhead2": {
+      "from": "osrs:20107",
+      "vertices": 70,
+      "faces": 126
+    },
+    "obj_saradomin_d_hide_body": {
+      "from": "osrs:20224",
+      "vertices": 109,
+      "faces": 164
+    },
+    "obj_saradomin_d_hide_body_manwear": {
+      "from": "osrs:20156",
+      "vertices": 147,
+      "faces": 204
+    },
+    "obj_saradomin_d_hide_body_womanwear": {
+      "from": "osrs:20212",
+      "vertices": 87,
+      "faces": 118
+    },
+    "obj_saradomin_coif_manhead2": {
+      "from": "osrs:23158",
+      "vertices": 70,
+      "faces": 126
+    },
+    "obj_saradomin_cloak": {
+      "from": "osrs:20252",
+      "vertices": 67,
+      "faces": 174
+    },
+    "obj_saradomin_cloak_manwear": {
+      "from": "osrs:20164",
+      "vertices": 67,
+      "faces": 174
+    },
+    "obj_saradomin_cloak_womanwear": {
+      "from": "osrs:20217",
+      "vertices": 67,
+      "faces": 174
+    },
+    "obj_guthix_cloak": {
+      "from": "osrs:20239",
+      "vertices": 71,
+      "faces": 184
+    },
+    "obj_guthix_cloak_manwear": {
+      "from": "osrs:20165",
+      "vertices": 71,
+      "faces": 184
+    },
+    "obj_guthix_cloak_womanwear": {
+      "from": "osrs:20216",
+      "vertices": 71,
+      "faces": 184
+    },
+    "obj_zamorak_cloak": {
+      "from": "osrs:20268",
+      "vertices": 78,
+      "faces": 198
+    },
+    "obj_zamorak_cloak_manwear": {
+      "from": "osrs:20166",
+      "vertices": 82,
+      "faces": 206
+    },
+    "obj_zamorak_cloak_womanwear": {
+      "from": "osrs:20218",
+      "vertices": 82,
+      "faces": 206
+    },
+    "obj_saradomin_mitre": {
+      "from": "osrs:20246",
+      "vertices": 78,
+      "faces": 138
+    },
+    "obj_saradomin_mitre_manwear": {
+      "from": "osrs:20132",
+      "vertices": 78,
+      "faces": 138
+    },
+    "obj_saradomin_mitre_womanwear": {
+      "from": "osrs:20183",
+      "vertices": 78,
+      "faces": 138
+    },
+    "obj_saradomin_mitre_manhead": {
+      "from": "osrs:20109",
+      "vertices": 84,
+      "faces": 148
+    },
+    "obj_saradomin_mitre_womanhead": {
+      "from": "osrs:20117",
+      "vertices": 84,
+      "faces": 148
+    },
+    "obj_saradomin_robe_top": {
+      "from": "osrs:20266",
+      "vertices": 131,
+      "faces": 200
+    },
+    "obj_saradomin_robe_top_manwear": {
+      "from": "osrs:20163",
+      "vertices": 117,
+      "faces": 204
+    },
+    "obj_saradomin_robe_top_manwear2": {
+      "from": "osrs:20127",
+      "vertices": 82,
+      "faces": 140
+    },
+    "obj_saradomin_robe_top_womanwear": {
+      "from": "osrs:20209",
+      "vertices": 109,
+      "faces": 194
+    },
+    "obj_saradomin_robe_top_womanwear2": {
+      "from": "osrs:20175",
+      "vertices": 90,
+      "faces": 156
+    },
+    "obj_saradomin_robe_legs": {
+      "from": "osrs:20265",
+      "vertices": 70,
+      "faces": 114
+    },
+    "obj_saradomin_robe_legs_manwear": {
+      "from": "osrs:20146",
+      "vertices": 56,
+      "faces": 104
+    },
+    "obj_saradomin_robe_legs_womanwear": {
+      "from": "osrs:20193",
+      "vertices": 83,
+      "faces": 158,
+      "relabelledVertices": 9
+    },
+    "obj_zamorak_stole": {
+      "from": "osrs:20269",
+      "vertices": 63,
+      "faces": 103
+    },
+    "obj_zamorak_stole_manwear": {
+      "from": "osrs:20153",
+      "vertices": 63,
+      "faces": 97
+    },
+    "obj_zamorak_stole_womanwear": {
+      "from": "osrs:20202",
+      "vertices": 63,
+      "faces": 97
+    },
+    "obj_fighter_torso": {
+      "from": "osrs:20603",
+      "vertices": 108,
+      "faces": 198
+    },
+    "obj_fighter_torso_manwear": {
+      "from": "osrs:19258",
+      "vertices": 104,
+      "faces": 180
+    },
+    "obj_fighter_torso_manwear2": {
+      "from": "osrs:8779",
+      "vertices": 44,
+      "faces": 68
+    },
+    "obj_fighter_torso_womanwear": {
+      "from": "osrs:20516",
+      "vertices": 91,
+      "faces": 162
+    },
+    "obj_fighter_torso_womanwear2": {
+      "from": "osrs:32966",
+      "vertices": 52,
+      "faces": 92
+    },
+    "obj_attacker_icon": {
+      "from": "osrs:20578",
+      "vertices": 44,
+      "faces": 36
+    },
+    "obj_attacker_icon_manwear": {
+      "from": "osrs:19260",
+      "vertices": 100,
+      "faces": 136
+    },
+    "obj_attacker_icon_womanwear": {
+      "from": "osrs:20517",
+      "vertices": 100,
+      "faces": 136
+    },
+    "obj_collector_icon_manwear": {
+      "from": "osrs:19259",
+      "vertices": 104,
+      "faces": 144
+    },
+    "obj_collector_icon_womanwear": {
+      "from": "osrs:20518",
+      "vertices": 104,
+      "faces": 144
+    },
+    "obj_defender_icon_manwear": {
+      "from": "osrs:19261",
+      "vertices": 68,
+      "faces": 72
+    },
+    "obj_defender_icon_womanwear": {
+      "from": "osrs:20519",
+      "vertices": 68,
+      "faces": 72
+    },
+    "obj_healer_icon_manwear": {
+      "from": "osrs:19262",
+      "vertices": 96,
+      "faces": 128
+    },
+    "obj_healer_icon_womanwear": {
+      "from": "osrs:20520",
+      "vertices": 96,
+      "faces": 128
+    },
+    "obj_helm_of_neitiznot": {
+      "from": "osrs:21938",
+      "vertices": 129,
+      "faces": 199
+    },
+    "obj_helm_of_neitiznot_manwear": {
+      "from": "osrs:21873",
+      "vertices": 197,
+      "faces": 320
+    },
+    "obj_helm_of_neitiznot_womanwear": {
+      "from": "osrs:21906",
+      "vertices": 166,
+      "faces": 264
+    },
+    "obj_helm_of_neitiznot_manhead": {
+      "from": "osrs:22153",
+      "vertices": 293,
+      "faces": 481
+    },
+    "obj_helm_of_neitiznot_womanhead": {
+      "from": "osrs:22777",
+      "vertices": 293,
+      "faces": 481
+    },
+    "obj_silly_jester_hat": {
+      "from": "osrs:21955",
+      "vertices": 68,
+      "faces": 132
+    },
+    "obj_silly_jester_hat_manwear": {
+      "from": "osrs:21875",
+      "vertices": 70,
+      "faces": 129
+    },
+    "obj_silly_jester_hat_womanwear": {
+      "from": "osrs:21907",
+      "vertices": 70,
+      "faces": 129
+    },
+    "obj_silly_jester_hat_manhead": {
+      "from": "osrs:22155",
+      "vertices": 76,
+      "faces": 143
+    },
+    "obj_silly_jester_hat_womanhead": {
+      "from": "osrs:22157",
+      "vertices": 77,
+      "faces": 144
+    },
+    "obj_silly_jester_top": {
+      "from": "osrs:21942",
+      "vertices": 71,
+      "faces": 89
+    },
+    "obj_silly_jester_top_manwear": {
+      "from": "osrs:21889",
+      "vertices": 60,
+      "faces": 79
+    },
+    "obj_silly_jester_top_manwear2": {
+      "from": "osrs:21867",
+      "vertices": 48,
+      "faces": 76
+    },
+    "obj_silly_jester_top_womanwear": {
+      "from": "osrs:21915",
+      "vertices": 62,
+      "faces": 86
+    },
+    "obj_silly_jester_top_womanwear2": {
+      "from": "osrs:21901",
+      "vertices": 62,
+      "faces": 90
+    },
+    "obj_silly_jester_tights": {
+      "from": "osrs:21953",
+      "vertices": 42,
+      "faces": 55
+    },
+    "obj_silly_jester_tights_manwear": {
+      "from": "osrs:21881",
+      "vertices": 43,
+      "faces": 78
+    },
+    "obj_silly_jester_tights_womanwear": {
+      "from": "osrs:21909",
+      "vertices": 43,
+      "faces": 78
+    },
+    "obj_barrelchest_anchor": {
+      "from": "osrs:23133",
+      "vertices": 66,
+      "faces": 132
+    },
+    "obj_barrelchest_anchor_manwear": {
+      "from": "osrs:22787",
+      "vertices": 70,
+      "faces": 132
+    },
+    "obj_dragon_arrow": {
+      "from": "osrs:26306",
+      "vertices": 31,
+      "faces": 41
+    },
+    "obj_dark_bow": {
+      "from": "osrs:26386",
+      "vertices": 100,
+      "faces": 132
+    },
+    "obj_dark_bow_manwear": {
+      "from": "osrs:26279",
+      "vertices": 214,
+      "faces": 420
+    },
+    "obj_cavalier_mask": {
+      "from": "osrs:26452",
+      "vertices": 93,
+      "faces": 119
+    },
+    "obj_cavalier_mask_manwear": {
+      "from": "osrs:26415",
+      "vertices": 93,
+      "faces": 119
+    },
+    "obj_cavalier_mask_womanwear": {
+      "from": "osrs:26429",
+      "vertices": 92,
+      "faces": 119
+    },
+    "obj_cavalier_mask_manhead": {
+      "from": "osrs:25053",
+      "vertices": 253,
+      "faces": 431
+    },
+    "obj_cavalier_mask_womanhead": {
+      "from": "osrs:26412",
+      "vertices": 256,
+      "faces": 429
+    },
+    "obj_dragonfire_shield": {
+      "from": "osrs:26457",
+      "vertices": 171,
+      "faces": 291
+    },
+    "obj_dragonfire_shield_manwear": {
+      "from": "osrs:26423",
+      "vertices": 185,
+      "faces": 338,
+      "relabelledVertices": 185
+    },
+    "obj_dragon_full_helm": {
+      "from": "osrs:26662",
+      "vertices": 112,
+      "faces": 189
+    },
+    "obj_dragon_full_helm_manwear": {
+      "from": "osrs:26632",
+      "vertices": 179,
+      "faces": 318
+    },
+    "obj_dragon_full_helm_womanwear": {
+      "from": "osrs:26658",
+      "vertices": 179,
+      "faces": 318
+    },
+    "obj_dragon_full_helm_manhead": {
+      "from": "osrs:26660",
+      "vertices": 402,
+      "faces": 786
+    },
+    "obj_armadyl_godsword": {
+      "from": "osrs:28075",
+      "vertices": 149,
+      "faces": 200
+    },
+    "obj_armadyl_godsword_manwear": {
+      "from": "osrs:27649",
+      "vertices": 193,
+      "faces": 388
+    },
+    "obj_bandos_godsword": {
+      "from": "osrs:28059",
+      "vertices": 149,
+      "faces": 181
+    },
+    "obj_bandos_godsword_manwear": {
+      "from": "osrs:27648",
+      "vertices": 211,
+      "faces": 422
+    },
+    "obj_saradomin_godsword": {
+      "from": "osrs:28070",
+      "vertices": 151,
+      "faces": 191
+    },
+    "obj_saradomin_godsword_manwear": {
+      "from": "osrs:27651",
+      "vertices": 188,
+      "faces": 376
+    },
+    "obj_zamorak_godsword": {
+      "from": "osrs:28060",
+      "vertices": 151,
+      "faces": 199
+    },
+    "obj_zamorak_godsword_manwear": {
+      "from": "osrs:27653",
+      "vertices": 203,
+      "faces": 412
+    },
+    "obj_armadyl_helmet": {
+      "from": "osrs:28043",
+      "vertices": 62,
+      "faces": 113
+    },
+    "obj_armadyl_helmet_manwear": {
+      "from": "osrs:27623",
+      "vertices": 105,
+      "faces": 181
+    },
+    "obj_armadyl_helmet_womanwear": {
+      "from": "osrs:27639",
+      "vertices": 105,
+      "faces": 179
+    },
+    "obj_armadyl_helmet_manhead": {
+      "from": "osrs:27699",
+      "vertices": 182,
+      "faces": 283
+    },
+    "obj_armadyl_helmet_womanhead": {
+      "from": "osrs:27700",
+      "vertices": 204,
+      "faces": 328
+    },
+    "obj_armadyl_chestplate": {
+      "from": "osrs:28039",
+      "vertices": 43,
+      "faces": 60
+    },
+    "obj_armadyl_chestplate_manwear": {
+      "from": "osrs:27633",
+      "vertices": 75,
+      "faces": 140
+    },
+    "obj_armadyl_chestplate_manwear2": {
+      "from": "osrs:27629",
+      "vertices": 82,
+      "faces": 152
+    },
+    "obj_armadyl_chestplate_womanwear": {
+      "from": "osrs:27645",
+      "vertices": 66,
+      "faces": 120
+    },
+    "obj_armadyl_chestplate_womanwear2": {
+      "from": "osrs:28828",
+      "vertices": 82,
+      "faces": 152
+    },
+    "obj_armadyl_chainskirt": {
+      "from": "osrs:28046",
+      "vertices": 117,
+      "faces": 181
+    },
+    "obj_armadyl_chainskirt_manwear": {
+      "from": "osrs:27627",
+      "vertices": 140,
+      "faces": 234
+    },
+    "obj_armadyl_chainskirt_womanwear": {
+      "from": "osrs:27641",
+      "vertices": 140,
+      "faces": 240
+    },
+    "obj_bandos_chestplate": {
+      "from": "osrs:28042",
+      "vertices": 105,
+      "faces": 140
+    },
+    "obj_bandos_chestplate_manwear": {
+      "from": "osrs:27636",
+      "vertices": 284,
+      "faces": 494
+    },
+    "obj_bandos_chestplate_manwear2": {
+      "from": "osrs:28826",
+      "vertices": 180,
+      "faces": 344
+    },
+    "obj_bandos_chestplate_womanwear": {
+      "from": "osrs:27644",
+      "vertices": 268,
+      "faces": 439
+    },
+    "obj_bandos_chestplate_womanwear2": {
+      "from": "osrs:28827",
+      "vertices": 182,
+      "faces": 347
+    },
+    "obj_bandos_tassets": {
+      "from": "osrs:28047",
+      "vertices": 55,
+      "faces": 79
+    },
+    "obj_bandos_tassets_manwear": {
+      "from": "osrs:27625",
+      "vertices": 95,
+      "faces": 148
+    },
+    "obj_bandos_tassets_womanwear": {
+      "from": "osrs:27640",
+      "vertices": 95,
+      "faces": 148
+    },
+    "obj_bandos_boots": {
+      "from": "osrs:28040",
+      "vertices": 70,
+      "faces": 132
+    },
+    "obj_bandos_boots_manwear": {
+      "from": "osrs:27637",
+      "vertices": 73,
+      "faces": 129
+    },
+    "obj_bandos_boots_womanwear": {
+      "from": "osrs:19951",
+      "vertices": 73,
+      "faces": 129
+    },
+    "obj_dragon_boots": {
+      "from": "osrs:28044",
+      "vertices": 68,
+      "faces": 128
+    },
+    "obj_dragon_boots_manwear": {
+      "from": "osrs:27638",
+      "vertices": 71,
+      "faces": 125
+    },
+    "obj_dragon_boots_womanwear": {
+      "from": "osrs:27646",
+      "vertices": 71,
+      "faces": 125
+    }
+  }
+}

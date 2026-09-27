@@ -24,6 +24,7 @@ Allstar-City is a **1:1 recreation of Allstar-Scape v2**. The original Java sour
 | `content/scripts/allstar/<system>/scripts/` | RuneScript (`.rs2`) |
 | `content/scripts/allstar/scripts/core.rs2` | shared helpers (owned by the lead; ask before changing) |
 | `allstar/tools/gen/<system>.mjs` | data generators run by `node allstar/tools/generate.mjs` (register in `gen/index.mjs`) |
+| `allstar/tools/models/` | model tools: OSRS and 317 cache readers, model codec, `convert.mjs` (custom item models into `content/models/allstar`) |
 | `allstar/tests/<system>.test.ts` | headless bot tests |
 
 Files must sit in a folder named `configs` or `scripts` (the build checks this).

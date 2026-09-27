@@ -50,7 +50,7 @@ Each runs in its own git worktree (`D:\Desktop\Allstar-City.worktrees\<name>`, b
 | items | item data from item.cfg, equipment rules, food/potions/bones, item-on-item, bank, trade | in progress |
 | combat | NPC system (HP, max hit, respawn, aggression), drops, player combat, specials, prayers, death, PvP zones, magic | in progress |
 | ui | remaining commands, emote-tab teleports, level-ups, 99 broadcasts, tabs/texts | in progress |
-| customitems | items with ids >= 7956 (`allstar_item_<id>`) and their models | in progress |
+| customitems | items with ids >= 7956: 154 objs `allstar_item_<id>` (obj id = Allstar id), enum `allstar_items`, models converted from the OSRS cache by `allstar/tools/models` (can also read a 317 client cache); stand-ins: Summoning cape/(t)/hood, 9540, 14819, 15181 | merged |
 | platform | 377 content on the 289 engine + Lost City web client | in progress |
 | lead (after merge) | QUIRKS dupes, remove leftover Lost City gameplay, hosting setup, docs | todo |
 
