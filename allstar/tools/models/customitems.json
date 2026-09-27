@@ -5298,7 +5298,8 @@
     "obj_saradomin_robe_legs_womanwear": {
       "from": "osrs:20193",
       "vertices": 83,
-      "faces": 158
+      "faces": 158,
+      "relabelledVertices": 9
     },
     "obj_zamorak_stole": {
       "from": "osrs:20269",
@@ -5533,7 +5534,8 @@
     "obj_dragonfire_shield_manwear": {
       "from": "osrs:26423",
       "vertices": 185,
-      "faces": 338
+      "faces": 338,
+      "relabelledVertices": 185
     },
     "obj_dragon_full_helm": {
       "from": "osrs:26662",

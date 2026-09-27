@@ -97,8 +97,105 @@ function identical(a, b) {
         ['vx', 'vy', 'vz', 'vlabels', 'fa', 'fb', 'fc', 'colours', 'renderTypes', 'priorities', 'alphas', 'flabels', 'textures'].every(k => sameArr(a[k], b[k]));
 }
 
+// ---- animation labels. Worn models move with the player skeleton through their vertex labels. The
+// 377 player skeleton (the animset holding human_ready's frames) knows labels 0-156; OSRS added more.
+// A vertex with a label 377 lacks would never move, so it takes the label of its nearest vertex
+// that has a known label, or, when the model has none (e.g. the dragonfire shield, all label 161),
+// the known label that shares the most OSRS player-skeleton groups (skeleton index 1, group 0).
+function readBase(file) {
+    const b = fs.readFileSync(file);
+    const p = b.length - 8;
+    const headLen = b.readUInt16BE(p);
+    let q = headLen + 2 + b.readUInt16BE(p + 2) + b.readUInt16BE(p + 4) + b.readUInt16BE(p + 6);
+    const count = b[q++];
+    const types = [...b.subarray(q, q + count)];
+    q += count;
+    const groups = [];
+    for (let i = 0; i < count; i++) {
+        const n = b[q++];
+        groups.push([...b.subarray(q, q + n)]);
+        q += n;
+    }
+    const frames = [];
+    for (let i = 0, r = 2, total = b.readUInt16BE(0); i < total; i++, r += 3) frames.push(b.readUInt16BE(r));
+    return { types, groups, frames };
+}
+function playerBase377() {
+    const seq = fs.readFileSync(path.join(CONTENT, 'scripts/_unpack/377/all.seq'), 'utf8');
+    const frame = Number(seq.match(/\[human_ready\]\s*\nframe1=anim_(\d+)/)[1]);
+    for (const f of fs.readdirSync(path.join(CONTENT, 'models')).filter(f => f.endsWith('.anim'))) {
+        const base = readBase(path.join(CONTENT, 'models', f));
+        if (base.frames.includes(frame)) return base;
+    }
+    throw new Error('377 player skeleton not found');
+}
+let labelMap = null; // osrs-only label -> 377 label (by skeleton groups)
+let known377 = null;
+async function osrsLabelMap() {
+    if (labelMap) return labelMap;
+    const base = playerBase377();
+    known377 = new Set(base.groups.flat());
+    const data = await osrsCache.read(1, 0);
+    let r = 0;
+    const count = data[r++];
+    const types = [...data.subarray(r, r + count)];
+    r += count;
+    const sizes = [...data.subarray(r, r + count)];
+    r += count;
+    const groups = sizes.map(n => {
+        const g = [...data.subarray(r, r + n)];
+        r += n;
+        return g;
+    });
+    const groupsOf = label => new Set(groups.map((g, i) => (types[i] !== 0 && g.includes(label) ? i : -1)).filter(i => i >= 0));
+    labelMap = new Map();
+    for (const label of new Set(groups.flat())) {
+        if (known377.has(label)) continue;
+        const mine = groupsOf(label);
+        let best = -1;
+        let bestScore = -1;
+        for (const k of [...known377].sort((a, b) => a - b)) {
+            const theirs = groupsOf(k);
+            let inter = 0;
+            for (const g of mine) if (theirs.has(g)) inter++;
+            const score = inter / (mine.size + theirs.size - inter || 1);
+            if (score > bestScore) {
+                bestScore = score;
+                best = k;
+            }
+        }
+        labelMap.set(label, best);
+    }
+    return labelMap;
+}
+async function remapLabels(m) {
+    if (!m.vlabels) return 0;
+    const map = await osrsLabelMap();
+    const known = [];
+    for (let i = 0; i < m.vertexCount; i++) if (known377.has(m.vlabels[i])) known.push(i);
+    let changed = 0;
+    const labels = Int32Array.from(m.vlabels);
+    for (let i = 0; i < m.vertexCount; i++) {
+        if (known377.has(m.vlabels[i])) continue;
+        let label = map.get(m.vlabels[i]) ?? 0;
+        let bestDist = Infinity;
+        for (const j of known) {
+            const d = (m.vx[i] - m.vx[j]) ** 2 + (m.vy[i] - m.vy[j]) ** 2 + (m.vz[i] - m.vz[j]) ** 2;
+            if (d < bestDist) {
+                bestDist = d;
+                label = m.vlabels[j];
+            }
+        }
+        labels[i] = label;
+        changed++;
+    }
+    m.vlabels = labels;
+    return changed;
+}
+
 let textureColours = null;
-async function convertOsrs(m) {
+async function convertOsrs(m, worn) {
+    const relabelled = worn ? await remapLabels(m) : 0;
     if (m.textures && m.textures.some(t => t !== -1)) {
         textureColours ??= await loadTextureColours(osrsCache);
         m.renderTypes ??= new Int32Array(m.faceCount);
@@ -117,7 +214,7 @@ async function convertOsrs(m) {
     if (out.renderTypes) out.renderTypes = out.renderTypes.map(t => (t === 3 || t === 1 ? 1 : 0));
     if (out.priorities) out.priorities = out.priorities.map(p => Math.max(0, Math.min(11, p)));
     out.priority = Math.max(0, Math.min(11, out.priority));
-    return { data: encode377(out), model: out, dropped: m.faceCount - out.faceCount };
+    return { data: encode377(out), model: out, dropped: m.faceCount - out.faceCount, relabelled };
 }
 
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
@@ -173,6 +270,8 @@ const modelNames = new Map(); // `${kind}:${id}` -> name
 const modelInfo = {};
 const written = new Set();
 fs.mkdirSync(OUT_DIR, { recursive: true });
+// models some item wears (their animation labels matter)
+const wornKeys = new Set(plans.flatMap(p => ROLES.filter(r => r.includes('wear') && p.roles[r] !== undefined).map(r => `${p.source.kind}:${p.roles[r]}`)));
 const ordered = [...plans].sort((a, b) => a.source.kind.localeCompare(b.source.kind) || a.sourceId - b.sourceId || a.item.id - b.item.id);
 for (const plan of ordered) {
     for (const role of ROLES) {
@@ -195,13 +294,13 @@ for (const plan of ordered) {
         modelNames.set(key, name);
         let out;
         if (plan.source.kind === '317' && !(m.textures && m.textures.some(t => t >= 50))) {
-            out = { data: decoded.get(key).raw, model: m, dropped: 0 }; // already the 377 format
+            out = { data: decoded.get(key).raw, model: m, dropped: 0 }; // already the 377 format, as players saw it
         } else {
-            out = await convertOsrs(structuredClone(m));
+            out = await convertOsrs(structuredClone(m), wornKeys.has(key));
         }
         fs.writeFileSync(path.join(OUT_DIR, `${name}.ob2`), out.data);
         written.add(name);
-        modelInfo[name] = { from: key, vertices: out.model.vertexCount, faces: out.model.faceCount, ...(out.dropped ? { droppedFaces: out.dropped } : {}) };
+        modelInfo[name] = { from: key, vertices: out.model.vertexCount, faces: out.model.faceCount, ...(out.dropped ? { droppedFaces: out.dropped } : {}), ...(out.relabelled ? { relabelledVertices: out.relabelled } : {}) };
     }
 }
 
