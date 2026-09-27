@@ -11,12 +11,21 @@ members=yes
 iop1=Eat
 weight=3oz
 param=cures_poison,yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_triffidfruit
 
 [cert_macro_triffidfruit]
 certlink=macro_triffidfruit
 certtemplate=template_for_cert
 
 // smoking rocks
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_triffidfruit
+param=allstar_withdraw_stackable,yes
 
 [macro_pickaxehandle]
 name=Pickaxe handle
@@ -29,18 +38,25 @@ model=obj_macro_pickaxehandle
 2dxan=224
 manwear=obj_macro_pickaxehandle_manwear,0
 womanwear=obj_macro_pickaxehandle_manwear,6
-cost=1
-wearpos=righthand
 weight=1lb
 category=weapon_blunt
 param=attackrate,5
 param=crushattack_anim,human_blunt_pound
 param=defend_anim,human_axe_block
 param=crush_sound,baxe_crush
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_pickaxehandle
 
 [cert_macro_pickaxehandle]
 certlink=macro_pickaxehandle
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_pickaxehandle
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_bronze_pickaxe]
 name=Broken pickaxe
@@ -55,8 +71,6 @@ model=obj_macro_broken_bronze_pickaxe
 2dxan=224
 manwear=obj_macro_broken_bronze_pickaxe_manwear,0
 womanwear=obj_macro_broken_bronze_pickaxe_manwear,6
-cost=0
-wearpos=righthand
 weight=4lb
 category=weapon_blunt
 param=attackrate,5
@@ -67,10 +81,21 @@ param=stab_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_nurmof,^true
 param=fixed,bronze_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_bronze_pickaxe
 
 [cert_macro_broken_bronze_pickaxe]
 certlink=macro_broken_bronze_pickaxe
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_bronze_pickaxe
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_iron_pickaxe]
 name=Broken pickaxe
@@ -85,8 +110,6 @@ model=obj_macro_broken_bronze_pickaxe
 2dxan=224
 manwear=obj_macro_broken_bronze_pickaxe_manwear,0
 womanwear=obj_macro_broken_bronze_pickaxe_manwear,6
-cost=0
-wearpos=righthand
 weight=4lb
 category=weapon_blunt
 param=attackrate,5
@@ -97,10 +120,21 @@ param=stab_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_nurmof,^true
 param=fixed,iron_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_iron_pickaxe
 
 [cert_macro_broken_iron_pickaxe]
 certlink=macro_broken_iron_pickaxe
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_iron_pickaxe
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_steel_pickaxe]
 name=Broken pickaxe
@@ -113,8 +147,6 @@ model=obj_macro_broken_bronze_pickaxe
 2dxan=224
 manwear=obj_macro_broken_bronze_pickaxe_manwear,0
 womanwear=obj_macro_broken_bronze_pickaxe_manwear,6
-cost=17
-wearpos=righthand
 weight=4lb
 category=weapon_blunt
 param=attackrate,5
@@ -125,10 +157,21 @@ param=stab_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_nurmof,^true
 param=fixed,steel_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=15
+param=allstar_value,15
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_steel_pickaxe
 
 [cert_macro_broken_steel_pickaxe]
 certlink=macro_broken_steel_pickaxe
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,15
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_steel_pickaxe
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_mithril_pickaxe]
 name=Broken pickaxe
@@ -143,8 +186,6 @@ model=obj_macro_broken_bronze_pickaxe
 2dxan=224
 manwear=obj_macro_broken_bronze_pickaxe_manwear,0
 womanwear=obj_macro_broken_bronze_pickaxe_manwear,6
-cost=43
-wearpos=righthand
 weight=4lb
 category=weapon_blunt
 param=attackrate,5
@@ -155,10 +196,21 @@ param=stab_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_nurmof,^true
 param=fixed,mithril_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=36
+param=allstar_value,36
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_mithril_pickaxe
 
 [cert_macro_broken_mithril_pickaxe]
 certlink=macro_broken_mithril_pickaxe
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,36
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_mithril_pickaxe
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_adamant_pickaxe]
 name=Broken pickaxe
@@ -173,8 +225,6 @@ model=obj_macro_broken_bronze_pickaxe
 2dxan=224
 manwear=obj_macro_broken_bronze_pickaxe_manwear,0
 womanwear=obj_macro_broken_bronze_pickaxe_manwear,6
-cost=107
-wearpos=righthand
 weight=4lb
 category=weapon_blunt
 param=attackrate,5
@@ -185,10 +235,21 @@ param=stab_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_nurmof,^true
 param=fixed,adamant_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=87
+param=allstar_value,87
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_adamant_pickaxe
 
 [cert_macro_broken_adamant_pickaxe]
 certlink=macro_broken_adamant_pickaxe
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,87
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_adamant_pickaxe
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_rune_pickaxe]
 name=Broken pickaxe
@@ -203,8 +264,6 @@ model=obj_macro_broken_bronze_pickaxe
 2dxan=224
 manwear=obj_macro_broken_bronze_pickaxe_manwear,0
 womanwear=obj_macro_broken_bronze_pickaxe_manwear,6
-cost=1100
-wearpos=righthand
 weight=4lb
 category=weapon_blunt
 param=attackrate,5
@@ -215,10 +274,21 @@ param=stab_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_nurmof,^true
 param=fixed,rune_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=819
+param=allstar_value,819
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_rune_pickaxe
 
 [cert_macro_broken_rune_pickaxe]
 certlink=macro_broken_rune_pickaxe
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,819
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_rune_pickaxe
+param=allstar_withdraw_stackable,yes
 
 [macro_bronze_pickaxehead]
 name=Bronze pick head
@@ -231,13 +301,21 @@ model=obj_macro_bronze_pickaxehead
 2dzoom=1070
 2dyan=1056
 2dxan=224
-cost=1
 weight=4lb
 param=fixed,bronze_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_bronze_pickaxehead
 
 [cert_macro_bronze_pickaxehead]
 certlink=macro_bronze_pickaxehead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_bronze_pickaxehead
+param=allstar_withdraw_stackable,yes
 
 [macro_iron_pickaxehead]
 name=Iron pick head
@@ -250,13 +328,23 @@ model=obj_macro_bronze_pickaxehead
 2dzoom=1070
 2dyan=1056
 2dxan=224
-cost=139
 weight=4lb
 param=fixed,iron_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=112
+param=allstar_value,112
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_iron_pickaxehead
 
 [cert_macro_iron_pickaxehead]
 certlink=macro_iron_pickaxehead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,112
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_iron_pickaxehead
+param=allstar_withdraw_stackable,yes
 
 [macro_steel_pickaxehead]
 name=Steel pick head
@@ -267,13 +355,24 @@ model=obj_macro_bronze_pickaxehead
 2dzoom=1070
 2dyan=1056
 2dxan=224
-cost=499
 weight=4lb
 param=fixed,steel_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=384
+param=allstar_req_defence,5
+param=allstar_value,384
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_steel_pickaxehead
 
 [cert_macro_steel_pickaxehead]
 certlink=macro_steel_pickaxehead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,384
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_steel_pickaxehead
+param=allstar_withdraw_stackable,yes
 
 [macro_mithril_pickaxehead]
 name=Mithril pick head
@@ -286,13 +385,24 @@ model=obj_macro_bronze_pickaxehead
 2dzoom=1070
 2dyan=1056
 2dxan=224
-cost=1299
 weight=4lb
 param=fixed,mithril_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=960
+param=allstar_req_defence,20
+param=allstar_value,960
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_mithril_pickaxehead
 
 [cert_macro_mithril_pickaxehead]
 certlink=macro_mithril_pickaxehead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,960
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_mithril_pickaxehead
+param=allstar_withdraw_stackable,yes
 
 [macro_adamant_pickaxehead]
 name=Adamant pick head
@@ -305,13 +415,24 @@ model=obj_macro_bronze_pickaxehead
 2dzoom=1070
 2dyan=1056
 2dxan=224
-cost=3199
 weight=4lb
 param=fixed,adamant_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2277
+param=allstar_req_defence,30
+param=allstar_value,2277
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_adamant_pickaxehead
 
 [cert_macro_adamant_pickaxehead]
 certlink=macro_adamant_pickaxehead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,2277
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_adamant_pickaxehead
+param=allstar_withdraw_stackable,yes
 
 [macro_rune_pickaxehead]
 name=Rune pick head
@@ -324,15 +445,25 @@ model=obj_macro_bronze_pickaxehead
 2dzoom=1070
 2dyan=1056
 2dxan=224
-cost=31999
 weight=4lb
 param=fixed,rune_pickaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=20682
+param=allstar_value,20682
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_rune_pickaxehead
 
 [cert_macro_rune_pickaxehead]
 certlink=macro_rune_pickaxehead
 certtemplate=template_for_cert
 
 // ents
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,20682
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_rune_pickaxehead
+param=allstar_withdraw_stackable,yes
 
 [macro_hatchethandle]
 name=Axe handle
@@ -347,18 +478,25 @@ model=obj_macro_pickaxehandle
 2dxan=440
 manwear=obj_macro_hatchethandle_manwear,0
 womanwear=obj_macro_hatchethandle_manwear,6
-cost=1
-wearpos=righthand
 weight=1lb
 category=weapon_blunt
 param=attackrate,5
 param=crushattack_anim,human_blunt_pound
 param=defend_anim,human_axe_block
 param=crush_sound,baxe_crush
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_hatchethandle
 
 [cert_macro_hatchethandle]
 certlink=macro_hatchethandle
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_hatchethandle
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_bronze_hatchet]
 name=Broken axe
@@ -372,8 +510,6 @@ model=obj_macro_broken_bronze_hatchet
 2dxan=520
 manwear=obj_macro_broken_bronze_hatchet_manwear,0
 womanwear=obj_macro_broken_bronze_hatchet_manwear,6
-cost=0
-wearpos=righthand
 weight=2lb
 category=weapon_blunt
 param=attackrate,5
@@ -384,10 +520,21 @@ param=slash_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_bob,^true
 param=fixed,bronze_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_bronze_hatchet
 
 [cert_macro_broken_bronze_hatchet]
 certlink=macro_broken_bronze_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_bronze_hatchet
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_iron_hatchet]
 name=Broken axe
@@ -401,8 +548,6 @@ model=obj_macro_broken_bronze_hatchet
 2dxan=520
 manwear=obj_macro_broken_bronze_hatchet_manwear,0
 womanwear=obj_macro_broken_bronze_hatchet_manwear,6
-cost=0
-wearpos=righthand
 weight=2lb
 category=weapon_blunt
 param=attackrate,5
@@ -413,10 +558,21 @@ param=slash_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_bob,^true
 param=fixed,iron_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_iron_hatchet
 
 [cert_macro_broken_iron_hatchet]
 certlink=macro_broken_iron_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_iron_hatchet
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_steel_hatchet]
 name=Broken axe
@@ -428,8 +584,6 @@ model=obj_macro_broken_bronze_hatchet
 2dxan=520
 manwear=obj_macro_broken_bronze_hatchet_manwear,0
 womanwear=obj_macro_broken_bronze_hatchet_manwear,6
-cost=0
-wearpos=righthand
 weight=2lb
 category=weapon_blunt
 param=attackrate,5
@@ -440,10 +594,21 @@ param=slash_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_bob,^true
 param=fixed,steel_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_steel_hatchet
 
 [cert_macro_broken_steel_hatchet]
 certlink=macro_broken_steel_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,0
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_steel_hatchet
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_black_hatchet]
 name=Broken axe
@@ -457,8 +622,6 @@ model=obj_macro_broken_bronze_hatchet
 2dxan=520
 manwear=obj_macro_broken_bronze_hatchet_manwear,0
 womanwear=obj_macro_broken_bronze_hatchet_manwear,6
-cost=10
-wearpos=righthand
 weight=2lb
 category=weapon_blunt
 param=attackrate,5
@@ -469,10 +632,21 @@ param=slash_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_bob,^true
 param=fixed,black_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_black_hatchet
 
 [cert_macro_broken_black_hatchet]
 certlink=macro_broken_black_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_black_hatchet
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_mithril_hatchet]
 name=Broken axe
@@ -486,8 +660,6 @@ model=obj_macro_broken_bronze_hatchet
 2dxan=520
 manwear=obj_macro_broken_bronze_hatchet_manwear,0
 womanwear=obj_macro_broken_bronze_hatchet_manwear,6
-cost=18
-wearpos=righthand
 weight=24oz
 category=weapon_blunt
 param=attackrate,5
@@ -498,10 +670,21 @@ param=slash_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_bob,^true
 param=fixed,mithril_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=15
+param=allstar_value,15
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_mithril_hatchet
 
 [cert_macro_broken_mithril_hatchet]
 certlink=macro_broken_mithril_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,15
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_mithril_hatchet
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_adamant_hatchet]
 name=Broken axe
@@ -515,8 +698,6 @@ model=obj_macro_broken_bronze_hatchet
 2dxan=520
 manwear=obj_macro_broken_bronze_hatchet_manwear,0
 womanwear=obj_macro_broken_bronze_hatchet_manwear,6
-cost=43
-wearpos=righthand
 weight=40oz
 category=weapon_blunt
 param=attackrate,5
@@ -527,10 +708,21 @@ param=slash_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_bob,^true
 param=fixed,adamant_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=36
+param=allstar_value,36
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_adamant_hatchet
 
 [cert_macro_broken_adamant_hatchet]
 certlink=macro_broken_adamant_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,36
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_adamant_hatchet
+param=allstar_withdraw_stackable,yes
 
 [macro_broken_rune_hatchet]
 name=Broken axe
@@ -544,8 +736,6 @@ model=obj_macro_broken_bronze_hatchet
 2dxan=520
 manwear=obj_macro_broken_bronze_hatchet_manwear,0
 womanwear=obj_macro_broken_bronze_hatchet_manwear,6
-cost=427
-wearpos=righthand
 weight=2lb
 category=weapon_blunt
 param=attackrate,5
@@ -556,10 +746,21 @@ param=slash_sound,baxe_slash
 param=crush_sound,baxe_crush
 param=to_be_fixed_by_bob,^true
 param=fixed,rune_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=330
+param=allstar_value,330
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_broken_rune_hatchet
 
 [cert_macro_broken_rune_hatchet]
 certlink=macro_broken_rune_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,330
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_broken_rune_hatchet
+param=allstar_withdraw_stackable,yes
 
 [macro_bronze_hatchethead]
 name=Bronze axe head
@@ -571,13 +772,23 @@ model=obj_macro_bronze_hatchethead
 2dzoom=1060
 2dyan=1196
 2dxan=520
-cost=15
 weight=2lb
 param=fixed,bronze_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=13
+param=allstar_value,13
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_bronze_hatchethead
 
 [cert_macro_bronze_hatchethead]
 certlink=macro_bronze_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,13
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_bronze_hatchethead
+param=allstar_withdraw_stackable,yes
 
 [macro_iron_hatchethead]
 name=Iron axe head
@@ -589,13 +800,23 @@ model=obj_macro_bronze_hatchethead
 2dzoom=1060
 2dyan=1196
 2dxan=520
-cost=55
 weight=2lb
 param=fixed,iron_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=46
+param=allstar_value,46
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_iron_hatchethead
 
 [cert_macro_iron_hatchethead]
 certlink=macro_iron_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,46
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_iron_hatchethead
+param=allstar_withdraw_stackable,yes
 
 [macro_steel_hatchethead]
 name=Steel axe head
@@ -605,13 +826,24 @@ model=obj_macro_bronze_hatchethead
 2dzoom=1060
 2dyan=1196
 2dxan=520
-cost=199
 weight=2lb
 param=fixed,steel_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=159
+param=allstar_req_defence,5
+param=allstar_value,159
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_steel_hatchethead
 
 [cert_macro_steel_hatchethead]
 certlink=macro_steel_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,159
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_steel_hatchethead
+param=allstar_withdraw_stackable,yes
 
 [macro_black_hatchethead]
 name=Black axe head
@@ -623,13 +855,23 @@ model=obj_macro_bronze_hatchethead
 2dzoom=1060
 2dyan=1196
 2dxan=520
-cost=383
 weight=2lb
 param=fixed,black_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=298
+param=allstar_value,298
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_black_hatchethead
 
 [cert_macro_black_hatchethead]
 certlink=macro_black_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,298
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_black_hatchethead
+param=allstar_withdraw_stackable,yes
 
 [macro_mithril_hatchethead]
 name=Mithril axe head
@@ -641,13 +883,24 @@ model=obj_macro_bronze_hatchethead
 2dzoom=1060
 2dyan=1196
 2dxan=520
-cost=519
 weight=24oz
 param=fixed,mithril_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=398
+param=allstar_req_defence,20
+param=allstar_value,398
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_mithril_hatchethead
 
 [cert_macro_mithril_hatchethead]
 certlink=macro_mithril_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,398
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_mithril_hatchethead
+param=allstar_withdraw_stackable,yes
 
 [macro_adamant_hatchethead]
 name=Adamant axe head
@@ -659,13 +912,24 @@ model=obj_macro_bronze_hatchethead
 2dzoom=1060
 2dyan=1196
 2dxan=520
-cost=1279
 weight=40oz
 param=fixed,adamant_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=946
+param=allstar_req_defence,30
+param=allstar_value,946
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_adamant_hatchethead
 
 [cert_macro_adamant_hatchethead]
 certlink=macro_adamant_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,946
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_adamant_hatchethead
+param=allstar_withdraw_stackable,yes
 
 [macro_rune_hatchethead]
 name=Rune axe head
@@ -677,13 +941,22 @@ model=obj_macro_bronze_hatchethead
 2dzoom=1060
 2dyan=1196
 2dxan=520
-cost=12799
 weight=2lb
 param=fixed,rune_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=8597
+param=allstar_value,8597
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_rune_hatchethead
 
 [cert_macro_rune_hatchethead]
 certlink=macro_rune_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,8597
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_rune_hatchethead
 
 [macro_broken_dragon_hatchet]
 name=Broken axe
@@ -696,14 +969,22 @@ model=obj_macro_broken_dragon_hatchet
 2dxan=235
 manwear=obj_macro_broken_dragon_hatchet_manwear,0
 womanwear=obj_macro_broken_dragon_hatchet_manwear,6
-cost=1800
 members=yes
-wearpos=righthand
 weight=2lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:6741
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [cert_macro_broken_dragon_hatchet]
 certlink=macro_broken_dragon_hatchet
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:6742
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [macro_dragon_hatchethead]
 name=Dragon axe head
@@ -714,14 +995,23 @@ model=obj_macro_dragon_hatchethead
 2dzoom=1114
 2dyan=1203
 2dxan=456
-cost=54999
 members=yes
 weight=2lb
 param=fixed,dragon_axe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:6743
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [cert_macro_dragon_hatchethead]
 certlink=macro_dragon_hatchethead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:6744
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [macro_hatchethandle_dragon]
 name=Axe handle
@@ -734,20 +1024,23 @@ model=obj_macro_hatchethandle_dragon
 2dxan=387
 manwear=obj_macro_hatchethandle_dragon_manwear,0
 womanwear=obj_macro_hatchethandle_dragon_manwear,6
-cost=1
-wearpos=righthand
 weight=1lb
 category=weapon_blunt
 param=attackrate,5
 param=crushattack_anim,human_blunt_pound
 param=defend_anim,human_axe_block
 param=crush_sound,baxe_crush
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7952
 
 [cert_macro_hatchethandle_dragon]
 certlink=macro_hatchethandle_dragon
 certtemplate=template_for_cert
 
 // genie
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7953
 
 [macro_genilamp]
 name=Lamp
@@ -760,7 +1053,9 @@ model=obj_macro_genilamp
 2dxan=28
 iop1=Rub
 weight=100g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
 
 [macro_mime_mask]
 name=Mime mask
@@ -775,10 +1070,11 @@ manwear=obj_macro_mime_mask_manwear,0
 womanwear=obj_macro_mime_mask_womanwear,0
 manhead=obj_macro_mime_mask_manhead
 womanhead=obj_macro_mime_mask_manhead
-wearpos=hat
-wearpos2=jaw
 weight=1g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=hat
+param=allstar_sellable,yes
 
 [macro_mime_top]
 name=Mime top
@@ -798,10 +1094,12 @@ manwear3=obj_macro_mime_top_manwear3
 womanwear=obj_priest_gown_womanwear,0
 womanwear2=obj_priest_gown_womanwear2
 womanwear3=obj_macro_mime_top_womanwear3
+weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
 wearpos=torso
 wearpos2=arms
-weight=1g
-tradeable=no
+param=allstar_sellable,yes
 
 [macro_mime_legs]
 name=Mime legs
@@ -818,9 +1116,11 @@ iop2=Wear
 2dyan=2044
 2dzan=32
 2dxan=620
-wearpos=legs
 weight=1g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=legs
+param=allstar_sellable,yes
 
 [macro_mime_gloves]
 name=Mime gloves
@@ -836,9 +1136,12 @@ womanwear=obj_gauntlets_of_cooking_womanwear,0
 2dzoom=930
 2dyan=828
 2dxan=420
-wearpos=hands
 weight=1g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=hands
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [macro_mime_boots]
 name=Mime boots
@@ -854,9 +1157,11 @@ iop2=Wear
 2dzoom=770
 2dyan=160
 2dxan=152
-wearpos=feet
 weight=12oz
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=feet
+param=allstar_sellable,yes
 
 [macro_frog_token]
 name=Frog token
@@ -865,8 +1170,11 @@ model=obj_macro_frog_token
 2dyof=1
 2dzoom=1090
 2dxan=468
-cost=0
 weight=10g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [macro_prince_torso]
 name=Prince tunic
@@ -882,10 +1190,13 @@ iop2=Wear
 2dyof=5
 2dzoom=1530
 2dxan=628
+weight=6lb
+// allstar item data (allstar/tools/gen/items.mjs)
 cost=0
 wearpos=torso
 wearpos2=arms
-weight=6lb
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [macro_prince_legs]
 name=Prince leggings
@@ -903,9 +1214,12 @@ iop2=Wear
 2dzoom=1590
 2dyan=4
 2dxan=360
+weight=5lb
+// allstar item data (allstar/tools/gen/items.mjs)
 cost=0
 wearpos=legs
-weight=5lb
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [macro_princess_torso]
 name=Princess blouse
@@ -921,10 +1235,13 @@ iop2=Wear
 2dyof=9
 2dzoom=1140
 2dxan=400
-cost=0
+weight=6lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=100
 wearpos=torso
 wearpos2=arms
-weight=6lb
+param=allstar_value,100
+param=allstar_sellable,yes
 
 [macro_princess_legs]
 name=Princess skirt
@@ -940,9 +1257,12 @@ iop2=Wear
 2dyof=-4
 2dzoom=1730
 2dxan=492
-cost=0
-wearpos=legs
 weight=5lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=100
+wearpos=legs
+param=allstar_value,100
+param=allstar_sellable,yes
 
 [macro_frog_mask]
 name=Frog mask
@@ -956,11 +1276,13 @@ womanhead=obj_macro_frog_mask_womanhead
 2dzoom=900
 2dxan=288
 iop2=Wear
+weight=1lb
+// allstar item data (allstar/tools/gen/items.mjs)
 cost=0
 wearpos=hat
 wearpos2=head
-wearpos3=jaw
-weight=1lb
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [macro_quiz_food1]
 model=obj_macro_quiz_food1
@@ -969,6 +1291,10 @@ model=obj_macro_quiz_food1
 2dyan=1840
 2dxan=532
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_food2]
 model=obj_macro_quiz_food2
@@ -977,6 +1303,10 @@ model=obj_macro_quiz_food2
 2dyan=1920
 2dxan=464
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_weapon1]
 recol1s=31649
@@ -987,6 +1317,10 @@ model=obj_macro_quiz_weapon1
 2dyan=1156
 2dxan=352
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_weapon2]
 recol1s=15649
@@ -998,6 +1332,10 @@ model=obj_macro_quiz_weapon2
 2dyan=1128
 2dxan=420
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_armour1]
 recol1s=15360
@@ -1009,6 +1347,10 @@ model=obj_macro_quiz_armour1
 2dyan=156
 2dxan=108
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_armour2]
 recol1s=7296
@@ -1022,6 +1364,10 @@ model=obj_macro_quiz_armour2
 2dyan=1104
 2dxan=344
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_tool1]
 recol1s=8320
@@ -1032,6 +1378,10 @@ model=obj_macro_quiz_tool1
 2dyan=136
 2dxan=300
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_tool2]
 recol1s=11457
@@ -1043,6 +1393,10 @@ model=obj_macro_quiz_tool2
 2dyan=1512
 2dxan=332
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_jewel1]
 recol1s=32767
@@ -1057,6 +1411,10 @@ model=obj_macro_quiz_jewel1
 2dzan=2024
 2dxan=268
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_jewel2]
 recol1s=10570
@@ -1070,13 +1428,16 @@ model=obj_macro_quiz_jewel2
 2dyan=68
 2dxan=424
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Hex edit detected
+param=allstar_sellable,yes
 
 [macro_quiz_mystery_box]
 name=Mystery box
 desc=Oooh, I wonder what could be inside?
 recol1s=160
 recol1d=31105
-cost=1
 model=obj_research_package
 2dyof=-14
 2dzoom=1180
@@ -1086,11 +1447,13 @@ iop1=Open
 weight=1kg
 
 // evil bob
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
 
 [evil_bob_uncooked_fish_correct]
 name=Raw fishlike thing
 desc=A raw... fish? Is this a fish??
-cost=0
 model=obj_evil_bob_uncooked_fish_correct
 2dxof=-3
 2dyof=18
@@ -1098,6 +1461,10 @@ model=obj_evil_bob_uncooked_fish_correct
 2dyan=1928
 2dxan=400
 weight=700g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [evil_bob_cooked_fish_correct]
 name=Fishlike thing
@@ -1110,7 +1477,6 @@ recol3s=17183
 recol3d=20971
 recol4s=20287
 recol4d=24141
-cost=0
 model=obj_evil_bob_uncooked_fish_correct
 iop1=Eat
 2dxof=-3
@@ -1119,11 +1485,14 @@ iop1=Eat
 2dyan=1928
 2dxan=400
 weight=700g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [evil_bob_uncooked_fish_incorrect]
 name=Raw fishlike thing
 desc=A raw... fish? Is this a fish??
-cost=0
 model=obj_evil_bob_uncooked_fish_correct
 2dxof=-3
 2dyof=18
@@ -1131,6 +1500,10 @@ model=obj_evil_bob_uncooked_fish_correct
 2dyan=1928
 2dxan=400
 weight=700g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [evil_bob_cooked_fish_incorrect]
 name=Fishlike thing
@@ -1143,7 +1516,6 @@ recol3s=17183
 recol3d=20971
 recol4s=20287
 recol4d=24141
-cost=0
 model=obj_evil_bob_uncooked_fish_correct
 iop1=Eat
 2dxof=-3
@@ -1152,6 +1524,10 @@ iop1=Eat
 2dyan=1928
 2dxan=400
 weight=700g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
+param=allstar_sellable,yes
 
 [evil_bob_amulet_of_manspeak]
 name=Man speak amulet
@@ -1166,6 +1542,10 @@ iop2=Wear
 2dyan=140
 2dxan=308
 weight=20lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=front
+param=allstar_sellable,yes
 
 [evil_bob_net]
 name=Small fishing net
@@ -1176,34 +1556,43 @@ model=obj_net
 2dzoom=840
 2dyan=132
 2dxan=380
-cost=5
 manwear=obj_net_manwear,0
 womanwear=obj_net_manwear,6
 weight=10lb
 
 // freaky forester
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
 
 [raw_macro_pheasant_good]
 name=Raw pheasant
 desc=I need to cook this first.
-cost=5
 model=obj_enchanted_chicken
 2dxof=-3
 2dzoom=870
 2dyan=1748
 2dxan=88
 weight=10kg
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
 
 [raw_macro_pheasant_bad]
 name=Raw pheasant
 desc=I need to cook this first.
-cost=5
 model=obj_enchanted_chicken
 2dxof=-3
 2dzoom=870
 2dyan=1748
 2dxan=88
 weight=10kg
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
 
 [laderhosen_top]
 name=Lederhosen top
@@ -1221,9 +1610,12 @@ womanwear2=obj_priest_gown_womanwear2
 2dzoom=1420
 2dyan=132
 2dxan=348
+weight=5lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
 wearpos=torso
 wearpos2=arms
-weight=5lb
+param=allstar_sellable,yes
 
 [laderhosen_legs]
 name=Lederhosen shorts
@@ -1237,8 +1629,11 @@ womanwear=obj_laderhosen_legs_womanwear,0
 2dzoom=1760
 2dyan=44
 2dxan=364
-wearpos=legs
 weight=5lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=legs
+param=allstar_sellable,yes
 
 [laderhosen_hat]
 name=Lederhosen hat
@@ -1254,10 +1649,13 @@ womanhead=obj_laderhosen_hat_womanhead
 2dzoom=920
 2dyan=212
 2dxan=196
-wearpos=hat
 weight=5lb
 
 // strange box
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+wearpos=hat
+param=allstar_sellable,yes
 
 [macro_cube]
 name=Strange box
@@ -1269,15 +1667,23 @@ model=obj_macro_cube
 2dyan=1684
 2dxan=108
 iop1=Open
-stackable=yes
 weight=5kg
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_redtriangle]
 recol1s=29596
 recol1d=16547
 model=obj_macro_cube_redtriangle
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_redtriangle
 
 [cert_macro_cube_redtriangle]
 name=Whoopsie
@@ -1285,17 +1691,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_redtriangle
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_bluetriangle]
 recol1s=29596
 recol1d=5293
 model=obj_macro_cube_redtriangle
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_bluetriangle
 
 [cert_macro_cube_bluetriangle]
 name=Whoopsie
@@ -1303,17 +1721,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_bluetriangle
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_yellowtriangle]
 recol1s=29596
 recol1d=17893
 model=obj_macro_cube_redtriangle
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_yellowtriangle
 
 [cert_macro_cube_yellowtriangle]
 name=Whoopsie
@@ -1321,17 +1751,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_yellowtriangle
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_redsquare]
 recol1s=29596
 recol1d=16547
 model=obj_macro_cube_redsquare
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_redsquare
 
 [cert_macro_cube_redsquare]
 name=Whoopsie
@@ -1339,17 +1781,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_redsquare
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_bluesquare]
 recol1s=29596
 recol1d=5293
 model=obj_macro_cube_redsquare
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_bluesquare
 
 [cert_macro_cube_bluesquare]
 name=Whoopsie
@@ -1357,17 +1811,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_bluesquare
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_yellowsquare]
 recol1s=29596
 recol1d=17893
 model=obj_macro_cube_redsquare
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_yellowsquare
 
 [cert_macro_cube_yellowsquare]
 name=Whoopsie
@@ -1375,17 +1841,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_yellowsquare
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_redcircle]
 recol1s=29596
 recol1d=16547
 model=obj_macro_cube_redcircle
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_redcircle
 
 [cert_macro_cube_redcircle]
 name=Whoopsie
@@ -1393,17 +1871,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_redcircle
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_bluecircle]
 recol1s=29596
 recol1d=5293
 model=obj_macro_cube_redcircle
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_bluecircle
 
 [cert_macro_cube_bluecircle]
 name=Whoopsie
@@ -1411,17 +1901,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_bluecircle
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_yellowcircle]
 recol1s=29596
 recol1d=17893
 model=obj_macro_cube_redcircle
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_yellowcircle
 
 [cert_macro_cube_yellowcircle]
 name=Whoopsie
@@ -1429,17 +1931,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_yellowcircle
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_redstar]
 recol1s=29596
 recol1d=16547
 model=obj_macro_cube_redstar
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_redstar
 
 [cert_macro_cube_redstar]
 name=Whoopsie
@@ -1447,17 +1961,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_redstar
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_bluestar]
 recol1s=29596
 recol1d=5293
 model=obj_macro_cube_redstar
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_bluestar
 
 [cert_macro_cube_bluestar]
 name=Whoopsie
@@ -1465,17 +1991,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_bluestar
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_yellowstar]
 recol1s=29596
 recol1d=17893
 model=obj_macro_cube_redstar
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_yellowstar
 
 [cert_macro_cube_yellowstar]
 name=Whoopsie
@@ -1483,17 +2021,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_yellowstar
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_redhalfmoon]
 recol1s=29596
 recol1d=16547
 model=obj_macro_cube_redhalfmoon
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_redhalfmoon
 
 [cert_macro_cube_redhalfmoon]
 name=Whoopsie
@@ -1501,17 +2051,29 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_redhalfmoon
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_bluehalfmoon]
 recol1s=29596
 recol1d=5293
 model=obj_macro_cube_redhalfmoon
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_bluehalfmoon
 
 [cert_macro_cube_bluehalfmoon]
 name=Whoopsie
@@ -1519,17 +2081,30 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_bluehalfmoon
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_yellowhalfmoon]
 recol1s=29596
 recol1d=17893
 model=obj_macro_cube_redhalfmoon
 2dzoom=1500
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_note,cert_macro_cube_yellowhalfmoon
+param=allstar_withdraw_stackable,yes
 
 [cert_macro_cube_yellowhalfmoon]
 name=Whoopsie
@@ -1537,193 +2112,335 @@ desc=Just chuck this away, it's useless!
 recol1s=2340
 recol1d=25073
 iop1=Wear
-cost=1
 model=obj_priest_robe
 2dyof=1
 2dzoom=1940
 2dxan=572
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_name,Cube part
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,macro_cube_yellowhalfmoon
+param=allstar_withdraw_stackable,yes
 
 [macro_cube_circle1]
 model=obj_macro_cube_circle1
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7005
 
 [macro_cube_hexagon1]
 model=obj_macro_cube_hexagon1
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7006
 
 [macro_cube_square1]
 model=obj_macro_cube_square1
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7007
 
 [macro_cube_star1]
 model=obj_macro_cube_star1
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7008
 
 [macro_cube_triangle1]
 model=obj_macro_cube_triangle1
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7009
 
 [macro_cube_01]
 model=obj_macro_cube_01
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7010
 
 [macro_cube_11]
 model=obj_macro_cube_11
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7011
 
 [macro_cube_21]
 model=obj_macro_cube_21
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7012
 
 [macro_cube_31]
 model=obj_macro_cube_31
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7013
 
 [macro_cube_41]
 model=obj_macro_cube_41
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7014
 
 [macro_cube_51]
 model=obj_macro_cube_51
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7015
 
 [macro_cube_61]
 model=obj_macro_cube_61
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7016
 
 [macro_cube_71]
 model=obj_macro_cube_71
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7017
 
 [macro_cube_81]
 model=obj_macro_cube_81
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7018
 
 [macro_cube_91]
 model=obj_macro_cube_91
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7019
 
 [macro_cube_circle2]
 model=obj_macro_cube_circle2
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7020
 
 [macro_cube_hexagon2]
 model=obj_macro_cube_hexagon2
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7021
 
 [macro_cube_square2]
 model=obj_macro_cube_square2
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7022
 
 [macro_cube_star2]
 model=obj_macro_cube_star2
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7023
 
 [macro_cube_triangle2]
 model=obj_macro_cube_triangle2
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7024
 
 [macro_cube_02]
 model=obj_macro_cube_02
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7025
 
 [macro_cube_12]
 model=obj_macro_cube_12
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7026
 
 [macro_cube_22]
 model=obj_macro_cube_22
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7027
 
 [macro_cube_32]
 model=obj_macro_cube_32
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7028
 
 [macro_cube_42]
 model=obj_macro_cube_42
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7029
 
 [macro_cube_52]
 model=obj_macro_cube_52
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7030
 
 [macro_cube_62]
 model=obj_macro_cube_62
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7031
 
 [macro_cube_72]
 model=obj_macro_cube_72
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7032
 
 [macro_cube_82]
 model=obj_macro_cube_82
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7033
 
 [macro_cube_92]
 model=obj_macro_cube_92
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7034
 
 [macro_cube_circle3]
 model=obj_macro_cube_circle3
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7035
 
 [macro_cube_hexagon3]
 model=obj_macro_cube_hexagon3
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7036
 
 [macro_cube_square3]
 model=obj_macro_cube_square3
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7037
 
 [macro_cube_star3]
 model=obj_macro_cube_star3
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7038
 
 [macro_cube_triangle3]
 model=obj_macro_cube_triangle3
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7039
 
 [macro_cube_03]
 model=obj_macro_cube_03
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7040
 
 [macro_cube_13]
 model=obj_macro_cube_13
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7041
 
 [macro_cube_23]
 model=obj_macro_cube_23
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7042
 
 [macro_cube_33]
 model=obj_macro_cube_33
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7043
 
 [macro_cube_43]
 model=obj_macro_cube_43
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7044
 
 [macro_cube_53]
 model=obj_macro_cube_53
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7045
 
 [macro_cube_63]
 model=obj_macro_cube_63
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7046
 
 [macro_cube_73]
 model=obj_macro_cube_73
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7047
 
 [macro_cube_83]
 model=obj_macro_cube_83
 ambient=90
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7048
 
 [macro_cube_93]
 model=obj_macro_cube_93
 ambient=90
 
 // gravedigger
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:7049
 
 [macro_digger_coffin_object_1]
 name=Coffin
@@ -1734,6 +2451,9 @@ model=obj_macro_digger_coffin_object_1
 2dxan=150
 iop1=Check
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_coffin_object_2]
 name=Coffin
@@ -1744,6 +2464,9 @@ model=obj_macro_digger_coffin_object_1
 2dxan=150
 iop1=Check
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_coffin_object_3]
 name=Coffin
@@ -1754,6 +2477,9 @@ model=obj_macro_digger_coffin_object_1
 2dxan=150
 iop1=Check
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_coffin_object_4]
 name=Coffin
@@ -1764,6 +2490,9 @@ model=obj_macro_digger_coffin_object_1
 2dxan=150
 iop1=Check
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_coffin_object_5]
 name=Coffin
@@ -1774,6 +2503,9 @@ model=obj_macro_digger_coffin_object_1
 2dxan=150
 iop1=Check
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_shirt]
 name=Zombie shirt
@@ -1786,7 +2518,10 @@ iop2=Wear
 womanwear=obj_macro_digger_shirt_womanwear,0
 manwear=obj_macro_digger_shirt_manwear,0
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
 wearpos=torso
+param=allstar_value,0
 
 [macro_digger_legs]
 name=Zombie trousers
@@ -1799,7 +2534,10 @@ iop2=Wear
 manwear=obj_macro_digger_legs_manwear,0
 womanwear=obj_macro_digger_legs_womanwear,0
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
 wearpos=legs
+param=allstar_value,0
 
 [macro_digger_mask]
 name=Zombie mask
@@ -1817,9 +2555,11 @@ womanwear=obj_macro_digger_mask_womanwear,0
 manhead=obj_macro_digger_mask_manhead
 womanhead=obj_macro_digger_mask_womanhead
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
 wearpos=hat
 wearpos2=head
-wearpos3=jaw
+param=allstar_value,0
 
 [macro_digger_gloves]
 name=Zombie gloves
@@ -1834,7 +2574,10 @@ iop2=Wear
 manwear=obj_macro_digger_gloves_manwear,0
 womanwear=obj_macro_digger_gloves_womanwear,0
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
 wearpos=hands
+param=allstar_value,0
 
 [macro_digger_boots]
 name=Zombie boots
@@ -1849,7 +2592,10 @@ womanwear=obj_macro_digger_boots_womanwear,0
 2dyan=1892
 2dxan=132
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
 wearpos=feet
+param=allstar_value,0
 
 [macro_digger_apron]
 name=Item
@@ -1860,6 +2606,9 @@ model=obj_macro_digger_apron
 2dzoom=1580
 2dyan=172
 2dxan=544
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_bones]
 name=Item
@@ -1869,6 +2618,9 @@ model=obj_macro_digger_bones
 2dzoom=1410
 2dyan=368
 2dxan=400
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_bowl_empty]
 name=Item
@@ -1878,6 +2630,9 @@ model=obj_macro_digger_bowl_empty
 2dzoom=890
 2dyan=36
 2dxan=156
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_cake]
 name=Item
@@ -1887,6 +2642,9 @@ model=obj_macro_digger_cake
 2dzoom=670
 2dyan=120
 2dxan=164
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_chefshat]
 name=Item
@@ -1896,6 +2654,9 @@ model=obj_macro_digger_chefshat
 2dyof=3
 2dzoom=580
 2dxan=668
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_dibber]
 name=Item
@@ -1906,6 +2667,9 @@ model=obj_macro_digger_dibber
 2dzoom=970
 2dyan=240
 2dxan=408
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_hatchet]
 name=Item
@@ -1915,6 +2679,9 @@ model=obj_macro_digger_hatchet
 2dzoom=1060
 2dyan=1196
 2dxan=520
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_kebab]
 name=Item
@@ -1924,6 +2691,9 @@ model=obj_macro_digger_kebab
 2dyan=1844
 2dzan=176
 2dxan=1876
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_knife]
 name=Item
@@ -1934,6 +2704,9 @@ model=obj_macro_digger_knife
 2dzoom=580
 2dyan=1260
 2dxan=444
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_nuggets]
 name=Item
@@ -1943,6 +2716,9 @@ model=obj_macro_digger_nuggets
 2dyof=12
 2dzoom=1550
 2dxan=320
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_pick_axe]
 name=Item
@@ -1953,6 +2729,9 @@ model=obj_macro_digger_pick_axe
 2dzoom=1070
 2dyan=1056
 2dxan=224
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_plant_pot_empty]
 name=Item
@@ -1961,6 +2740,9 @@ model=obj_macro_digger_plant_pot_empty
 2dzoom=1210
 2dyan=2012
 2dxan=104
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_potato_seeded]
 name=Item
@@ -1971,6 +2753,9 @@ model=obj_macro_digger_potato_seeded
 2dzoom=1440
 2dyan=144
 2dxan=536
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_secateurs]
 name=Item
@@ -1981,6 +2766,9 @@ model=obj_macro_digger_secateurs
 2dzoom=710
 2dyan=320
 2dxan=312
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_skull]
 name=Item
@@ -1992,6 +2780,9 @@ model=obj_macro_digger_skull
 2dyan=64
 2dzan=1996
 2dxan=160
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_woodlogs]
 name=Item
@@ -2001,6 +2792,9 @@ model=obj_macro_digger_woodlogs
 2dzoom=1180
 2dyan=1852
 2dxan=120
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_pot_empty]
 name=Item
@@ -2011,28 +2805,46 @@ model=obj_macro_digger_pot_empty
 2dzoom=990
 2dyan=8
 2dxan=112
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_stoneaxe]
 name=Item
 desc=Its a symbol.
 model=obj_macro_digger_stoneaxe
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_stonecook]
 name=Item
 desc=Its a symbol.
 model=obj_macro_digger_stonecook
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_stonemine]
 name=Item
 desc=Its a symbol.
 model=obj_macro_digger_stonemine
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_stonespade]
 name=Item
 desc=Its a symbol.
 model=obj_macro_digger_stonespade
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0
 
 [macro_digger_stonevase]
 name=Item
 desc=Its a symbol.
 model=obj_macro_digger_stonevase
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=0
+param=allstar_value,0

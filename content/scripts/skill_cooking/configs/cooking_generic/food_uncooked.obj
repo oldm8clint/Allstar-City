@@ -1,7 +1,6 @@
 [raw_ugthanki_meat]
 name=Raw ugthanki meat
 desc=I need to cook this first.
-cost=2
 model=obj_enchanted_beef
 2dxof=1
 2dyof=3
@@ -11,6 +10,10 @@ model=obj_enchanted_beef
 members=yes
 weight=800g
 category=cooking_generic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_raw_ugthanki_meat
 
 [raw_beef]
 name=Raw beef
@@ -21,9 +24,12 @@ model=obj_enchanted_beef
 2dzoom=560
 2dyan=176
 2dxan=308
-cost=1
 weight=12oz
 category=cooking_generic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_raw_beef
 
 [raw_rat_meat]
 name=Raw rat meat
@@ -34,9 +40,12 @@ model=obj_enchanted_beef
 2dzoom=560
 2dyan=176
 2dxan=308
-cost=1
 weight=5oz
 category=cooking_generic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_raw_rat_meat
 
 [raw_bear_meat]
 name=Raw bear meat
@@ -47,9 +56,12 @@ model=obj_enchanted_beef
 2dzoom=560
 2dyan=176
 2dxan=308
-cost=1
 weight=15oz
 category=cooking_generic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_raw_bear_meat
 
 [raw_chicken]
 name=Raw chicken
@@ -61,9 +73,12 @@ model=obj_enchanted_chicken
 2dzoom=870
 2dyan=1748
 2dxan=88
-cost=1
 weight=6oz
 category=cooking_generic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_raw_chicken
 
 [raw_lava_eel]
 name=Raw lava eel
@@ -72,7 +87,6 @@ recol1s=15855
 recol1d=31393
 recol2s=11628
 recol2d=31041
-cost=150
 members=yes
 model=obj_raw_lava_eel
 2dxof=17
@@ -83,4 +97,7 @@ model=obj_raw_lava_eel
 weight=8oz
 category=cooking_generic
 param=fishing_struct,fishing_struct_lava_eel
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=121
+param=allstar_value,121
+param=allstar_sellable,yes

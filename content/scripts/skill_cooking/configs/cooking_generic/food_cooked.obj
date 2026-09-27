@@ -5,7 +5,6 @@ recol1s=24609
 recol1d=16609
 recol2s=32767
 recol2d=20774
-cost=5
 model=obj_enchanted_beef
 2dxof=1
 2dyof=3
@@ -17,6 +16,11 @@ iop1=Eat
 weight=600g
 category=category_5
 param=ugthanki_kebab_struct,ugthanki_meat_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_cooked_ugthanki_meat
 
 [cooked_chicken]
 name=Cooked chicken
@@ -24,7 +28,6 @@ desc=Mmm this looks tasty.
 recol1s=15619
 recol1d=13472
 iop1=Eat
-cost=4
 model=obj_enchanted_chicken
 2dxof=-3
 2dzoom=870
@@ -35,6 +38,11 @@ category=category_5
 respawnrate=200
 param=pizza_topping_struct,meat_topping
 param=uncooked_pie_struct,uncooked_meat_pie
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_cooked_chicken
 
 [cooked_meat]
 name=Cooked meat
@@ -44,7 +52,6 @@ recol1d=16609
 recol2s=32767
 recol2d=20774
 iop1=Eat
-cost=4
 model=obj_enchanted_beef
 2dxof=1
 2dyof=3
@@ -56,6 +63,11 @@ category=category_5
 respawnrate=200
 param=pizza_topping_struct,meat_topping
 param=uncooked_pie_struct,uncooked_meat_pie
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_cooked_meat
 
 [lava_eel]
 name=Lava eel
@@ -64,7 +76,6 @@ recol1s=15855
 recol1d=15616
 recol2s=11628
 recol2d=18785
-cost=150
 members=yes
 model=obj_raw_lava_eel
 2dxof=17
@@ -75,4 +86,8 @@ model=obj_raw_lava_eel
 iop1=Eat
 weight=7oz
 category=category_58
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=121
+param=allstar_value,121
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes

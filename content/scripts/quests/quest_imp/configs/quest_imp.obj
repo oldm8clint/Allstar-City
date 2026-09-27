@@ -4,59 +4,99 @@ name=Red bead
 desc=A small round red bead.
 recol1s=32767
 recol1d=30753
-cost=4
 model=obj_red_bead
 2dzoom=1020
 2dyan=68
 2dxan=68
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_red_bead
 
 [cert_red_bead]
 certlink=red_bead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,red_bead
+param=allstar_withdraw_stackable,yes
 
 [yellow_bead]
 name=Yellow bead
 desc=A small round yellow bead.
 recol1s=32767
 recol1d=31649
-cost=4
 model=obj_red_bead
 2dzoom=1020
 2dyan=68
 2dxan=68
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_yellow_bead
 
 [cert_yellow_bead]
 certlink=yellow_bead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,yellow_bead
+param=allstar_withdraw_stackable,yes
 
 [black_bead]
 name=Black bead
 desc=A small round black bead.
 recol1s=32767
 recol1d=0
-cost=4
 model=obj_red_bead
 2dzoom=1020
 2dyan=68
 2dxan=68
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_black_bead
 
 [cert_black_bead]
 certlink=black_bead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,black_bead
+param=allstar_withdraw_stackable,yes
 
 [white_bead]
 name=White bead
 desc=A small round white bead.
-cost=4
 model=obj_red_bead
 2dzoom=1020
 2dyan=68
 2dxan=68
 weight=3g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_white_bead
 
 [cert_white_bead]
 certlink=white_bead
 certtemplate=template_for_cert
+// allstar item data (allstar/tools/gen/items.mjs)
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_is_note,yes
+param=allstar_unnote,white_bead
+param=allstar_withdraw_stackable,yes

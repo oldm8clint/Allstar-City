@@ -7,7 +7,6 @@ recol2s=12548
 recol2d=11491
 recol3s=10434
 recol3d=9377
-cost=4
 model=obj_logs
 2dyof=-7
 2dzoom=1180
@@ -21,13 +20,17 @@ weight=2kg
 category=category_22
 param=levelrequire,1
 param=productexp,400
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_logs
 
 [oak_logs]
 name=Oak logs
 desc=Logs cut from an oak tree.
 recol1s=19912
 recol1d=14662
-cost=20
 model=obj_logs
 2dyof=-7
 2dzoom=1180
@@ -39,6 +42,11 @@ weight=2kg
 category=category_22
 param=levelrequire,15
 param=productexp,600
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=17
+param=allstar_value,17
+param=allstar_sellable,yes
+param=allstar_note,cert_oak_logs
 
 [willow_logs]
 name=Willow logs
@@ -49,7 +57,6 @@ recol2s=10434
 recol2d=8419
 recol3s=19912
 recol3d=8419
-cost=40
 model=obj_logs
 2dyof=-7
 2dzoom=1180
@@ -61,6 +68,11 @@ weight=2kg
 category=category_22
 param=levelrequire,30
 param=productexp,900
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=34
+param=allstar_value,34
+param=allstar_sellable,yes
+param=allstar_note,cert_willow_logs
 
 [maple_logs]
 name=Maple logs
@@ -71,7 +83,6 @@ recol2s=10434
 recol2d=11490
 recol3s=19912
 recol3d=11490
-cost=80
 model=obj_logs
 2dyof=-7
 2dzoom=1180
@@ -83,6 +94,11 @@ weight=2kg
 category=category_22
 param=levelrequire,45
 param=productexp,1350
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=66
+param=allstar_value,66
+param=allstar_sellable,yes
+param=allstar_note,cert_maple_logs
 
 [yew_logs]
 name=Yew logs
@@ -93,7 +109,6 @@ recol2s=10434
 recol2d=5184
 recol3s=19912
 recol3d=10467
-cost=160
 model=obj_logs
 2dyof=-7
 2dzoom=1180
@@ -105,6 +120,11 @@ weight=2kg
 category=category_22
 param=levelrequire,60
 param=productexp,2025
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=129
+param=allstar_value,129
+param=allstar_sellable,yes
+param=allstar_note,cert_yew_logs
 
 [magic_logs]
 name=Magic logs
@@ -116,7 +136,6 @@ recol2d=9476
 recol3s=19912
 recol3d=9476
 members=yes
-cost=320
 model=obj_logs
 2dyof=-7
 2dzoom=1180
@@ -128,6 +147,11 @@ weight=2kg
 category=category_22
 param=levelrequire,75
 param=productexp,3038
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=251
+param=allstar_value,251
+param=allstar_sellable,yes
+param=allstar_note,cert_magic_logs
 
 [teak_logs]
 name=Teak logs
@@ -150,6 +174,10 @@ weight=3lb
 category=category_22
 param=levelrequire,35
 param=productexp,1050
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_teak_logs
 
 [mahogany_logs]
 name=Mahogany logs
@@ -160,7 +188,6 @@ recol2s=10434
 recol2d=9378
 recol3s=19912
 recol3d=7264
-cost=50
 model=obj_logs
 2dyof=-7
 2dzoom=1180
@@ -173,3 +200,8 @@ weight=3lb
 category=category_22
 param=levelrequire,50
 param=productexp,1575
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=42
+param=allstar_value,42
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes

@@ -10,6 +10,10 @@ iop1=Bury
 weight=500g
 category=bones
 param=bone_exp,45
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_bones
 
 [bones_burnt]
 name=Burnt bones
@@ -25,6 +29,10 @@ iop1=Bury
 weight=500g
 category=bones
 param=bone_exp,45
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_bones_burnt
 
 [bat_bones]
 name=Bat bones
@@ -41,6 +49,10 @@ category=bones
 param=bone_exp,45
 param=grindable_ingredient_refined,ground_bat_bones
 param=grindable_ingredient_message,You grind the bones to a powder.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_bat_bones
 
 [big_bones]
 name=Big bones
@@ -54,6 +66,10 @@ weight=800g
 category=bones
 respawnrate=50
 param=bone_exp,150
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_big_bones
 
 [babydragon_bones]
 name=Babydragon bones
@@ -67,6 +83,10 @@ iop1=Bury
 weight=800g
 category=bones
 param=bone_exp,300
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_babydragon_bones
 
 [dragon_bones]
 name=Dragon bones
@@ -80,4 +100,9 @@ members=yes
 weight=1500g
 category=bones
 param=bone_exp,720
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_req_defence,60
+param=allstar_sellable,yes
+param=allstar_note,cert_dragon_bones
 
