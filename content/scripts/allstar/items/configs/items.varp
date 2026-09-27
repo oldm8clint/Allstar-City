@@ -119,3 +119,7 @@ protect=no
 // ring of dueling menu open (duelring)
 [allstar_duelring]
 protect=no
+
+// a trade request was sent and not answered yet (tradeWaitingTime)
+[allstar_trade_requested]
+protect=no

@@ -23,31 +23,15 @@ while ($i < $size) {
 
 // ----
 
+// Allstar-City: client trade flow (WanneTrade, AcceptTrade, TradeGoConfirm, ConfirmTrade, L17583-17715,
+// L31863-32050) - messages and the 40 cycle request timeout; the screens stay Lost City's.
 [opplayer4,_]
-if (~in_duel_arena(coord) = true) {
-    mes("You can't trade in a duel arena."); // https://youtu.be/nUwvlFkcsqA?t=19
-    return; 
-}
 if (.busy = true) {
     mes("<.displayname> is busy at the moment.");
     return;
 }
 
-// this message always sends, even if this player is responding to a trade request
-mes("Sending trade offer...");
-
-// https://youtu.be/BOtsghQGQEk?t=417
-// https://youtu.be/8G92ZQxRamY?t=145
-// https://youtu.be/vS_kBeGudFY?t=10
-// 2006: "Trading in the Wilderness is dangerous - you might get killed!"
-
-// https://youtu.be/uSO-ilQk5XY?list=PLn23LiLYLb1bQ7Hwp77KoNBjKvpZQTfJT&t=810
-// This nov 2004 vid shows no wildy warning... I think it was added in mid to late 2006? Ive seen some early 2006 vids of trading with no warning
-
-// if either player is in wilderness, doesn't have to be both (osrs behaviour)
-if (~wilderness_level(coord) >= 1 | ~wilderness_level(.coord) >= 1) {
-    mes("Trading in the Wilderness is dangerous - you might get killed!");
-}
+mes("Sending trade request...");
 
 %tradepartner = .uid;
 
@@ -72,9 +56,27 @@ if (.%tradepartner = uid & %tradestatus = ^tradestatus_received) {
 
     %tradestatus = ^tradestatus_reset;
     .%tradestatus = ^tradestatus_reset;
+    %allstar_trade_requested = 0;
+    .%allstar_trade_requested = 0;
 } else {
     .%tradestatus = ^tradestatus_received;
     .mes("<displayname>:tradereq:");
+    // tradeWaitingTime = 40: an unanswered request is dropped
+    %allstar_trade_requested = 1;
+    softtimer(allstar_trade_request, 40);
+}
+
+[softtimer,allstar_trade_request]
+clearsofttimer(allstar_trade_request);
+if (%allstar_trade_requested = 1) {
+    %allstar_trade_requested = 0;
+    mes("Trade request suspended.");
+    if (.finduid(%tradepartner) = true) {
+        if (.%tradestatus = ^tradestatus_received) {
+            .%tradestatus = ^tradestatus_reset;
+        }
+    }
+    %tradepartner = null;
 }
 
 [if_button,trademain:accept]
@@ -158,7 +160,6 @@ if (.finduid(%tradepartner) = true) {
         %tradestatus = ^tradestatus_accept;
         .%tradestatus = ^tradestatus_accept;
     } else {
-        if_settext(trademain:status, "Waiting for other player..."); // https://youtu.be/uSO-ilQk5XY?list=PLn23LiLYLb1bQ7Hwp77KoNBjKvpZQTfJT&t=817
         .if_settext(trademain:status,"Other player has accepted."); // https://storage.googleapis.com/tannerdino/images/06Dec14-16.jpg
     }
 }
@@ -253,7 +254,8 @@ if (.finduid(%tradepartner) = true) {
     .%tradepartner = null;
     .if_close;
     if (%tradestatus ! 1 & .%tradestatus ! 1) {
-        .mes("Other player declined trade."); // osrs
+        mes("You decline the trade.");
+        .mes("<displayname> declined the trade.");
     }
 }
 
@@ -264,9 +266,6 @@ if (.finduid(%tradepartner) = true) {
 
 if (.finduid(%tradepartner) = true) {
     if (.%tradestatus = ^tradestatus_pending_confirm) {
-        mes("Accepted trade.");
-        .mes("Accepted trade.");
-
         both_moveinv(tradeoffer, inv);
         .both_moveinv(tradeoffer, inv);
 
@@ -277,7 +276,6 @@ if (.finduid(%tradepartner) = true) {
         .if_close;
     } else {
         .if_settext(tradeconfirm:com_91, "Other player has accepted."); // osrs
-        if_settext(tradeconfirm:com_91, "Waiting for other player."); // https://youtu.be/uSO-ilQk5XY?list=PLn23LiLYLb1bQ7Hwp77KoNBjKvpZQTfJT&t=819
     }
 }
 
@@ -291,7 +289,8 @@ inv_stoptransmit(tradeconfirm:otherinv2);
 if (.finduid(%tradepartner) = true) {
     .%tradepartner = null;
     .if_close;
-    .mes("Other player declined trade."); // osrs
+    mes("You decline the trade.");
+    .mes("<displayname> declined the trade.");
 }
 %tradepartner = null;
 

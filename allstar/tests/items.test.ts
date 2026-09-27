@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 
 import Bot from './Bot.js';
 import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.js';
+import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
 
 const PORT = Number(process.env.ITEMS_PORT ?? 43614);
 const WEB = Number(process.env.ITEMS_WEB ?? 8114);
@@ -63,6 +64,18 @@ for (const line of csv.slice(1)) {
 bonusesOf.set(773, new Array(12).fill(10000)); // allstar/QUIRKS.md Q6
 
 // ---- bot helpers ----
+// UPDATE_PID (the player's slot, needed to target another player) is not recorded by Bot.ts
+{
+    const handle = (Bot.prototype as any).handle;
+    (Bot.prototype as any).handle = function (this: any, prot: ServerGameProt, buf: any, length: number) {
+        if (prot === ServerGameProt.UPDATE_PID) {
+            buf.g1();
+            this.pid = buf.g2_alt1();
+            return;
+        }
+        return handle.call(this, prot, buf, length);
+    };
+}
 async function login(tag: string): Promise<Bot> {
     const bot = await Bot.connect({ username: `it${tag}${Date.now() % 100000}`, port: PORT, webPort: WEB });
     await bot.until(() => (bot.invs.get(WORN)?.length ?? 0) > 0 && bot.stats.length > 5, 10000, 'login state');
@@ -609,6 +622,56 @@ function bonusTextsMatch(bot: Bot): boolean {
 
 
     bot.close();
+}
+
+// ---------------------------------------------------------------------------------------------
+// Trade: request/accept messages, offer rules (6384, the clicked slot only), decline, timeout
+// ---------------------------------------------------------------------------------------------
+{
+    const a = await login('tra');
+    const b = await login('trb');
+    const pid = (bot: Bot) => (bot as any).pid as number;
+    const opPlayer4 = (bot: Bot, target: number) => send(bot, ClientGameProt.OPPLAYER4, buf => buf.p2_alt1(target));
+    await clearInv(a);
+    await clearInv(b);
+
+    let fromA = a.messages.length;
+    let fromB = b.messages.length;
+    opPlayer4(a, pid(b));
+    await cycles(3);
+    check(since(a, fromA).includes('Sending trade request...') && since(b, fromB).some(m => m.toLowerCase() === `${a.username}:tradereq:`), `trade request sent (${JSON.stringify(since(b, fromB))})`);
+    opPlayer4(b, pid(a));
+    await cycles(3);
+    check(a.main === 3323 && b.main === 3323, `trade screens open (${a.main}, ${b.main})`);
+
+    await give(a, 'roguetrader_carpetsller_top');
+    await give(a, 'lobster', 3);
+    fromA = a.messages.length;
+    a.invButton(1, 6384, slotOf(a, 6384), 3322);
+    await cycles(1);
+    a.invButton(2, 6384, slotOf(a, 6384), 3322);
+    await cycles(1);
+    check(since(a, fromA).includes('You cannot trade this item.') && since(a, fromA).includes('You cannot trade this item') && slotOf(a, 6384) >= 0, '6384 refused: "You cannot trade this item." / "...item"');
+    a.invButton(2, 379, slotOf(a, 379), 3322); // offer 5: only the clicked slot's 1
+    await cycles(1);
+    const offered = (a.invs.get(3415) ?? []).reduce((n, o) => n + (o?.id === 379 ? o.count : 0), 0);
+    check(offered === 1 && countOf(a, 379) === 2, `offer 5 lobsters offers the clicked one (${offered})`);
+
+    fromA = a.messages.length;
+    fromB = b.messages.length;
+    send(a, ClientGameProt.CLOSE_MODAL);
+    await cycles(2);
+    check(since(a, fromA).includes('You decline the trade.') && since(b, fromB).some(m => m.toLowerCase() === `${a.username} declined the trade.`) && countOf(a, 379) === 3, `decline messages, offer returned (${JSON.stringify(since(b, fromB))})`);
+
+    // an unanswered request is suspended after 40 cycles
+    fromA = a.messages.length;
+    opPlayer4(a, pid(b));
+    await cycles(2);
+    await a.waitForMessage(/^Trade request suspended\.$/, 25000, fromA);
+    check(true, 'unanswered trade request: "Trade request suspended."');
+
+    a.close();
+    b.close();
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
