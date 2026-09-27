@@ -1,0 +1,7 @@
+NPC spawns: 486 placed, 6 skipped
+  - autospawn.cfg:40 npc 1783 at 2000,3468 is outside the map
+  - autospawn.cfg:53 npc 2030 at 3556,3000 is outside the map
+  - autospawn.cfg:54 npc 2027 at 3556,3000 is outside the map
+  - autospawn.cfg:56 npc 2026 at 3553,3000 is outside the map
+  - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
+  - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map

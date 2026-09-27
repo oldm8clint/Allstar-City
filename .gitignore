@@ -1,0 +1,3 @@
+# local server config and runtime data
+engine/.env
+node_modules/

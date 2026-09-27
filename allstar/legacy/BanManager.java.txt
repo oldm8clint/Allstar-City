@@ -1,0 +1,53 @@
+import java.util.ArrayList;
+
+public class BanManager
+{
+
+  public final static void Initialize()
+  {
+   AddName("SYIpkpker");
+   AddName("SilabSoft");
+
+   // AddAddress("127.0.0.1"); // Example :P
+  }
+
+  public final static void AddName(String Name)
+  {
+    Names.add(Name.toLowerCase());
+  }
+
+  public final static boolean BannedName(String _Name)
+  {
+   _Name = _Name.toLowerCase();
+
+   for(String Name : Names)
+    if(_Name.contains(Name))
+      return true;
+
+   for(Character c : _Name.toCharArray()) // <3 Silabsoft
+    if(!Character.isLetterOrDigit(c))
+     if(!Character.isSpaceChar(c))
+      return true;
+
+   return false;
+  }
+
+  public final static void AddAddress(String Address)
+  {
+    Addresses.add(Address.toLowerCase());
+  }
+
+  public final static boolean BannedAddress(String _Address)
+  {
+   _Address = _Address.toLowerCase();
+
+   for(String Address : Addresses)
+    if(Address.equals(_Address))
+      return true;
+
+   return false;
+  }
+
+  public static ArrayList<String> Names = new ArrayList<String>();
+  public static ArrayList<String> Addresses = new ArrayList<String>();
+}
