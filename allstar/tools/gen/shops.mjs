@@ -16,7 +16,6 @@ import path from 'path';
 
 const SLOTS = 101; // ShopHandler.MaxShopItems: shop slots 0-100
 const VIEW_SIZE = 40; // shop_template:inv (8x5), the same 40 slots as the 317 shop inventory 3900
-const DAT_SIZE = 6800; // data/*.dat cover item ids 0-6799
 const FLAG_SIZE = 20000; // Item.itemStackable/itemIsNote/itemSellable array size
 const NOTE_DESC = 'Swap this note at any bank for a';
 

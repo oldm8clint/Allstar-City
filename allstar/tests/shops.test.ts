@@ -98,6 +98,8 @@ check(view().filter(o => o).length === 24, `shop 2 shows 24 items (${view().filt
 check(view()[0]?.id === 2595 && view()[0]?.count === 100, 'shop 2 slot 0 = 2595 x100');
 check(view()[5]?.id === 2583 && view()[5]?.count === 1000, 'shop 2 slot 5 = 2583 x1000');
 check(bot.invs.has(SIDE), 'inventory sent to the shop side panel (3823)');
+check(bot.texts.get(alt3(3903)) === '@whi@Right click to buy, Choose ammount you want, Click item for the price.', 'shop hint text (3903)');
+check(bot.texts.get(alt3(3902)) === '@whi@Closewindow', 'close text (3902)');
 
 // value messages (packet 145): price = floor(item.cfg col4 of the last line), with K / million
 let text = await message(/currently costs/, () => bot.invButton(1, 2595, 0, SHOP));

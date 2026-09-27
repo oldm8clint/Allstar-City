@@ -25,6 +25,9 @@ if ($view = null) {
 if_openmain_side(shop_template, shop_template_side);
 %allstar_shop = $shop;
 if_settext(shop_template:com_76, enum(int, string, allstar_shop_title, $shop));
+// TextHandler wrote these two (3902, 3903) at login; they only show in the shop window.
+if_settext(shop_template:com_77, "@whi@Closewindow");
+if_settext(shop_template:com_78, "@whi@Right click to buy, Choose ammount you want, Click item for the price.");
 inv_transmit(inv, shop_template_side:inv);
 inv_transmit($view, shop_template:inv);
 softtimer(allstar_shop_tick, 1);
