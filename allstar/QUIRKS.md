@@ -11,6 +11,7 @@ These come from the owner's memory of the live server (not all are visible in th
 | Q4 | **Glowing dagger (747) is a one-hit kill weapon.** Originally the admin kill item; obtainable by players through PK or the telegrab dupe. | owner (not in v2 source) | todo |
 | Q5 | **Tzhaar-ket-em (6527, the obsidian "mini maul") one-hit kills** like the glowing dagger. | owner ("I think") | todo |
 | Q6 | **'perfect' ring (773) is overpowered**: +10000 in every bonus, as in the older `data/item.cfg` (the loaded v2 `item.cfg` had zeroed it). | owner + data/item.cfg | todo |
+| Q7 | **Shield with a two-handed weapon** (e.g. dragonfire shield). Three source bugs, all reproduced: packet 41 loops over the 4 `twoHanderz` ids and prints "You cant equip a 2hander with a shield" on the matching pass but equips on the other passes (shield kept); `wear()` only removes the shield for `twohanded.dat` weapons if the inventory has room, so swapping weapons with a full inventory keeps it; equipping a shield over a wielded two-hander is never checked. The meat tenderiser ("Allstar's Hammer", 7449) and godswords were never two-handed in Allstar's data. | owner + source (client.java L22607, L15025, L15274) | todo (items) |
 
 ## How Q1/Q2 worked in the original code
 
