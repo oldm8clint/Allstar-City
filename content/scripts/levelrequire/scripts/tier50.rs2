@@ -1,0 +1,54 @@
+// Melee
+[opheld2,granite_maul] 
+if (stat_base(attack) < 50 | stat_base(strength) < 50) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have Attack and Strength levels of 50.");
+    return;
+}
+~equip(last_slot);
+
+[opheld2,slayer_leafbladed_spear]
+// intentional typo
+if (stat_base(slayer) < 55 | stat_base(attack) < 50) {
+    mes("You need a Slayer level of 55 and a Attack level of 50 to use that item.");
+    return;
+}
+~equip(last_slot);
+
+// Ranged
+[opheld2,magic_longbow] @levelrequire_ranged(50, last_slot);
+[opheld2,magic_shortbow] @levelrequire_ranged(50, last_slot);
+[opheld2,blue_dragon_vambraces] @levelrequire_ranged_lower(50, last_slot);
+[opheld2,blue_dragonhide_chaps] @levelrequire_ranged_lower(50, last_slot);
+[opheld2,blue_dragonhide_body] @levelrequire_ranged_and_defence(50, 40, last_slot);
+
+[opheld2,slayer_broad_arrows]
+if (stat_base(slayer) < 55 | stat_base(ranged) < 50) {
+    mes("You need a Slayer level of 55 and a Ranged level of 50 to use that item.");
+    return;
+}
+~equip(last_slot);
+
+// Magic
+[opheld2,ibanstaff] @levelrequire_iban_staff(last_slot);
+
+[opheld2,slayer_staff]
+if (stat_base(slayer) < 55 | stat_base(magic) < 50) {
+    mes("You need a Slayer level of 55 and a Magic level of 50 to use that item.");
+    return;
+}
+~equip(last_slot);
+
+[opheld2,staff_of_zaros]
+// TODO: confirm both messages, (osrs says desert treasure I)
+if(%deserttreasure < ^deserttreasure_complete) {
+    mes("You must have completed the Desert Treasure Quest to use this weapon.");
+    return;
+}
+@levelrequire_magic_and_attack(50, 50, last_slot);
+
+[opheld2,magictraining_infinityhat] @levelrequire_magic_and_defence(50, 25, last_slot);
+[opheld2,magictraining_infinitytop] @levelrequire_magic_and_defence(50, 25, last_slot);
+[opheld2,magictraining_infinitybottom] @levelrequire_magic_and_defence(50, 25, last_slot);
+[opheld2,magictraining_infinityboots] @levelrequire_magic_and_defence(50, 25, last_slot);
+[opheld2,magictraining_infinitygloves] @levelrequire_magic_and_defence(50, 25, last_slot);

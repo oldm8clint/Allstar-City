@@ -1,0 +1,54 @@
+[ai_queue1,slayer_banshee_1] gosub(npc_default_retaliate_ap);
+[ai_applayer2,slayer_banshee_1]
+if(inv_total(worn, slayer_earmuffs) < 1) {
+    ~banshee_screech;
+    return;
+}
+npc_setmode(opplayer2);
+
+[ai_opplayer2,slayer_banshee_1]
+if(inv_total(worn, slayer_earmuffs) < 1) {
+    npc_setmode(applayer2); // will switch to ap if not wearing earmuffs, and back to op if wearing again
+    return;
+}
+gosub(npc_default_attack);
+
+[proc,banshee_screech]
+if (%death = ^true) {
+    npc_setmode(null);
+    return;
+}
+if (%npc_action_delay > map_clock) return;
+if (~npc_check_notcombat = false) {
+    npc_setmode(null);
+    return;
+}
+if (~npc_check_notcombat_self = false) { // Doesnt change mode! Keeps trying!
+    return;
+}
+// protect from melee works here but not stat based otherwise, always static damage
+def_int $damage;
+if (~check_protect_prayer(^melee_style) = true) $damage = 0;
+else $damage = calc(stat_base(hitpoints) / 10); // 10% total hp, wiki is wrong
+// reduction is 20% (current) for att/str/range/mage, 10% on def and prayer
+// stat reduction isnt queued
+stat_drain(attack, 0, 20);
+stat_drain(strength, 0, 20);
+stat_drain(ranged, 0, 20);
+stat_drain(magic, 0, 20);
+stat_drain(defence, 0, 10);
+stat_drain(prayer, 0, 10);
+anim(ears_bleed, 0);
+npc_anim(npc_param(attack_anim), 0);
+~player_projectile(npc_coord, coord, uid, banshee_scream, 23, 23, 0, 0, 0, 16, 2); // TODO: recheck this
+if (npc_param(attack_sound) ! null) {
+    sound_synth(npc_param(attack_sound), 0, 0);
+}
+if_close;
+~npc_set_attack_vars;
+%npc_action_delay = add(map_clock, 4);
+queue(combat_damage_player, 0, $damage);
+if (npc_param(poison_severity) > 0 & $damage > 0) {
+    queue(poison_player, 0, npc_param(poison_severity));
+}
+queue*(playerhit_n_retaliate, 0)(npc_uid);

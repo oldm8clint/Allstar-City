@@ -1,0 +1,10 @@
+[com_0]
+type=rect
+x=0
+y=0
+width=512
+height=334
+trans=150
+script1op1=push_varbit,darkness_level
+script1=eq,1
+fill=yes

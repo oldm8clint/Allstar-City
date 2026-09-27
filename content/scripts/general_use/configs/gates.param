@@ -1,0 +1,7 @@
+[gate_open_sound]
+type=synth
+default=gate_open
+
+[gate_close_sound]
+type=synth
+default=gate_close

@@ -1,0 +1,9 @@
+[com_0]
+type=model
+x=123
+y=119
+width=32
+height=32
+model=com_i690
+anim=enakh_film_overlay
+zoom=185

@@ -1,0 +1,9 @@
+[slayer_task_table]
+column=total,int
+column=task,dbrow,LIST
+
+[slayer_master_task]
+column=task,int,INDEX,REQUIRED
+column=weight,int
+column=min_amount,int
+column=max_amount,int

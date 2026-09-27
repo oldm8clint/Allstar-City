@@ -1,0 +1,14 @@
+[opnpc1,death_archer1] @death_archer_standard;
+[opnpc1,death_archer2] @death_archer_standard;
+[opnpc1,death_archer_trapped] @death_archer_trapped;
+
+[ai_queue1,_death_archer] ~npc_default_retaliate_ap;
+[ai_opplayer2,_death_archer] npc_setmode(applayer2);
+[ai_applayer2,_death_archer] ~npc_rangeattack;
+
+[label,death_archer_standard] mes("The archer won't talk whilst on duty.");
+
+[label,death_archer_trapped]
+~chatplayer("<p,happy>Hi!");
+~chatnpc("<p,happy>Thank goodness you opened that door!|I've been trapped here since last night!");
+~chatplayer("<p,happy>No problem!");

@@ -1,0 +1,11 @@
+[com_0]
+type=text
+x=344
+y=14
+width=158
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=Watch the statue! Fish here!
+colour=0xFFFF00

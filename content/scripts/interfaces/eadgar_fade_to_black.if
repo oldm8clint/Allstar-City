@@ -1,0 +1,10 @@
+[com_0]
+type=model
+x=242
+y=152
+width=32
+height=32
+model=obj_eadgar_fade_to_black_inv
+anim=eadgar_fade_to_black
+zoom=130
+xan=512

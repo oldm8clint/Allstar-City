@@ -1,0 +1,10 @@
+[com_0]
+type=model
+x=241
+y=167
+width=32
+height=32
+model=com_i698
+anim=lightning_flash
+zoom=16
+xan=512

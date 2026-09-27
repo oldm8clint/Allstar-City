@@ -1,0 +1,46 @@
+[oploc1,wilderness_portal_stone_0] @wilderness_obelisk(^obelisk_one);
+[oploc1,wilderness_portal_stone_1] @wilderness_obelisk(^obelisk_four);
+[oploc1,wilderness_portal_stone_2] @wilderness_obelisk(^obelisk_five);
+[oploc1,wilderness_portal_stone_3] @wilderness_obelisk(^obelisk_two);
+[oploc1,wilderness_portal_stone_4] @wilderness_obelisk(^obelisk_three);
+[oploc1,wilderness_portal_stone_5] @wilderness_obelisk(^obelisk_six);
+
+[label,wilderness_obelisk](coord $center_coord)
+def_string $name;
+def_int $locsChanged;
+def_coord $destination;
+$locsChanged = 0;
+$name = loc_name;
+loc_findallzone(loc_coord);
+while (loc_findnext = true & $locsChanged < 4) {
+    if(compare(loc_name, $name) = 0) {
+        loc_change(wilderness_portal_stone_glowing, 5);
+        //gives an early exit opportunity. After you changed all 4 you can stop iterating
+        $locsChanged = calc($locsChanged + 1);
+    }
+}
+switch_int(random(6))
+{
+    case 0 : $destination = ^obelisk_one;
+    case 1 : $destination = ^obelisk_two;
+    case 2 : $destination = ^obelisk_three;
+    case 3 : $destination = ^obelisk_four;
+    case 4 : $destination = ^obelisk_five;
+    case 5 : $destination = ^obelisk_six;
+}
+
+world_delay(5);
+huntall($center_coord, 2, 0);
+while (huntnext = true) {
+    if (finduid(uid) = true) {
+        queue*(wilderness_obelisk_teleport_after_timer, 0)(map_findsquare($destination, 0, 2, ^map_findsquare_lineofwalk));
+    }
+}
+
+[queue,wilderness_obelisk_teleport_after_timer](coord $destination)
+anim(human_teleport_other_impact, 0);
+spotanim_pl(teleport_other_impact, 92, 0);
+sound_synth(teleport_all, 1, 0);
+p_delay(2);
+p_telejump($destination);
+anim(null, 0);

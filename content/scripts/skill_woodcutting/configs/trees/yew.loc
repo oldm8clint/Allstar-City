@@ -1,0 +1,13 @@
+[yewtree]
+name=Yew
+desc=A splendid tree.
+model=loc_8509
+width=3
+length=3
+op1=Chop down
+op3=hidden
+mapscene=3
+ambient=25
+category=tree
+param=next_loc_stage,yewtree_stump
+param=ent,macro_ent_yew

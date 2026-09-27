@@ -1,0 +1,8 @@
+[oploc1,bankbooth]
+if (npc_findcat(loc_coord, bank_teller, 2, 0) = true) {
+    @talk_to_banker;
+}
+@openbank; // default to just open bank if a bank teller was not found to start dialogue.
+
+[oploc2,bankbooth] @openbank;
+[oploc2,loc_11758] @openbank;

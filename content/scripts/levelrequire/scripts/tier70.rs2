@@ -1,0 +1,114 @@
+// Melee
+[opheld2,abyssal_whip] @levelrequire_attack_caps(70, last_slot);
+
+[opheld2,barrows_verac_weapon] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_guthan_weapon] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_dharok_weapon] @levelrequire_attack_and_strength2(70, last_slot);
+[opheld2,barrows_torag_weapon] @levelrequire_attack_and_strength2(70, last_slot);
+[opheld2,barrows_verac_weapon_75] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_guthan_weapon_75] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_dharok_weapon_75] @levelrequire_attack_and_strength2(70, last_slot);
+[opheld2,barrows_torag_weapon_75] @levelrequire_attack_and_strength2(70, last_slot);
+[opheld2,barrows_verac_weapon_50] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_guthan_weapon_50] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_dharok_weapon_50] @levelrequire_attack_and_strength2(70, last_slot);
+[opheld2,barrows_torag_weapon_50] @levelrequire_attack_and_strength2(70, last_slot);
+[opheld2,barrows_verac_weapon_25] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_guthan_weapon_25] @levelrequire_attack(70, last_slot);
+[opheld2,barrows_dharok_weapon_25] @levelrequire_attack_and_strength2(70, last_slot);
+[opheld2,barrows_torag_weapon_25] @levelrequire_attack_and_strength2(70, last_slot);
+
+[opheld2,barrows_torag_head] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_body] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_legs] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_head_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_body_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_legs_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_head_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_body_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_legs_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_head_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_body_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_torag_legs_25] @levelrequire_defence(70, last_slot);
+
+
+[opheld2,barrows_dharok_head] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_body] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_legs] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_head_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_body_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_legs_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_head_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_body_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_legs_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_head_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_body_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_dharok_legs_25] @levelrequire_defence(70, last_slot);
+
+[opheld2,barrows_guthan_head] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_body] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_legs] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_head_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_body_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_legs_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_head_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_body_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_legs_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_head_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_body_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_guthan_legs_25] @levelrequire_defence(70, last_slot);
+
+[opheld2,barrows_verac_head] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_body] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_legs] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_head_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_body_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_legs_75] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_head_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_body_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_legs_50] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_head_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_body_25] @levelrequire_defence(70, last_slot);
+[opheld2,barrows_verac_legs_25] @levelrequire_defence(70, last_slot);
+
+// Ranged
+[opheld2,black_dragon_vambraces] @levelrequire_ranged_lower(70, last_slot);
+[opheld2,black_dragonhide_chaps] @levelrequire_ranged_lower(70, last_slot);
+[opheld2,black_dragonhide_body] @levelrequire_ranged_and_defence(70, 40, last_slot);
+
+[opheld2,barrows_karil_weapon] @levelrequire_ranged_lower(70, last_slot);
+[opheld2,barrows_karil_weapon_75] @levelrequire_ranged_lower(70, last_slot);
+[opheld2,barrows_karil_weapon_50] @levelrequire_ranged_lower(70, last_slot);
+[opheld2,barrows_karil_weapon_25] @levelrequire_ranged_lower(70, last_slot);
+
+[opheld2,barrows_karil_head] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_body] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_legs] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_head_75] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_body_75] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_legs_75] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_head_50] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_body_50] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_legs_50] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_head_25] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_body_25] @levelrequire_defence_and_ranged(70, last_slot);
+[opheld2,barrows_karil_legs_25] @levelrequire_defence_and_ranged(70, last_slot);
+
+// Magic
+[opheld2,barrows_ahrim_weapon] @levelrequire_attack_and_magic_combined(70, last_slot);
+[opheld2,barrows_ahrim_weapon_75] @levelrequire_attack_and_magic_combined(70, last_slot);
+[opheld2,barrows_ahrim_weapon_50] @levelrequire_attack_and_magic_combined(70, last_slot);
+[opheld2,barrows_ahrim_weapon_25] @levelrequire_attack_and_magic_combined(70, last_slot);
+
+[opheld2,barrows_ahrim_head] @levelrequire_defence_and_magic(70, last_slot); // order is correct here
+[opheld2,barrows_ahrim_body] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_legs] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_head_75] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_body_75] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_legs_75] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_head_50] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_body_50] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_legs_50] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_head_25] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_body_25] @levelrequire_defence_and_magic(70, last_slot);
+[opheld2,barrows_ahrim_legs_25] @levelrequire_defence_and_magic(70, last_slot);

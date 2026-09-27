@@ -1,0 +1,12 @@
+[teaktree]
+name=Teak
+desc=A beautiful old teak tree.
+model=teaktree
+recol1s=5218
+recol1d=12576
+mapscene=1
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,teak_stump
+param=ent,macro_teak_ent

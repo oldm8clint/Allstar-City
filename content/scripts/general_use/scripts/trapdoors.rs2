@@ -1,0 +1,41 @@
+[oploc1,trapdoor]
+mes("The trapdoor opens...");
+sound_synth(door_open, 1, 0);
+// Temp note: dur does not need updated ? @indio
+loc_change(trapdoor_open, 500);
+
+[oploc1,trapdoor_open]
+mes("You climb down through the trapdoor...");
+anim(human_pickupfloor, 0);
+p_delay(0);
+p_telejump(movecoord(coord(), 0, 0, 6400));
+
+[oploc2,trapdoor_open]
+mes("You close the trapdoor.");
+sound_synth(door_close, 1,0 );
+// Temp note: dur does not need updated ? @indio
+loc_change(trapdoor, 500);
+
+[oploc1,roguesden_trapdoor_entrance]
+mes("You climb down through the trapdoor...");
+anim(human_pickupfloor, 0);
+p_delay(0);
+p_telejump(1_47_77_53_56);
+
+[oploc1,loc_9472]
+mes("You climb down through the trapdoor...");
+anim(human_pickupfloor, 0);
+p_delay(0);
+p_telejump(0_46_149_63_13);
+
+[oploc1,loc_14879]
+mes("You climb down through the trapdoor...");
+anim(human_pickupfloor, 0);
+p_delay(0);
+p_telejump(0_50_150_9_17);
+
+[oploc1,fai_dwarf_trapdoor_down]
+mes("You climb down through the trapdoor...");
+anim(human_pickupfloor, 0);
+p_delay(0);
+p_telejump(0_47_153_11_56);

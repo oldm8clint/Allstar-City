@@ -1,0 +1,3 @@
+[slayer_category]
+type=int
+default=null

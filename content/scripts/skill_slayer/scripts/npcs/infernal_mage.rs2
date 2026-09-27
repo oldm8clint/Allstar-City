@@ -1,0 +1,8 @@
+[ai_opplayer2,_slayer_infernalmage]
+~npc_cast_spell_with_forced_max_hit(^fire_blast, 4, 8);
+
+[ai_applayer2,_slayer_infernalmage]
+~npc_cast_spell_with_forced_max_hit(^fire_blast, 4, 8);
+
+[ai_queue1,_slayer_infernalmage] 
+gosub(npc_default_retaliate_ap);

@@ -1,0 +1,278 @@
+// todo need more info on 2006 messages. all of these are osrs messages.
+
+[label,levelrequire_attack](int $level, int $slot)
+if (stat_base(attack) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have an attack level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_defence](int $level, int $slot)
+if (stat_base(defence) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a defence level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_attack_caps](int $level, int $slot)
+if (stat_base(attack) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have an Attack level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_defence_caps](int $level, int $slot)
+if (stat_base(defence) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a Defence level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_ranged](int $level, int $slot)
+if (stat_base(ranged) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a Ranged level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_ranged_lower](int $level, int $slot)
+if (stat_base(ranged) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a ranged level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_magic](int $level, int $slot)
+if (stat_base(magic) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a Magic level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_magic_and_attack](int $magic_level, int $attack_level, int $slot)
+if (stat_base(magic) < $magic_level | stat_base(attack) < $attack_level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a Magic level of <tostring($magic_level)> and an Attack level of <tostring($attack_level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_attack_and_magic_combined](int $req, int $slot)
+if (stat_base(magic) < $req | stat_base(attack) < $req) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have an attack level and magic level of <tostring($req)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_ranged_and_defence](int $ranged_level, int $defence_level, int $slot)
+if (stat_base(ranged) < $ranged_level | stat_base(defence) < $defence_level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a ranged level of <tostring($ranged_level)> and a defence level of <tostring($defence_level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_defence_and_ranged](int $req, int $slot)
+if (stat_base(ranged) < $req | stat_base(defence) < $req) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a defence level and ranged level of <tostring($req)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_defence_and_ranged2](int $req, int $slot)
+if (stat_base(ranged) < $req | stat_base(defence) < $req) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a defence and ranged level of <tostring($req)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_magic_and_defence](int $magic_level, int $defence_level, int $slot)
+if (stat_base(magic) < $magic_level | stat_base(defence) < $defence_level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a magic level of <tostring($magic_level)> and a defence level of <tostring($defence_level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_magic_and_defence_caps](int $magic_level, int $defence_level, int $slot)
+if (stat_base(magic) < $magic_level | stat_base(defence) < $defence_level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a Magic level of <tostring($magic_level)> and a Defence level of <tostring($defence_level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_defence_and_magic](int $req, int $slot)
+if (stat_base(magic) < $req | stat_base(defence) < $req) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a defence level and magic level of <tostring($req)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_attack_and_strength](int $attack_level, int $strength_level, int $slot)
+if (stat_base(attack) < $attack_level | stat_base(strength) < $strength_level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have an attack level of <tostring($attack_level)> and a strength level of <tostring($strength_level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_attack_and_strength2](int $req, int $slot)
+if (stat_base(attack) < $req | stat_base(strength) < $req) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have an attack level and strength level of <tostring($req)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_dragon_slayer_quest_defence](int $level, int $slot)
+if (~levelrequire_dragon_slayer_quest = false) {
+    return;
+}
+@levelrequire_defence($level, $slot);
+
+[label,levelrequire_dragon_slayer_quest_ranged_and_defence](int $ranged_level, int $defence_level, int $slot)
+if (~levelrequire_dragon_slayer_quest = false) {
+    return;
+}
+@levelrequire_ranged_and_defence($ranged_level, $defence_level, $slot);
+
+[label,levelrequire_heroes_quest_attack](int $level, int $slot)
+if (~levelrequire_heroes_quest = false) {
+    return;
+}
+@levelrequire_attack_caps($level, $slot);
+
+[label,levelrequire_legends_quest_defence](int $level, int $slot)
+if (~levelrequire_legends_quest = false) {
+    return;
+}
+@levelrequire_defence_caps($level, $slot);
+
+[label,levelrequire_zanaris_quest_attack](int $level, int $slot)
+if (~levelrequire_zanaris_quest = false) {
+    return;
+}
+@levelrequire_attack_caps($level, $slot);
+
+[label,levelrequire_regicide_quest_attack_strength](int $attack, int $strength, int $slot)
+if (~levelrequire_regicide_quest = false) {
+    return;
+}
+@levelrequire_attack_and_strength($attack, $strength, $slot);
+
+[label,levelrequire_viking_quest_defence](int $level, int $slot)
+if (~levelrequire_viking_quest = false) {
+    return;
+}
+@levelrequire_defence($level, $slot);
+
+[label,levelrequire_mm_quest_attack](int $level, int $slot)
+if (~levelrequire_mm_quest = false) {
+    return;
+}
+@levelrequire_attack_caps($level, $slot);
+
+[label,levelrequire_recruitmentdrive_defence](int $level, int $slot)
+if (%rd_main < ^recruitmentdrive_complete) {
+    mes("Only Temple Knight initiates may wear this armour.");
+    return;
+}
+@levelrequire_defence($level, $slot);
+
+[proc,levelrequire_dragon_slayer_quest]()(boolean)
+if (%dragonquest < ^dragon_complete) {
+    mes("You have not earned the right to wear this yet.");
+    mes("You need to complete the Dragon Slayer quest first."); // todo confirm for 2004
+    return(false);
+}
+return(true);
+
+[proc,levelrequire_heroes_quest]()(boolean)
+if (%heroquest < ^hero_complete) {
+    mes("You have not earned the right to wield this yet.");
+    mes("You need to complete the Heroes' Guild entry quest."); // todo confirm for 2004
+    return(false);
+}
+return(true);
+
+[proc,levelrequire_legends_quest]()(boolean)
+if (%legendsquest < ^legends_complete) {
+    mes("You have not earned the right to wear this yet.");
+    mes("You need to complete the Legends' Quest."); // todo confirm for 2004
+    return(false);
+}
+return(true);
+
+[proc,levelrequire_zanaris_quest]()(boolean)
+if (%zanaris < ^zanaris_complete) {
+    mes("You have not earned the right to wear this yet.");
+    mes("You need to complete the Lost City of Zanaris Quest."); // todo confirm for 2004
+    return(false);
+}
+return(true);
+
+[proc,levelrequire_regicide_quest]()(boolean)
+if (%regicide_quest < ^regicide_complete) {
+    mes("You have not earned the right to wear this yet.");
+    mes("You need to complete the Regicide quest."); // todo confirm for 2004
+    return(false);
+}
+return(true);
+
+[proc,levelrequire_viking_quest]()(boolean)
+if (%viking < ^viking_complete) {
+    mes("Only Fremenniks are worthy of wearing this helm.");
+    mes("You need to complete The Fremennik Trials first."); // todo confirm for 2004
+    return(false);
+}
+return(true);
+
+[proc,levelrequire_mm_quest]()(boolean)
+if (%mm_main < ^mm_complete) {
+    mes("You have not earned the right to wear this yet.");
+    mes("You need to complete the Monkey Madness quest."); // todo confirm for 2005
+    return(false);
+}
+return(true);
+
+[label,levelrequire_iban_staff](int $slot)
+// https://youtu.be/FKFdDdH5rlE?si=rTj214wpX9RKHiMy&t=188
+if (stat_base(magic) < 50) {
+    mes("You are not a high enough level to use this item,");
+    mes("You need to have a Magic level of 50.");
+    return;
+}
+if (stat_base(attack) < 50) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have an Attack level of 50.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_prayer](int $level, int $slot)
+if (stat_base(prayer) < $level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have a Prayer level of <tostring($level)>.");
+    return;
+}
+~equip($slot);
+
+[label,levelrequire_prayer_and_magic](int $prayer_level, int $magic_level, int $slot)
+if (stat_base(prayer) < $prayer_level | stat_base(magic) < $magic_level) {
+    mes("You are not a high enough level to use this item.");
+    mes("You need to have an prayer level of <tostring($prayer_level)> and a magic level of <tostring($magic_level)>.");
+    return;
+}
+~equip($slot);
