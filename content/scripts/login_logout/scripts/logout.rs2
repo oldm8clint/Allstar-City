@@ -19,8 +19,8 @@ if (p_finduid(uid) = true) {
     p_logout;
 }
 
+// Allstar-City: no Lost City 10-second logout lock after combat; Allstar-Scape only had its own
+// 2-cycle LogoutDelay (~allstar_incombat, checked by the logout button)
 [proc,combat_preventlogout]
-p_preventlogout("You can't log out until 10 seconds after the end of combat.", 16);
 
 [proc,.combat_preventlogout]
-.p_preventlogout("You can't log out until 10 seconds after the end of combat.", 16);
