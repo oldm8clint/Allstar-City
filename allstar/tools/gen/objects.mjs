@@ -16,6 +16,9 @@
 // Roofs (shapes 12-21, class 2 in the 317 client) are never removed: a player standing on level 0
 // never lost the roof above, and roofs only exist on levels 1-3.
 import fs from 'fs';
+import path from 'path';
+
+import { Pack } from '../lib/pack.mjs';
 
 const LEVELS = [0, 1, 2, 3];
 
@@ -34,9 +37,10 @@ function shapeClass(shape) {
     return 3;
 }
 
-// Lines of a Java method body, from `public void name()` to its closing brace.
+// Lines of a Java method body, from its declaration to its closing brace.
 function methodBody(lines, name) {
-    const start = lines.findIndex(line => line.includes(`public void ${name}()`));
+    const declaration = new RegExp('^\\s*public \\w+ ' + name + '\\(');
+    const start = lines.findIndex(line => declaration.test(line));
     if (start === -1) {
         throw new Error(`client.java: method ${name} not found`);
     }
@@ -63,9 +67,13 @@ function methodBody(lines, name) {
 
 const code = text => text.replace(/\/\/.*$/, '');
 
-export default function objects({ legacy, packs, maps, report }) {
-    const lines = fs.readFileSync(legacy.file('client.java'), 'latin1').split(/\r?\n/);
+export default function objects(ctx) {
+    const lines = fs.readFileSync(ctx.legacy.file('client.java'), 'latin1').split(/\r?\n/);
+    worldEdits(ctx, lines);
+    smithing(ctx, lines);
+}
 
+function worldEdits({ packs, maps, report }, lines) {
     const placements = [];
     for (const { line, text } of methodBody(lines, 'NewObjects')) {
         const match = /makeGlobalObject\(\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*\)/.exec(code(text));
@@ -162,5 +170,174 @@ export default function objects({ legacy, packs, maps, report }) {
         `  Lost City locs removed by Deleteobjects/Deletewalls (${deleted.length}):`,
         ...deleted.map(s => `    ${s}`),
         ...missed.map(s => `  - no effect: ${s}`)
+    );
+}
+
+// ---- Anvil smithing (client.initSmithing, removeBar, canSmith: allstar/spec/objects_buttons.md 5) ----
+//
+// initSmithing(bar) is a long list of sendQuest(text, child) calls under level and bar-count
+// conditions, plus addItemToSmith(item, slot, column, amount) for the five item columns. It is
+// translated line by line into [proc,allstar_smithing_frame] (component names from interface.pack) and
+// one static inventory per bar and column. Every addItemToSmith frame also emptied slot 4 of its
+// column (a malformed frame 34), so slot 4 only holds an item when a call sets it explicitly.
+// removeBar(item) and canSmith(item) become enums; canSmith's `a || b && level >= n` conditions let
+// every item but the last of a line through at any level.
+function smithing({ content, packs, report, writeGenerated }, lines) {
+    const components = new Pack(path.join(content, 'pack/interface.pack'));
+    const obj = id => {
+        const name = packs.obj.name(id);
+        if (name === undefined) {
+            throw new Error(`smithing: obj ${id} does not exist`);
+        }
+        return name;
+    };
+    const component = child => {
+        const name = components.name(child);
+        if (name === undefined || !name.startsWith('smithing:')) {
+            throw new Error(`smithing: component ${child} is not part of the smithing interface`);
+        }
+        return name;
+    };
+
+    const out = ['// client.initSmithing(barType) (client.java L6983)', '[proc,allstar_smithing_frame](obj $bar)'];
+    const invs = new Map(); // bar name -> column -> slot -> [item, amount]
+    let indent = 0;
+    let bar = null;
+    let barDepth = -1;
+    let depth = 0;
+    const emit = s => out.push('    '.repeat(indent) + s);
+    const body = methodBody(lines, 'initSmithing').slice(1, -1);
+    for (const { line, text } of body) {
+        const src = code(text).trim();
+        if (src === '' || src.startsWith('outStream.')) {
+            continue;
+        }
+        let m;
+        if ((m = /^if \(barType == (\d+)\) \{$/.exec(src))) {
+            bar = obj(Number(m[1]));
+            barDepth = depth;
+            emit(`if ($bar = ${bar}) {`);
+            indent++;
+            depth++;
+        } else if ((m = /^if \(amountOfItem\(barType\) < (\d+)\) \{$/.exec(src))) {
+            emit(`if (inv_total(inv, $bar) < ${m[1]}) {`);
+            indent++;
+            depth++;
+        } else if ((m = /^if \(playerLevel\[13\] < (\d+)\) \{$/.exec(src))) {
+            emit(`if (stat(smithing) < ${m[1]}) {`);
+            indent++;
+            depth++;
+        } else if (src === '} else {') {
+            indent--;
+            emit('} else {');
+            indent++;
+        } else if (src === '}') {
+            indent--;
+            depth--;
+            emit('}');
+            if (depth === barDepth) {
+                bar = null;
+                barDepth = -1;
+            }
+        } else if ((m = /^sendQuest\("(.*)", (\d+)\);$/.exec(src))) {
+            emit(`if_settext(${component(Number(m[2]))}, "${m[1]}");`);
+        } else if ((m = /^addItemToSmith\((\d+), (\d+), (\d+), (\d+)\);$/.exec(src))) {
+            if (bar === null) {
+                throw new Error(`client.java:${line} addItemToSmith outside a bar block`);
+            }
+            const column = Number(m[3]) - 1118;
+            const columns = invs.get(bar) ?? new Map();
+            invs.set(bar, columns);
+            const slots = columns.get(column) ?? new Map();
+            columns.set(column, slots);
+            slots.set(Number(m[2]), [obj(Number(m[1])), Number(m[4])]);
+        } else {
+            throw new Error(`client.java:${line} initSmithing: cannot translate "${src}"`);
+        }
+    }
+    if (depth !== 0) {
+        throw new Error(`initSmithing: unbalanced braces (${depth})`);
+    }
+
+    // the item columns, then the interface itself
+    for (const [name] of invs) {
+        out.push(`if ($bar = ${name}) {`);
+        for (let column = 1; column <= 5; column++) {
+            out.push(`    inv_transmit(allstar_smith_${name}_${column}, smithing:column${column});`);
+        }
+        out.push('}');
+    }
+
+    const inv = [];
+    for (const [name, columns] of invs) {
+        for (let column = 1; column <= 5; column++) {
+            inv.push(`[allstar_smith_${name}_${column}]`, 'size=5');
+            const slots = columns.get(column) ?? new Map();
+            for (const [slot, [item, amount]] of [...slots].sort((a, b) => a[0] - b[0])) {
+                inv.push(`stock${slot + 1}=${item},${amount}`);
+            }
+            inv.push('');
+        }
+    }
+
+    // removeBar(item): the first matching line wins
+    const removeBar = new Map();
+    const barText = methodBody(lines, 'removeBar').map(l => code(l.text)).join(' ');
+    for (const m of barText.matchAll(/if\s*\(([^{]*?)\)\s*\{\s*return (\d+);/g)) {
+        for (const id of [...m[1].matchAll(/removeID == (\d+)/g)].map(x => Number(x[1]))) {
+            if (!removeBar.has(id)) {
+                removeBar.set(id, Number(m[2]));
+            }
+        }
+    }
+    // canSmith(item): lowest level of any line naming the item; 0 = no level check
+    const canSmith = new Map();
+    const smithText = methodBody(lines, 'canSmith').map(l => code(l.text)).join(' ');
+    for (const m of smithText.matchAll(/if\s*\(([^{]*?)\)\s*\{\s*return true;/g)) {
+        const level = /playerLevel\[13\] >= (\d+)/.exec(m[1]);
+        const ids = [...m[1].matchAll(/item == (\d+)/g)].map(x => Number(x[1]));
+        ids.forEach((id, i) => {
+            const needs = level && i === ids.length - 1 ? Number(level[1]) : 0;
+            canSmith.set(id, Math.min(canSmith.get(id) ?? Infinity, needs));
+        });
+    }
+
+    const enums = ['[allstar_smith_bar]', 'inputtype=obj', 'outputtype=obj', 'default=null'];
+    const skipped = [];
+    for (const [item, barId] of removeBar) {
+        if (packs.obj.name(item) === undefined || packs.obj.name(barId) === undefined) {
+            skipped.push(`removeBar ${item} -> ${barId}`);
+            continue;
+        }
+        enums.push(`val=${obj(item)},${obj(barId)}`);
+    }
+    enums.push('', '[allstar_smith_level]', 'inputtype=obj', 'outputtype=int', 'default=1000');
+    for (const [item, level] of canSmith) {
+        if (packs.obj.name(item) === undefined) {
+            skipped.push(`canSmith ${item} (level ${level})`);
+            continue;
+        }
+        enums.push(`val=${obj(item)},${level}`);
+    }
+    // the columns hold obj; inv_add wants namedobj
+    enums.push('', '[allstar_smith_product]', 'inputtype=obj', 'outputtype=namedobj', 'default=null');
+    const products = new Set();
+    for (const columns of invs.values()) {
+        for (const slots of columns.values()) {
+            for (const [item] of slots.values()) {
+                products.add(item);
+            }
+        }
+    }
+    for (const item of products) {
+        enums.push(`val=${item},${item}`);
+    }
+
+    writeGenerated('objects/scripts/smithing_frame.rs2', out);
+    writeGenerated('objects/configs/smithing.inv', inv);
+    writeGenerated('objects/configs/smithing.enum', enums);
+    report(
+        `Smithing: ${invs.size} bars, ${products.size} column items, ${removeBar.size} removeBar and ${canSmith.size} canSmith entries`,
+        ...skipped.map(s => `  - skipped (custom item) ${s}`)
     );
 }

@@ -1,5 +1,161 @@
-// Allstar-Scape anvil smithing (initSmithing and the smithing column buttons, client.java L6983,
-// L22711-L23300). Filled in below.
+// Allstar-Scape anvil smithing: bars on anvil 2783 open initSmithing (generated
+// [proc,allstar_smithing_frame], content/scripts/allstar/generated/objects/), and the three item
+// options of the five columns make the item (packets 145 / 117 / 43, client.java L22711-L23300).
+//
+// Make 5 and Make 10 only check the bars for one item, then run the single-item code 5 or 10 times:
+// the xp is added every time, while ReplaceItems gives an item only when all its bars were found.
+// Column 5 gives 10 dart tips + 1, 15 arrowheads + 1, 5 knives, or 1 of the others (a missing else).
 
 [label,allstar_init_smithing](obj $bar)
-mes("TODO smithing <oc_name($bar)>");
+if_sethide(smithing:other_layer, false);
+if_sethide(smithing:stud_layer, false);
+if_sethide(smithing:claws_layer, false);
+if_sethide(smithing:com_145, false);
+~allstar_smithing_frame($bar);
+if_openmain(smithing);
+
+[if_close,smithing]
+inv_stoptransmit(smithing:column1);
+inv_stoptransmit(smithing:column2);
+inv_stoptransmit(smithing:column3);
+inv_stoptransmit(smithing:column4);
+inv_stoptransmit(smithing:column5);
+
+[inv_button1,smithing:column1] @allstar_smith(last_item, last_slot, 1, 1, "You need a hammer to smith this item.");
+[inv_button2,smithing:column1] @allstar_smith(last_item, last_slot, 1, 5, "You need a hammer to smith this item");
+[inv_button3,smithing:column1] @allstar_smith(last_item, last_slot, 1, 10, "You need a hammer to smith this item");
+[inv_button1,smithing:column2] @allstar_smith(last_item, last_slot, 2, 1, "You need a hammer to smith this item.");
+[inv_button2,smithing:column2] @allstar_smith(last_item, last_slot, 2, 5, "You need a hammer to smith this item");
+[inv_button3,smithing:column2] @allstar_smith(last_item, last_slot, 2, 10, "You need a hammer to smith this item");
+[inv_button1,smithing:column3] @allstar_smith(last_item, last_slot, 3, 1, "You need a hammer to smith this item.");
+[inv_button2,smithing:column3] @allstar_smith(last_item, last_slot, 3, 5, "You need a hammer to smith this item");
+[inv_button3,smithing:column3] @allstar_smith(last_item, last_slot, 3, 10, "You need a hammer to smith this item");
+[inv_button1,smithing:column4] @allstar_smith(last_item, last_slot, 4, 1, "You need a hammer to smith this item.");
+[inv_button2,smithing:column4] @allstar_smith(last_item, last_slot, 4, 5, "You need a hammer to smith this item");
+[inv_button3,smithing:column4] @allstar_smith(last_item, last_slot, 4, 10, "You need a hammer to smith this item");
+[inv_button1,smithing:column5] @allstar_smith(last_item, last_slot, 5, 1, "You need a hammer to smith this item.");
+[inv_button2,smithing:column5] @allstar_smith(last_item, last_slot, 5, 5, "You need a hammer to smith this item");
+[inv_button3,smithing:column5] @allstar_smith(last_item, last_slot, 5, 10, "You need a hammer to smith this item");
+
+[label,allstar_smith](obj $item, int $slot, int $column, int $times, string $nohammer)
+def_obj $bar = enum(obj, obj, allstar_smith_bar, $item);
+def_int $bars = ~allstar_smith_barsneeded($slot, $column);
+def_int $have = 0;
+if ($bar ! null) {
+    $have = inv_total(inv, $bar);
+}
+if ($bars > $have) {
+    mes("You dont have enough bars to make this");
+    return;
+}
+if (inv_total(inv, hammer) < 1) {
+    mes($nohammer);
+    return;
+}
+if (stat(smithing) < enum(obj, int, allstar_smith_level, $item)) {
+    mes("You need a higher smithing level to smith <oc_name($item)>s");
+    return;
+}
+def_namedobj $product = enum(obj, namedobj, allstar_smith_product, $item);
+def_int $i = 0;
+while ($i < $times) {
+    if_close;
+    anim(human_smithing, 0);
+    stat_advance(smithing, ~allstar_smith_xp($bar, $bars));
+    if ($column = 5) {
+        if ($slot = 0) {
+            ~allstar_replaceitems($product, $bar, 10, $bars);
+        }
+        if ($slot = 1) {
+            ~allstar_replaceitems($product, $bar, 15, $bars);
+        }
+        if ($slot = 2) {
+            ~allstar_replaceitems($product, $bar, 5, $bars);
+        } else {
+            ~allstar_replaceitems($product, $bar, 1, $bars);
+        }
+    } else {
+        ~allstar_replaceitems($product, $bar, 1, $bars);
+    }
+    $i = calc($i + 1);
+}
+
+// barsNeeded(slot, column)
+[proc,allstar_smith_barsneeded](int $slot, int $column)(int)
+if ($column = 1) {
+    if ($slot = 0 | $slot = 1) {
+        return(1);
+    }
+    if ($slot = 2 | $slot = 3) {
+        return(2);
+    }
+    if ($slot = 4) {
+        return(3);
+    }
+}
+if ($column = 2) {
+    if ($slot = 0 | $slot = 1) {
+        return(1);
+    }
+    if ($slot = 2 | $slot = 3) {
+        return(3);
+    }
+    if ($slot = 4) {
+        return(2);
+    }
+}
+if ($column = 3) {
+    if ($slot = 0 | $slot = 1 | $slot = 2) {
+        return(3);
+    }
+    if ($slot = 3) {
+        return(5);
+    }
+    if ($slot = 4) {
+        return(1);
+    }
+}
+if ($column = 4) {
+    if ($slot = 0 | $slot = 4) {
+        return(1);
+    }
+    if ($slot = 1 | $slot = 2) {
+        return(2);
+    }
+    if ($slot = 3) {
+        return(3);
+    }
+}
+if ($column = 5) {
+    return(1);
+}
+return(0);
+
+// smithXP(barType, barAmount): flat per bar, not multiplied by the level
+[proc,allstar_smith_xp](obj $bar, int $bars)(int)
+switch_obj ($bar) {
+    case bronze_bar : return(multiply($bars, 500));
+    case iron_bar : return(multiply($bars, 700));
+    case steel_bar : return(multiply($bars, 800));
+    case mithril_bar : return(multiply($bars, 1500));
+    case adamantite_bar : return(multiply($bars, 3000));
+    case runite_bar : return(multiply($bars, 4000));
+}
+// (bar 15331: 1200 per bar, a custom item)
+anim(human_smithing, 0);
+return(0);
+
+// ReplaceItems(newID, oldID, newAmount, oldAmount): removes up to oldAmount of the old item, and
+// gives the new one only if all of them were there.
+[proc,allstar_replaceitems](namedobj $new, obj $old, int $newcount, int $oldcount)
+def_int $slot = 0;
+while ($slot < inv_size(inv)) {
+    if ($oldcount > 0 & inv_getobj(inv, $slot) = $old) {
+        inv_delslot(inv, $slot);
+        $oldcount = calc($oldcount - 1);
+    }
+    $slot = calc($slot + 1);
+}
+if ($oldcount = 0 & $new ! null) {
+    ~allstar_give($new, $newcount);
+}

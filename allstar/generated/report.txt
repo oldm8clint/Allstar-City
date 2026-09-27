@@ -93,3 +93,15 @@ World objects: 509 placements (27 exact duplicates, 1 overwritten, 0 removed aga
     0 2796,3164 1088 chair shape 10
   - no effect: client.java:1626 Deletewalls type 0 at 2895,3513: no loc of that class on any level
   - no effect: client.java:1627 Deletewalls type 0 at 2892,9907: no loc of that class on any level
+Smithing: 6 bars, 134 column items, 134 removeBar and 137 canSmith entries
+  - skipped (custom item) removeBar 15334 -> 2349
+  - skipped (custom item) removeBar 15195 -> 2349
+  - skipped (custom item) removeBar 15333 -> 2349
+  - skipped (custom item) removeBar 15335 -> 2349
+  - skipped (custom item) removeBar 15336 -> 2349
+  - skipped (custom item) removeBar 1215 -> 15331
+  - skipped (custom item) canSmith 15335 (level 99)
+  - skipped (custom item) canSmith 15334 (level 99)
+  - skipped (custom item) canSmith 15333 (level 99)
+  - skipped (custom item) canSmith 15336 (level 99)
+  - skipped (custom item) canSmith 15195 (level 99)
