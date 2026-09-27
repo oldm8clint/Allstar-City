@@ -706,6 +706,23 @@ export default class Player extends PathingEntity {
     }
 
     updateEnergy() {
+        if (Environment.NODE_ALLSTAR_COMBAT) {
+            // Allstar-City: client.process() regains 1% a cycle below 100% (server.EnergyRegian = 0)
+            // and each running cycle costs 1% (Player.updateThisPlayerMovement), so running never
+            // runs out; at 0% the run stops.
+            if (this.runenergy < 10000) {
+                this.runenergy = Math.min(this.runenergy + 100, 10000);
+            }
+            if (this.stepsTaken >= 2) {
+                if (this.runenergy > 0) {
+                    this.runenergy = Math.max(this.runenergy - 100, 0);
+                } else {
+                    this.run = 0;
+                    this.setVar(VarPlayerType.RUN, this.run);
+                }
+            }
+            return;
+        }
         if (this.delayed) {
             return;
         }

@@ -14,3 +14,59 @@ if (p_finduid(uid) = true) {
 
 [debugproc,allstar_hurt](int $amount)
 stat_sub(hitpoints, $amount, 0);
+
+// ::~ownerkit (dev worlds, owner's request): every custom item and the famous rares in the bank, and
+// the strongest item of each slot from Allstar-Scape's own item data worn, whatever the wear
+// requirements (Armadyl helmet, fire cape, glory, Allstar's Hammer, Bandos chestplate, dragonfire
+// shield, Armadyl legs, the 100 gauntlets, dragon boots, 'perfect' ring, dragon arrows).
+[debugproc,ownerkit]
+def_int $id = 7956;
+def_namedobj $obj = null;
+while ($id < 16000) {
+    $obj = enum(int, namedobj, allstar_items, $id);
+    if ($obj ! null & inv_total(bank, $obj) = 0) {
+        if (oc_stackable($obj) = true) {
+            inv_add(bank, $obj, 1000);
+        } else {
+            inv_add(bank, $obj, 1);
+        }
+    }
+    $id = calc($id + 1);
+}
+~allstar_ownerkit_bank(deathdaggerdone);
+~allstar_ownerkit_bank(perfect_ruby_ring);
+~allstar_ownerkit_bank(hundred_hammer);
+~allstar_ownerkit_bank(black_kiteshield_trim);
+~allstar_ownerkit_bank(black_platelegs_trim);
+~allstar_ownerkit_bank(red_partyhat);
+~allstar_ownerkit_bank(yellow_partyhat);
+~allstar_ownerkit_bank(blue_partyhat);
+~allstar_ownerkit_bank(green_partyhat);
+~allstar_ownerkit_bank(purple_partyhat);
+~allstar_ownerkit_bank(white_partyhat);
+~allstar_ownerkit_bank(santa_hat);
+~allstar_ownerkit_bank(halloweenmask_green);
+~allstar_ownerkit_bank(halloweenmask_blue);
+~allstar_ownerkit_bank(halloweenmask_red);
+def_obj $previous = inv_getobj(worn, ^wearpos_rhand);
+inv_setslot(worn, ^wearpos_hat, allstar_item_15345, 1);
+inv_setslot(worn, ^wearpos_back, tzhaar_cape_fire, 1);
+inv_setslot(worn, ^wearpos_front, amulet_of_glory, 1);
+inv_setslot(worn, ^wearpos_rhand, hundred_hammer, 1);
+inv_setslot(worn, ^wearpos_torso, allstar_item_15348, 1);
+inv_setslot(worn, ^wearpos_lhand, allstar_item_15185, 1);
+inv_setslot(worn, ^wearpos_legs, allstar_item_15347, 1);
+inv_setslot(worn, ^wearpos_hands, hundred_gauntlets_level_10, 1);
+inv_setslot(worn, ^wearpos_feet, allstar_item_15352, 1);
+inv_setslot(worn, ^wearpos_ring, perfect_ruby_ring, 1);
+inv_setslot(worn, ^wearpos_quiver, allstar_item_15145, 1000);
+~allstar_wield_anims(hundred_hammer);
+if (p_finduid(uid) = true) {
+    ~allstar_equipment_changed($previous);
+}
+mes("Owner kit: every custom item and the rares are in your bank; best gear equipped.");
+
+[proc,allstar_ownerkit_bank](namedobj $obj)
+if (inv_total(bank, $obj) = 0) {
+    inv_add(bank, $obj, 1);
+}

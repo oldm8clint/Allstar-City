@@ -56,12 +56,12 @@ if (testbit(%as_prayers, 12) = 0) {
     %as_protect = 4;
     %as_prayers = setbit(setbit(%as_prayers, 15), 12);
     ~allstar_newdrain(15);
-    headicons_set(4);
+    ~allstar_set_headicon(4);
     buildappearance(worn);
 } else {
     %as_protect = clearbit(%as_protect, 2);
     %as_prayers = clearbit(%as_prayers, 12);
-    headicons_set(0);
+    ~allstar_set_headicon(0);
     buildappearance(worn);
 }
 
@@ -72,13 +72,13 @@ if (testbit(%as_prayers, 13) = 0) {
     ~allstar_reset_prot_prayers;
     %as_prayers = setbit(setbit(%as_prayers, 15), 13);
     ~allstar_newdrain(15);
-    headicons_set(2);
+    ~allstar_set_headicon(2);
     %as_protect = 2;
     buildappearance(worn);
 } else {
     %as_protect = clearbit(%as_protect, 1);
     %as_prayers = clearbit(%as_prayers, 13);
-    headicons_set(0);
+    ~allstar_set_headicon(0);
     buildappearance(worn);
 }
 
@@ -89,11 +89,11 @@ if (testbit(%as_prayers, 14) = 0) {
     ~allstar_reset_prot_prayers;
     %as_prayers = setbit(setbit(%as_prayers, 15), 14);
     ~allstar_newdrain(15);
-    headicons_set(1);
+    ~allstar_set_headicon(1);
     %as_protect = 1;
 } else {
     %as_prayers = clearbit(%as_prayers, 14);
-    headicons_set(0);
+    ~allstar_set_headicon(0);
     %as_protect = clearbit(%as_protect, 0);
 }
 

@@ -26,6 +26,11 @@ import { Pack } from '../lib/pack.mjs';
 // placed on level 0 and on every upper level with a floor under them
 const UPPER_LEVEL_LOCS = new Set([10687]);
 
+// Owner's request (2026-09-28): the home prayer altar (chaos altar 61) that Allstar-Scape meant to
+// place at 2854,3597 was typed as 2854,3957, a tile off the map, so it never appeared. It goes where
+// it was meant to be.
+const TYPO_FIXES = [{ x: 2854, z: 3957, id: 61, fixed: { x: 2854, z: 3597 } }];
+
 const hasFloor = (maps, level, x, z) => maps.entries('MAP', level, x, z).some(e => /(^| )[ou]\d/.test(e.data));
 
 const isRoof = shape => shape >= 12 && shape <= 21;
@@ -84,7 +89,11 @@ function worldEdits({ packs, maps, report }, lines) {
     for (const { line, text } of methodBody(lines, 'NewObjects')) {
         const match = /makeGlobalObject\(\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*\)/.exec(code(text));
         if (match) {
-            const [x, z, id, face, type] = match.slice(1).map(Number);
+            let [x, z, id, face, type] = match.slice(1).map(Number);
+            const fix = TYPO_FIXES.find(f => f.x === x && f.z === z && f.id === id);
+            if (fix) {
+                ({ x, z } = fix.fixed);
+            }
             placements.push({ line, x, z, id, face, type, angle: face & 3, cls: shapeClass(type) });
         }
     }

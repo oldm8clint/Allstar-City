@@ -292,9 +292,10 @@ stat_advance(hitpoints, calc(300 * $hit));
 ~allstar_set_action_timer(4);
 npc_anim(~allstar_npc_block_anim(npc_type), 0);
 
-// QUIRKS Q4/Q5 (owner): the glowing dagger (747) and the Tzhaar-ket-em (6527) kill in one hit
+// QUIRKS Q4 (owner): the glowing dagger (747) kills in one hit. (The Tzhaar-ket-em, 6527, only has its
+// item.cfg stats: crush +80, strength +210, a max hit of 46 at 99 Strength on aggressive.)
 [proc,allstar_oneshot](int $wep, int $hit, int $enemyhp)(int)
-if ($wep = 747 | $wep = 6527) {
+if ($wep = 747) {
     return($enemyhp);
 }
 return($hit);

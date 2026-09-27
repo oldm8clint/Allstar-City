@@ -54,5 +54,5 @@ buildappearance(worn);
 
 // headIcon (::newhed, ::newhead)
 [proc,allstar_headicon](int $icon)
-headicons_set($icon);
+~allstar_set_headicon($icon);
 buildappearance(worn);
