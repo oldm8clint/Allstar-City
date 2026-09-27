@@ -1,15 +1,4 @@
 // no idea but i think half baked gnome food should all share an inv
-[opheld1,half_baked_batta]
-~mesbox("You inspect the half baked batta..."); // guess
-~gnome_batta_ingredient_display;
-
-[opheldu,half_baked_batta]
-if (oc_param(last_useitem, gnome_cooking_ingredient) = ^false) {
-    ~displaymessage(^dm_default);
-    return;
-}
-@add_batta_ingredient(last_useitem);
-
 [label,add_batta_ingredient](obj $ingredient)
 if (~gnome_batta_ingredient_space = 0) {
     mes("The half baked batta already has enough ingredients."); // guess

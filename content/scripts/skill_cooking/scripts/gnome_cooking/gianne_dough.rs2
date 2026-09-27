@@ -1,9 +1,3 @@
-[opheldu,gianne_dough]
-switch_obj(last_useitem) {
-    case crunchy_tray, gnomebowl_mould, batta_tin : @make_raw_gnome(last_useitem);
-    case default : ~displaymessage(^dm_default);
-};
-
 [label,make_raw_gnome](obj $tin)
 //delete items
 inv_del(inv, gianne_dough, 1);

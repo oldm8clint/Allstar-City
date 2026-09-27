@@ -3,44 +3,54 @@ name=Incomplete stew
 desc=I need to add some meat too.
 recol1s=21119
 recol1d=14800
-cost=4
 model=obj_goldbowl_water
 2dzoom=910
 2dyan=1856
 2dxan=204
 weight=1kg
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_stew1
 
 [stew2]
 name=Incomplete stew
 desc=I need to add some potato too.
 recol1s=21119
 recol1d=14800
-cost=4
 model=obj_goldbowl_water
 2dzoom=910
 2dyan=1856
 2dxan=204
 weight=1200g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_stew2
 
 [burnt_stew]
 name=Burnt stew
 desc=Eew, it's horribly burnt.
 recol1s=21119
 recol1d=4228
-cost=1
 model=obj_goldbowl_water
 2dzoom=910
 2dyan=1856
 2dxan=204
 iop1=Empty Bowl
 weight=1300g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_stew
 
 [burnt_curry]
 name=Burnt curry
 desc=Eew, it's horribly burnt.
 recol1s=21119
 recol1d=4228
-cost=1
 model=obj_goldbowl_water
 2dzoom=910
 2dyan=1856
@@ -48,13 +58,16 @@ model=obj_goldbowl_water
 members=yes
 iop1=Empty Bowl
 weight=1300g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_curry
 
 [potato]
 name=Potato
 desc=This could be used to make a good stew.
 recol1s=10464
 recol1d=16805
-cost=1
 model=obj_potato
 2dxof=1
 2dyof=-6
@@ -65,6 +78,10 @@ iop1=Eat
 weight=500g
 category=category_131
 param=gnome_cooking_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_potato
 
 [stew]
 name=Stew
@@ -72,7 +89,6 @@ desc=It's a meat and potato stew.
 recol1s=21119
 recol1d=11488
 iop1=Eat
-cost=20
 model=obj_goldbowl_water
 2dzoom=910
 2dyan=1856
@@ -80,6 +96,11 @@ model=obj_goldbowl_water
 weight=1500g
 category=category_59
 param=next_obj_stage,bowl_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=17
+param=allstar_value,17
+param=allstar_sellable,yes
+param=allstar_note,cert_stew
 
 [curry]
 name=Curry
@@ -87,7 +108,6 @@ desc=It's a spicy hot curry.
 recol1s=21119
 recol1d=22881
 iop1=Eat
-cost=20
 model=obj_goldbowl_water
 2dzoom=910
 2dyan=1856
@@ -96,3 +116,8 @@ weight=1500g
 category=category_59
 members=yes
 param=next_obj_stage,bowl_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=17
+param=allstar_value,17
+param=allstar_sellable,yes
+param=allstar_note,cert_curry

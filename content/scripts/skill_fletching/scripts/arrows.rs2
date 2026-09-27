@@ -1,27 +1,4 @@
 // headless arrows
-[opheldu,arrow_shaft]
-switch_obj(last_useitem) {
-    case feather : @make_headless_arrows;
-    case default : ~displaymessage(^dm_default);
-}
-
-// arrows
-[opheldu,_category_968]
-switch_obj(last_useitem) {
-    case headless_arrow : @make_arrows(last_item);
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,headless_arrow]
-switch_obj(last_useitem) {
-    case default :
-        if (oc_category(last_useitem) = category_968) {
-            @make_arrows(last_useitem);
-        } else {
-            ~displaymessage(^dm_default);
-        }
-}
-
 [label,make_headless_arrows]
 if (map_members = ^false) {
     mes(^mes_members_fletching); // guess
@@ -45,7 +22,6 @@ if ($arrow_count > 1) {
 }
 stat_advance(fletching, multiply($arrow_count, 10));
 inv_add(inv, headless_arrow, $arrow_count);
-
 
 [label,make_arrows](obj $arrow_tips)
 if (map_members = ^false) {

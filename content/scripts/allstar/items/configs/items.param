@@ -1,0 +1,163 @@
+// Allstar-Scape item data, written into the obj configs by allstar/tools/gen/items.mjs.
+// The equipment bonuses use the Lost City params (stabattack ... prayerbonus).
+
+// item.cfg shop value: floor(column 4) of the LAST line for the id; undefined ids are worth 1 gp
+// (client.GetItemShopValue). Buy price = sell price = high alch; low alch = value / 5. Notes have
+// their own item.cfg lines, so read this param rather than oc_cost for them.
+[allstar_value]
+type=int
+default=1
+
+// client.GetItemName when it differs from the name the client shows: item.cfg name of the FIRST
+// line for the id ("!! NOT EXISTING ITEM !!! - ID:<id>" for undefined ids). Use ~allstar_obj_name.
+[allstar_name]
+type=string
+default=null
+
+// data/sellable.dat (0 = sellable); ids >= 6800 unsellable unless in Item.java's override list
+[allstar_sellable]
+type=boolean
+default=no
+
+// client.untradable: 6384 only. Dropping it destroys it; offering it to trade is refused.
+[allstar_untradeable]
+type=boolean
+default=no
+
+// data/notes.dat (0 = note). Notes bank as id - 1 (allstar_unnote); an item withdraws as a note
+// when id + 1 is a note (allstar_note).
+[allstar_is_note]
+type=boolean
+default=no
+
+// the id, only where a message prints it (a note whose id - 1 is also a note)
+[allstar_id]
+type=int
+default=-1
+
+[allstar_note]
+type=namedobj
+default=null
+
+[allstar_unnote]
+type=namedobj
+default=null
+
+// client.fromBank decides stackable withdraws with Item.itemStackable[id + 2] (spec BUG)
+[allstar_withdraw_stackable]
+type=boolean
+default=no
+
+// data/twohanded.dat: wielding it takes off the shield (client.wear)
+[allstar_twohanded]
+type=boolean
+default=no
+
+// client.GetCL* wear requirements (default 1), checked against current levels in this order
+[allstar_req_attack]
+type=int
+default=1
+
+[allstar_req_prayer]
+type=int
+default=1
+
+[allstar_req_fletching]
+type=int
+default=1
+
+[allstar_req_woodcutting]
+type=int
+default=1
+
+[allstar_req_cooking]
+type=int
+default=1
+
+[allstar_req_fishing]
+type=int
+default=1
+
+[allstar_req_thieving]
+type=int
+default=1
+
+[allstar_req_hitpoints]
+type=int
+default=1
+
+[allstar_req_farming]
+type=int
+default=1
+
+[allstar_req_slayer]
+type=int
+default=1
+
+[allstar_req_defence]
+type=int
+default=1
+
+[allstar_req_strength]
+type=int
+default=1
+
+[allstar_req_magic]
+type=int
+default=1
+
+[allstar_req_ranged]
+type=int
+default=1
+
+// client.twoHanderz index {0 = 7158, 1 = 1319, 2 = 6528, 3 = 14915}, -1 when not listed (packet 41)
+[allstar_twohanderz]
+type=int
+default=-1
+
+// client.GetStandAnim / GetWalkAnim / GetRunAnim of a wielded item (turn anims never change)
+[allstar_stand_anim]
+type=seq
+default=human_ready
+
+[allstar_walk_anim]
+type=seq
+default=human_walk_f
+
+[allstar_run_anim]
+type=seq
+default=human_running
+
+// GetWalkAnim returns before its sled check (feet 4084 -> walk 755) for these
+[allstar_walk_sled_exempt]
+type=boolean
+default=no
+
+// wear() and login (setEquipment) overrides: whip and cat toy walk 1660 / run 1661
+[allstar_wield_walk_anim]
+type=seq
+default=null
+
+[allstar_wield_run_anim]
+type=seq
+default=null
+
+// login-only (setEquipment) overrides: mauls 4153/6528 stand 2065 walk/run 2064, dragon dagger
+[allstar_login_stand_anim]
+type=seq
+default=null
+
+[allstar_login_walk_anim]
+type=seq
+default=null
+
+[allstar_login_run_anim]
+type=seq
+default=null
+
+// client.SendWeapon: the attack style tab chosen from the item.cfg name, as the 317 interface id
+// (12290 whip, 1764 bow, 328 staff, 4446 dart, 2276 dagger, 5570 pickaxe, 1698 axe, 8460 halberd,
+// 4679 spear, 7762 claws, 2423 everything else; no weapon 5855). For the combat tab.
+[allstar_weapon_tab]
+type=int
+default=2423

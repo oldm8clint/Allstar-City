@@ -30,8 +30,6 @@ if (oc_category($product) = gnome_cocktail) { // finished
     stat_advance(cooking, 600);
 }
 
-[opheldu,_gnome_unf_odd_cocktail] @finish_cocktail(last_item, last_useitem);
-
 [label,finish_cocktail](obj $cocktail, obj $ingredient)
 switch_obj ($cocktail) {
     case unfinished_pineapple_punch1 : @gnome_drink_add($cocktail, $ingredient, pineapple_chunks, unfinished_pineapple_punch2, spoilt_cocktail_fruity);

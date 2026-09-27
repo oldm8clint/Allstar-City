@@ -1,9 +1,3 @@
-[opheld2,_runecraft_tiaras]
-if (p_finduid(uid) = false) return;
-
-~runecraft_set_no_tally(inv_getobj(inv, last_slot));
-~equip(last_slot);
-
 [proc,runecraft_set_no_tally](obj $obj)
 switch_obj ($obj) {
     case tiara_air : %rc_no_tally_required_air = 1;
@@ -80,4 +74,3 @@ if ($useitem = tiara) {
 inv_setslot(inv, $useslot, $crafted_tiara, 1);
 stat_advance(runecraft, $experience);
 mes("You bind the power of the talisman into your Tiara.");
-

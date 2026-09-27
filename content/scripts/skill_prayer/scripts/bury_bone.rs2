@@ -1,5 +1,3 @@
-[opheld1,_bones] @bury_bones(last_slot);
-
 [label,bury_bones](int $slot)
 mes("You dig a hole in the ground...");
 anim(human_pickupfloor, 0);

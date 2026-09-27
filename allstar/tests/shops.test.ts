@@ -161,25 +161,24 @@ bot.invButton(2, OAK_LOGS, slotOf(inv(), OAK_LOGS), SIDE);
 await bot.until(() => view()[25]?.id === OAK_LOGS, 5000, 'oak logs in shop');
 check(view()[25]?.count === 1, 'oak logs x1 in slot 25');
 
-// a note goes in as GetUnnotedItem(note) = item 0 (Dwarf remains): names are compared with ==
+// a note goes in as its unnoted item (the owner asked to fix the original, which turned every
+// note into item 0 "Dwarf remains"); each note adds one to the slot already holding logs
 before = coins();
 bot.invButton(3, LOGS_NOTE, slotOf(inv(), LOGS_NOTE), SIDE);
 await bot.until(() => count(inv(), LOGS_NOTE) === 0, 5000, 'sold 4 noted logs');
 await sleep(300);
 check(coins() - before === 12, `4 noted logs sold for 12 (${coins() - before})`);
-check(view()[26]?.id === DWARF_REMAINS && view()[26]?.count === 4, `noted logs became item 0 x4 (${JSON.stringify(view()[26])})`);
-text = await message(/currently costs/, () => bot.invButton(1, DWARF_REMAINS, 26, SHOP));
-check(text === '!! NOT EXISTING ITEM !!! - ID:0: currently costs 1 coins', `item 0 value: ${text}`);
+check(view()[24]?.id === LOGS && view()[24]?.count === 9, `noted logs joined the logs slot (${JSON.stringify(view()[24])})`);
+check(slotOf(view(), DWARF_REMAINS) === -1, 'no Dwarf remains in the shop');
 
-// buying from a player-sold slot empties the whole slot (BUG kept); the window then hides the
-// last item behind the gap (resetShop lists every slot up to ShopItemsStandard)
+// buying from a player-sold slot empties the whole slot (BUG kept)
 before = coins();
 bot.invButton(2, LOGS, 24, SHOP);
 await bot.until(() => count(inv(), LOGS) === 1, 5000, 'bought 1 log back');
 await sleep(400);
 check(before - coins() === 3, `bought a log for 3 (${before - coins()})`);
 check(view()[24] === null, `logs slot emptied after one purchase (${JSON.stringify(view()[24])})`);
-check(view()[25]?.id === OAK_LOGS && slotOf(view(), DWARF_REMAINS) === -1, 'last item hidden behind the gap');
+check(slotOf(view(), OAK_LOGS) === -1, 'last item (oak logs) hidden behind the gap');
 
 // decay: player-sold stock loses 1 every 60 cycles
 await cmd('~shopage 2 120');

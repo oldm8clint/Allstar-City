@@ -9,14 +9,17 @@ model=obj_enchanted_chicken
 2dyan=1748
 2dxan=88
 members=yes
-cost=10
 weight=225g
 category=cooking_generic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_raw_oomlie
 
 [palm_leaf]
 name=Palm leaf
 desc=A thick green palm leaf used by natives to cook meat in.
-cost=5
 model=obj_palm_leaf
 2dxof=2
 2dyof=11
@@ -25,6 +28,11 @@ model=obj_palm_leaf
 2dxan=292
 members=yes
 weight=100g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=4
+param=allstar_value,4
+param=allstar_sellable,yes
+param=allstar_note,cert_palm_leaf
 
 [burnt_oomlie]
 name=Burnt oomlie wrap
@@ -43,16 +51,18 @@ model=obj_wrapped_oomlie
 2dzoom=1110
 2dyan=176
 2dxan=236
-cost=1
 weight=275g
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_oomlie
 
 [burnt_uw_oomlie]
 name=Burnt oomlie
 desc=Oh dear, it's totally burnt!
 recol1s=15619
 recol1d=5285
-cost=1
 members=yes
 model=obj_enchanted_chicken
 2dxof=-3
@@ -60,6 +70,10 @@ model=obj_enchanted_chicken
 2dyan=1748
 2dxan=88
 weight=4oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_uw_oomlie
 
 [cooked_oomlie]
 name=Cooked oomlie wrap
@@ -80,9 +94,13 @@ model=obj_wrapped_oomlie
 2dyan=176
 2dxan=236
 members=yes
-cost=35
 weight=300g
 category=category_59
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=30
+param=allstar_value,30
+param=allstar_sellable,yes
+param=allstar_note,cert_cooked_oomlie
 
 [wrapped_oomlie]
 name=Wrapped oomlie
@@ -93,7 +111,11 @@ model=obj_wrapped_oomlie
 2dzoom=1110
 2dyan=176
 2dxan=236
-cost=16
 members=yes
 weight=325g
 category=cooking_generic
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=14
+param=allstar_value,14
+param=allstar_sellable,yes
+param=allstar_note,cert_wrapped_oomlie

@@ -1,0 +1,155 @@
+// Allstar-Scape item on item: packet 53 (L19964-20271), npc_item_handlers.md section 7.
+// itemUsed = the item picked with "Use" (last_useitem), useWith = the item clicked (last_item).
+// Only the listed direction works. Every item in a combination has its own trigger so the engine
+// never swaps the two (it only swaps when the clicked item has no trigger). Any other pair does
+// nothing. There is no herblore, firemaking, arrow or other crafting here.
+// The Spells Of The Gods combinations (4653/4703 firework, 590/3006) belong to that quest.
+
+[opheldu,watering_can_8] @allstar_item_on_item;
+[opheldu,acorn] @allstar_item_on_item;
+[opheldu,maple_seed] @allstar_item_on_item;
+[opheldu,yew_seed] @allstar_item_on_item;
+[opheldu,magic_tree_seed] @allstar_item_on_item;
+[opheldu,spirit_tree_seed] @allstar_item_on_item;
+[opheldu,potato_seed] @allstar_item_on_item;
+[opheldu,onion_seed] @allstar_item_on_item;
+[opheldu,sweetcorn_seed] @allstar_item_on_item;
+[opheldu,watermelon_seed] @allstar_item_on_item;
+[opheldu,pestle_and_mortar] @allstar_item_on_item;
+[opheldu,unicorn_horn] @allstar_item_on_item;
+[opheldu,knife] @allstar_item_on_item;
+[opheldu,logs] @allstar_item_on_item;
+[opheldu,oak_logs] @allstar_item_on_item;
+[opheldu,willow_logs] @allstar_item_on_item;
+[opheldu,maple_logs] @allstar_item_on_item;
+[opheldu,yew_logs] @allstar_item_on_item;
+[opheldu,magic_logs] @allstar_item_on_item;
+[opheldu,unstrung_longbow] @allstar_item_on_item;
+[opheldu,unstrung_oak_longbow] @allstar_item_on_item;
+[opheldu,unstrung_willow_longbow] @allstar_item_on_item;
+[opheldu,unstrung_maple_longbow] @allstar_item_on_item;
+[opheldu,unstrung_yew_longbow] @allstar_item_on_item;
+[opheldu,unstrung_magic_longbow] @allstar_item_on_item;
+[opheldu,bow_string] @allstar_item_on_item;
+[opheldu,needle] @allstar_item_on_item;
+[opheldu,leather] @allstar_item_on_item;
+[opheldu,ruby] @allstar_item_on_item;
+[opheldu,emerald] @allstar_item_on_item;
+[opheldu,diamond] @allstar_item_on_item;
+[opheldu,sapphire] @allstar_item_on_item;
+[opheldu,gnome_hat_pink] @allstar_item_on_item;
+[opheldu,gnome_robetop_pink] @allstar_item_on_item;
+[opheldu,gnome_robebottoms_pink] @allstar_item_on_item;
+
+[label,allstar_item_on_item]
+def_obj $used = last_useitem;
+def_obj $with = last_item;
+
+// "farming": the watering can on a seed, +5 coins and flat Farming xp; the can is not charged
+if ($used = watering_can_8) {
+    switch_obj ($with) {
+        case acorn : ~allstar_water_seed(acorn, 1, 15);
+        case maple_seed : ~allstar_water_seed(maple_seed, 25, 20);
+        case yew_seed : ~allstar_water_seed(yew_seed, 40, 30);
+        case magic_tree_seed : ~allstar_water_seed(magic_tree_seed, 50, 35);
+        case spirit_tree_seed : ~allstar_water_seed(spirit_tree_seed, 60, 45);
+        case potato_seed : ~allstar_water_seed(potato_seed, 75, 150);
+        case onion_seed : ~allstar_water_seed(onion_seed, 85, 175);
+        case sweetcorn_seed : ~allstar_water_seed(sweetcorn_seed, 90, 185);
+        case watermelon_seed : ~allstar_water_seed(watermelon_seed, 95, 200);
+    }
+}
+
+// the else-if chain
+if ($used = pestle_and_mortar & $with = unicorn_horn) {
+    inv_del(inv, unicorn_horn, 1);
+    ~allstar_give(unicorn_horn_dust);
+} else if ($used = knife & $with = logs) {
+    ~allstar_cut_logs(logs, unstrung_longbow, 1, 40);
+} else if ($used = knife & $with = oak_logs) {
+    ~allstar_cut_logs(oak_logs, unstrung_oak_longbow, 20, 60);
+} else if ($used = knife & $with = willow_logs) {
+    ~allstar_cut_logs(willow_logs, unstrung_willow_longbow, 40, 80);
+} else if ($used = knife & $with = maple_logs) {
+    ~allstar_cut_logs(maple_logs, unstrung_maple_longbow, 50, 100);
+} else if ($used = knife & $with = yew_logs) {
+    ~allstar_cut_logs(yew_logs, unstrung_yew_longbow, 60, 120);
+} else if ($used = knife & $with = magic_logs) {
+    ~allstar_cut_logs(magic_logs, unstrung_magic_longbow, 80, 140);
+} else if ($used = unstrung_longbow & $with = bow_string) {
+    ~allstar_string_bow(unstrung_longbow, longbow, 1, 15);
+} else if ($used = unstrung_oak_longbow & $with = bow_string) {
+    ~allstar_string_bow(unstrung_oak_longbow, oak_longbow, 20, 25);
+} else if ($used = unstrung_willow_longbow & $with = bow_string) {
+    ~allstar_string_bow(unstrung_willow_longbow, willow_longbow, 40, 40);
+} else if ($used = unstrung_maple_longbow & $with = bow_string) {
+    ~allstar_string_bow(unstrung_maple_longbow, maple_longbow, 50, 65);
+} else if ($used = unstrung_yew_longbow & $with = bow_string) {
+    ~allstar_string_bow(unstrung_yew_longbow, yew_longbow, 60, 90);
+} else if ($used = unstrung_magic_longbow & $with = bow_string) {
+    ~allstar_string_bow(unstrung_magic_longbow, magic_longbow, 80, 120);
+} else if (($used = needle & $with = leather) | ($used = leather & $with = needle)) {
+    // interface 2311, no checks (buttons in leather.rs2)
+    if_openmain(leather_crafting);
+} else if ($used = ruby & $with = gnome_hat_pink) {
+    ~allstar_dye_robe(ruby, gnome_hat_pink, wolfenhat_crimson);
+} else if ($used = ruby & $with = gnome_robetop_pink) {
+    ~allstar_dye_robe(ruby, gnome_robetop_pink, wolfenrobetop_crimson);
+} else if ($used = ruby & $with = gnome_robebottoms_pink) {
+    ~allstar_dye_robe(ruby, gnome_robebottoms_pink, wolfenrobebottom_crimson);
+} else if ($used = emerald & $with = gnome_hat_pink) {
+    ~allstar_dye_robe(emerald, gnome_hat_pink, gnome_hat_green);
+} else if ($used = emerald & $with = gnome_robetop_pink) {
+    ~allstar_dye_robe(emerald, gnome_robetop_pink, gnome_robetop_green);
+} else if ($used = emerald & $with = gnome_robebottoms_pink) {
+    ~allstar_dye_robe(emerald, gnome_robebottoms_pink, gnome_robebottoms_green);
+} else if ($used = diamond & $with = gnome_hat_pink) {
+    ~allstar_dye_robe(diamond, gnome_hat_pink, gnome_hat_cream);
+} else if ($used = diamond & $with = gnome_robetop_pink) {
+    ~allstar_dye_robe(diamond, gnome_robetop_pink, gnome_robetop_cream);
+} else if ($used = diamond & $with = gnome_robebottoms_pink) {
+    ~allstar_dye_robe(diamond, gnome_robebottoms_pink, gnome_robebottoms_cream);
+} else if ($used = sapphire & $with = gnome_hat_pink) {
+    ~allstar_dye_robe(sapphire, gnome_hat_pink, gnome_hat_blue);
+} else if ($used = sapphire & $with = gnome_robetop_pink) {
+    ~allstar_dye_robe(sapphire, gnome_robetop_pink, gnome_robetop_blue);
+} else if ($used = sapphire & $with = gnome_robebottoms_pink) {
+    ~allstar_dye_robe(sapphire, gnome_robebottoms_pink, gnome_robebottoms_blue);
+}
+
+// L19993-20069 (5313 Willow seed is not handled)
+[proc,allstar_water_seed](namedobj $seed, int $level, int $xp)
+if ($level > 1 & stat(farming) < $level) {
+    mes("<tostring($level)> Farming Needed!");
+    return;
+}
+inv_del(inv, $seed, 1);
+def_boolean $added = ~allstar_additem(coins, 5);
+stat_advance(farming, $xp);
+
+// knife on logs: xp = k * current Fletching level
+[proc,allstar_cut_logs](namedobj $log, namedobj $unstrung, int $level, int $factor)
+if (stat(fletching) < $level) {
+    mes("You need a fletching level of <tostring($level)> to make this bow.");
+    return;
+}
+inv_del(inv, $log, 1);
+~allstar_give($unstrung);
+stat_advance(fletching, calc($factor * stat(fletching)));
+
+// unstrung bow (used) on a bow string: flat xp
+[proc,allstar_string_bow](namedobj $unstrung, namedobj $bow, int $level, int $xp)
+if (stat(fletching) < $level) {
+    mes("You need a fletching level of <tostring($level)> to make this bow.");
+    return;
+}
+inv_del(inv, $unstrung, 1);
+inv_del(inv, bow_string, 1);
+~allstar_give($bow);
+stat_advance(fletching, $xp);
+
+// gem on a pink gnome robe piece: both deleted, the new piece added; no level, no xp
+[proc,allstar_dye_robe](namedobj $gem, namedobj $piece, namedobj $result)
+inv_del(inv, $piece, 1);
+inv_del(inv, $gem, 1);
+~allstar_give($result);

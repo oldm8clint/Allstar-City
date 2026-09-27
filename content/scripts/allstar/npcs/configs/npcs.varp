@@ -17,9 +17,8 @@ protect=no
 type=npc
 protect=no
 
-// client.duelring: set by the Ring of dueling menu, read by option buttons 9157/9158
-[allstar_duelring]
-protect=no
+// client.duelring is %allstar_duelring (items.varp): the Ring of dueling sets it, option buttons
+// 9157/9158 read it
 
 // Player.OptionObject: 2466 while the team-select portal menu is up (0 stands for -1)
 [allstar_optionobject]

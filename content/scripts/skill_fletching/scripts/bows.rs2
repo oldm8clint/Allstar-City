@@ -1,20 +1,4 @@
 // stringing
-[opheldu,_unstrung_bow]
-switch_obj(last_useitem) {
-    case bow_string : @string_bow(last_item);
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,bow_string]
-switch_obj(last_useitem) {
-    case default :
-        if (oc_category(last_useitem) = unstrung_bow) {
-            @string_bow(last_useitem);
-        } else {
-            ~displaymessage(^dm_default);
-        }
-}
-
 [label,string_bow](obj $unstrung_bow)
 if (map_members = ^false) {
     mes(^mes_members_fletching); // guess

@@ -1,17 +1,3 @@
-[opheldu,dragonshield_a]
-if (last_useitem = dragonshield_b) {
-    // supposed to be both shield halves in the obj box
-    ~objbox(dragonshield_a, "You'll need to repair the shield at an anvil, with a hammer.", 250, 0, divide(^objbox_height, 2));
-    return;
-}
-[opheldu,dragonshield_b]
-if (last_useitem = dragonshield_a) {
-    // supposed to be both shield halves in the obj box
-    ~objbox(dragonshield_a, "You'll need to repair the shield at an anvil, with a hammer.", 250, 0, divide(^objbox_height, 2));
-    return;
-}
-
-
 [label,make_dragon_sq]
 if (map_members = ^false) {
     mes("You can only make that on a members' server.");

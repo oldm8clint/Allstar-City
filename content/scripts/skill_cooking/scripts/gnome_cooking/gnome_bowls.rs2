@@ -1,14 +1,3 @@
-[opheld1,half_baked_bowl]
-~mesbox("You look into the half baked bowl..."); // guess
-~gnome_bowl_ingredient_display;
-
-[opheldu,half_baked_bowl]
-if (oc_param(last_useitem, gnome_cooking_ingredient) = ^false) {
-    ~displaymessage(^dm_default);
-    return;
-}
-@add_bowl_ingredient(last_useitem);
-
 [label,add_bowl_ingredient](obj $ingredient)
 if (~gnome_bowl_ingredient_space = 0) {
     mes("The half baked bowl already has enough ingredients.");

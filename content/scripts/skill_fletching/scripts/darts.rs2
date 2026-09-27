@@ -1,22 +1,4 @@
 // darts
-[opheldu,_category_969]
-switch_obj(last_useitem) {
-    case feather : @make_darts(last_item);
-    case default : ~displaymessage(^dm_default);
-}
-[opheldu,feather]
-switch_obj(last_useitem) {
-    case ogre_arrow_shaft : @make_ogre_headless_arrows;
-    case arrow_shaft : @make_headless_arrows;
-    case thprotodarttip : @make_prototype_dart;
-    case default :
-        if (oc_category(last_useitem) = category_969) {
-            @make_darts(last_useitem);
-        } else {
-            ~displaymessage(^dm_default);
-        }
-}
-
 [label,make_darts](obj $dart_tips)
 if (map_members = ^false) {
     mes(^mes_members_fletching); // guess

@@ -2,7 +2,6 @@
 name=Cake
 desc=A plain sponge cake.
 iop1=Eat
-cost=50
 model=obj_cake
 2dyof=-8
 2dzoom=670
@@ -11,6 +10,11 @@ model=obj_cake
 weight=300g
 category=category_130
 param=next_obj_stage,partial_cake
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=42
+param=allstar_value,42
+param=allstar_sellable,yes
+param=allstar_note,cert_cake
 
 [partial_cake]
 name=2/3 cake
@@ -20,7 +24,6 @@ recol1d=30615
 recol2s=15680
 recol2d=21921
 iop1=Eat
-cost=30
 model=obj_partial_cake
 2dyof=-7
 2dzoom=690
@@ -29,6 +32,11 @@ model=obj_partial_cake
 weight=200g
 category=category_130
 param=next_obj_stage,cake_slice
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_partial_cake
 
 [cake_slice]
 name=Slice of cake
@@ -38,7 +46,6 @@ recol1d=30615
 recol2s=15680
 recol2d=21921
 iop1=Eat
-cost=10
 model=obj_cake_slice
 2dxof=5
 2dyof=-10
@@ -47,6 +54,11 @@ model=obj_cake_slice
 2dxan=160
 weight=100g
 category=category_130
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_cake_slice
 
 [chocolate_cake]
 name=Chocolate cake
@@ -58,7 +70,6 @@ recol2d=8288
 recol3s=19489
 recol3d=10432
 iop1=Eat
-cost=70
 model=obj_cake
 2dyof=-8
 2dzoom=670
@@ -67,6 +78,11 @@ model=obj_cake
 weight=300g
 category=category_130
 param=next_obj_stage,partial_chocolate_cake
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=58
+param=allstar_value,58
+param=allstar_sellable,yes
+param=allstar_note,cert_chocolate_cake
 
 [partial_chocolate_cake]
 name=2/3 chocolate cake
@@ -83,10 +99,14 @@ model=obj_partial_cake
 2dzoom=690
 2dyan=1840
 2dxan=180
-cost=50
 weight=200g
 category=category_130
 param=next_obj_stage,chocolate_slice
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=42
+param=allstar_value,42
+param=allstar_sellable,yes
+param=allstar_note,cert_partial_chocolate_cake
 
 [chocolate_slice]
 name=Chocolate slice
@@ -104,9 +124,13 @@ model=obj_cake_slice
 2dzoom=600
 2dyan=1760
 2dxan=160
-cost=30
 weight=100g
 category=category_130
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_note,cert_chocolate_slice
 
 [burnt_cake]
 name=Burnt cake
@@ -120,8 +144,11 @@ model=obj_cake
 2dzoom=670
 2dyan=120
 2dxan=164
-cost=1
 weight=150g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_cake
 
 [pot_flour]
 name=Pot of flour
@@ -132,16 +159,19 @@ model=obj_pot_flour
 2dzoom=990
 2dyan=8
 2dxan=112
-cost=10
 iop4=Empty
 weight=3lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_pot_flour
 
 [bucket_milk]
 name=Bucket of milk
 desc=It's a bucket of milk.
 recol1s=173
 recol1d=32767
-cost=6
 model=obj_bucket_wax
 2dyof=-18
 2dzoom=1020
@@ -151,11 +181,15 @@ iop4=Empty
 weight=2200g
 param=next_obj_stage,bucket_empty
 param=gnome_cocktail_ingredient,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=5
+param=allstar_value,5
+param=allstar_sellable,yes
+param=allstar_note,cert_bucket_milk
 
 [egg]
 name=Egg
 desc=A nice fresh egg.
-cost=4
 model=obj_egg
 2dxof=1
 2dzoom=630
@@ -163,12 +197,16 @@ model=obj_egg
 2dxan=144
 weight=20g
 respawnrate=25
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_egg
 
 [chocolate_bar]
 name=Chocolate bar
 desc=Mmmmmmm chocolate.
 iop1=Eat
-cost=10
 model=obj_chocolate_bar
 2dxof=1
 2dyof=41
@@ -178,7 +216,6 @@ model=obj_chocolate_bar
 manwear=obj_chocolate_bar_manwear,0
 womanwear=obj_chocolate_bar_manwear,6
 weight=150g
-wearpos=lefthand
 category=category_59
 param=gnome_topping,^true
 param=gnome_cooking_ingredient,^true
@@ -186,16 +223,24 @@ param=grindable_ingredient_refined,chocolate_dust
 param=grindable_ingredient_message,You grind the chocolate to dust.
 param=cocktail_message,You crumble the chocolate into the drink.
 param=crunchies_message,You crumble the chocolate into the dough.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_chocolate_bar
 
 [pastry_dough]
 name=Pastry dough
 desc=Potentially pastry.
-cost=1
 model=obj_pastry_dough
 2dzoom=1210
 2dyan=116
 2dxan=220
 weight=6oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_pastry_dough
 
 [cake_tin]
 name=Cake tin
@@ -204,5 +249,9 @@ model=obj_cake_tin
 2dzoom=770
 2dyan=144
 2dxan=172
-cost=10
 weight=100g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_cake_tin

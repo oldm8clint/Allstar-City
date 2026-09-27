@@ -3,7 +3,6 @@ name=Golden key
 desc=A replica key made of solid gold.
 recol1s=31393
 recol1d=26209
-cost=300
 members=yes
 model=obj_ikov_shinykey
 2dxof=-3
@@ -11,15 +10,17 @@ model=obj_ikov_shinykey
 2dzoom=700
 2dyan=20
 2dxan=328
-tradeable=no
 weight=10g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [pipkey_iron]
 name=Iron key
 desc=A key made of solid Iron.
 recol1s=31393
 recol1d=8456
-cost=2
 members=yes
 model=obj_ikov_shinykey
 2dxof=-3
@@ -27,15 +28,16 @@ model=obj_ikov_shinykey
 2dzoom=700
 2dyan=20
 2dxan=328
-tradeable=no
 weight=10g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
 
 [piptinderbox_gold]
 name=Golden tinderbox
 desc=A replica tinderbox made of solid gold.
 recol1s=32767
 recol1d=26209
-cost=300
 model=obj_tinderbox
 manwear=obj_tinderbox_manwear,0
 womanwear=obj_tinderbox_manwear,0
@@ -45,23 +47,28 @@ members=yes
 2dzoom=660
 2dyan=1968
 2dxan=196
-tradeable=no
 weight=35g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [pipcandle_gold]
 name=Golden candle
 desc=A replica candle made of solid gold.
 recol1s=32767
 recol1d=26209
-cost=300
 model=obj_unlit_candle
 members=yes
 2dyof=-2
 2dzoom=570
 2dyan=1864
 2dxan=168
-tradeable=no
 weight=1oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [pippot_gold]
 name=Golden pot
@@ -76,7 +83,6 @@ recol4s=12448
 recol4d=26209
 recol5s=10336
 recol5d=26209
-cost=300
 model=obj_pot_unfired
 members=yes
 2dxof=-1
@@ -84,8 +90,11 @@ members=yes
 2dzoom=990
 2dyan=8
 2dxan=112
-tradeable=no
 weight=1lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [piphammer_gold]
 name=Golden hammer
@@ -94,7 +103,6 @@ recol1s=839
 recol1d=26209
 recol2s=11627
 recol2d=26209
-cost=300
 model=obj_hammer
 manwear=obj_hammer_manwear,0
 womanwear=obj_hammer_manwear,6
@@ -104,15 +112,17 @@ members=yes
 2dzoom=900
 2dyan=2012
 2dxan=356
-tradeable=no
 weight=2lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [pipfeather_gold]
 name=Golden feather
 desc=A replica feather made of solid gold.
 recol1s=32767
 recol1d=26209
-cost=300
 model=obj_magic_golden_feather
 members=yes
 2dxof=4
@@ -120,15 +130,17 @@ members=yes
 2dzoom=700
 2dyan=692
 2dxan=428
-tradeable=no
 weight=2g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [pipneedle_gold]
 name=Golden needle
 desc=A replica needle made of solid gold.
 recol1s=19026
 recol1d=26209
-cost=300
 model=obj_needle
 members=yes
 2dxof=2
@@ -136,16 +148,17 @@ members=yes
 2dzoom=850
 2dyan=868
 2dxan=368
-tradeable=no
 weight=1g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [dagger_wolfbane]
 name=Wolfbane
 desc=A silver dagger that can prevent werewolves changing form.
 members=yes
 model=obj_dagger_wolfbane
-cost=350
-cost=300
 members=yes
 2dyof=-4
 2dzoom=760
@@ -154,45 +167,46 @@ members=yes
 iop2=Wield
 manwear=obj_dagger_wolfbane_manwear,0
 womanwear=obj_dagger_wolfbane_manwear,6
-tradeable=no
-wearpos=righthand
 weight=1lb
 category=weapon_stab
-param=stabattack,11
-param=slashattack,5
-param=crushattack,-4
-param=magicattack,1
-param=magicdefence,1
-param=strengthbonus,10
-param=prayerbonus,5
 param=stabattack_anim,human_sword_stab
 param=slashattack_anim,human_sword_slash
 param=defend_anim,human_sword_def
 param=stab_sound,stabsword_stab
 param=slash_sound,stabsword_slash
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=235
+wearpos=righthand
+param=allstar_value,235
+param=allstar_sellable,yes
 
 [bucket_murkywater]
 name=Bucket of water
 desc=It's a bucket of murky water.
 members=yes
-cost=6
 model=obj_bucket_wax
 2dyof=-18
 2dzoom=1020
 2dyan=1660
 2dxan=204
-tradeable=no
 weight=3kg
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=5
+param=allstar_value,5
+param=allstar_sellable,yes
 
 [bucket_blessedwater]
 name=Bucket of water
 desc=It's a bucket of blessed water.
 members=yes
-cost=6
 model=obj_bucket_wax
 2dyof=-18
 2dzoom=1020
 2dyan=1660
 2dxan=204
-tradeable=no
 weight=1lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=5
+param=allstar_value,5
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes

@@ -67,7 +67,6 @@ sound_synth(teleport_all, 1, 0);
 mes("You feel a powerful force take hold of you...");
 p_telejump(map_findsquare(db_getfield($data, runecraft_table:enter_coord, random(db_getfieldcount($data, runecraft_table:enter_coord)))));
 
-
 [label,runecraft_runes]
 def_dbrow $data = ~get_runecraft_data(loc_param(rune_type));
 if ($data = null) {
@@ -139,60 +138,6 @@ if ($require_blankrune_high = true) {
         return (blankrune_high, inv_total(inv, blankrune_high));
     }
     return (blankrune, $blankrune_count);
-}
-
-[opheld4,_talismans]
-def_obj $last_item = last_item;
-def_dbrow $data = ~get_runecraft_data(oc_param($last_item, rune_type));
-if ($data = null) {
-    ~displaymessage(^dm_default);
-    return;
-}
-
-// if they're already in the temple
-if ($last_item = db_getfield($data, runecraft_table:talisman, 0)) {
-    if (~inmap(map_findsquare(db_getfield($data, runecraft_table:enter_coord, 0)), coord) = true) {
-        mes("You are standing in the <db_getfield($data, runecraft_table:name, 0)> temple.");
-        return;
-    }
-    if (coordz(coord) > 4800) {
-        mes("The talisman doesn't seem to work here...");
-        return;
-    }
-    ~talisman_locate_coord(db_getfield($data, runecraft_table:altar_coord, 0), coord);
-}
-
-[opheld4,death_talisman]
-mes("The talisman doesn't seem to work. Maybe the ruins are deep underground.");
-
-[opheld4,cosmic_talisman]
-def_obj $last_item = last_item;
-def_dbrow $data = ~get_runecraft_data(oc_param($last_item, rune_type));
-if ($data = null) {
-    ~displaymessage(^dm_default);
-    return;
-}
-// if they're already in the temple
-if ($last_item = db_getfield($data, runecraft_table:talisman, 0)) {
-    if (~inmap(map_findsquare(db_getfield($data, runecraft_table:enter_coord, 0)), coord) = true) {
-        mes("You are standing in the <db_getfield($data, runecraft_table:name, 0)> temple.");
-        return;
-    }
-    // if in shack
-    if(inzone(^shack_nw, ^shack_se, coord) = true) {
-        mes("You can feel the power flowing through the talisman.");
-        mes("There must be something special about this place.");
-        return;
-    }
-    if (inzone(^zanaris_nw, ^zanaris_se, coord) = true) {
-        ~talisman_locate_coord(db_getfield($data, runecraft_table:altar_coord, 0), coord);
-        return;
-    }
-    if (coordz(coord) > 4800) {
-        mes("The talisman doesn't seem to work here...");
-        return;
-    }
-    ~talisman_locate_coord(^shack_center, coord);
 }
 
 [proc,talisman_locate_coord](coord $altar_coord, coord $player_coord)
