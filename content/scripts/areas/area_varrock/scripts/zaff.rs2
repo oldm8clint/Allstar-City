@@ -8,9 +8,6 @@ if($option = 1) {
     ~chatplayer("<p,neutral>No, thank you."); 
 }
 
-[opnpc3,zaff]
-~openshop_zaff;
-
 [proc,openshop_zaff]
 if(map_members = ^true) {
     ~openshop(memberstaffshop, 550, 1000, 20, "Zaff's Superior Staffs!");

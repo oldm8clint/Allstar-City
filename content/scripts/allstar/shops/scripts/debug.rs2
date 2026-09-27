@@ -1,0 +1,59 @@
+// Shop test helpers. debugprocs only run on non-production worlds for staff level 4.
+
+// ::~shopnpc <npc>: the nearest such NPC within 30 tiles goes into %allstar_shop_testnpc
+// (::getvar allstar_shop_testnpc prints its uid; the npc slot id is uid & 0xffff).
+[debugproc,shopnpc](npc $npc)
+if (npc_find(coord, $npc, 30, 0) = true) {
+    %allstar_shop_testnpc = npc_uid;
+    mes("shopnpc <tostring(coordx(npc_coord))>,<tostring(coordz(npc_coord))>");
+} else {
+    mes("shopnpc none");
+}
+
+// ::~shopreset <shop>: back to the shops.cfg stock, as after a server restart.
+[debugproc,shopreset](int $shop)
+def_int $base = calc($shop * 101);
+def_int $j = 0;
+while ($j < 101) {
+    inv_delslot(allstar_shop_items, calc($base + $j));
+    inv_delslot(allstar_shop_clock, calc($base + $j));
+    $j = calc($j + 1);
+}
+inv_delslot(allstar_shop_state, calc($shop * 4));
+inv_delslot(allstar_shop_state, calc($shop * 4 + 1));
+inv_delslot(allstar_shop_state, calc($shop * 4 + 2));
+~allstar_shop_sync($shop);
+mes("shopreset <tostring($shop)>");
+
+// ::~shopage <shop> <cycles>: moves every restock delay of the shop <cycles> cycles on.
+[debugproc,shopage](int $shop, int $cycles)
+~allstar_shop_sync($shop);
+def_int $base = calc($shop * 101);
+def_int $j = 0;
+while ($j < 101) {
+    def_int $idx = calc($base + $j);
+    if (inv_getobj(allstar_shop_items, $idx) ! null) {
+        ~allstar_shop_setclock($idx, calc(~allstar_shop_getclock($idx) - $cycles));
+    }
+    $j = calc($j + 1);
+}
+~allstar_shop_changed($shop);
+~allstar_shop_sync($shop);
+mes("shopage <tostring($shop)> <tostring($cycles)>");
+
+// ::~shopclose: closes the window, as walking away does.
+[debugproc,shopclose]
+if_close;
+
+// ::~shopdump <shop> <from>: prints "slot:item:amount" for the shop's slots from <from> on.
+[debugproc,shopdump](int $shop, int $from)
+def_int $base = calc($shop * 101);
+mes("shopdump <tostring($shop)> used=<tostring(~allstar_shop_used($shop))> due=<tostring(~allstar_shop_due($shop))> now=<tostring(map_clock)>");
+def_int $j = $from;
+while ($j < 101) {
+    def_obj $obj = inv_getobj(allstar_shop_items, calc($base + $j));
+    if ($obj ! null) {
+        mes("shopslot <tostring($j)>:<oc_debugname($obj)>:<tostring(calc(inv_getnum(allstar_shop_items, calc($base + $j)) - 1))>");
+    }
+    $j = calc($j + 1);
+}

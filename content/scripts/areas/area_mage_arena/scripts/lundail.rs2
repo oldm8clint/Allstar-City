@@ -14,6 +14,3 @@ if ($choice = 1) {
 ~chatplayer("<p,neutral>Wow.");
 ~chatnpc("<p,confused>Few return, most get fried, hence the smell.");
 ~chatplayer("<p,confused>Hmmm.. I did notice.");
-
-[opnpc3,magearena_runeshop]
-~openshop_activenpc;
