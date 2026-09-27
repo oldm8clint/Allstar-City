@@ -123,6 +123,25 @@ param=slashattack_anim,human_stake
 param=crushattack_anim,human_stake
 param=defend_anim,human_rubber_chicken_block
 
+[allstar_item_11192]
+// pack-1 id of the Saradomin cloak (14561); dark beasts drop this id, undefined in item.cfg (0 bonuses, 1 gp)
+name=Saradomin cloak
+desc=A Saradomin cloak.
+model=obj_saradomin_cloak
+2dzoom=1827
+2dxan=364
+2dyan=992
+2dxof=3
+2dyof=12
+iop2=Wear
+manwear=obj_saradomin_cloak_manwear,0
+womanwear=obj_saradomin_cloak_womanwear,0
+members=yes
+cost=1
+wearpos=back
+param=allstar_name,!! NOT EXISTING ITEM !!! - ID:11192
+param=allstar_sellable,no
+
 [allstar_item_13595]
 name=Bronze defender
 desc=A defensive weapon.

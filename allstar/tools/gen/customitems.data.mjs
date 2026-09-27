@@ -26,6 +26,7 @@ export const CUSTOM_ITEMS = [
     { id: 10718, osrs: 9761, name: 'Prayer hood', desc: 'Prayer skillcape hood.', op: 'Wear', note: 'pack-1 id of Prayer hood; weapon slot' },
     { id: 11138, osrs: 10338, name: '3rd age robe top', desc: 'Fabulously ancient mage protection enchanted in the 3rd Age.', op: 'Wear', note: 'pack-1 id of 3rd age robe top; weapon slot' },
     { id: 11139, osrs: 10340, name: '3rd age robe', desc: 'Fabulously ancient mage protection enchanted in the 3rd Age.', op: 'Wear', note: 'pack-1 id of 3rd age robe; weapon slot' },
+    { id: 11192, osrs: 10446, name: 'Saradomin cloak', desc: 'A Saradomin cloak.', op: 'Wear', note: 'pack-1 id of the Saradomin cloak (14561); dark beasts drop this id, undefined in item.cfg (0 bonuses, 1 gp)' },
     { id: 13595, osrs: 8844, name: 'Bronze defender', desc: 'A defensive weapon.', op: 'Wield', womanwear: 'manwear', womanwearOff: 6 },
     { id: 13596, osrs: 8845, name: 'Iron defender', desc: 'A defensive weapon.', op: 'Wield', womanwear: 'manwear', womanwearOff: 6 },
     { id: 13597, osrs: 8846, name: 'Steel defender', desc: 'A defensive weapon.', op: 'Wield', womanwear: 'manwear', womanwearOff: 6 },
@@ -203,7 +204,7 @@ export const PACK1_ALIASES = {
     11134: 14503, 11135: 14504, 11136: 14505, 11137: 14506, 11140: 14509, 11143: 14512, 11145: 14514, // 3rd age
     11153: 14522, 11154: 14523, 11155: 14524, 11156: 14525, 11157: 14526, 11158: 14527, 11159: 14528,
     11160: 14529, 11161: 14530, 11162: 14531, 11163: 14532, 11164: 14533, // god d'hide
-    11192: 14561, 11193: 14562, 11194: 14563, // god cloaks (11192 is the dark beast drop)
+    11193: 14562, 11194: 14563, // god cloaks (11192, the dark beast drop, is an item of its own)
     11198: 14567, 11199: 14568, 11200: 14569, 11201: 14570, 11202: 14571, 11203: 14572, // god robes
     11268: 14638, 11490: 14860, 11785: 15156, 11814: 15185, 11824: 15195,
     11977: 15348, 11978: 15349, 11979: 15350, 11981: 15352

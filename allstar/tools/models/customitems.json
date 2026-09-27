@@ -115,6 +115,25 @@
       ],
       "members": true
     },
+    "11192": {
+      "source": "osrs:10446",
+      "standin": false,
+      "model": "obj_saradomin_cloak",
+      "2dzoom": 1827,
+      "2dxan": 364,
+      "2dyan": 992,
+      "2dxof": 3,
+      "2dyof": 12,
+      "manwear": [
+        "obj_saradomin_cloak_manwear",
+        0
+      ],
+      "womanwear": [
+        "obj_saradomin_cloak_womanwear",
+        0
+      ],
+      "members": true
+    },
     "13595": {
       "source": "osrs:8844",
       "standin": false,

@@ -99,7 +99,8 @@ else {
     for (const [from, to] of Object.entries(PACK1_ALIASES)) if (e.values.get(Number(from)) !== to) bad.push(`${from} -> ${e.values.get(Number(from))}`);
 }
 check(bad.length === 0, `allstar_items maps ${CUSTOM_ITEMS.length} ids and ${Object.keys(PACK1_ALIASES).length} pack-1 aliases${bad.length ? ': ' + bad.slice(0, 5).join('; ') : ''}`);
-check(e?.values.get(11192) === 14561 && e?.values.get(10228) === 13597, 'aliases: 11192 (dark beast drop) -> Saradomin cloak, 10228 -> steel defender');
+check(e?.values.get(10228) === 13597 && e?.values.get(11193) === 14562, 'aliases: 10228 -> steel defender, 11193 -> Guthix cloak');
+check(e?.values.get(11192) === 11192 && byId(11192).name === 'Saradomin cloak' && byId(11192).cost === 1 && wearpos(11192) === 1 && param(byId(11192), 'magicattack') === undefined, '11192 (dark beast drop) is a Saradomin cloak with its own undefined item.cfg data (0 bonuses, 1 gp)');
 
 // ---- in game: ::give and wield
 if (process.argv.includes('--server')) {
