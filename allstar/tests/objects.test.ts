@@ -73,22 +73,46 @@ async function coordIs(bot: Bot, x: number, z: number, level = 0, timeout = 4000
     return c;
 }
 
+// close whatever is open (level-up chat boxes are modal in the 377 engine and block clicks)
+function closeModal(bot: Bot) {
+    (bot as unknown as { send(prot: ClientGameProt, write?: (buf: Packet) => void): void }).send(ClientGameProt.CLOSE_MODAL);
+}
+
+// Level-up chat boxes queue up (one per level) and each one is modal: close them until none is left.
+async function settle(bot: Bot) {
+    for (let i = 0; i < 20; i++) {
+        await sleep(700);
+        if (bot.chat === -1 && bot.main === -1) {
+            return;
+        }
+        closeModal(bot);
+        bot.chat = -1;
+        bot.main = -1;
+    }
+}
+
 // ::tele level,mx,mz,lx,lz from absolute coordinates
 async function at(bot: Bot, x: number, z: number, level = 0) {
+    closeModal(bot);
     bot.cheat(`tele ${level},${x >> 6},${z >> 6},${x & 63},${z & 63}`);
     const c = await coordIs(bot, x, z, level, 6000);
     if (c.x !== x || c.z !== z || c.level !== level) {
         throw new Error(`could not teleport to ${level},${x},${z}: ${JSON.stringify(c)}`);
     }
-    await sleep(600);
+    await settle(bot);
 }
 
 const inv = (bot: Bot) => bot.invs.get(INV) ?? [];
 const count = (bot: Bot, id: number) => inv(bot).reduce((n, o) => n + (o?.id === id ? o.count : 0), 0);
 const slotOf = (bot: Bot, id: number) => inv(bot).findIndex(o => o?.id === id);
 const xp = (bot: Bot, stat: number) => bot.stats[stat]?.xp ?? 0;
-// Bot reads IF_OPENMAIN with g2, but the id arrives as p2_alt2 (low byte + 128, then high byte)
-const main = (bot: Bot) => (bot.main === -1 ? -1 : (((bot.main >> 8) - 128) & 0xff) | ((bot.main & 0xff) << 8));
+// Bot reads IF_OPENMAIN and IF_SETTEXT components with g2, but they arrive as p2_alt3 (low byte + 128,
+// then high byte): translate between the two.
+const unalt = (v: number) => (((v >> 8) - 128) & 0xff) | ((v & 0xff) << 8);
+const alt = (com: number) => ((((com & 0xff) + 128) & 0xff) << 8) | (com >> 8);
+const main = (bot: Bot) => (bot.main === -1 ? -1 : unalt(bot.main));
+const text = (bot: Bot, com: number) => bot.texts.get(alt(com));
+const untext = (bot: Bot, com: number) => bot.texts.delete(alt(com));
 
 async function empty(bot: Bot) {
     bot.cheat('empty');
@@ -329,6 +353,87 @@ bot.invButton(1, 1205, 0, 1119);
 await bot.until(() => count(bot, 1205) === 1, 4000, 'dagger').catch(() => {});
 check(count(bot, 1205) === 1 && count(bot, 2349) === 1, `bronze dagger made from 1 bar (${count(bot, 1205)}, ${count(bot, 2349)})`);
 check(xp(bot, 13) - xp0 === 500, `smithing xp 500 per bronze bar (${xp(bot, 13) - xp0})`);
+
+// Make 5 with one bar: the xp is added 5 times, the item only once
+await sleep(1000);
+await useOnLoc(bot, 2349, slotOf(bot, 2349), 2378, 3442, 2783);
+await bot.until(() => main(bot) === 994, 4000, 'smithing interface').catch(() => {});
+xp0 = xp(bot, 13);
+bot.invButton(2, 1205, 0, 1119);
+await bot.until(() => count(bot, 1205) === 2, 4000, 'second dagger').catch(() => {});
+await sleep(600);
+check(count(bot, 1205) === 2 && count(bot, 2349) === 0, `Make 5 with one bar makes one dagger (${count(bot, 1205)})`);
+check(xp(bot, 13) - xp0 === 2500, `Make 5 gives 5 x 500 xp anyway (${xp(bot, 13) - xp0})`);
+await settle(bot);
+
+// clan portal 2466: the first option 1 from NpcDialogue 0 is swallowed ("Mmk thanks for reading!"
+// + Hans' box); its option 1 then joins Saradomin. NpcDialogue stays 1340 afterwards.
+await sleep(4000);
+// NPCs wander in front of the portals: click from the tile beside it
+await at(bot, 2854, 3598);
+since = bot.messages.length;
+bot.opLoc(1, 2855, 3598, 2466);
+await bot.until(() => text(bot, 2461) === "@red@Saradomin's Clan", 4000, 'clan menu').catch(() => {});
+check(text(bot, 2461) === "@red@Saradomin's Clan" && text(bot, 2462) === "@red@Zamorak's Clan", `clan portal menu ${JSON.stringify(bot.messages.slice(since))} ${bot.main} ${bot.chat}`);
+untext(bot, 2461);
+bot.ifButton(2461);
+await bot.until(() => text(bot, 2461) === 'Yea i wanna go own n00bs!', 4000, 'hans box').catch(() => {});
+check(text(bot, 2460) === 'Select an Option' && text(bot, 2461) === 'Yea i wanna go own n00bs!' && text(bot, 2462) === 'Nah im really scared!', 'option 1 from NpcDialogue 0 opens the extra box');
+since = bot.messages.length;
+bot.ifButton(2461);
+check(await expect(bot, /^Welcome to Saradomin's team!$/, since), 'extra box option 1 joins Saradomin');
+c = await coordIs(bot, 2387, 3116);
+check(c.x === 2387 && c.z === 3116, `saradomin clan -> ${JSON.stringify(c)}`);
+await at(bot, 2854, 3598);
+untext(bot, 2461);
+bot.opLoc(1, 2855, 3598, 2466);
+await bot.until(() => text(bot, 2461) === "@red@Saradomin's Clan", 4000, 'clan menu').catch(() => {});
+since = bot.messages.length;
+bot.ifButton(2462);
+check(!(await expect(bot, /Zamorak's team/, since, 2000)), 'with NpcDialogue 1340, option 2 only says "Fine, you suck!"');
+untext(bot, 2461);
+bot.opLoc(1, 2855, 3598, 2466);
+await bot.until(() => text(bot, 2461) === "@red@Saradomin's Clan", 4000, 'clan menu').catch(() => {});
+since = bot.messages.length;
+bot.ifButton(2462);
+check(await expect(bot, /^Welcome to Zamorak's team!$/, since), 'back at NpcDialogue 0, option 2 joins Zamorak');
+c = await coordIs(bot, 2412, 3091);
+check(c.x === 2412 && c.z === 3091, `zamorak clan -> ${JSON.stringify(c)}`);
+
+// bank booth 2213 first option: the "banker" is whoever stands south of the booth (Man if nobody)
+await at(bot, 2807, 3441);
+untext(bot, 4885);
+bot.opLoc(1, 2807, 3442, 2213);
+await bot.until(() => text(bot, 4885) === 'Good day, how can I help you?', 4000, 'banker greeting').catch(() => {});
+check(text(bot, 4885) === 'Good day, how can I help you?' && text(bot, 4884) === 'Man', `bank booth greeting from "${text(bot, 4884)}"`);
+untext(bot, 2461);
+bot.resumePauseButton(4886);
+await bot.until(() => text(bot, 2461) === "I'd like to access my bank account, please.", 4000, 'bank options').catch(() => {});
+check(text(bot, 2460) === 'What would you like to say?', 'bank booth options');
+bot.main = -1;
+bot.ifButton(2461);
+await bot.until(() => bot.main !== -1, 4000, 'bank').catch(() => {});
+check(bot.main !== -1, 'bank opens');
+
+// wilderness agility rope swing 2283
+await level(bot, 'agility', 16, 1);
+await at(bot, 3005, 3950);
+xp0 = xp(bot, 16);
+since = bot.messages.length;
+bot.opLoc(1, 3005, 3952, 2283);
+check(await expect(bot, /^You swing from the rope\.$/, since), 'rope swing message');
+c = await coordIs(bot, 3006, 3958);
+check(c.x === 3006 && c.z === 3958, `rope swing -> ${JSON.stringify(c)}`);
+check(xp(bot, 16) - xp0 === 8, `rope swing xp 8 x 1 (${xp(bot, 16) - xp0})`);
+
+// trap staircase 1728 in the Yanille agility dungeon drops into the King Black Dragon's zone
+await at(bot, 2620, 9496);
+since = bot.messages.length;
+bot.opLoc(1, 2620, 9497, 1728);
+check(await expect(bot, /^You climb down the stairs, and stand on a trap!$/, since), 'trap stairs message');
+c = await coordIs(bot, 2636, 9517);
+check(c.x === 2636 && c.z === 9517, `trap stairs -> ${JSON.stringify(c)}`);
+check(await expect(bot, /^You get hit!$/, since, 25000), 'KBDLair hit while standing in the zone');
 
 bot.close();
 console.log(failures === 0 ? 'ALL PASS' : `${failures} FAILED`);
