@@ -1,0 +1,80 @@
+import InternalClient from '#/server/InternalClient.js';
+import Environment from '#/util/Environment.js';
+
+export default class LoggerClient extends InternalClient {
+    constructor() {
+        super(Environment.LOGGER_HOST, Environment.LOGGER_PORT);
+    }
+
+    public async sessionLog(logs: string[]) {
+        await this.connect();
+
+        if (!this.ws || !this.wsr || !this.wsr.checkIfWsLive()) {
+            return;
+        }
+
+        this.ws.send(
+            JSON.stringify({
+                type: 'session_log',
+                world: Environment.NODE_ID,
+                profile: Environment.NODE_PROFILE,
+                logs
+            })
+        );
+    }
+
+    public async wealthEvent(events: string[]) {
+        await this.connect();
+
+        if (!this.ws || !this.wsr || !this.wsr.checkIfWsLive()) {
+            return;
+        }
+
+        this.ws.send(
+            JSON.stringify({
+                type: 'wealth_event',
+                world: Environment.NODE_ID,
+                profile: Environment.NODE_PROFILE,
+                events
+            })
+        );
+    }
+
+    public async report(session_uuid: string, coord: number, offender: string, reason: number) {
+        await this.connect();
+
+        if (!this.ws || !this.wsr || !this.wsr.checkIfWsLive()) {
+            return;
+        }
+
+        this.ws.send(
+            JSON.stringify({
+                type: 'report',
+                world: Environment.NODE_ID,
+                profile: Environment.NODE_PROFILE,
+                session_uuid,
+                timestamp: Date.now(),
+                coord,
+                offender,
+                reason
+            })
+        );
+    }
+
+    public async inputTrack(session_uuid: string, timestamp: number, buf: string) {
+        await this.connect();
+
+        if (!this.ws || !this.wsr || !this.wsr.checkIfWsLive()) {
+            return;
+        }
+
+        this.ws.send(
+            JSON.stringify({
+                type: 'input_track',
+                session_uuid,
+                timestamp,
+                buf
+            })
+        );
+    }
+}
