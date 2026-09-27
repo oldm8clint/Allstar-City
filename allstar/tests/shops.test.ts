@@ -98,6 +98,7 @@ await sleep(1500);
 await cmd('~shopreset 2');
 await setInventory([['coins', 10000000]]);
 await openShop('aubury', 3, 'Gold & Trimmed Armor');
+check(view().length === 40, `UPDATE_INV_FULL of 40 entries on 3900 (${view().length})`);
 check(view().filter(o => o).length === 24, `shop 2 shows 24 items (${view().filter(o => o).length})`);
 check(view()[0]?.id === 2595 && view()[0]?.count === 100, 'shop 2 slot 0 = 2595 x100');
 check(view()[5]?.id === 2583 && view()[5]?.count === 1000, 'shop 2 slot 5 = 2583 x1000');
