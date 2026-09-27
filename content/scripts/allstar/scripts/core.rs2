@@ -237,3 +237,17 @@ if ($x >= 3303 & $x <= 3308 & $z >= 9370 & $z <= 9380) { return (true); }
 if ($x >= 2751 & $x <= 2765 & $z >= 3492 & $z <= 3504) { return (true); }
 if ($x >= 3430 & $x <= 3437 & $z >= 9772 & $z <= 9777) { return (true); }
 return (false);
+
+// Player.headIcon: Allstar-Scape sent the 317 head icon bits (1 protect from melee, 2 protect from
+// missiles, 4 protect from magic, then 8 retribution, 16 smite, 32 redemption). The 377 client draws
+// bit 0 skull, 1 multiway, 2 hint, 3-5 the protection prayers and 8-10 retribution/smite/redemption,
+// so the bits are moved; 317 bits 6 and 7 have no 377 icon.
+[proc,allstar_set_headicon](int $allstar)
+def_int $bits = 0;
+if (testbit($allstar, 0) = 1) $bits = setbit($bits, 3);
+if (testbit($allstar, 1) = 1) $bits = setbit($bits, 4);
+if (testbit($allstar, 2) = 1) $bits = setbit($bits, 5);
+if (testbit($allstar, 3) = 1) $bits = setbit($bits, 8);
+if (testbit($allstar, 4) = 1) $bits = setbit($bits, 9);
+if (testbit($allstar, 5) = 1) $bits = setbit($bits, 10);
+headicons_set($bits);
