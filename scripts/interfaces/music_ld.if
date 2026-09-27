@@ -1,0 +1,97 @@
+type=overlay
+
+[com_0]
+type=text
+x=4
+y=45
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=To reduce memory requirements
+colour=0xFFFF00
+
+[com_1]
+type=text
+x=4
+y=60
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=music & sounds are only
+colour=0xFFFF00
+
+[com_2]
+type=text
+x=4
+y=75
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=available in the high-detail
+colour=0xFFFF00
+
+[com_3]
+type=text
+x=4
+y=145
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=If you wish to hear these
+colour=0xFFFF00
+
+[com_4]
+type=text
+x=4
+y=160
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=please switch versions, but
+colour=0xFFFF00
+
+[com_5]
+type=text
+x=4
+y=175
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=bear in mind things will run
+colour=0xFFFF00
+
+[com_6]
+type=text
+x=4
+y=190
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=more slowly as a result.
+colour=0xFFFF00
+
+[com_7]
+type=text
+x=4
+y=90
+width=185
+height=14
+center=yes
+font=p12_full
+shadowed=yes
+text=version of the game.
+colour=0xFFFF00

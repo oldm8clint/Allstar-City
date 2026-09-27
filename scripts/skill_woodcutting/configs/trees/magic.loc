@@ -1,0 +1,13 @@
+[magictree]
+name=Magic tree
+desc=The tree shimmers with a magical force.
+model=loc_8405
+width=2
+length=2
+op1=Chop down
+op3=hidden
+mapscene=0
+ambient=25
+category=tree
+param=next_loc_stage,treestump2
+param=ent,macro_ent_magic

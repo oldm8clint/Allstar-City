@@ -1,0 +1,55 @@
+[ai_queue1,slayer_cockatrice] gosub(npc_default_retaliate_ap);
+[ai_applayer2,slayer_cockatrice]
+if(inv_total(worn, slayer_mirror_shield) < 1) {
+    ~cockatrice_gaze;
+    return;
+}
+npc_setmode(opplayer2);
+
+[ai_opplayer2,slayer_cockatrice]
+if(inv_total(worn, slayer_mirror_shield) < 1) {
+    npc_setmode(applayer2); // works pretty much the same as banshees 
+    return;
+}
+gosub(npc_default_attack);
+
+[proc,cockatrice_gaze]
+if (%death = ^true) {
+    npc_setmode(null);
+    return;
+}
+if (%npc_action_delay > map_clock) return;
+if (~npc_check_notcombat = false) {
+    npc_setmode(null);
+    return;
+}
+if (~npc_check_notcombat_self = false) { // Doesnt change mode! Keeps trying!
+    return;
+}
+def_int $damage;
+// protect from melee works here but not stat based otherwise, always static damage
+// doesn't prevent drain either
+if (~check_protect_prayer(^melee_style) = true) $damage = 0;
+else $damage = calc((stat_base(hitpoints) * 12) / 100);
+// reduction is 40% (current) for att/str/range/mage, 20% def/pray/agil
+// stat reduction isnt queued
+stat_drain(attack, 0, 40);
+stat_drain(strength, 0, 40);
+stat_drain(ranged, 0, 40);
+stat_drain(magic, 0, 40);
+stat_drain(defence, 0, 20);
+stat_drain(prayer, 0, 20);
+stat_drain(agility, 0, 20);
+npc_anim(npc_param(attack_anim), 0);
+~player_projectile(npc_coord, coord, uid, slayer_cockatrice_zap, 23, 32, 0, 0, 0, 16, 2); // TODO: recheck this
+if (npc_param(attack_sound) ! null) {
+    sound_synth(npc_param(attack_sound), 0, 0);
+}
+if_close;
+~npc_set_attack_vars;
+%npc_action_delay = add(map_clock, 4);
+queue(combat_damage_player, 0, $damage);
+if (npc_param(poison_severity) > 0 & $damage > 0) {
+    queue(poison_player, 0, npc_param(poison_severity));
+}
+queue*(playerhit_n_retaliate, 0)(npc_uid);

@@ -1,0 +1,377 @@
+[tree]
+name=Tree
+desc=One of the most common trees in RuneScape.
+model=tree
+recol1s=5218
+recol1d=12548
+width=2
+length=2
+mapscene=0
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,treestump2
+param=ent,macro_ent_tree1
+
+[lighttree]
+name=Tree
+desc=A healthy young tree.
+model=tree
+recol1s=5218
+recol1d=17633
+width=2
+length=2
+mapscene=0
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,treestump2_light
+//param=ent,macro_ent_tree1
+
+[tree2]
+name=Tree
+desc=A commonly found tree.
+model=tree2
+recol1s=5218
+recol1d=12548
+width=2
+length=2
+mapscene=1
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,treestump2
+param=ent,macro_ent_tree3
+
+[tree3]
+name=Tree
+desc=A commonly found tree.
+model=tree2
+width=2
+length=2
+mapscene=1
+resizex=100
+resizey=100
+resizez=100
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,treestump2_small
+//param=ent,macro_ent_tree1
+
+[lighttree2]
+name=Tree
+desc=A healthy young tree.
+model=tree2
+recol1s=5218
+recol1d=17633
+width=2
+length=2
+mapscene=1
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,treestump2_light
+//param=ent,macro_ent_tree1
+
+[deadtree1]
+name=Dead tree
+desc=This tree has long been dead.
+model=deadtree1
+width=2
+length=2
+mapscene=6
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree1_stump
+param=ent,macro_ent_dead_tree1
+
+
+[deadtree1_large]
+name=Dead tree
+desc=This tree has long been dead.
+model=deadtree1
+width=2
+length=2
+mapscene=6
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree1_large_stump
+//param=ent,macro_ent_dead_tree1
+
+[deadtree4]
+name=Dead tree
+desc=This tree has long been dead.
+model=deadtree1
+width=2
+length=2
+mapscene=6
+resizex=100
+resizey=100
+resizez=100
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,treestump2_small
+//param=ent,macro_ent_dead_tree1
+
+[lightdeadtree1]
+name=Dead tree
+desc=An old weather beaten tree.
+model=deadtree1
+recol1s=4194
+recol1d=13602
+recol2s=5250
+recol2d=12514
+width=2
+length=2
+mapscene=6
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree1_light_stump
+param=ent,macro_ent_dead_tree2
+
+[deadtree2]
+name=Dead tree
+desc=It's only useful for firewood now.
+model=deadtree2
+recol1s=6240
+recol1d=5218
+recol2s=7296
+recol2d=5218
+mapscene=27
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree2_stump
+param=ent,macro_ent_dead_tree3
+
+[deadtree2_dark]
+name=Dead tree
+desc=It's only useful for firewood now.
+model=deadtree2
+recol1s=7296
+recol1d=4194
+recol2s=6240
+recol2d=4194
+mapscene=27
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree2_stump_dark
+param=ent,macro_ent_dead_tree6
+
+[deadtree3]
+name=Dead tree
+desc=It's only useful for firewood now.
+model=deadtree3
+width=2
+length=2
+mapscene=6
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree3_stump
+param=ent,macro_ent_dead_tree7
+
+[deadtree2_snowy]
+name=Dead tree
+desc=It's only useful for firewood now.
+model=deadtree2
+recol1s=7296
+recol1d=30619
+mapscene=6
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree2_stump_dark
+param=ent,macro_ent_dead_tree8
+
+[evergreen]
+name=Evergreen
+desc=A hardy evergreen tree.
+model=loc_1315
+recol1s=5218
+recol1d=12548
+width=2
+length=2
+op1=Chop down
+op3=hidden
+mapscene=0
+category=tree
+param=next_loc_stage,treestump2
+param=ent,macro_ent_evergreen1
+
+[evergreen_large]
+name=Evergreen
+desc=A hardy evergreen tree.
+model=loc_1316
+recol1s=5218
+recol1d=12548
+width=3
+length=3
+op1=Chop down
+op3=hidden
+mapscene=0
+category=tree
+param=next_loc_stage,evergreen_large_stump
+param=ent,macro_ent_evergreen2
+
+[evergreen_vsnowy_large]
+name=Evergreen
+desc=This would make good firewood.
+model=evergreen_vsnowy_large
+recol1s=5218
+recol1d=12548
+width=3
+length=3
+op1=Chop down
+op3=hidden
+mapscene=1
+category=tree
+param=next_loc_stage,evergreen_large_stump
+//param=ent,macro_ent_tree2
+
+[evergreen_snowy_large]
+name=Evergreen
+desc=This would make good firewood.
+model=evergreen_snowy_large
+recol1s=5218
+recol1d=12548
+width=3
+length=3
+op1=Chop down
+op3=hidden
+mapscene=1
+category=tree
+param=next_loc_stage,evergreen_large_stump
+//param=ent,macro_ent_tree2
+
+[snowtree1]
+name=Tree
+desc=It's thick with snow.
+model=snowtree1
+width=3
+length=3
+mapscene=0
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,evergreen_large_stump
+param=ent,macro_ent_tree4
+
+[snowtree2]
+name=Tree
+desc=It's thick with snow.
+model=snowtree2
+width=3
+length=3
+mapscene=0
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,evergreen_large_stump
+//param=ent,macro_ent_tree2
+
+[snowtree3]
+name=Tree
+desc=It's thick with snow.
+model=snowtree3
+width=3
+length=3
+mapscene=0
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,evergreen_large_stump
+//param=ent,macro_ent_tree2
+
+[deadtree2_swamp]
+name=Dead tree
+desc=It's only useful for firewood now.
+model=deadtree2
+recol1s=7296
+recol1d=3203
+recol2s=6240
+recol2d=3203
+mapscene=6
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree2_stump_swamp
+param=ent,macro_ent_dead_tree4
+
+[deadtree6]
+name=Dead tree
+desc=This tree has long been dead.
+model=deadtree6
+recol1s=4193
+recol1d=5218
+mapscene=6
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,deadtree6_stump
+param=ent,macro_ent_dead_tree10
+
+[regicide_tree_large]
+name=Tree
+desc=A tree.
+model=regicide_tree_large
+width=3
+length=3
+mapscene=10
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,regicide_tree_stump
+param=ent,macro_ent_tree5
+
+[regicide_tree_large2]
+name=Tree
+desc=A tree.
+model=regicide_tree_large
+width=3
+length=3
+resizex=128
+resizey=150
+resizez=128
+mapscene=10
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,regicide_tree_stump
+
+[regicide_tree_large3]
+name=Tree
+desc=A tree.
+model=regicide_tree_large
+width=3
+length=3
+resizex=128
+resizey=170
+resizez=128
+mapscene=10
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,regicide_tree_stump
+
+[regicide_tree_small]
+name=Tree
+desc=A tree.
+model=regicide_tree_large
+width=2
+length=2
+resizex=64
+resizey=84
+resizez=64
+mapscene=9
+op1=Chop down
+op3=hidden
+category=tree
+param=next_loc_stage,regicide_tree_stump_small
+param=ent,macro_ent_tree6

@@ -1,0 +1,19 @@
+[debugproc,overlay](interface $interface)
+if_openoverlay($interface);
+
+[debugproc,minimap](int $type)
+minimap_toggle($type);
+
+[debugproc,speen](int $xSpeed, int $ySpeed)
+if (p_finduid(uid) = false) {
+    return;
+}
+if_openmain(player_kit_hair_woman);
+if_setrotation(player_kit_hair_woman:com_92, $xSpeed, $ySpeed);
+
+[debugproc,angle](int $xan, int $yan, int $zoom)
+if (p_finduid(uid) = false) {
+    return;
+}
+if_openmain(player_kit_hair_woman);
+if_setangle(player_kit_hair_woman:com_92, $xan, $yan, $zoom);

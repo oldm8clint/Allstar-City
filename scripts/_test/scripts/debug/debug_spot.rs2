@@ -1,0 +1,6 @@
+[debugproc,spot](spotanim $graphic)
+if ($graphic = null) {
+    return;
+}
+
+spotanim_pl($graphic, 128, 0);

@@ -1,0 +1,26 @@
+// TODO: confirm stocks, these are from 2012 and OSRS seems inflated
+// current stocks taken 2007 december.
+[slayershop]
+scope=shared
+size=40
+restock=yes
+stackall=yes
+allstock=no
+stock1=slayer_gem,50,100
+stock2=slayer_mirror_shield,50,100
+stock3=slayer_leafbladed_spear,50,100
+stock4=slayer_broad_arrows,50000,5
+stock5=slayer_bag_of_salt,5000,5
+stock6=slayer_rock_hammer,50,100
+stock7=slayer_facemask,50,100
+stock8=slayer_earmuffs,50,100
+stock9=slayer_nosepeg,50,100
+stock10=slayer_staff,50,100
+stock11=wallbeast_spike_helmet,50,100
+stock12=fishing_explosive,5000,50
+stock13=slayer_icy_water,5000,5
+stock14=deal_slayer_gloves,50,16
+stock15=slayer_buglan_off,50,100
+stock16=slayer_boots,50,100
+stock17=slayer_spray_pump_10,50,100
+stock18=slayer_fungicide,5000,5

@@ -1,0 +1,6 @@
+[debugproc,anim](seq $anim)
+if ($anim = null) {
+    return;
+}
+
+anim($anim, 0);

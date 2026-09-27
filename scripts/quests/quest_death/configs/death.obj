@@ -1,0 +1,205 @@
+[death_combination]
+name=Combination
+desc=The combination to Burthorpe Castle's equipment room.
+recol1s=28434
+recol1d=28400
+cost=1
+members=yes
+model=obj_template_for_cert
+2dyof=2
+2dzoom=760
+2dyan=28
+2dxan=552
+iop1=Read
+weight=5g
+tradeable=no
+
+[death_iou]
+name=Iou
+desc=The guard wrote the IOU on the back of some paper.
+recol1s=28434
+recol1d=24139
+cost=1
+members=yes
+model=obj_template_for_cert
+2dyof=2
+2dzoom=760
+2dyan=28
+2dxan=552
+iop1=Read
+weight=5g
+tradeable=no
+
+[death_secretwaymap]
+name=Secret way map
+desc=This map shows the secret way up to Death Plateau.
+recol1s=24174
+recol1d=17901
+recol2s=21003
+recol2d=15787
+recol3s=17832
+recol3d=14696
+cost=1
+members=yes
+model=obj_newcomer_map
+2dxof=-1
+2dyof=56
+2dzoom=990
+2dyan=1716
+2dxan=264
+weight=5g
+tradeable=no
+
+[death_climbingboots]
+name=Climbing boots
+desc=Boots made for climbing.
+recol1s=7298
+recol1d=7399
+cost=12
+members=yes
+model=obj_ikov_bootsoflightness
+2dxof=1
+2dyof=-6
+2dzoom=770
+2dyan=160
+2dxan=152
+iop2=Wear
+manwear=obj_death_climbingboots_manwear,0
+womanwear=obj_death_climbingboots_womanwear,0
+param=slashdefence,2
+param=crushdefence,2
+param=strengthbonus,2
+wearpos=feet
+weight=12oz
+
+[cert_death_climbingboots]
+certlink=death_climbingboots
+certtemplate=template_for_cert
+
+[death_spikedboots]
+name=Spiked boots
+desc=Climbing boots with spikes.
+recol1s=7298
+recol1d=7399
+cost=30
+members=yes
+model=obj_death_spikedboots
+2dxof=1
+2dzoom=790
+2dyan=152
+2dxan=60
+iop2=Wear
+manwear=obj_death_spikedboots_manwear,0
+womanwear=obj_death_spikedboots_womanwear,0
+members=yes
+wearpos=feet
+weight=12oz
+
+[cert_death_spikedboots]
+certlink=death_spikedboots
+certtemplate=template_for_cert
+
+[death_cannonball_red]
+name=Stone ball
+desc=Place on the stone mechanism in the right order to open the door.
+recol1s=3171
+recol1d=15426
+model=obj_mcannonball
+2dxof=1
+2dzoom=1400
+2dyan=1852
+2dxan=156
+cost=1
+members=yes
+respawnrate=10
+category=death_cannonball
+weight=8lb
+tradeable=no
+
+[death_cannonball_blue]
+name=Stone ball
+desc=Place on the stone mechanism in the right order to open the door.
+recol1s=3171
+recol1d=3181
+model=obj_mcannonball
+2dxof=1
+2dzoom=1400
+2dyan=1852
+2dxan=156
+cost=1
+members=yes
+respawnrate=10
+category=death_cannonball
+weight=8lb
+tradeable=no
+
+[death_cannonball_yellow]
+name=Stone ball
+desc=Place on the stone mechanism in the right order to open the door.
+recol1s=3171
+recol1d=19938
+model=obj_mcannonball
+2dxof=1
+2dzoom=1400
+2dyan=1852
+2dxan=156
+cost=1
+members=yes
+respawnrate=10
+category=death_cannonball
+weight=8lb
+tradeable=no
+
+[death_cannonball_purple]
+name=Stone ball
+desc=Place on the stone mechanism in the right order to open the door.
+recol1s=3171
+recol1d=13388
+model=obj_mcannonball
+2dxof=1
+2dzoom=1400
+2dyan=1852
+2dxan=156
+cost=1
+members=yes
+respawnrate=10
+category=death_cannonball
+weight=8lb
+tradeable=no
+
+[death_cannonball_green]
+name=Stone ball
+desc=Place on the stone mechanism in the right order to open the door.
+recol1s=3171
+recol1d=2402
+model=obj_mcannonball
+2dxof=1
+2dzoom=1400
+2dyan=1852
+2dxan=156
+cost=1
+members=yes
+respawnrate=10
+category=death_cannonball
+weight=8lb
+tradeable=no
+
+[death_entrancecert]
+name=Certificate
+desc=Entrance certificate to the Imperial Guard.
+recol1s=15648
+recol1d=10468
+recol2s=29594
+recol2d=24173
+recol3s=30753
+recol3d=23681
+cost=1
+members=yes
+model=obj_recommendedletter
+2dxof=1
+2dyof=7
+2dzoom=1040
+2dyan=120
+2dxan=380
+weight=5g
+tradeable=no

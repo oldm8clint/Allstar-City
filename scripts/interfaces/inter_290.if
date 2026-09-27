@@ -1,0 +1,55 @@
+[com_0]
+type=rect
+x=95
+y=37
+width=300
+height=170
+fill=yes
+colour=0x808040
+
+[com_1]
+type=model
+x=223
+y=215
+width=32
+height=32
+model=com_i553
+zoom=404
+xan=523
+
+[com_2]
+type=inv
+x=102
+y=41
+width=7
+height=4
+draggable=yes
+margin=10,4
+option1=@gre@Value
+option2=Pack @red@1
+option3=Pack @red@5
+option4=Pack @red@All
+option5=Pack @red@X
+
+[com_3]
+type=text
+x=457
+y=12
+buttontype=close
+width=31
+height=14
+font=p12_full
+shadowed=yes
+text=Close
+colour=0xFFFF00
+
+[com_4]
+type=text
+x=131
+y=186
+width=226
+height=17
+font=q8_full
+shadowed=yes
+text=@yel@Tai Bwo Wannai @red@ Parcel Service
+colour=0xFFFF00

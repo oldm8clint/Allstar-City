@@ -1,0 +1,51 @@
+[proc,drop_bird_nest]
+def_namedobj $nest = bird_nest_ring;
+switch_int(random(5)) {
+    case 0 : $nest = bird_nest_egg_red;
+    case 1 : $nest = bird_nest_egg_green;
+    case 2 : $nest = bird_nest_egg_blue;
+    case 3 : $nest = bird_nest_seeds;
+}
+mes("A bird's nest falls out of the tree.");
+obj_add(map_findsquare(coord, 1, 1, ^map_findsquare_lineofwalk), $nest, 1, 50);
+
+[opheld1,bird_nest_egg_red] @open_bird_nest(bird_egg_red, last_slot, false);
+[opheld1,bird_nest_egg_green] @open_bird_nest(bird_egg_green, last_slot, false);
+[opheld1,bird_nest_egg_blue] @open_bird_nest(bird_egg_blue, last_slot, false);
+
+[opheld1,bird_nest_ring]
+def_namedobj $ring = sapphire_ring;
+def_int $rand = random(100);
+if($rand < 1) $ring = diamond_ring;
+else if($rand < 10) $ring = ruby_ring;
+else if($rand < 25) $ring = emerald_ring;
+else if($rand < 60) $ring = gold_ring;
+@open_bird_nest($ring, last_slot, false);
+
+[opheld1,bird_nest_seeds]
+def_namedobj $seed = acorn;
+// TODO: rates might be a bit off? From https://oldschool.runescape.wiki/w/Bird_nest_(seeds,_2005-2019)
+def_int $rand = random(1000);
+if($rand < 5) $seed = magic_tree_seed;
+else if($rand < 16) $seed = spirit_tree_seed;
+else if($rand < 33) $seed = calquat_tree_seed;
+else if($rand < 55) $seed = palm_tree_seed;
+else if($rand < 82) $seed = yew_seed;
+else if($rand < 116) $seed = papaya_tree_seed;
+else if($rand < 158) $seed = pineapple_tree_seed;
+else if($rand < 212) $seed = maple_seed;
+else if($rand < 280) $seed = curry_tree_seed;
+else if($rand < 365) $seed = orange_tree_seed;
+else if($rand < 473) $seed = banana_tree_seed;
+else if($rand < 608) $seed = willow_seed;
+else if($rand < 778) $seed = apple_tree_seed;
+@open_bird_nest($seed, last_slot, true);
+
+[label,open_bird_nest](namedobj $reward, int $slot, boolean $mes)
+if(inv_freespace(inv) < 1) {
+    ~mesbox("Your inventory is too full to take anything out of the bird's nest.");
+    return;
+}
+if($mes = true) mes("You take <enum(namedobj, string, bird_nest_mes, $reward)> out of the bird's nest.");
+inv_setslot(inv, $slot, bird_nest_empty, 1);
+inv_add(inv, $reward, 1);

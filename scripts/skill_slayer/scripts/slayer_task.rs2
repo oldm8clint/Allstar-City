@@ -1,0 +1,161 @@
+[proc,slayer_new_target]()(int)
+switch_npc(npc_type) {
+    case slayer_master_1 : ~generate_slayer_task(turael_task_table);
+    case slayer_master_2 : ~generate_slayer_task(mazchna_task_table);
+    case slayer_master_3 : ~generate_slayer_task(vannaka_task_table);
+    case slayer_master_4 : ~generate_slayer_task(chaeldar_task_table);
+    case slayer_master_5 : ~generate_slayer_task(duradel_task_table);
+}
+
+[proc,generate_slayer_task](dbrow $master)
+def_int $i = 0;
+def_int $total = db_getfield($master, slayer_task_table:total, 0);
+def_int $weight;
+def_int $slayer_target;
+def_int $slayer_count;
+def_int $min;
+def_int $max;
+def_dbrow $task_data;
+def_int $rand = random($total);
+while($i < db_getfieldcount($master, slayer_task_table:task)) {
+    $task_data = db_getfield($master, slayer_task_table:task, $i);
+    $weight = db_getfield($task_data, slayer_master_task:weight, 0);
+    $min = db_getfield($task_data, slayer_master_task:min_amount, 0);
+    $max = db_getfield($task_data, slayer_master_task:max_amount, 0);
+    $total = sub($total, $weight);
+    if($rand >= $total) {
+        $slayer_target = db_getfield($task_data, slayer_master_task:task, 0);
+        if(~validate_slayer_target($slayer_target) = true) {
+            %slayer_target = $slayer_target;
+            %slayer_count = ~random_range($min, $max);
+            return;
+        }
+    }
+    // failsafe but should prob just leave a no-req task at the end of the table since they're static anyways
+    if($total <= 0) {
+        ~generate_slayer_task($master);
+        return;
+    }
+    $i = add($i, 1);
+}
+
+[proc,validate_slayer_target](int $target)(boolean)
+if (stat_base(slayer) < enum(int, int, slayer_req, $target)) { // slayer req check
+    return (false);
+}
+// TODO: should combat reqs exist? seems like they might of https://oldschool.runescape.wiki/w/Update:Slayer_Assignment_Rework
+if(~player_combat_level < enum(int, int, combat_req, $target)) {
+    return (false);
+}
+// quest reqs, this can possibly be done in dbtable/enum as well?
+// just defaulting any unimplemented quests to false for now
+// https://oldschool.runescape.wiki/w/Update:Valentine%27s_Day no agil req for earth warriors
+// https://oldschool.runescape.wiki/w/Update:Patch_Notes_(25_April_2013) no fm for harpie bugs
+// https://oldschool.runescape.wiki/w/Update:Patch_Notes_(4_April_2013) no def level reqs (mirror shield)
+switch_int($target) {
+    case ^slayer_crawlinghand, ^slayer_banshee, ^slayer_infernalmage, ^slayer_bloodveld, 
+            ^slayer_aberrantspecter, ^slayer_gargoyle, ^slayer_nechryael, ^slayer_abyssaldemon, 
+            ^slayer_ghoul, ^slayer_werewolf, ^slayer_vampire : // priest peril
+        return (false);
+    case ^slayer_otherworldlybeing, ^slayer_mutatedzygomite :
+        if(%zanaris < ^zanaris_complete) {
+            return (false);
+        }
+        return (true);
+    case ^slayer_killerwatt :
+        if(%haunted < ^haunted_complete) {
+            return (false);
+        }
+        return (true);
+    case ^slayer_shadowwarrior :
+        if(%legendsquest < ^legends_complete) {
+            return (false);
+        }
+        return (true);
+    case ^slayer_dagannoth : // horror from the deep
+        return (false);
+    case ^slayer_elf : // regicide
+        return (false);
+    case ^slayer_dustdevil : // dt
+        return (false);
+    case ^slayer_darkbeast : // mep2
+        return (false);
+    case ^slayer_mogre : // skippy miniquest
+        return (false);
+}
+return (true);
+
+[proc,slayer_taskname]()(string)
+return(enum(int, string, task_name, %slayer_target));
+
+[proc,slayer_task_tip]()(string)
+return(enum(int, string, task_tip, %slayer_target));
+
+[proc,has_turael_task]()(boolean)
+// this doesnt actually check for tasks assigned by turael, but rather the types he assigns
+if(%slayer_target = ^slayer_rat | %slayer_target = ^slayer_monkey | %slayer_target = ^slayer_cow | %slayer_target = ^slayer_bird 
+    | %slayer_target = ^slayer_spider | %slayer_target = ^slayer_dwarf | %slayer_target = ^slayer_lizard | %slayer_target = ^slayer_cavebug
+    | %slayer_target = ^slayer_scorpion | %slayer_target = ^slayer_zombie | %slayer_target = ^slayer_bat | %slayer_target = ^slayer_bear
+    | %slayer_target = ^slayer_ghost | %slayer_target = ^slayer_cavecrawler | %slayer_target = ^slayer_icefiend | %slayer_target = ^slayer_kalphite
+    | %slayer_target = ^slayer_caveslime | %slayer_target = ^slayer_dog | %slayer_target = ^slayer_goblin | %slayer_target = ^slayer_wolf
+    | %slayer_target = ^slayer_skeleton | %slayer_target = ^slayer_crawlinghand | %slayer_target = ^slayer_banshee) {
+        return (true);
+}
+return (false);
+
+[proc,check_progress_task](int $key)
+// if the hero and the last attacker don't match, the xp/kc is split between them
+if(npc_findhero = ^true) { 
+    if(.finduid(%npc_aggressive_player) = true & uid ! .uid) {
+        if(%slayer_target = $key) {
+            if_close;
+            queue*(progress_task_split, 0)(npc_uid);
+        }
+        if(.%slayer_target = $key) {
+            .if_close;
+            .queue*(progress_task_split, 0)(npc_uid);
+        }
+    } else if(%slayer_target = $key) {
+        if_close;
+        queue*(progress_task, 0)(npc_uid);
+    }
+} else if(finduid(%npc_aggressive_player) = true) {
+    if(.npc_findhero = ^true & uid ! .uid) {
+        if(%slayer_target = $key) {
+            if_close;
+            queue*(progress_task_split, 0)(npc_uid);
+        }
+        if(.%slayer_target = $key) {
+            .if_close;
+            .queue*(progress_task_split, 0)(npc_uid);
+        }
+    } else if(%slayer_target = $key) {
+        if_close;
+        queue*(progress_task, 0)(npc_uid);
+    }
+}
+
+[queue,progress_task](npc_uid $uid)
+if(%slayer_count <= 0) {
+    return;
+}
+if(npc_finduid($uid) = true) {
+    %slayer_count = sub(%slayer_count, 1);
+    stat_advance(slayer, calc(10 * npc_basestat(hitpoints)));
+    if(%slayer_count = 0) ~complete_task;
+}
+
+[queue,progress_task_split](npc_uid $uid)
+if(%slayer_count <= 0) {
+    return;
+}
+if(npc_finduid($uid) = true) {
+    %slayer_count = sub(%slayer_count, 1);
+    stat_advance(slayer, calc(10 * (npc_basestat(hitpoints) / 2)));
+    if(%slayer_count = 0) ~complete_task;
+}
+
+[proc,complete_task]
+// https://youtu.be/xq8oz9of6Ck?si=WgGJ5L-rC1sCCh2F&t=66
+mes("You've completed your task; return to a Slayer master.");
+midi_jingle("advance slayer");

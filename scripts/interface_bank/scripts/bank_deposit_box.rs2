@@ -1,0 +1,22 @@
+[inv_button1,inter_95:com_62] @bank_deposit(last_slot, 1);
+[inv_button2,inter_95:com_62] @bank_deposit(last_slot, 5);
+[inv_button3,inter_95:com_62] @bank_deposit(last_slot, 10);
+[inv_button4,inter_95:com_62] @bank_deposit(last_slot, ^max_32bit_int);
+[inv_button5,inter_95:com_62] @bank_deposit(last_slot, null);
+[inv_buttond,inter_95:com_62] inv_movetoslot(inv, inv, last_slot, last_targetslot);
+
+[if_close,inter_95]
+inv_stoptransmit(inter_95:com_62);
+inv_transmit(inv, inventory:inv);
+inv_transmit(worn, wornitems:worn);
+
+if_settab(inventory, ^tab_inventory);
+if_settab(wornitems, ^tab_wornitems);
+
+// https://youtu.be/HxwZF7ZBGos?si=HfkHOPtJ0vjTEfTW&t=66
+[oploc1,loc_9398]
+if_openmain(inter_95);
+// hide inv and worn
+if_settab(null, 3);
+if_settab(null, 4);
+inv_transmit(inv, inter_95:com_62);

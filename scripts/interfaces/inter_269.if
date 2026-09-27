@@ -1,0 +1,9 @@
+[com_0]
+type=inv
+x=16
+y=8
+width=4
+height=7
+margin=10,4
+option1=Value
+option2=Sell

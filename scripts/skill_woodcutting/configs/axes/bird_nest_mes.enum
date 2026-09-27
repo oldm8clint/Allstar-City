@@ -1,0 +1,17 @@
+// https://www.youtube.com/watch?v=bbAO8HPc_tE
+[bird_nest_mes]
+inputtype=namedobj
+outputtype=string
+val=acorn,an acorn
+val=magic_tree_seed,a Magic Tree seed
+val=spirit_tree_seed,a Spirit Tree seed
+val=palm_tree_seed,a palm tree seed
+val=yew_seed,a yew tree seed
+val=papaya_tree_seed,a papaya tree seed
+val=pineapple_tree_seed,a pineapple plant seed
+val=maple_seed,a maple tree seed
+val=curry_tree_seed,a curry tree seed
+val=orange_tree_seed,an orange tree seed
+val=banana_tree_seed,a banana tree seed
+val=willow_seed,a willow tree seed
+val=apple_tree_seed,an apple tree seed

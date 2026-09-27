@@ -1,0 +1,109 @@
+[opnpc1,_slayer_master]
+~chatnpc("<p,quiz>'Ello, and what are you after then?");
+if(%slayer_target = 0) {
+    @multi3("Who are you?", slayer_master_who, "Do you have anything for trade?", slayer_master_trade, "Er...nothing...", slayer_master_nothing);
+}
+@multi3("I need another assignment.", slayer_master_assign, "Do you have anything for trade?", slayer_master_trade, "Er...nothing...", slayer_master_nothing);
+
+[opnpc4,_slayer_master] ~openshop_activenpc;
+
+[label,slayer_master_who]
+~chatplayer("<p,quiz>Who are you?");
+~chatnpc("<p,happy>I'm one of the elite Slayer Masters.");
+def_int $op = ~p_choice2("What's a slayer?", 1, "Never heard of you...", 2);
+if($op = 1) {
+    ~chatplayer("<p,quiz>What's a slayer?");
+    ~chatnpc("<p,confused>Oh dear, what do they teach you in school?");
+    ~chatplayer("<p,sad>Well... er...");
+    ~chatnpc("<p,happy>I suppose I'll have to educate you then. A slayer is someone who is trained to fight specific creatures. They know these creatures' every weakness and strength. As you can guess, it makes killing those creatures a lot easier.");
+} else if($op = 2) {
+    ~chatplayer("<p,confused>Never heard of you...");
+    ~chatnpc("<p,shifty>That's because my foe never lives to tell of me. We slayers are a dangerous bunch.");
+}
+@multi2("Wow, can you teach me?", slayer_master_teach, "Sounds useless to me.", slayer_master_useless);
+
+[label,slayer_master_teach]
+~chatplayer("<p,happy>Wow, can you teach me?");
+~chatnpc("<p,shifty>Hmmm well I'm not so sure...");
+~chatplayer("<p,shock>Pleeeaasssse! I'll be your best friend!");
+~chatnpc("<p,happy>Oh okay then; you twisted my arm. You'll have to train against specific groups of creatures.");
+~chatplayer("<p,quiz>Okay then, what's first?");
+inv_add(inv, slayer_gem, 1);
+~slayer_new_target;
+~chatnpc("<p,neutral>We'll start you off hunting <~slayer_taskname>, you'll need to kill <tostring(%slayer_count)> of them.");
+~chatnpc("<p,neutral>You'll also need this enchanted gem, it allows Slayer Masters like myself to contact you and update you on your progress. Don't worry if you lose it, you can buy another from any Slayer Master.");
+@multi2("Got any tips for me?", slayer_master_tips, "Okay, great!", slayer_master_great);
+
+[label,slayer_master_tips]
+~chatplayer("<p,quiz>Got any tips for me?");
+~chatnpc("<p,neutral><~slayer_task_tip>");
+~chatplayer("<p,happy>Great, thanks!");
+
+[label,slayer_master_great]
+~chatplayer("<p,happy>Okay, great!");
+~chatnpc("<p,happy>Good luck! Don't forget to come back when you need a new assignment.");
+
+[label,slayer_master_useless]
+~chatplayer("<p,neutral>Sounds useless to me.");
+~chatnpc("<p,angry>Suit yourself.");
+
+[label,slayer_master_trade]
+~chatplayer("<p,quiz>Do you have anything for trade?");
+~chatnpc("<p,happy>I have a wide selection of Slayer equipment; take a look!");
+~openshop_activenpc;
+
+[label,slayer_master_nothing]
+~chatplayer("<p,neutral>Er... Nothing...");
+
+[label,slayer_master_assign]
+~chatplayer("<p,neutral>I need another assignment.");
+def_int $op;
+def_npc $slayer_master = ~get_best_slayer_master;
+def_string $master_location = ~get_slayer_master_location;
+if(~slayer_master_eligible(npc_type) = false) {
+    ~chatnpc("<p,sad>Sorry, but you're not strong enough to be taught by me. Your best trainer would be <nc_name($slayer_master)> <$master_location>.");
+    return;
+}
+if(%slayer_count > 0) {
+    if(npc_type = slayer_master_1 & ~has_turael_task = false) {
+        ~chatnpc("<p,confused>You're still hunting something, although it's a tougher assignment than I'd normally give...|I guess I could give you a new assignment if you'd like.");
+        $op = ~p_choice2("Yes, please.", 1, "No, thanks.", 2);
+        if($op = 2) {
+            ~chatplayer("<p,neutral>No, thanks.");
+            return;
+        }
+        ~chatplayer("<p,happy>Yes, please.");
+        @slayer_master_newassign;
+        return;
+    }
+    ~chatnpc("<p,confused>You're still hunting something; come back when you've finished your task.");
+    return;
+}
+if(npc_type ! slayer_master_4 & npc_type ! slayer_master_5 & $slayer_master ! npc_type) {
+    ~chatnpc("<p,confused>You're actually very strong, are you sure you don't want <nc_name($slayer_master)> <$master_location> to assign you a task?");
+    $op = ~p_choice2("Yes, please.", 1, "Oh okay then, I'll go talk to <nc_name($slayer_master)>.", 2);
+    if($op = 2) {
+        ~chatplayer("<p,neutral>Oh okay then, I'll go talk to <nc_name($slayer_master)>.");
+        return;
+    }
+    ~chatplayer("<p,neutral>No that's okay, I'll take a task from you.");
+}
+@slayer_master_newassign;
+
+[label,slayer_master_newassign]
+~slayer_new_target;
+~chatnpc("<p,happy>Excellent, you're doing great. Your new task is to kill <tostring(%slayer_count)> <~slayer_taskname>.");
+@multi2("Got any tips for me?", slayer_master_tips, "Okay, great!", slayer_master_great);
+
+[proc,slayer_master_eligible](npc $master)(boolean)
+def_int $cb = ~player_combat_level;
+if($master = slayer_master_2 & $cb < 20) {
+    return (false);
+} else if($master = slayer_master_3 & $cb < 40) {
+    return (false);
+} else if($master = slayer_master_4 & $cb < 70) {
+    return (false);
+} else if($master = slayer_master_5 & ($cb < 100 | stat(slayer) < 50)) {
+    return (false);
+}
+return(true); 

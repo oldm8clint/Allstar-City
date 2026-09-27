@@ -1,0 +1,26 @@
+[ai_applayer2,air_wizard] @wizard_elemental_attack(^wind_strike);
+[ai_opplayer2,air_wizard] @wizard_elemental_attack(^wind_strike);
+[ai_applayer2,water_wizard] @wizard_elemental_attack(^water_strike);
+[ai_opplayer2,water_wizard] @wizard_elemental_attack(^water_strike);
+[ai_applayer2,earth_wizard] @wizard_elemental_attack(^earth_strike);
+[ai_opplayer2,earth_wizard] @wizard_elemental_attack(^earth_strike);
+[ai_applayer2,fire_wizard] @wizard_elemental_attack(^fire_strike);
+[ai_opplayer2,fire_wizard] @wizard_elemental_attack(^fire_strike);
+
+[label,wizard_elemental_attack](int $spell)
+if (%npc_action_delay > map_clock) {
+    return;
+}
+if (~npc_check_notcombat = false) {
+    npc_setmode(null);
+    return;
+}
+if (~npc_check_notcombat_self = false) {
+    return;
+}
+
+if (random(2) = 0) { // guessed
+    ~npc_cast_spell(^confuse, 4);
+} else {
+    ~npc_cast_spell($spell, 4);
+}

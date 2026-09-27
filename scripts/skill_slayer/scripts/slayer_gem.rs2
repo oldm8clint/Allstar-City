@@ -1,0 +1,62 @@
+[proc,get_best_slayer_master]()(npc)
+def_int $cb = ~player_combat_level;
+if($cb >= 100 & stat(slayer) >= 50) {
+    return (slayer_master_5);
+} else if($cb >= 70) {
+    return (slayer_master_4);
+} else if($cb >= 40) {
+    return (slayer_master_3);
+} else if($cb >= 20) {
+    return (slayer_master_2);
+}
+return (slayer_master_1);
+
+[proc,get_slayer_master_location]()(string)
+def_int $cb = ~player_combat_level;
+if($cb >= 100 & stat(slayer) >= 50) {
+    return ("in Shilo Village");
+} else if($cb >= 70) {
+    return ("in Zanaris");
+} else if($cb >= 40) {
+    return ("under Edgeville");
+} else if($cb >= 20) {
+    return ("in Canifis");
+}
+return ("in Burthorpe");
+
+[opheld1,slayer_gem]
+def_npc $slayer_master = ~get_best_slayer_master;
+~chatnpc_specific(nc_name($slayer_master), $slayer_master, "<p,happy>Hello there <displayname>, what can I help you with?");
+def_int $choice = ~p_choice5("How am I doing so far?", 1, "Who are you?", 2, "Where are you?", 3, "Got any tips for me?", 4, "Nothing really.", 5);
+while ($choice ! null) {
+    if ($choice = 1) {
+        ~chatplayer("<p,quiz>How am I doing so far?");
+        if (%slayer_count <= 0) {
+            ~chatnpc_specific(nc_name($slayer_master), $slayer_master, "<p,confused>You need something new to hunt. Come and see me when you can and I'll give you a new task.");
+        } else {
+            ~chatnpc_specific(nc_name($slayer_master), $slayer_master, "<p,happy>You're currently assigned to kill <lowercase(~slayer_taskname)>; only <tostring(%slayer_count)> more to go.");
+        }
+        $choice = ~p_choice4("Who are you?", 2, "Where are you?", 3, "Got any tips for me?", 4, "That's all thanks.", null);
+    } else if ($choice = 2) {
+        ~chatplayer("<p,quiz>Who are you?");
+        ~chatnpc_specific(nc_name($slayer_master), $slayer_master, "<p,happy>My name's <nc_name($slayer_master)>, I'm the Slayer Master best able to train you.");
+        $choice = ~p_choice4("How am I doing so far?", 1, "Where are you?", 3, "Got any tips for me?", 4, "That's all thanks.", null);
+    } else if ($choice = 3) {
+        ~chatplayer("<p,quiz>Where are you?");
+        ~chatnpc_specific(nc_name($slayer_master), $slayer_master, "<p,neutral>You'll find me <~get_slayer_master_location>.|I'll be here when you need a new task.");
+        $choice = ~p_choice4("How am I doing so far?", 1, "Who are you?", 2, "Got any tips for me?", 4, "That's all thanks.", null);
+    } else if ($choice = 4) {
+        ~chatplayer("<p,quiz>Got any tips for me?");
+        if (%slayer_count <= 0) {
+            ~chatnpc_specific(nc_name($slayer_master), $slayer_master, "<p,neutral>You need something new to hunt.");
+        } else {
+            ~chatnpc_specific(nc_name($slayer_master), $slayer_master, "<p,neutral><~slayer_task_tip>");
+        }
+        ~chatplayer("<p,happy>Great, thanks!");
+        $choice = ~p_choice4("How am I doing so far?", 1, "Who are you?", 2, "Where are you?", 3, "That's all thanks.", null);
+    } else if ($choice = 5) {
+        ~chatplayer("<p,neutral>Nothing really.");
+        return;
+    }
+}
+~chatplayer("<p,neutral>That's all thanks.");

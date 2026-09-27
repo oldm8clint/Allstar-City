@@ -1,0 +1,5 @@
+[oploc1,lockeddoor1]
+p_arrivedelay;
+mes("You try to open the door...");
+p_delay(1);
+mes("The door is locked tight, I can't open it.");

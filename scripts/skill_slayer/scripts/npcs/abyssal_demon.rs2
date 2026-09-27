@@ -1,0 +1,38 @@
+[ai_queue2,slayer_abyssal]
+// teleport called "when executing the damage code"
+def_int $damage = last_int;
+if (npc_stat(hitpoints) = 0) {
+    return;
+}
+if ($damage = 0) {
+    npc_damage(^hitmark_block, 0);
+} else {
+    npc_damage(^hitmark_damage, $damage);
+}
+// 1/6 to teleport self, 1/3 to teleport player if that fails according to ash
+if(random(6) = 0) {
+    npc_queue(5, 0, 0);
+} else if(random(3) = 0) {
+    npc_queue(6, 0, 0);
+}
+if (npc_stat(hitpoints) > 0) {
+    return;
+}
+// if the npc died from this damage
+npc_queue(3, 0, 0);
+
+[ai_queue5,slayer_abyssal]
+if(finduid(%npc_aggressive_player) = true) {
+    spotanim_npc(abyssal_demon_teleport, 0, 0);
+    sound_synth(grim_reaper_appear, 1, 0);
+    npc_delay(0);
+    npc_telejump(map_findsquare(coord, 1, 1, ^map_findsquare_lineofwalk));
+    spotanim_npc(abyssal_demon_teleport, 0, 0);
+}
+
+[ai_queue6,slayer_abyssal]
+if(p_finduid(%npc_aggressive_player) = true) { // fails if no prot access
+    spotanim_pl(abyssal_demon_teleport, 0, 0);
+    sound_synth(grim_reaper_appear, 1, 0);
+    p_telejump(map_findsquare(npc_coord, 1, 1, ^map_findsquare_lineofwalk));
+}

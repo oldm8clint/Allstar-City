@@ -1,0 +1,14 @@
+[mahoganytree]
+name=Mahogany
+desc=A beautiful old mahogany tree.
+model=mahoganytree
+recol1s=5218
+recol1d=3136
+width=3
+length=3
+op1=Chop down
+op3=hidden
+mapscene=1
+category=tree
+param=next_loc_stage,mahogany_stump
+param=ent,macro_mahogany_ent
