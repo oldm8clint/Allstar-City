@@ -587,6 +587,21 @@ export class Client extends GameShell {
         }
 
         console.log(`RS2 user client - release #${CLIENT_VERSION}`);
+        // Allstar-City: test hook for automated browser checks, only on this computer (?debug=1 on localhost):
+        // window.allstar.client is the game client, window.allstar.cheat('home') sends ::home
+        if (this.searchParams.has('debug') && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+            (window as any).allstar = {
+                client: this,
+                IfType,
+                ObjType,
+                NpcType,
+                cheat: (text: string): void => {
+                    this.out.p1Enc(ClientProt.CLIENT_CHEAT);
+                    this.out.p1(text.length + 1);
+                    this.out.pjstr(text);
+                }
+            };
+        }
 
         Client.nodeId = nodeid;
         Client.memServer = members;

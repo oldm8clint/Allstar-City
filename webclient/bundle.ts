@@ -129,7 +129,11 @@ async function applyTerser(script: BunOutput): Promise<boolean> {
                     'message',
                     'failCount',
                     'error',
-                    'id'
+                    'id',
+
+                    // Allstar-City: localhost ?debug test hook (window.allstar.cheat)
+                    'allstar',
+                    'cheat'
                 ]
             }
         }

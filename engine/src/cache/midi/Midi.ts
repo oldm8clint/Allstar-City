@@ -273,7 +273,7 @@ export default class Midi {
         for (let i = 0; i < count; i++) {
             const data = OnDemand.cache.read(3, i, true);
             if (!data) {
-                printWarning(`Missing midi id=${i}`);
+                // printWarning(`Missing midi id=${i}`); // Allstar-City: 377 content has gaps in midi ids (as the 377 engine)
                 continue;
             }
 
