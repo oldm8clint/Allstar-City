@@ -39,11 +39,12 @@ obj_takeitem(inv);
 // at 3118-3120,9848 (the Edgeville dungeon training room) with no owner, so ItemHandler shows them to
 // everyone from cycle 60 to 120. (ItemHandler never freed the slot of an item nobody picked up, so
 // after about a day of uptime its 5,001-slot table was full and no ground item could appear; the
-// owner chose not to reproduce that.) The spawner is a world script started by the first login.
+// owner chose not to reproduce that.) The spawner is a world script started by the first login, from a
+// normal queue (a strong queue would close that player's welcome screen).
 [proc,allstar_godcapes_start]
 if (%allstar_godcapes = 0) {
     %allstar_godcapes = 1;
-    strongqueue(allstar_godcapes, 0, 0);
+    queue(allstar_godcapes, 0, 0);
 }
 
 [queue,allstar_godcapes]
