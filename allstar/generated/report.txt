@@ -5,6 +5,7 @@ NPC spawns: 486 placed, 6 skipped
   - autospawn.cfg:56 npc 2026 at 3553,3000 is outside the map
   - autospawn.cfg:57 npc 2030 at 3553,3000 is outside the map
   - autospawn.cfg:336 npc 2030 at 3105,983 is outside the map
+Items (< 7956): 7956 obj configs, 1571 wearable, 928 stackable, 2042 notes, 1235 with an Allstar server name, 598 wear requirements
 Custom items: 154 objs (6 with stand-in models), 222 allstar_items entries
 Shops: 64 defined (TotalShops 65), 67 generated, 1010 stock slots, 59 NPC shop options
   - shop 29: trailing token "554     50000   555     50000   556     50000   557     50000   558     50000   559     50000   560     5000    561     10000   562     25000   563     5000   564      25000" ignored (as loadShops did)

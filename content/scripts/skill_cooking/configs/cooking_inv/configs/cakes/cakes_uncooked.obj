@@ -5,6 +5,10 @@ model=obj_uncooked_cake
 2dzoom=770
 2dyan=144
 2dxan=172
-cost=20
 weight=500g
 param=next_obj_stage,cake_tin
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=17
+param=allstar_value,17
+param=allstar_sellable,yes
+param=allstar_note,cert_uncooked_cake

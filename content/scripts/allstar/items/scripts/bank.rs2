@@ -1,0 +1,226 @@
+// Allstar-Scape bank, deposit box and withdraw-as-note: client.bankItem (L14186), client.fromBank
+// (L13892), openUpBank (L14813), openUpDepBox (L328). npc_item_handlers.md section 13.
+// Amounts: option 1 = 1, 2 = 5, 3 = 10, 4 = all, 5 = X. 350 bank slots, stacks up to 999,999,999.
+// Gaps left by withdrawals stay until a deposit fills them (the bank is never reorganised).
+
+// openUpBank: bank screen + inventory side, anywhere (callers do the range checks)
+[proc,allstar_open_bank]
+if_settext(bank_main:com_90, "@whi@The Official Bank Of <displayname>");
+inv_transmit(inv, bank_side:inv);
+inv_transmit(bank, bank_main:bank);
+if_openmain_side(bank_main, bank_side);
+
+// openUpDepBox: interface 4465 with the title, re-opened after every deposit
+[proc,allstar_open_deposit_box]
+if_settext(inter_95:com_60, "@whi@The Official Deposit Box Of <displayname>");
+if_openmain(inter_95);
+if_settab(null, 3);
+if_settab(null, 4);
+inv_transmit(inv, inter_95:com_62);
+
+// ---- deposit (interface 5064 / bank side) ----
+[inv_button1,bank_side:inv] ~allstar_bank_item(last_slot, 1);
+[inv_button2,bank_side:inv] ~allstar_bank_item(last_slot, 5);
+[inv_button3,bank_side:inv] ~allstar_bank_item(last_slot, 10);
+[inv_button4,bank_side:inv] ~allstar_bank_item(last_slot, ~allstar_deposit_all_amount(last_slot));
+[inv_button5,bank_side:inv]
+def_int $slot = last_slot;
+p_countdialog;
+~allstar_bank_item($slot, last_int);
+[inv_buttond,bank_side:inv] inv_movetoslot(inv, inv, last_slot, last_targetslot);
+
+// ---- deposit box (interface 7423): the same bankItem, then openUpDepBox ----
+[inv_button1,inter_95:com_62] @allstar_deposit_box(last_slot, 1);
+[inv_button2,inter_95:com_62] @allstar_deposit_box(last_slot, 5);
+[inv_button3,inter_95:com_62] @allstar_deposit_box(last_slot, 10);
+[inv_button4,inter_95:com_62] @allstar_deposit_box(last_slot, ~allstar_deposit_all_amount(last_slot));
+[inv_button5,inter_95:com_62]
+def_int $slot = last_slot;
+p_countdialog;
+@allstar_deposit_box($slot, last_int);
+[inv_buttond,inter_95:com_62] inv_movetoslot(inv, inv, last_slot, last_targetslot);
+
+[label,allstar_deposit_box](int $slot, int $amount)
+~allstar_bank_item($slot, $amount);
+~allstar_open_deposit_box;
+
+// "All": the slot for stackables, otherwise every one carried
+[proc,allstar_deposit_all_amount](int $slot)(int)
+def_obj $obj = inv_getobj(inv, $slot);
+if ($obj = null) {
+    return(0);
+}
+if (oc_stackable($obj) = true) {
+    return(inv_getnum(inv, $slot));
+}
+return(inv_total(inv, $obj));
+
+// client.bankItem. Notes bank as id - 1; a note whose id - 1 is also a note is refused.
+[proc,allstar_bank_item](int $slot, int $amount)
+def_obj $obj = inv_getobj(inv, $slot);
+if ($obj = null) {
+    return;
+}
+if (oc_param($obj, allstar_is_note) = false) {
+    if (oc_stackable($obj) = true | inv_getnum(inv, $slot) > 1) {
+        ~allstar_bank_stack($obj, $slot, $amount);
+    } else {
+        // one at a time, from the first slots holding it
+        if (inv_total(bank, $obj) = 0 & inv_freespace(bank) < 1) {
+            mes("Bank full!");
+            return;
+        }
+        inv_moveitem(inv, bank, $obj, $amount);
+    }
+    return;
+}
+def_namedobj $unnoted = oc_param($obj, allstar_unnote);
+if ($unnoted = null) {
+    mes("Item not supported <tostring(oc_param($obj, allstar_id))>");
+    return;
+}
+if (oc_param($unnoted, allstar_is_note) = true) {
+    mes("Item not supported <tostring(oc_param($obj, allstar_id))>");
+    return;
+}
+if (oc_stackable($obj) = true | inv_getnum(inv, $slot) > 1) {
+    ~allstar_bank_note_stack($obj, $unnoted, $slot, $amount);
+} else {
+    if (inv_total(bank, $unnoted) = 0 & inv_freespace(bank) < 1) {
+        mes("Bank full!");
+        return;
+    }
+    def_int $count = min($amount, inv_total(inv, $obj));
+    if ($count > 0) {
+        inv_del(inv, $obj, $count);
+        inv_add(bank, $unnoted, $count);
+    }
+}
+
+[proc,allstar_bank_stack](obj $obj, int $slot, int $amount)
+if (inv_total(bank, $obj) = 0 & inv_freespace(bank) < 1) {
+    mes("Bank full!");
+    return;
+}
+def_int $count = min($amount, inv_getnum(inv, $slot));
+def_int $total = calc(inv_total(bank, $obj) + $count);
+if ($total > 999999999 | $total < 0) {
+    mes("Bank full!");
+    return;
+}
+if ($count > 0) {
+    inv_moveitem(inv, bank, $obj, $count);
+}
+
+// the note path fails silently when the bank stack would overflow
+[proc,allstar_bank_note_stack](obj $note, namedobj $unnoted, int $slot, int $amount)
+if (inv_total(bank, $unnoted) = 0 & inv_freespace(bank) < 1) {
+    mes("Bank full!");
+    return;
+}
+def_int $count = min($amount, inv_getnum(inv, $slot));
+def_int $total = calc(inv_total(bank, $unnoted) + $count);
+if ($total > 999999999 | $total < 0) {
+    return;
+}
+if ($count > 0) {
+    inv_del(inv, $note, $count);
+    inv_add(bank, $unnoted, $count);
+}
+
+// ---- withdraw (interface 5382 / bank) ----
+[inv_button1,bank_main:bank] ~allstar_bank_withdraw(last_slot, 1);
+[inv_button2,bank_main:bank] ~allstar_bank_withdraw(last_slot, 5);
+[inv_button3,bank_main:bank] ~allstar_bank_withdraw(last_slot, 10);
+[inv_button4,bank_main:bank] ~allstar_bank_withdraw(last_slot, inv_getnum(bank, last_slot));
+[inv_button5,bank_main:bank]
+def_int $slot = last_slot;
+p_countdialog;
+~allstar_bank_withdraw($slot, last_int);
+// moveItems (packet 214) on the bank swaps two slots; there is no insert mode
+[inv_buttond,bank_main:bank] inv_movetoslot(bank, bank, last_slot, last_targetslot);
+
+// withdraw as note on (21010) / off (21011); kept until changed
+[if_button,bank_main:com_93] %bankcert = 1;
+[if_button,bank_main:com_94] %bankcert = 0;
+
+// client.fromBank: the single entry point for withdrawals (hook point for allstar/QUIRKS.md Q1)
+[proc,allstar_bank_withdraw](int $slot, int $amount)
+if ($amount <= 0) {
+    return;
+}
+def_obj $obj = inv_getobj(bank, $slot);
+if ($obj = null) {
+    return;
+}
+if (%bankcert = 0) {
+    ~allstar_withdraw_items($obj, $slot, $amount);
+    return;
+}
+// withdraw as note when id + 1 is a note
+def_namedobj $note = oc_param($obj, allstar_note);
+if ($note ! null) {
+    def_int $banked = inv_getnum(bank, $slot);
+    if ($banked > $amount) {
+        if (~allstar_additem($note, $amount) = true) {
+            inv_del(bank, $obj, $amount);
+        }
+    } else {
+        if (~allstar_additem($note, $banked) = true) {
+            inv_delslot(bank, $slot);
+        }
+    }
+    return;
+}
+mes("Item can't be drawn as note.");
+~allstar_withdraw_items($obj, $slot, $amount);
+
+// BUG: stackable-or-not is decided with itemStackable[id + 2]. A stackable item next to a
+// non-stackable id+2 is withdrawn one at a time (same result); a non-stackable item whose id+2 is
+// stackable comes out as 1 while the bank loses the whole amount.
+[proc,allstar_withdraw_items](obj $obj, int $slot, int $amount)
+def_int $banked = inv_getnum(bank, $slot);
+if (oc_param($obj, allstar_withdraw_stackable) = true) {
+    if (inv_freespace(inv) < 1) {
+        mes("Not enough space in your inventory.");
+        return;
+    }
+    if ($banked > $amount) {
+        def_int $add = ~allstar_bank_addcount($obj, $amount);
+        inv_moveitem(bank, inv, $obj, $add);
+        if ($amount > $add) {
+            inv_del(bank, $obj, calc($amount - $add));
+        }
+    } else {
+        inv_moveitem(bank, inv, $obj, ~allstar_bank_addcount($obj, $banked));
+        if (inv_getobj(bank, $slot) = $obj) {
+            inv_delslot(bank, $slot);
+        }
+    }
+    return;
+}
+while ($amount > 0) {
+    if (inv_getnum(bank, $slot) > 0 & inv_getobj(bank, $slot) = $obj) {
+        if (inv_freespace(inv) < 1) {
+            mes("Not enough space in your inventory.");
+            $amount = 0;
+        } else {
+            inv_moveitem(bank, inv, $obj, ~allstar_bank_addcount($obj, 1));
+            $amount = calc($amount - 1);
+        }
+    } else {
+        $amount = 0;
+    }
+}
+
+// client.addItem amount for an item leaving the bank: non-stackables come out one at a time, a
+// stack stops at 999,999,999 (the rest of the withdrawal is lost). addItem also needs a free slot.
+[proc,allstar_bank_addcount](obj $obj, int $count)(int)
+if (oc_stackable($obj) = false | $count < 1) {
+    return(1);
+}
+def_int $have = inv_total(inv, $obj);
+if (calc($have + $count) >= 999999999 | calc($have + $count) < 0) {
+    return(calc(999999999 - $have));
+}
+return($count);

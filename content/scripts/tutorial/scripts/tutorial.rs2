@@ -270,7 +270,7 @@ if (%tutorial = ^newbie_combat_instructor_worn_inventory & $weapon = bronze_dagg
     ~set_tutorial_progress;
 }
 
-@levelrequire_attack(1, $slot);
+~equip($slot);
 if_settab(null, ^tab_combat_options);
 
 [proc,tutorial_has_obj_on_person](namedobj $obj)(boolean)

@@ -12,8 +12,12 @@ model=obj_uncooked_apple_pie
 2dzoom=950
 2dyan=104
 2dxan=192
-cost=16
 weight=500g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=14
+param=allstar_value,14
+param=allstar_sellable,yes
+param=allstar_note,cert_uncooked_apple_pie
 
 [uncooked_meat_pie]
 name=Uncooked meat pie
@@ -29,8 +33,12 @@ model=obj_uncooked_apple_pie
 2dzoom=950
 2dyan=104
 2dxan=192
-cost=8
 weight=500g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=7
+param=allstar_value,7
+param=allstar_sellable,yes
+param=allstar_note,cert_uncooked_meat_pie
 
 [uncooked_redberry_pie]
 name=Uncooked berry pie
@@ -46,5 +54,9 @@ model=obj_uncooked_apple_pie
 2dzoom=950
 2dyan=104
 2dxan=192
-cost=6
 weight=500g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=5
+param=allstar_value,5
+param=allstar_sellable,yes
+param=allstar_note,cert_uncooked_redberry_pie

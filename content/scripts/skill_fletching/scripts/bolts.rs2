@@ -1,19 +1,4 @@
 // bolts
-[opheldu,_category_530]
-switch_obj(last_useitem) {
-    case bolt : @make_bolts(last_item);
-    case default : ~displaymessage(^dm_default);
-}
-[opheldu,bolt]
-switch_obj(last_useitem) {
-    case default :
-        if (oc_category(last_useitem) = category_530) {
-            @make_bolts(last_useitem);
-        } else {
-            ~displaymessage(^dm_default);
-        }
-}
-
 [label,make_bolt_tips](obj $item)
 if (map_members = ^false) {
     mes(^mes_members_fletching); // guess
@@ -44,7 +29,6 @@ if ($sound ! null) {
     sound_synth($sound,0 , 0);
 }
 mes("You use your chisel to fletch small bolt tips.");
-
 
 [label,make_bolts](obj $bolt_tips)
 if (map_members = ^false) {

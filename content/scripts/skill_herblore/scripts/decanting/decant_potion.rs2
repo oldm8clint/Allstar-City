@@ -1,9 +1,3 @@
-[opheldu,_potion]
-if(oc_category(last_useitem) = potion) {
-    @decant_potion(last_item, last_useitem);
-}
-~displaymessage(^dm_default);
-
 [label,decant_potion](obj $potion, obj $used_potion)
 def_enum $potion_enum = ~get_potion_type($potion, $used_potion);
 if ($potion_enum = null) {

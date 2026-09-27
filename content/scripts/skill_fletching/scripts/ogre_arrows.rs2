@@ -1,21 +1,3 @@
-[opheldu,wolf_bones]
-switch_obj(last_useitem) {
-    case chisel : @make_wolf_bone_tips;
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,ogre_arrow_shaft]
-switch_obj(last_useitem) {
-    case feather : @make_ogre_headless_arrows;
-    case default : ~displaymessage(^dm_default);
-}
-
-[opheldu,ogre_headless_arrow]
-switch_obj(last_useitem) {
-    case wolfbone_arrowheads : @make_ogre_arrows;
-    case default : ~displaymessage(^dm_default);
-}
-
 [label,make_ogre_shafts]
 if (map_members = ^false) {
     mes(^mes_members_fletching); // guess
@@ -38,7 +20,6 @@ inv_add(inv, ogre_arrow_shaft, $shaft_count);
 mes("You carefully cut the wood into <tostring($shaft_count)> arrow shafts.");
 
 stat_advance(fletching, multiply($shaft_count, 18));
-
 
 [label,make_wolf_bone_tips]
 if (map_members = ^false) {
@@ -65,7 +46,6 @@ mes("You chisel <tostring($tip_count)> wolf bone arrow tips.");
 
 stat_advance(fletching, multiply($tip_count, 25));
 stat_advance(crafting, multiply($tip_count, 25));
-
 
 [label,make_ogre_headless_arrows]
 if (map_members = ^false) {
@@ -105,7 +85,6 @@ inv_del(inv, ogre_arrow_shaft, $arrow_count);
 inv_add(inv, ogre_headless_arrow, $arrow_count);
 
 stat_advance(fletching, multiply($arrow_count, 15));
-
 
 [label,make_ogre_arrows]
 if (map_members = ^false) {

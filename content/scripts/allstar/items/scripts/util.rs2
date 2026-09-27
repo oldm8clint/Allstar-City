@@ -1,0 +1,14 @@
+// Item helpers shared by the Allstar-City item scripts (and available to other systems).
+
+// client.GetItemName: the item.cfg name (first line for the id), which the server used in its
+// messages; "!! NOT EXISTING ITEM !!! - ID:<id>" for ids item.cfg does not define.
+[proc,allstar_obj_name](obj $obj)(string)
+def_string $name = oc_param($obj, allstar_name);
+if (compare($name, "") = 0) {
+    return(oc_name($obj));
+}
+return($name);
+
+// client.addItem(id, 1) where the caller ignores the result (the item is lost if there is no room)
+[proc,allstar_give](namedobj $obj)
+def_boolean $added = ~allstar_additem($obj, 1);

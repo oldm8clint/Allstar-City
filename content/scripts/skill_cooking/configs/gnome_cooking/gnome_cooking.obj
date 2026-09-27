@@ -1,7 +1,6 @@
 [spicespot]
 name=Spice
 desc=This could liven up an otherwise bland stew.
-cost=230
 model=obj_spicespot
 2dyof=-1
 2dzoom=710
@@ -9,11 +8,15 @@ model=obj_spicespot
 2dxan=136
 weight=200g
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=182
+param=allstar_value,182
+param=allstar_sellable,yes
+param=allstar_note,cert_spicespot
 
 [dwellberries]
 name=Dwellberries
 desc=Some rather pretty blue berries.
-cost=4
 iop1=Eat
 members=yes
 model=obj_dwellberries
@@ -27,11 +30,15 @@ weight=14g
 param=gnome_cooking_ingredient,^true
 param=gnome_cocktail_ingredient,^true
 param=batta_message,You add the dwell berries to the gnome batta.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_dwellberries
 
 [equa_leaves]
 name=Equa leaves
 desc=Small sweet smelling leaves.
-cost=2
 iop1=Eat
 members=yes
 model=obj_equa_leaves
@@ -47,11 +54,14 @@ param=gnome_cocktail_ingredient,^true
 param=cocktail_message,You sprinkle the leaves over the drink.
 param=batta_message,You sprinkle the equa leaves over the gnome batta.
 param=crunchies_message,You mix the equa leaves into the dough.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_equa_leaves
 
 [pot_of_cream]
 name=Pot of cream
 desc=Fresh cream.
-cost=2
 iop1=Eat
 members=yes
 model=obj_pot_of_cream
@@ -64,13 +74,16 @@ category=category_120
 weight=200g
 param=gnome_topping,^true
 param=cocktail_message,You pour the thick cream into the drink.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_pot_of_cream
 
 [swamp_toad]
 name=Swamp toad
 desc=A slippery little blighter.
 iop1=Remove-legs
 members=yes
-cost=2
 model=obj_swamp_toad
 2dxof=-1
 2dyof=3
@@ -78,13 +91,16 @@ model=obj_swamp_toad
 2dyan=128
 2dxan=352
 weight=500g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_swamp_toad
 
 [toads_legs]
 name=Toad's legs
 desc=They're a gnome delicacy apparently.
 iop1=Eat
 members=yes
-cost=2
 model=obj_toads_legs
 2dxof=-10
 2dyof=14
@@ -94,13 +110,16 @@ model=obj_toads_legs
 weight=150g
 param=gnome_cooking_ingredient,^true
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_toads_legs
 
 [equa_toads_legs]
 name=Equa toad's legs
 desc=They're a gnome delicacy apparently.
 iop1=Eat
 members=yes
-cost=2
 model=obj_toads_legs
 2dxof=-10
 2dyof=14
@@ -109,13 +128,16 @@ model=obj_toads_legs
 2dxan=340
 weight=150g
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_equa_toads_legs
 
 [spicy_toads_legs]
 name=Spicy toad's legs
 desc=They're a gnome delicacy apparently.
 iop1=Eat
 members=yes
-cost=2
 model=obj_toads_legs
 2dxof=-10
 2dyof=14
@@ -124,13 +146,16 @@ model=obj_toads_legs
 2dxan=340
 weight=150g
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spicy_toads_legs
 
 [seasoned_toads_legs]
 name=Seasoned legs
 desc=They're a gnome delicacy apparently.
 iop1=Eat
 members=yes
-cost=2
 model=obj_toads_legs
 2dxof=-10
 2dyof=14
@@ -141,13 +166,16 @@ weight=150g
 category=gnome_premade_and_toadlegs_kingworm
 param=gnome_cooking_ingredient,^true
 param=batta_message,You add the seasoned toad's legs to the gnome batta.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_seasoned_toads_legs
 
 [spicy_worm]
 name=Spicy worm
 desc=They're a gnome delicacy apparently.
 iop1=Eat
 members=yes
-cost=2
 model=obj_red_vine_worm
 2dxof=-3
 2dyof=14
@@ -158,13 +186,16 @@ weight=100g
 category=gnome_premade_and_toadlegs_kingworm
 param=gnome_cooking_ingredient,^true
 param=batta_message,You add the spicy king worm to the gnome batta.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spicy_worm
 
 [king_worm]
 name=King worm
 desc=They're a gnome delicacy apparently.
 iop1=Eat
 members=yes
-cost=2
 model=obj_red_vine_worm
 2dxof=-3
 2dyof=14
@@ -174,6 +205,10 @@ model=obj_red_vine_worm
 weight=120g
 param=gnome_cooking_ingredient,^true
 category=gnome_premade_and_toadlegs_kingworm
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_king_worm
 
 [batta_tin]
 name=Batta tin
@@ -187,7 +222,9 @@ model=obj_batta_tin
 2dxan=236
 weight=100g
 param=gnome_cooking_struct,batta_tin
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
 
 [crunchy_tray]
 name=Crunchy tray
@@ -201,7 +238,9 @@ model=obj_crunchy_tray
 2dxan=252
 weight=100g
 param=gnome_cooking_struct,crunchy_tray
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
 
 [gnomebowl_mould]
 name=Gnomebowl mould
@@ -214,12 +253,14 @@ model=obj_gnomebowl_mould
 2dxan=192
 weight=150g
 param=gnome_cooking_struct,gnomebowl_mould
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [giannes_cook_book]
 name=Gianne's cook book
 desc=Aluft Gianne's favorite dishes.
-cost=2
 iop1=Read
 members=yes
 model=obj_mcannonbook
@@ -227,6 +268,10 @@ model=obj_mcannonbook
 2dyan=152
 2dxan=256
 weight=18oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_giannes_cook_book
 
 [gnome_spice]
 name=Gnome spice
@@ -236,13 +281,16 @@ model=obj_spicespot
 2dzoom=710
 2dyan=160
 2dxan=136
-cost=2
 weight=150g
 members=yes
 param=gnome_topping,^true
 param=gnome_cooking_ingredient,^true
 param=crunchies_message,You sprinkle the spice into the dough.
 param=bowl_message,You sprinkle some gnome spice over the dough bowl.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_gnome_spice
 
 [gianne_dough]
 name=Gianne dough
@@ -255,6 +303,9 @@ model=obj_pastry_dough
 2dzoom=440
 2dyan=92
 2dxan=264
-cost=2
 weight=500g
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_gianne_dough

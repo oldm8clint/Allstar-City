@@ -5,7 +5,6 @@ recol1s=25025
 recol1d=20801
 recol2s=31367
 recol2d=24995
-cost=2
 iop1=Drink
 model=obj_asgarnian_ale
 2dxof=-3
@@ -16,6 +15,10 @@ model=obj_asgarnian_ale
 weight=550g
 category=alcoholic_drinks
 param=next_obj_stage,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_asgarnian_ale
 
 [wizards_mind_bomb]
 name=Wizard's mind bomb
@@ -24,7 +27,6 @@ recol1s=25025
 recol1d=15860
 recol2s=31367
 recol2d=17974
-cost=2
 iop1=Drink
 model=obj_asgarnian_ale
 2dxof=-3
@@ -35,6 +37,10 @@ model=obj_asgarnian_ale
 weight=550g
 category=alcoholic_drinks
 param=next_obj_stage,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_wizards_mind_bomb
 
 [greenmans_ale]
 name=Greenman's ale
@@ -43,7 +49,6 @@ recol1s=25025
 recol1d=22979
 recol2s=31367
 recol2d=25093
-cost=2
 iop1=Drink
 members=yes
 model=obj_asgarnian_ale
@@ -55,6 +60,10 @@ model=obj_asgarnian_ale
 weight=550g
 category=alcoholic_drinks
 param=next_obj_stage,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_greenmans_ale
 
 [dragon_bitter]
 name=Dragon bitter
@@ -63,7 +72,6 @@ recol1s=25025
 recol1d=17441
 recol2s=31367
 recol2d=18465
-cost=2
 iop1=Drink
 members=yes
 model=obj_asgarnian_ale
@@ -75,6 +83,11 @@ model=obj_asgarnian_ale
 weight=550g
 category=alcoholic_drinks
 param=next_obj_stage,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_req_defence,60
+param=allstar_sellable,yes
+param=allstar_note,cert_dragon_bitter
 
 [dwarven_stout]
 name=Dwarven stout
@@ -83,7 +96,6 @@ recol1s=25025
 recol1d=4228
 recol2s=31367
 recol2d=10570
-cost=2
 iop1=Drink
 model=obj_asgarnian_ale
 2dxof=-3
@@ -94,6 +106,10 @@ model=obj_asgarnian_ale
 weight=550g
 category=alcoholic_drinks
 param=next_obj_stage,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_dwarven_stout
 
 [grog]
 name=Grog
@@ -102,7 +118,6 @@ recol1s=25025
 recol1d=10698
 recol2s=31367
 recol2d=11819
-cost=3
 iop1=Drink
 members=yes
 model=obj_asgarnian_ale
@@ -114,11 +129,15 @@ model=obj_asgarnian_ale
 weight=550g
 category=alcoholic_drinks
 param=next_obj_stage,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2
+param=allstar_value,2
+param=allstar_sellable,yes
+param=allstar_note,cert_grog
 
 [beer]
 name=Beer
 desc=A glass of frothy ale.
-cost=2
 iop1=Drink
 model=obj_asgarnian_ale
 2dxof=-3
@@ -128,15 +147,17 @@ model=obj_asgarnian_ale
 2dxan=140
 manwear=obj_beer_manwear,0
 womanwear=obj_beer_manwear,6
-wearpos=righthand
 weight=550g
 category=alcoholic_drinks
 param=next_obj_stage,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_beer
 
 [beer_glass]
 name=Beer glass
 desc=I need to fill this with beer.
-cost=2
 model=obj_beer_glass
 2dxof=-3
 2dyof=2
@@ -147,11 +168,14 @@ manwear=obj_beer_glass_manwear,0
 womanwear=obj_beer_glass_manwear,0
 weight=50g
 param=crafting_glass_struct,beer_glass
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_beer_glass
 
 [swamp_tar]
 name=Swamp tar
 desc=A foul smelling thick tar-like substance.
-cost=1
 model=obj_swamp_tar
 2dxof=1
 2dyof=-22
@@ -159,16 +183,19 @@ model=obj_swamp_tar
 2dyan=148
 2dxan=224
 members=yes
-stackable=yes
 weight=1lb
 category=category_135
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [rawswamppaste]
 name=Raw swamp paste
 desc=A thick tar-like substance mixed with flour.
 recol1s=4228
 recol1d=7399
-cost=1
 model=obj_swamp_tar
 2dxof=1
 2dyof=-22
@@ -176,13 +203,15 @@ model=obj_swamp_tar
 2dyan=148
 2dxan=224
 members=yes
-stackable=yes
 weight=18oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+stackable=yes
+param=allstar_sellable,yes
 
 [swamppaste]
 name=Swamp paste
 desc=A tar-like substance mixed with flour and warmed.
-cost=30
 model=obj_swamppaste
 2dxof=1
 2dyof=-22
@@ -190,15 +219,19 @@ model=obj_swamppaste
 2dyan=148
 2dxan=224
 members=yes
-stackable=yes
 weight=18oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=26
+stackable=yes
+param=allstar_value,26
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [chefs_hat]
 name=Chef's hat
 desc=What a silly hat.
 recol1s=15855
 recol1d=32767
-cost=2
 model=obj_chefs_hat
 2dxof=-4
 2dyof=3
@@ -210,12 +243,15 @@ manhead=obj_chefs_hat_manhead
 womanhead=obj_chefs_hat_womanhead
 iop2=Wear
 weight=2lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
 wearpos=hat
+param=allstar_sellable,yes
+param=allstar_note,cert_chefs_hat
 
 [pumpkin]
 name=Pumpkin
 desc=Happy Halloween.
-cost=30
 iop1=Eat
 model=obj_pumpkin
 2dxof=3
@@ -226,11 +262,15 @@ model=obj_pumpkin
 weight=500g
 category=category_131
 param=party_clean_exempt,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=269641607
+param=allstar_value,269641607
+param=allstar_sellable,yes
+param=allstar_note,cert_pumpkin
 
 [easter_egg]
 name=Easter egg
 desc=Happy Easter.
-cost=10
 iop1=Eat
 model=obj_easter_egg
 2dzoom=1080
@@ -239,11 +279,15 @@ model=obj_easter_egg
 weight=3oz
 category=category_59
 param=party_clean_exempt,^true
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=93477803
+param=allstar_value,93477803
+param=allstar_sellable,yes
+param=allstar_note,cert_easter_egg
 
 [banana]
 name=Banana
 desc=Mmm this looks tasty.
-cost=2
 iop1=Eat
 model=obj_banana
 2dxof=9
@@ -254,8 +298,11 @@ model=obj_banana
 manwear=obj_banana_manwear,0
 womanwear=obj_banana_manwear,6
 weight=1oz
-wearpos=righthand
 category=category_86
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_banana
 
 [cabbage]
 name=Cabbage
@@ -267,12 +314,15 @@ model=cabbage_fullygrown_8
 2dyan=1800
 2dxan=284
 iop1=Eat
-cost=1
 ambient=17
 weight=1lb
 category=category_131
 param=gnome_cooking_ingredient,^true
 param=batta_message,You add the Cabbage to the gnome batta.
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_cabbage
 
 [magic_cabbage]
 name=Cabbage
@@ -284,9 +334,12 @@ model=cabbage_fullygrown_8
 2dyan=1800
 2dxan=284
 iop1=Eat
-cost=1
 weight=350g
 category=category_59
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_magic_cabbage
 
 [spinach_roll]
 name=Spinach roll
@@ -296,14 +349,16 @@ model=obj_spinach_roll
 2dzoom=790
 2dyan=164
 2dxan=376
-cost=1
 weight=100g
 category=category_59
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_spinach_roll
 
 [kebab]
 name=Kebab
 desc=A meaty kebab.
-cost=3
 iop1=Eat
 model=obj_ugthanki_kebab_bad
 2dxof=4
@@ -314,6 +369,11 @@ model=obj_ugthanki_kebab_bad
 2dxan=1876
 weight=250g
 category=category_59
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2
+param=allstar_value,2
+param=allstar_sellable,yes
+param=allstar_note,cert_kebab
 
 [chocolaty_milk]
 name=Chocolatey milk
@@ -321,7 +381,6 @@ desc=Milk with chocolate in it.
 recol1s=173
 recol1d=13540
 iop1=Drink
-cost=2
 members=yes
 model=obj_bucket_wax
 2dyof=-18
@@ -331,12 +390,14 @@ model=obj_bucket_wax
 weight=2kg
 category=category_59
 param=next_obj_stage,bucket_empty
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [cup_of_tea]
 name=Cup of tea
 desc=A nice cup of tea.
-cost=10
 iop1=Drink
 model=obj_display_tea
 2dxof=-1
@@ -346,6 +407,11 @@ model=obj_display_tea
 2dxan=156
 members=yes
 param=next_obj_stage,cup_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_cup_of_tea
 
 [cup_empty]
 name=Empty cup
@@ -356,7 +422,6 @@ recol2s=14764
 recol2d=21140
 recol3s=15821
 recol3d=27482
-cost=2
 model=obj_murdercup
 2dxof=-1
 2dyof=-2
@@ -364,6 +429,10 @@ model=obj_murdercup
 2dyan=1980
 2dxan=156
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_cup_empty
 
 [rottenapples]
 name=Rotten apple
@@ -382,17 +451,18 @@ model=obj_cooking_apple
 2dxan=212
 iop1=Eat
 members=yes
-cost=1
 weight=120g
 category=category_86
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [onion]
 name=Onion
 desc=A strong smelling onion.
 recol1s=31674
 recol1d=24108
-cost=3
 model=onion_offset_8
 2dzoom=670
 2dyan=116
@@ -402,13 +472,17 @@ weight=150g
 category=category_131
 param=gnome_cooking_ingredient,^true
 param=ugthanki_kebab_struct,onion_kebab
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=2
+param=allstar_value,2
+param=allstar_sellable,yes
+param=allstar_note,cert_onion
 
 [chocolate_dust]
 name=Chocolate dust
 desc=It's ground up chocolate.
 recol1s=21140
 recol1d=11426
-cost=2
 model=obj_unicorn_horn_dust
 2dxof=-6
 2dzoom=1210
@@ -419,6 +493,10 @@ category=category_59
 param=gnome_topping,^true
 param=cocktail_message,You sprinkle the chocolate dust over the drink.
 param=brew_potion_struct,3dose1energy
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_chocolate_dust
 
 [pot_empty]
 name=Pot
@@ -431,27 +509,31 @@ model=obj_pot_unfired
 2dxan=112
 manwear=obj_pot_empty_manwear,0
 womanwear=obj_pot_empty_manwear,6
-cost=1
 weight=1lb
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_pot_empty
 
 [flour]
 name=Flour
 desc=A little heap of flour.
 recol1s=21140
 recol1d=28539
-cost=2
 model=obj_unicorn_horn_dust
 2dxof=-6
 2dzoom=1210
 2dyan=1892
 2dxan=264
 weight=500g
-tradeable=no
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_withdraw_stackable,yes
 
 [grain]
 name=Grain
 desc=Some wheat heads.
-cost=2
 model=obj_grain
 2dxof=-1
 2dyof=9
@@ -459,3 +541,7 @@ model=obj_grain
 2dyan=88
 2dxan=292
 weight=600g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_grain

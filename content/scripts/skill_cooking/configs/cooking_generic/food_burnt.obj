@@ -3,13 +3,16 @@ name=Burnt chicken
 desc=Oh dear, it's totally burnt!
 recol1s=15619
 recol1d=5285
-cost=1
 model=obj_enchanted_chicken
 2dxof=-3
 2dzoom=870
 2dyan=1748
 2dxan=88
 weight=4oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_chicken
 
 [burnt_meat]
 name=Burnt meat
@@ -24,5 +27,8 @@ model=obj_enchanted_beef
 2dzoom=560
 2dyan=176
 2dxan=308
-cost=1
 weight=8oz
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_meat

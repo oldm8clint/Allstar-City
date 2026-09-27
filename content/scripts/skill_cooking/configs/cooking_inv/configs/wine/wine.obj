@@ -10,10 +10,13 @@ model=obj_wine_of_zamorak
 2dzoom=600
 2dyan=84
 2dxan=260
-cost=1
 weight=1500g
 category=alcoholic_drinks
 param=next_obj_stage,jug_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_jug_bad_wine
 
 [grapes]
 name=Grapes
@@ -26,16 +29,18 @@ model=obj_white_berries
 2dzoom=970
 2dyan=668
 2dxan=404
-cost=1
 weight=250g
 respawnrate=80
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_grapes
 
 [jug_wine]
 name=Jug of wine
 desc=It's full of wine.
 recol1s=32767
 recol1d=25765
-cost=1
 iop1=Drink
 model=obj_wine_of_zamorak
 2dxof=1
@@ -46,6 +51,10 @@ model=obj_wine_of_zamorak
 weight=1500g
 category=alcoholic_drinks
 param=next_obj_stage,jug_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_jug_wine
 
 
 [half_full_wine_jug]
@@ -53,7 +62,6 @@ name=Half full wine jug
 desc=An optimist would say it's half full.
 recol1s=32767
 recol1d=25765
-cost=1
 model=obj_wine_of_zamorak
 2dxof=1
 2dyof=100
@@ -64,13 +72,16 @@ iop1=Drink
 weight=1kg
 category=alcoholic_drinks
 param=next_obj_stage,jug_empty
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_half_full_wine_jug
 
 [jug_unfermented_wine]
 name=Unfermented wine
 desc=This wine needs to ferment before it can be drunk.
 recol1s=32767
 recol1d=25765
-cost=10
 model=obj_wine_of_zamorak
 2dxof=1
 2dyof=100
@@ -78,3 +89,8 @@ model=obj_wine_of_zamorak
 2dyan=84
 2dxan=260
 weight=1500g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_jug_unfermented_wine

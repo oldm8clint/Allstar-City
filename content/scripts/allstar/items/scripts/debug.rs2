@@ -1,0 +1,16 @@
+// Developer-only helpers for allstar/tests/items.test.ts (debugprocs never run on live worlds):
+//   ::~allstar_bank          open the bank anywhere
+//   ::~allstar_depositbox    open the deposit box anywhere
+//   ::~allstar_hurt <n>      lose n hitpoints
+[debugproc,allstar_bank]
+if (p_finduid(uid) = true) {
+    ~allstar_open_bank;
+}
+
+[debugproc,allstar_depositbox]
+if (p_finduid(uid) = true) {
+    ~allstar_open_deposit_box;
+}
+
+[debugproc,allstar_hurt](int $amount)
+stat_sub(hitpoints, $amount, 0);

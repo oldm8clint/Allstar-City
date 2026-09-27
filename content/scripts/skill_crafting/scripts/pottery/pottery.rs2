@@ -1,10 +1,3 @@
-[opheldu,clay]
-switch_obj (last_useitem)
-{
-    case bowl_water, bucket_water, jug_water : @make_softclay(last_useitem);
-    case default : ~displaymessage(^dm_default);
-};
-
 [oplocu,potterywheel] @use_potters_wheel(last_useitem);
 [oplocu,viking_potterywheel] @use_potters_wheel(last_useitem);
 
@@ -102,7 +95,6 @@ if (stat_random(crafting, 180, 800) = true) {
 } else {
     mes("The <oc_name($product)> cracks in the oven.");
 }
-
 
 //-------------------------------
 

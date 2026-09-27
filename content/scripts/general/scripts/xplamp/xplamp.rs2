@@ -1,7 +1,3 @@
-[opheld1,macro_genilamp]
-%xplamp = ^xplamp_none;
-if_openmain(xplamp);
-
 [if_button,xplamp:attack] @xplamp_select(attack);
 [if_button,xplamp:strength] @xplamp_select(strength);
 [if_button,xplamp:ranged] @xplamp_select(ranged);

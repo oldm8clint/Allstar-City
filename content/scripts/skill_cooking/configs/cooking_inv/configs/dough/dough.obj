@@ -3,13 +3,17 @@ name=Pitta dough
 desc=I need to cook this.
 recol1s=21135
 recol1d=29595
-cost=4
 model=obj_uncooked_pitta_bread
 2dzoom=980
 2dyan=108
 2dxan=248
 members=yes
 weight=120g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_uncooked_pitta_bread
 
 [bread_dough]
 name=Bread dough
@@ -20,26 +24,33 @@ model=obj_pastry_dough
 2dzoom=440
 2dyan=92
 2dxan=264
-cost=4
 weight=600g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=3
+param=allstar_value,3
+param=allstar_sellable,yes
+param=allstar_note,cert_bread_dough
 
 [pitta_bread]
 name=Pitta bread
 desc=Nicely baked pitta bread. Needs more ingredients to make a kebab.
 recol1s=21135
 recol1d=30547
-cost=10
 model=obj_uncooked_pitta_bread
 2dzoom=980
 2dyan=108
 2dxan=248
 members=yes
 weight=100g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=9
+param=allstar_value,9
+param=allstar_sellable,yes
+param=allstar_note,cert_pitta_bread
 
 [bread]
 name=Bread
 desc=Nice crispy bread.
-cost=12
 iop1=Eat
 model=obj_bread
 2dyof=5
@@ -49,19 +60,27 @@ model=obj_bread
 weight=500g
 category=category_59
 respawnrate=200
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=10
+param=allstar_value,10
+param=allstar_sellable,yes
+param=allstar_note,cert_bread
 
 [burnt_pitta_bread]
 name=Burnt pitta bread
 desc=It's all burnt.
 recol1s=21135
 recol1d=5285
-cost=1
 model=obj_uncooked_pitta_bread
 2dzoom=980
 2dyan=108
 2dxan=248
 weight=80g
 members=yes
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_pitta_bread
 
 [burnt_bread]
 name=Burnt bread
@@ -75,5 +94,8 @@ model=obj_bread
 2dzoom=830
 2dyan=268
 2dxan=392
-cost=1
 weight=350g
+// allstar item data (allstar/tools/gen/items.mjs)
+cost=1
+param=allstar_sellable,yes
+param=allstar_note,cert_burnt_bread
