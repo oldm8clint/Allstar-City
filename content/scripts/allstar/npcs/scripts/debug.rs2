@@ -19,15 +19,6 @@ if ($at = null) {
 }
 mes("npcnid <tostring(coordx($at))>,<tostring(coordz($at))>");
 
-// ::~npcsjuna opens Juna's menu (object 6657, client.java L3416, player west of Juna) the way the
-// objects port should: set %allstar_junatele, then ~allstar_selectoption
-[debugproc,npcsjuna]
-strongqueue(allstar_debug_juna, 0, 0);
-
-[queue,allstar_debug_juna]
-%allstar_junatele = 1;
-~allstar_selectoption("Hello what do you want?", "Can I go through please?", "Ya ma.", "");
-
 // ::~npcsstaff <level> sets the engine staff level, so a test can act as a player (rank 0 cannot
 // run debugprocs or dev cheats afterwards)
 [debugproc,npcsstaff](int $level)

@@ -2,9 +2,6 @@
 [oploc1,lgshamancaverock1] @legends_search_rocks;
 [oploc1,lgshamancaverock2] @legends_search_rocks;
 
-[oploc1,shaman_entrance_caver] @legends_cave_entrance;
-[oploc1,shaman_entrance_cavel] @legends_cave_entrance;
-
 [oploc1,lqfirewall_straight] @legends_touch_fire_wall;
 [oploc1,lqfirewall_diagonal] @legends_touch_fire_wall;
 [oploc2,lqfirewall_straight] @legends_investigate_fire_wall;
@@ -112,22 +109,6 @@ if (~p_choice2_header("Yes please!", 1, "No thanks!", 2, "Would you like to sque
 }
 else {
     mes("You decide not to squeeze yourself into that ridiculously small crevice.");
-}
-
-[oploc1,shaman_cave_crevice]
-mes("It looks like a crevice, you could possibly squeeze through.");
-
-[oploc2,shaman_cave_crevice]
-~mesbox("You search the crevice. It looks as if you might be able to squeeze through, would you like to try?");
-if (~p_choice2_header("Yes please!", 1, "No thanks.", 2, "Squeeze through incredibly tight crevice?") = 1) {
-    if_close;
-    mes("You squeeze your way through the crevice.");
-    anim(human_crawling, 0);
-    p_delay(1);
-    p_teleport(0_43_145_43_58);
-}
-else {
-    mes("You decide not to try and squeeze your way through the crevice.");
 }
 
 [oploc2,legends_cupboardopen]
@@ -1300,7 +1281,6 @@ if(oc_category(last_useitem) = weapon_axe) {
     @yommi_chop_logs("You use your axe on the rotten Yommi totem pole.");
 }
 ~displaymessage(^dm_default);
-
 
 [label,yommi_chop_logs](string $chop_mes)
 if(last_useitem ! rune_axe) {

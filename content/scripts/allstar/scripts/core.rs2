@@ -19,6 +19,10 @@ if ($count > 0) {
 }
 return (true);
 
+// client.addItem(id, n) where the caller ignores the result (the item is lost if there is no room)
+[proc,allstar_give](namedobj $obj, int $count)
+def_boolean $added = ~allstar_additem($obj, $count);
+
 // Command teleports (Player.getNextPlayerMovement): instant, same height, no animation, walk queue
 // reset. Queued so it still happens while the player is busy, as it did in Allstar-Scape.
 [proc,allstar_telejump](int $x, int $z)

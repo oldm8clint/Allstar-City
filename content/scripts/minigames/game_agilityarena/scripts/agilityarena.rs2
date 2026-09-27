@@ -46,7 +46,6 @@ hint_stop();
 hint_coord(^hint_center, ~get_pillar_coord, 60);
 settimer(agilityarena_pillar, sub(%agilityarena_next_pillar_time, map_clock));
 
-[oploc1,agility_ticketpillar] @agilityarena_tag_pillar;
 [oploc1,agilityarena_poisondarts] @agilityarena_tag_pillar;
 
 [label,agilityarena_tag_pillar]

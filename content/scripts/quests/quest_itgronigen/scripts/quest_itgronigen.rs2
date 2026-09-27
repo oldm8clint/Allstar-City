@@ -33,10 +33,6 @@ mes("You open the chest.");
 mes("You open the chest.");
 ~open_chest(loc_2195);
 
-[oploc1,loc_2193] 
-mes("You open the chest.");
-~open_chest(loc_2196);
-
 [oploc1,loc_2197] 
 mes("You open the chest.");
 ~open_chest(loc_2198);

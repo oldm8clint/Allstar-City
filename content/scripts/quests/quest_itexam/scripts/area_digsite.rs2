@@ -72,10 +72,6 @@ if ($rand < 3) {
 // STUDENT 3 ERRAND 1
 ////////////////////////////////////////////////
 
-[oploc1,digsitebush]
-anim(human_pickuptable, 0);
-mes("You search the bush...You find nothing of interest.");
-
 [oploc1,digsitebushsample]
 anim(human_pickuptable, 0);
 

@@ -14,8 +14,9 @@
 //   973  chat2:    player head 974, name 975, lines 976-977 (976 is blanked before every render)
 //   2459 multi2:   title 2460, options 2461 (button 9157) and 2462 (button 9158)
 //
-// Other systems open Allstar-Scape option boxes with ~allstar_selectoption so the shared option
-// chain (and its NpcDialogue == 0 hijack, dialogues_quests.md 4.4) applies to them too.
+// The object menus (objects/scripts/object_dialogs.rs2) and the Ring of dueling (items) run their
+// own option boxes. The chain below still reads the state they leave set: OptionObject, JunaTele
+// and duelring.
 
 // ---- state ----
 
@@ -87,20 +88,6 @@ if_settext(multi2:com_0, $title);
 if_settext(multi2:com_1, $option1);
 if_settext(multi2:com_2, $option2);
 if_openchat(multi2);
-
-// client.selectoption (L10219): the same box, plus a third string written to 2463, a sword graphic
-// of the 2-option box, so it never shows. Callers set %allstar_optionobject / %allstar_junatele
-// first; the answer is handled by the option chain below. The Ring of dueling (items) opens its own
-// menu, but the duelring it leaves set after the rift is read by this chain too.
-[proc,allstar_selectoption](string $question, string $s1, string $s2, string $s3)
-if_sethide(multi2:com_5, true);
-if_sethide(multi2:com_8, false);
-if_settext(multi2:com_0, $question);
-if_settext(multi2:com_1, $s1);
-if_settext(multi2:com_2, $s2);
-if_settext(multi2:com_3, $s3);
-if_openchat(multi2);
-~allstar_dialogue_run(2);
 
 // ---- the loop ----
 
@@ -228,10 +215,10 @@ if ($id = 2) {
     // TzTok-Jad's lair (items/scripts/options.rs2)
     ~allstar_duelring_hans_option1;
     return (0);
-} else if (%allstar_optionobject = 2466) {
+} else if (%allstar_option_object = 2466) {
     mes("Welcome to Saradomin's team!");
     p_telejump(movecoord(coord, calc(2387 - coordx(coord)), 0, calc(3116 - coordz(coord))));
-    %allstar_optionobject = 0;
+    %allstar_option_object = -1;
     if_close;
     return (0);
 } else if (%allstar_junatele = 1 | %allstar_junatele = 2) {
@@ -241,7 +228,7 @@ if ($id = 2) {
     } else {
         p_telejump(movecoord(coord, calc(3251 - coordx(coord)), 0, 0));
     }
-    %allstar_junatele = 0;
+    %allstar_junatele = -1;
     return (0);
 }
 // no branch: nothing happens and the box stays up
@@ -273,17 +260,17 @@ if ($id = 2) {
     mes("You can feel the magical aura in the air");
     if_close;
     $shown = 0;
-} else if (%allstar_optionobject = 2466) {
+} else if (%allstar_option_object = 2466) {
     mes("Welcome to Zamorak's team!");
     p_telejump(movecoord(coord, calc(2412 - coordx(coord)), 0, calc(3091 - coordz(coord))));
-    %allstar_optionobject = 0;
+    %allstar_option_object = -1;
     if_close;
     $shown = 0;
 }
 // checked separately from the chain above
 if (%allstar_junatele = 1 | %allstar_junatele = 2) {
     ~allstar_chat_973("Ya ma.");
-    %allstar_junatele = 0;
+    %allstar_junatele = -1;
     $shown = 1;
 }
 return ($shown);

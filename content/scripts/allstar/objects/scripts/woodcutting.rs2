@@ -1,0 +1,93 @@
+// Allstar-Scape woodcutting: trees pay coins and xp, no logs (client.Woodcutting / WC / ResetWC,
+// allstar/spec/objects_buttons.md section 3.7).
+//
+// Woodcutting() sets up the chop; every cycle client.process() counted WCTimer down and, while the
+// player stood within 2 tiles of the tree, called WC(). A walk packet reset everything.
+
+// Woodcutting(name, lvlReq, XPamount, 995, amount, obj, X, Y, 875)
+[proc,allstar_woodcutting](string $name, int $level, int $xp, int $coins, int $base)
+if (map_clock < %allstar_wc_timer) {
+    return;
+}
+if (stat(woodcutting) < $level) {
+    mes("You need a woodcutting level of <tostring($level)> to chop down this tree.");
+    return;
+}
+~allstar_standanim(human_woodcutting_steel_axe);
+mes("You begin to cut the <$name> tree.");
+%allstar_wc_coins = $coins;
+%allstar_wc_tree = loc_coord;
+// GetWCBonus: base - woodcutting / 4
+%allstar_wc_treetimer = calc($base - stat(woodcutting) / 4);
+%allstar_wc_xp = $xp;
+%allstar_wc_timer = calc(map_clock + %allstar_wc_treetimer);
+%allstar_wcing = 1;
+softtimer(allstar_wc, 1);
+walktrigger(allstar_wc_walk);
+
+// client.process(): if (IsWcing && GoodDistance(TreeX, TreeY, absX, absY, 2)) WC();
+[softtimer,allstar_wc]
+if (%allstar_wcing = 0) {
+    clearsofttimer(allstar_wc);
+    return;
+}
+if (distance(coord, %allstar_wc_tree) > 2) {
+    return;
+}
+// WC(): only when WCTimer has run out
+if (map_clock < %allstar_wc_timer) {
+    return;
+}
+if (%allstar_wc_chops >= 20) {
+    // AddGlobalObj(TreeX, TreeY, 1341, 0, 10)
+    loc_add(%allstar_wc_tree, treestump, 0, centrepiece_straight, ^allstar_stump_duration);
+    mes("This tree has run out of logs");
+    ~allstar_wc_reset;
+    return;
+}
+if (~allstar_has_axe = false) {
+    mes("You need an axe to chop down this tree.");
+    ~allstar_wc_reset;
+    return;
+}
+stat_advance(woodcutting, %allstar_wc_xp);
+if (~allstar_additem(coins, %allstar_wc_coins) = false) {
+    ~allstar_wc_reset;
+    return;
+}
+mes("You cut and tree, and get some money!");
+%allstar_wc_timer = calc(map_clock + %allstar_wc_treetimer);
+%allstar_wc_chops = calc(%allstar_wc_chops + 1);
+
+// walking (packets 164 / 248 / 98): if (IsWcing) ResetWC();
+[walktrigger,allstar_wc_walk]
+if (%allstar_wcing = 1) {
+    ~allstar_wc_reset;
+}
+
+// ResetWC()
+[proc,allstar_wc_reset]
+%allstar_wcing = 0;
+%allstar_wc_timer = 0;
+%allstar_wc_coins = 0;
+%allstar_wc_chops = 0;
+%allstar_wc_tree = null;
+%allstar_wc_treetimer = 0;
+clearsofttimer(allstar_wc);
+~allstar_reset_stand;
+
+// hasAxe(): any axe carried or worn
+[proc,allstar_has_axe]()(boolean)
+if (~allstar_carries(dragon_axe) = true | ~allstar_carries(bronze_axe) = true | ~allstar_carries(iron_axe) = true
+    | ~allstar_carries(steel_axe) = true | ~allstar_carries(mithril_axe) = true | ~allstar_carries(adamant_axe) = true
+    | ~allstar_carries(rune_axe) = true | ~allstar_carries(black_axe) = true) {
+    return(true);
+}
+return(false);
+
+// playerHasItem2: in the inventory or worn
+[proc,allstar_carries](obj $obj)(boolean)
+if (inv_total(inv, $obj) > 0 | inv_total(worn, $obj) > 0) {
+    return(true);
+}
+return(false);

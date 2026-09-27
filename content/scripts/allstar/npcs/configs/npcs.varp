@@ -2,10 +2,9 @@
 
 // ---- dialogue engine (Player.java L1436-1439), reset on login like the Java fields ----
 
-// NpcDialogue: the dialogue case UpdateNPCChat renders. Walking resets it to 0; several branches
-// leave it set after closing the chatbox, which decides the option-1 hijack (dialogue.rs2).
-[allstar_npcdialogue]
-protect=no
+// NpcDialogue is %allstar_npcdialogue (objects.varp, shared with the object menus): the dialogue
+// case UpdateNPCChat renders. Walking resets it to 0; several branches leave it set after closing
+// the chatbox, which decides the option-1 hijack (dialogue.rs2).
 
 // where the player stood when NpcDialogue was last set (a move means the player walked)
 [allstar_npcdialogue_coord]
@@ -17,19 +16,12 @@ protect=no
 type=npc
 protect=no
 
-// client.duelring is %allstar_duelring (items.varp): the Ring of dueling sets it, option buttons
-// 9157/9158 read it
+// The option buttons 9157/9158 also read client.duelring (%allstar_duelring, items.varp),
+// Player.OptionObject (%allstar_option_object) and client.JunaTele (%allstar_junatele, both
+// objects.varp); their branches reset them to -1 (0 at login).
 
-// Player.OptionObject: 2466 while the team-select portal menu is up (0 stands for -1)
-[allstar_optionobject]
-protect=no
-
-// client.JunaTele: 1 or 2 while Juna's menu is up (0 stands for -1)
-[allstar_junatele]
-protect=no
-
-// client.Essence (1-3): which wizard sent the player to 3088,3489; only the essence-mine exits
-// (stair types 25/26) read it
+// client.Essence (1-3): which wizard sent the player to 3088,3489. Only stairs 26 read it, which no
+// object uses; stairs 25 (essence mine portal 2492) overwrites it from the height level.
 [allstar_essence]
 protect=no
 

@@ -1,7 +1,3 @@
-[oploc1,arena_guard_chest_shut]
-mes("You open the chest.");
-~open_chest(arena_guard_chest_open);
-
 [oploc1,arena_guard_chest_open]
 // doesnt check bank in RS3, assuming this will probably work the same way
 def_int $armour_count = calc(inv_total(inv, khazard_platemail) + inv_total(worn, khazard_platemail));
