@@ -49,6 +49,8 @@ export default {
     NODE_MAX_CONNECTED: tryParseInt(process.env.NODE_MAX_CONNECTED, 1000),
     NODE_MAX_NPCS: tryParseInt(process.env.NODE_MAX_NPCS, 16383),
     NODE_DEBUGPROC_CHAR: tryParseString(process.env.NODE_DEBUGPROC_CHAR, '~'),
+    // ms per game cycle (authentic: 600, Allstar-Scape: 500)
+    NODE_TICKRATE: tryParseInt(process.env.NODE_TICKRATE, 600),
     NODE_WS_ONDEMAND: tryParseBoolean(process.env.NODE_WS_ONDEMAND, false),
     NODE_HOP_TIME: tryParseInt(process.env.NODE_MAX_NPCS, 45000), // 45s
     // limit login attempts

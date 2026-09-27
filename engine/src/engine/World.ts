@@ -117,7 +117,8 @@ class World {
     private static readonly PLAYERS: number = Environment.NODE_MAX_PLAYERS;
     private static readonly NPCS: number = Environment.NODE_MAX_NPCS;
 
-    private static readonly TICKRATE: number = 600; // ms (0.6s) - DO NOT CHANGE. This is only exposed for condensing time while testing long-running operations.
+    // ms per game cycle. Authentic RS2 is 600ms; Allstar-City runs Allstar-Scape's original 500ms cycle (NODE_TICKRATE).
+    private static readonly TICKRATE: number = Environment.NODE_TICKRATE;
 
     private static readonly INV_STOCKRATE: number = 100; // 1m shop restocks
 

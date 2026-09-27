@@ -24,6 +24,7 @@ import { isClientConnected } from '#/engine/entity/NetworkPlayer.js';
 import Npc from '#/engine/entity/Npc.js';
 import Player, { getExpByLevel } from '#/engine/entity/Player.js';
 import { PlayerStat, PlayerStatEnabled, PlayerStatMap } from '#/engine/entity/PlayerStat.js';
+import ScriptFile from '#/engine/script/ScriptFile.js';
 import ScriptProvider from '#/engine/script/ScriptProvider.js';
 import ScriptRunner from '#/engine/script/ScriptRunner.js';
 
@@ -45,13 +46,28 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
         const { input: cheat } = message;
 
         const args: string[] = cheat.toLowerCase().split(' ');
+        const rawArgs: string[] = cheat.split(' ');
         const cmd: string | undefined = args.shift();
+        rawArgs.shift();
         if (cmd === undefined || cmd.length <= 0) {
             return false;
         }
 
         if (player.staffModLevel >= 2) {
             player.addSessionLog(LoggerEventType.MODERATOR, 'Ran cheat', cheat);
+        }
+
+        // Allstar-City: ::commands are content scripts named [proc,cmd_<command>] and are open to every
+        // player; each script enforces its own rank requirement with staffmodlevel.
+        const command = ScriptProvider.getByName(`[proc,cmd_${cmd}]`);
+        if (command) {
+            const params = this.parseScriptArgs(command, args, rawArgs);
+            if (!params) {
+                return false;
+            }
+
+            player.executeScript(ScriptRunner.init(command, player, null, params), false);
+            return true;
         }
 
         if (!Environment.NODE_PRODUCTION && player.staffModLevel >= 4) {
@@ -64,85 +80,9 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
                     return false;
                 }
 
-                const params = new Array(script.info.parameterTypes.length).fill(-1);
-                for (let i = 0; i < script.info.parameterTypes.length; i++) {
-                    const type = script.info.parameterTypes[i];
-
-                    try {
-                        switch (type) {
-                            case ScriptVarType.STRING: {
-                                const value = args.shift();
-                                params[i] = value ?? '';
-                                break;
-                            }
-                            case ScriptVarType.INT: {
-                                const value = args.shift();
-                                params[i] = parseInt(value ?? '0', 10) | 0;
-                                break;
-                            }
-                            case ScriptVarType.OBJ:
-                            case ScriptVarType.NAMEDOBJ: {
-                                const name = args.shift();
-                                params[i] = ObjType.getId(name ?? '');
-                                break;
-                            }
-                            case ScriptVarType.NPC: {
-                                const name = args.shift();
-                                params[i] = NpcType.getId(name ?? '');
-                                break;
-                            }
-                            case ScriptVarType.LOC: {
-                                const name = args.shift();
-                                params[i] = LocType.getId(name ?? '');
-                                break;
-                            }
-                            case ScriptVarType.SEQ: {
-                                const name = args.shift();
-                                params[i] = SeqType.getId(name ?? '');
-                                break;
-                            }
-                            case ScriptVarType.STAT: {
-                                const name = args.shift() ?? '';
-                                params[i] = PlayerStatMap.get(name.toUpperCase());
-                                break;
-                            }
-                            case ScriptVarType.INV: {
-                                const name = args.shift();
-                                params[i] = InvType.getId(name ?? '');
-                                break;
-                            }
-                            case ScriptVarType.COORD: {
-                                const args2 = cheat.split('_');
-
-                                const level = parseInt(args2[0].slice(6));
-                                const mx = parseInt(args2[1]);
-                                const mz = parseInt(args2[2]);
-                                const lx = parseInt(args2[3]);
-                                const lz = parseInt(args2[4]);
-
-                                params[i] = CoordGrid.packCoord(level, (mx << 6) + lx, (mz << 6) + lz);
-                                break;
-                            }
-                            case ScriptVarType.INTERFACE: {
-                                const name = args.shift();
-                                params[i] = Component.getId(name ?? '');
-                                break;
-                            }
-                            case ScriptVarType.SPOTANIM: {
-                                const name = args.shift();
-                                params[i] = SpotanimType.getId(name ?? '');
-                                break;
-                            }
-                            case ScriptVarType.IDKIT: {
-                                const name = args.shift();
-                                params[i] = IdkType.getId(name ?? '');
-                                break;
-                            }
-                        }
-                    } catch (_) {
-                        // invalid arguments
-                        return false;
-                    }
+                const params = this.parseScriptArgs(script, args, rawArgs);
+                if (!params) {
+                    return false;
                 }
 
                 player.executeScript(ScriptRunner.init(script, player, null, params), false);
@@ -684,5 +624,72 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
         }
 
         return true;
+    }
+
+    // Converts cheat arguments into script parameters by the script's declared parameter types.
+    // Names are matched lowercase; a trailing string parameter receives the rest of the input as typed.
+    private parseScriptArgs(script: ScriptFile, args: string[], rawArgs: string[]): (number | string)[] | null {
+        const types = script.info.parameterTypes;
+        const params: (number | string)[] = new Array(types.length).fill(-1);
+        for (let i = 0; i < types.length; i++) {
+            const type = types[i];
+            if (type === ScriptVarType.STRING && i === types.length - 1) {
+                params[i] = rawArgs.join(' ');
+                break;
+            }
+
+            const token = args.shift() ?? '';
+            const raw = rawArgs.shift() ?? '';
+
+            try {
+                switch (type) {
+                    case ScriptVarType.STRING:
+                        params[i] = raw;
+                        break;
+                    case ScriptVarType.INT:
+                        params[i] = parseInt(token || '0', 10) | 0;
+                        break;
+                    case ScriptVarType.OBJ:
+                    case ScriptVarType.NAMEDOBJ:
+                        params[i] = ObjType.getId(token);
+                        break;
+                    case ScriptVarType.NPC:
+                        params[i] = NpcType.getId(token);
+                        break;
+                    case ScriptVarType.LOC:
+                        params[i] = LocType.getId(token);
+                        break;
+                    case ScriptVarType.SEQ:
+                        params[i] = SeqType.getId(token);
+                        break;
+                    case ScriptVarType.STAT:
+                        params[i] = PlayerStatMap.get(token.toUpperCase()) ?? -1;
+                        break;
+                    case ScriptVarType.INV:
+                        params[i] = InvType.getId(token);
+                        break;
+                    case ScriptVarType.COORD: {
+                        // level_mx_mz_lx_lz
+                        const [level, mx, mz, lx, lz] = token.split('_').map(x => parseInt(x));
+                        params[i] = CoordGrid.packCoord(level, (mx << 6) + lx, (mz << 6) + lz);
+                        break;
+                    }
+                    case ScriptVarType.INTERFACE:
+                        params[i] = Component.getId(token);
+                        break;
+                    case ScriptVarType.SPOTANIM:
+                        params[i] = SpotanimType.getId(token);
+                        break;
+                    case ScriptVarType.IDKIT:
+                        params[i] = IdkType.getId(token);
+                        break;
+                }
+            } catch (_) {
+                // invalid arguments
+                return null;
+            }
+        }
+
+        return params;
     }
 }
