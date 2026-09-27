@@ -142,7 +142,9 @@ await sleep(1500);
 
 // world edits (client.NewObjects / Deleteobjects / Deletewalls)
 check(locsAt(2856, 3598, 0).some(l => l.id === 7324), 'home fishing portal 7324 placed at 2856,3598');
-check([1, 2, 3].every(level => locsAt(3285, 2770, level).some(l => l.id === 10687 && l.shape === 10 && l.angle === 3)), 'mod zone party box 10687 on levels 1-3 (face -1 -> angle 3)');
+check([0, 1].every(level => locsAt(3285, 2770, level).some(l => l.id === 10687 && l.shape === 10 && l.angle === 3)), 'mod zone party box 10687 on levels 0 and 1 (face -1 -> angle 3)');
+check([2, 3].every(level => !locsAt(3285, 2770, level).some(l => l.id === 10687)), 'no floating party box on the floorless levels 2 and 3');
+check(!locsAt(2856, 3598, 1).some(l => l.id === 7324), 'other Allstar objects only on level 0 (no home fishing portal on level 1)');
 check(locsAt(3101, 3513, 0).some(l => l.id === 6472) && !locsAt(3101, 3513, 0).some(l => l.id === 6477), '3101,3513: later 6472 overwrites 6477');
 check(locsAt(2892, 9907, 0).some(l => l.id === 4626) && !locsAt(2892, 9907, 0).some(l => l.id === 1757), 'heroes basement ladder replaced by stairs 4626');
 check(!locsAt(2891, 3511, 0).some(l => l.id === 1516), 'heroes guild door 1516 removed');
