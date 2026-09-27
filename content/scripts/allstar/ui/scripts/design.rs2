@@ -1,0 +1,6 @@
+// The character design screen (317 interface 3559, player_kit), opened by ::char.
+[if_button,player_kit:accept]
+if_close;
+
+[if_close,player_kit]
+allowdesign(false);

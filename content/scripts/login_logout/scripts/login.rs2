@@ -12,6 +12,10 @@ if (%option_brightness = 0) {
 minimap_toggle(0); //reset minimap state on login
 
 ~allstar_new_player;
+// Allstar-Scape has no tutorial: Lost City content that checks the progress sees it done
+if (%tutorial < ^tutorial_complete) {
+    %tutorial = ^tutorial_complete;
+}
 ~allstar_levelup_login;
 ~allstar_login_rights;
 // loadquestinterface: the quest stages belong to the quests (npcs workstream); 0 = not started

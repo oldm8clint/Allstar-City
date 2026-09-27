@@ -473,13 +473,13 @@ async function setRights(bot: Bot, rights: number) {
     await expectMessage(admin, /^Bad emote ID$/, '::emote out of range', since);
 
     // ::xteleto runs twice for administrators (rights == 2 and >= 1)
-    await cmd(other, 'train', 1500);
+    await cmd(other, 'shops', 1500);
     since = admin.messages.length;
     await cmd(admin, `xteleto ${other.username}`, 1500);
     await expectMessage(admin, new RegExp(`^Teleto: You teleport to ${display(other)}$`), '::xteleto', since);
     check(admin.messages.slice(since).filter(m => m.startsWith('Teleto:')).length === 2, 'administrators run ::xteleto twice');
     let c = await admin.coord();
-    check(c.x === 3209 && c.z === 2801, `::xteleto destination ${JSON.stringify(c)}`);
+    check(c.x === 2738 && c.z === 3464, `::xteleto destination ${JSON.stringify(c)}`);
 
     // ::macrowarn: kicked, then a black mark at every login
     since = admin.messages.length;
