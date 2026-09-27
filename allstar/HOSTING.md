@@ -63,6 +63,14 @@ node allstar/tools/setrank.mjs "Your Name" 3
 The rank (0 player, 1 moderator, 2 administrator, 3 owner) applies at the next login. After that the
 owner promotes and demotes in game (`::giveadmin`, `::givemod`, `::demote`).
 
+## Claim the 2008 staff names first
+
+Allstar-Scape gave extra commands to some staff names, whatever their rank, and Allstar-City keeps
+them: `Mod Allstar` (`::giveowner` makes anyone an owner), `Fatality` (the owner command block),
+`D D 3`, `Mod Steve`, `Skillerzmine`, `Soz r4nged`, `rawr`, `Purez` and `zezima`; `Mod Mike` logs in
+as "Co-owner". A new name creates its account at its first login, so before anyone else can
+connect, log in once with each of these names using passwords only you know, and keep them.
+
 ## Hosting on a Windows PC without opening router ports
 
 Run a tunnel on the same PC and point it at `http://localhost:<WEB_PORT>`. Players then open
