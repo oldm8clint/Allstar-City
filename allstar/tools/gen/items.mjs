@@ -619,7 +619,9 @@ export default function items({ root, content, packs, report }) {
 
     report(
         `Items (< ${MAX_ID}): ${stats.blocks} obj configs, ${stats.wearable} wearable, ${stats.stackable} stackable, ${stats.notes} notes, ` +
-            `${stats.renamed} with an Allstar server name, ${stats.reqs} wear requirements; ${changedFiles} files rewritten`,
+            `${stats.renamed} with an Allstar server name, ${stats.reqs} wear requirements`,
         ...missing.map(id => `  - obj ${id} has no config block`)
     );
+    // console only, so report.txt stays the same when nothing changed
+    console.log(`items: ${changedFiles} obj files rewritten`);
 }
