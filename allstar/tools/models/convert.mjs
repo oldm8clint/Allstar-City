@@ -1,13 +1,18 @@
 // Ports the models of Allstar-Scape's custom items (allstar/tools/gen/customitems.data.mjs) to the
 // revision 377 client.
 //
-//   node allstar/tools/models/convert.mjs [--osrs <dir>] [--317 <dir>]
+//   node allstar/tools/models/convert.mjs [--osrs <dir>] [--317 <dir> [--317-items <file.json>]]
 //
 // Model sources, in order of preference:
 //   --317 <dir>   a 317-format client cache (main_file_cache.dat/.idx0-4) whose item ids are
 //                 Allstar-Scape's, i.e. the client players used (Silabsoft's 317 client with
 //                 508-era items). Its obj definitions (names, examines, options, icon params,
 //                 recolours) and models are the exact data players saw and are taken as-is.
+//                 Clients that defined extra items in code (ItemDef.forID) rather than obj.dat can
+//                 supply them with --317-items: {"<item id>": {name, desc, model, zoom2d, xan2d,
+//                 yan2d, zan2d, xof2d, yof2d, manwear, manwearOff, manwear2, womanwear,
+//                 womanwearOff, womanwear2, manhead, womanhead, recol: [[from, to]], iop: [...]}},
+//                 overriding obj.dat entries; model ids refer to the 317 cache's index 1.
 //   --osrs <dir>  an OSRS cache (default %USERPROFILE%/jagexcache/oldschool/LIVE, Dec 2021): the
 //                 same RS2 2007 items under their OSRS ids (customitems.data.mjs `osrs`), with the
 //                 models converted to the original format. Used for items the 317 cache lacks.
@@ -72,7 +77,12 @@ const isForeign = name => (lcFiles.has(name) && !inOutDir(lcFiles.get(name))) ||
 const sources = [];
 if (C317_DIR) {
     const cache = new Cache317(C317_DIR);
-    sources.push({ kind: '317', label: C317_DIR, objs: await loadObjs317(cache), raw: async id => cache.model(id) });
+    const objs = await loadObjs317(cache);
+    const extra = opt('--317-items');
+    if (extra) {
+        for (const [id, def] of Object.entries(JSON.parse(fs.readFileSync(extra, 'utf8')))) objs.set(Number(id), { ...objs.get(Number(id)), ...def });
+    }
+    sources.push({ kind: '317', label: C317_DIR, objs, raw: async id => cache.model(id) });
 }
 const osrsCache = fs.existsSync(path.join(OSRS_DIR, 'main_file_cache.dat2')) ? new FlatCache(OSRS_DIR) : null;
 if (osrsCache) {
