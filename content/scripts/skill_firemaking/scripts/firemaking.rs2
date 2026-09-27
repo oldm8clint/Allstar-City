@@ -1,12 +1,4 @@
 // trigger for logs on ground
-[opobju,_category_22]
-if (last_useitem = tinderbox) {
-    @light_logs_ground;
-} else {
-    ~displaymessage(^dm_default);
-}
-
-// opheldu for logs is handled in fletching
 [label,light_logs_ground]
 def_obj $log = obj_type;
 // check level first

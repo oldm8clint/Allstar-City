@@ -493,6 +493,29 @@ function bonusTextsMatch(bot: Bot): boolean {
     await cycles(1);
     check(countOf(bot, 379) === 1 && bankCount(379) === 0, 'withdraw 5 lobsters from a stack of 1');
 
+    // fromBank BUG: magic shortbow (861) is withdrawn through the id + 2 (iron knife) stackable path
+    await clearInv(bot);
+    await give(bot, 'magic_shortbow', 10);
+    bot.invButton(4, 861, slotOf(bot, 861), BANK_SIDE);
+    await cycles(1);
+    check(bankCount(861) === 10, 'deposit all 10 magic shortbows');
+    bot.invButton(2, 861, bank().findIndex(o => o?.id === 861), BANK);
+    await cycles(1);
+    check(countOf(bot, 861) === 1 && bankCount(861) === 5, `withdraw 5 magic shortbows: 1 comes out, the bank loses 5 (${countOf(bot, 861)} / ${bankCount(861)})`);
+
+    // deposit box: title, deposit, re-opened
+    await clearInv(bot);
+    await give(bot, 'lobster');
+    await closeModals(bot); // the bank screen is open
+    await cheat(bot, '~allstar_depositbox');
+    check(bot.main === 4465 && bot.texts.get(7421)?.toLowerCase() === `@whi@the official deposit box of ${bot.username}`.toLowerCase(), `deposit box (${bot.main}, ${bot.texts.get(7421)})`);
+    bot.invButton(1, 379, slotOf(bot, 379), 7423);
+    await cycles(1);
+    check(countOf(bot, 379) === 0 && bot.main === 4465, 'deposit box deposit');
+    await closeModals(bot);
+    await cheat(bot, '~allstar_bank');
+    check(bankCount(379) === 1, 'the deposit box banked the lobster');
+
     bot.close();
 }
 
@@ -524,6 +547,66 @@ function bonusTextsMatch(bot: Bot): boolean {
     await held(bot, 4, 1712, undefined, 3);
     const c = await bot.coord();
     check(since(bot, from).includes('Home, sweet home') && c.x === 2852 && c.z === 3863 && c.level === 0, `glory rub -> ${c.x},${c.z},${c.level}`);
+
+    bot.close();
+}
+
+// ---------------------------------------------------------------------------------------------
+// Pickup needs the player on the tile, ring of dueling, god book
+// ---------------------------------------------------------------------------------------------
+{
+    const bot = await login('ring');
+    await clearInv(bot);
+
+    // pickup: the first Take walks onto the item, the second picks it up
+    await give(bot, 'lobster');
+    const spot = await bot.coord();
+    await held(bot, 5, 379);
+    await cheat(bot, `tele ${spot.level},${spot.x >> 6},${spot.z >> 6},${(spot.x & 63) + 1},${spot.z & 63}`);
+    const take = () =>
+        send(bot, ClientGameProt.OPOBJ3, buf => {
+            buf.p2_alt3(379);
+            buf.p2_alt3(spot.x);
+            buf.p2_alt2(spot.z);
+        });
+    take();
+    await cycles(3);
+    const c0 = await bot.coord();
+    check(c0.x === spot.x && c0.z === spot.z && slotOf(bot, 379) < 0, `first Take walks onto the item without picking it up (${c0.x},${c0.z})`);
+    take();
+    await cycles(2);
+    check(slotOf(bot, 379) >= 0, 'second Take picks it up');
+
+    await give(bot, 'ring_of_dueling_8');
+    await held(bot, 4, 2552);
+    check(bot.chat === 2459 && bot.texts.get(2460) === 'Where would you like to go?', `ring rub menu (${bot.chat}, ${bot.texts.get(2460)})`);
+    let from = bot.messages.length;
+    bot.ifButton(2462); // Runecraft
+    await cycles(2);
+    let c = await bot.coord();
+    check(c.x === 3040 && c.z === 4840 && since(bot, from).includes('You teleport to the abyssal rift') && since(bot, from).includes('You can feel the magical aura in the air'), `Runecraft -> ${c.x},${c.z}`);
+    check((await getvar(bot, 'allstar_duelring')) === 1, 'duelring left set after the rift (BUG)');
+    await held(bot, 4, 2552);
+    bot.ifButton(2461); // Jad: Hans' menu opens first
+    await cycles(1);
+    check(bot.chat === 2459 && bot.texts.get(2461) === 'Yea i wanna go own n00bs!', "Jad opens Hans' menu");
+    from = bot.messages.length;
+    bot.ifButton(2461);
+    await cycles(2);
+    c = await bot.coord();
+    check(c.x === 2837 && c.z === 9581 && since(bot, from).includes("You teleport to the TzTok-Jad's lair") && (await getvar(bot, 'allstar_duelring')) === 0, `Hans option 1 -> Jad ${c.x},${c.z}`);
+    check(slotOf(bot, 2552) >= 0, 'ring of dueling(8) keeps its charges');
+
+    // holy book: "Preach" menu, three lines 7 cycles apart, then the sermon resets
+    await give(bot, 'saradominbook_complete');
+    await held(bot, 3, 3840);
+    check(bot.chat === 2480 && bot.texts.get(2481) === 'Select an Option' && bot.texts.get(2482) === 'Wedding rights', 'holy book menu');
+    bot.ifButton(2482);
+    await cycles(1);
+    check((await getvar(bot, 'allstar_sermons')) === 1 && (await getvar(bot, 'allstar_books')) === 1, 'wedding sermon started');
+    await cycles(16);
+    check((await getvar(bot, 'allstar_sermons')) === 0 && (await getvar(bot, 'allstar_books')) === 0, 'sermon finished and reset after ~15 cycles');
+
 
     bot.close();
 }
