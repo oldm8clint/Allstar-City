@@ -30,6 +30,7 @@ How to contribute: `allstar/CONTRIBUTING.md`. Owner-requested extras: `allstar/Q
 | Login refused for names/IPs in `data/allstar/bannedusers.txt` / `bannedips.txt` | `::banuser`, `::ipban` |
 | Build snapshot race fix | incremental builds sometimes missed new configs |
 | `engine/.env` overrides `data/config/world.json` on every start | each checkout keeps its ports in `.env` |
+| The web socket takes the player address from `CF-Connecting-IP` / `X-Forwarded-For` on loopback connections; management, setup, login, friend and logger servers listen on 127.0.0.1 | hosting behind a tunnel (`allstar/HOSTING.md`) |
 
 ## Platform: 377 content on the 289 web stack
 
