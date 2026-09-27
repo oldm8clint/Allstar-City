@@ -33,6 +33,8 @@ check(true, '::mypos');
 since = bot.messages.length;
 bot.cheat('players');
 await bot.waitForMessage(/There are currently \d+ players!/, 5000, since);
+// the interface opens at the end of the server cycle, after the message
+await bot.until(() => bot.main !== -1, 2000, 'an interface').catch(() => {});
 check(bot.main !== -1, `::players opened interface ${bot.main}`);
 
 since = bot.messages.length;

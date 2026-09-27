@@ -1,8 +1,11 @@
-// Headless 377 client for testing Allstar-City against a running server.
+// Headless client for testing Allstar-City against a running server.
 //
-// It logs in like the Java client, records game messages, interfaces, inventories and stats,
-// and can send the client packets our tests need. Run test files with the engine's tsx:
+// It logs in like the web client (Client-TS, revision 289 protocol), records game messages,
+// interfaces, inventories and stats, and can send the client packets our tests need. Run test
+// files with the engine's tsx:
 //   cd engine && npx tsx ../allstar/tests/<file>.ts
+// The server address defaults to this checkout's engine/.env (NODE_PORT, WEB_PORT); BOT_HOST,
+// BOT_PORT and BOT_WEB_PORT or the connect() options override it.
 import crypto from 'crypto';
 import fs from 'fs';
 import net from 'net';
@@ -15,6 +18,28 @@ import ClientGameProt from '../../engine/src/network/game/client/ClientGameProt.
 import ServerGameProt from '../../engine/src/network/game/server/ServerGameProt.js';
 
 const ENGINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../engine');
+const REVISION = 289;
+
+// NODE_PORT and WEB_PORT from engine/.env, so tests reach the server of the checkout they run in
+function engineEnv(): Record<string, string> {
+    const env: Record<string, string> = {};
+    try {
+        for (const line of fs.readFileSync(path.join(ENGINE, '.env'), 'utf8').split(/\r?\n/)) {
+            const match = /^\s*([A-Z_]+)\s*=\s*(.*?)\s*$/.exec(line);
+            if (match) {
+                env[match[1]] = match[2];
+            }
+        }
+    } catch {
+        // no .env: engine defaults
+    }
+    return env;
+}
+
+const ENV = engineEnv();
+const DEFAULT_HOST = process.env.BOT_HOST ?? '127.0.0.1';
+const DEFAULT_PORT = Number(process.env.BOT_PORT ?? ENV.NODE_PORT ?? 43594);
+const DEFAULT_WEB_PORT = Number(process.env.BOT_WEB_PORT ?? ENV.WEB_PORT ?? 80);
 
 const serverProts = new Map<number, ServerGameProt>();
 for (const value of Object.values(ServerGameProt)) {
@@ -104,7 +129,7 @@ export default class Bot {
         return bot;
     }
 
-    private async login({ host = '127.0.0.1', port = 43595, webPort = 81, username, password = 'test' }: BotOptions) {
+    private async login({ host = DEFAULT_HOST, port = DEFAULT_PORT, webPort = DEFAULT_WEB_PORT, username, password = 'test' }: BotOptions) {
         const crcs = new Uint8Array(await (await fetch(`http://${host}:${webPort}/crc${Date.now()}`)).arrayBuffer()).slice(0, 36);
 
         this.socket = net.connect({ host, port });
@@ -149,7 +174,7 @@ export default class Bot {
         login.p1(16);
         login.p1(encrypted.length + 1 + 36 + 1 + 1 + 2);
         login.p1(255);
-        login.p2(377);
+        login.p2(REVISION);
         login.p1(0); // high memory
         login.pdata(crcs, 0, crcs.length);
         login.p1(encrypted.length);
@@ -247,10 +272,10 @@ export default class Bot {
                 const size = buf.g2();
                 const objs: Obj[] = [];
                 for (let slot = 0; slot < size; slot++) {
-                    const id = buf.g2_alt3();
-                    let count = buf.g1_alt2();
+                    const id = buf.g2();
+                    let count = buf.g1();
                     if (count === 255) {
-                        count = buf.g4_alt1();
+                        count = buf.g4();
                     }
                     objs.push(id === 0 ? null : { id: id - 1, count });
                 }
@@ -274,9 +299,9 @@ export default class Bot {
                 break;
             }
             case ServerGameProt.UPDATE_STAT: {
-                const stat = buf.g1_alt2();
-                const level = buf.g1();
+                const stat = buf.g1();
                 const xp = buf.g4();
+                const level = buf.g1();
                 this.stats[stat] = { level, xp };
                 break;
             }
@@ -320,97 +345,36 @@ export default class Bot {
         this.send(ClientGameProt.RESUME_PAUSEBUTTON, buf => buf.p2(com));
     }
 
+    // The 289 protocol writes every field as a plain big-endian short, in the same order for all five ops.
     opNpc(op: number, nid: number) {
         const prot = [ClientGameProt.OPNPC1, ClientGameProt.OPNPC2, ClientGameProt.OPNPC3, ClientGameProt.OPNPC4, ClientGameProt.OPNPC5][op - 1];
-        this.send(prot, buf => {
-            if (op === 1 || op === 4 || op === 5) {
-                buf.p2_alt1(nid);
-            } else if (op === 2) {
-                buf.p2_alt2(nid);
-            } else {
-                buf.p2_alt3(nid);
-            }
-        });
+        this.send(prot, buf => buf.p2(nid));
     }
 
     opLoc(op: number, x: number, z: number, loc: number) {
         const prot = [ClientGameProt.OPLOC1, ClientGameProt.OPLOC2, ClientGameProt.OPLOC3, ClientGameProt.OPLOC4, ClientGameProt.OPLOC5][op - 1];
         this.send(prot, buf => {
-            if (op === 1) {
-                buf.p2_alt2(x);
-                buf.p2_alt1(z);
-                buf.p2_alt1(loc);
-            } else if (op === 2) {
-                buf.p2(loc);
-                buf.p2(x);
-                buf.p2_alt2(z);
-            } else if (op === 3) {
-                buf.p2_alt2(z);
-                buf.p2_alt1(loc);
-                buf.p2_alt3(x);
-            } else if (op === 4) {
-                buf.p2(x);
-                buf.p2_alt1(z);
-                buf.p2(loc);
-            } else {
-                buf.p2_alt1(loc);
-                buf.p2_alt1(z);
-                buf.p2(x);
-            }
+            buf.p2(x);
+            buf.p2(z);
+            buf.p2(loc);
         });
     }
 
     opHeld(op: number, obj: number, slot: number, com: number) {
         const prot = [ClientGameProt.OPHELD1, ClientGameProt.OPHELD2, ClientGameProt.OPHELD3, ClientGameProt.OPHELD4, ClientGameProt.OPHELD5][op - 1];
         this.send(prot, buf => {
-            if (op === 1) {
-                buf.p2_alt2(com);
-                buf.p2_alt1(slot);
-                buf.p2_alt1(obj);
-            } else if (op === 2) {
-                buf.p2_alt1(com);
-                buf.p2_alt1(obj);
-                buf.p2_alt2(slot);
-            } else if (op === 3) {
-                buf.p2_alt3(slot);
-                buf.p2_alt3(obj);
-                buf.p2_alt1(com);
-            } else if (op === 4) {
-                buf.p2_alt1(slot);
-                buf.p2_alt2(obj);
-                buf.p2(com);
-            } else {
-                buf.p2_alt1(slot);
-                buf.p2_alt3(obj);
-                buf.p2_alt3(com);
-            }
+            buf.p2(obj);
+            buf.p2(slot);
+            buf.p2(com);
         });
     }
 
     invButton(op: number, obj: number, slot: number, com: number) {
         const prot = [ClientGameProt.INV_BUTTON1, ClientGameProt.INV_BUTTON2, ClientGameProt.INV_BUTTON3, ClientGameProt.INV_BUTTON4, ClientGameProt.INV_BUTTON5][op - 1];
         this.send(prot, buf => {
-            if (op === 1) {
-                buf.p2_alt2(obj);
-                buf.p2(com);
-                buf.p2(slot);
-            } else if (op === 2) {
-                buf.p2_alt2(slot);
-                buf.p2_alt1(obj);
-                buf.p2_alt1(com);
-            } else if (op === 3) {
-                buf.p2_alt1(obj);
-                buf.p2_alt3(slot);
-                buf.p2(com);
-            } else if (op === 4) {
-                buf.p2_alt3(com);
-                buf.p2_alt1(slot);
-                buf.p2(obj);
-            } else {
-                buf.p2_alt3(slot);
-                buf.p2_alt3(obj);
-                buf.p2_alt1(com);
-            }
+            buf.p2(obj);
+            buf.p2(slot);
+            buf.p2(com);
         });
     }
 
