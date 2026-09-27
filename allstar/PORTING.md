@@ -4,7 +4,7 @@ Goal: a 1:1 recreation of Allstar-Scape v2 (2008, Moparscape/317) on the Lost Ci
 the revision 377 (May 2006) game data, played in a web browser. The original Java source in
 `allstar/legacy` is the specification (`allstar/spec` explains it): every behaviour there is
 reproduced, and Lost City gameplay that Allstar-Scape did not have is removed.
-How to contribute: `allstar/CONTRIBUTING.md`. Owner-requested extras: `allstar/QUIRKS.md`.
+How to contribute: `allstar/CONTRIBUTING.md`. Hosting: `allstar/HOSTING.md`.
 
 ## Layout
 
@@ -16,7 +16,7 @@ How to contribute: `allstar/CONTRIBUTING.md`. Owner-requested extras: `allstar/Q
 | `webclient/` | Lost City Client-TS `289` web client (git subtree) + 377 support; built into `engine/public/client` |
 | `allstar/legacy/` | Original Allstar-Scape v2 source (logs and player data removed) |
 | `allstar/spec/` | Behaviour inventory of the original source (commands, NPC/item handlers, objects/buttons, dialogues/quests, NPCs/combat/rules, items) |
-| `allstar/tools/` | `generate.mjs` (+ `gen/` steps), `lookup.mjs`, `build-client.mjs` |
+| `allstar/tools/` | `generate.mjs` (+ `gen/` steps), `lookup.mjs`, `build-webclient.mjs`, `setrank.mjs`, `models/` |
 | `allstar/tests/` | Headless test bot and tests |
 
 ## Engine changes
@@ -57,14 +57,14 @@ Each runs in its own git worktree (`D:\Desktop\Allstar-City.worktrees\<name>`, b
 | --- | --- | --- |
 | lead (main) | world spawns, login/new player, command framework, XP, engine commands, generator, test bot | done |
 | shops | every shop, Allstar pricing and sell rules, shop-opening NPC options | merged |
-| npcs | NPC clicks, 71 dialogues, banks, pickpocketing, quests, clue scrolls | in progress |
+| npcs | NPC clicks, 71 dialogues, banks, pickpocketing, quests, clue scrolls | merged |
 | objects | 509 placed / 67 removed objects, object clicks (coin trees, stalls, chests, stairs, doors...), item-on-object | merged |
 | items | item data from item.cfg, equipment rules, food/potions/bones, item-on-item, bank, trade | merged |
-| combat | NPC system (HP, max hit, respawn, aggression), drops, player combat, specials, prayers, death, PvP zones, magic | in progress |
+| combat | NPC system (HP, max hit, respawn, aggression), drops, player combat, specials, prayers, death, PvP zones, magic | merged |
 | ui | remaining commands, emote-tab teleports, level-ups, 99 broadcasts, tabs/texts | merged |
 | customitems | items with ids >= 7956: 154 objs `allstar_item_<id>` (obj id = Allstar id), enum `allstar_items`, models converted from the OSRS cache by `allstar/tools/models` (can also read a 317 client cache); stand-ins: Summoning cape/(t)/hood, 9540, 14819, 15181 | merged |
-| platform | 377 content on the 289 engine + Lost City web client | in progress |
-| lead (after merge) | QUIRKS dupes, remove leftover Lost City gameplay, hosting setup, docs | todo |
+| platform | 377 content on the 289 engine + Lost City web client | merged |
+| lead (after merge) | owner-requested extras, remove leftover Lost City gameplay, hosting setup, docs | hosting and docs done; the rest in progress |
 
 ## Known deviations from Allstar-Scape
 
