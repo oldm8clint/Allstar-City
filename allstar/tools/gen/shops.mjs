@@ -358,11 +358,18 @@ export default function shops({ legacy, packs, content, writeGenerated, report }
         return entry ? Math.floor(entry.value) : 1;
     };
     const itemName = id => items.first.get(id)?.name ?? `!! NOT EXISTING ITEM !!! - ID:${id}`;
-    // GetUnnotedItem compares names with ==, so only the note's own item.cfg entry matches and
-    // it is skipped for a "Swap this note at any bank for a..." description: the result is 0.
+    // GetUnnotedItem, fixed at the owner's request: the original compared names with == and so
+    // always returned item 0 ("Dwarf remains"). Now a sold note becomes the first item.cfg entry
+    // with the note's name that is not itself a note (falling back to id - 1).
+    const unnotedByName = new Map();
+    for (const [id, entry] of items.first) {
+        if (!entry.desc.startsWith(NOTE_DESC) && !unnotedByName.has(entry.name)) {
+            unnotedByName.set(entry.name, id);
+        }
+    }
     const unnote = id => {
-        const entry = items.last.get(id);
-        return entry && !entry.desc.startsWith(NOTE_DESC) ? id : 0;
+        const found = unnotedByName.get(items.first.get(id)?.name);
+        return found !== undefined && found !== id ? found : id - 1;
     };
 
     // A missing key gives the default (0 unless set, so obj enums need default=null). String enums
@@ -410,13 +417,13 @@ export default function shops({ legacy, packs, content, writeGenerated, report }
     enumBlock('allstar_shop_sellable', 'obj', 'boolean', 'no', objIds.filter(id => flags.sellable(id)).map(id => [objName(id), 'yes']));
     enumBlock('allstar_shop_isnote', 'obj', 'boolean', 'no', objIds.filter(id => flags.isNote(id)).map(id => [objName(id), 'yes']));
     enumBlock('allstar_shop_stackable', 'obj', 'boolean', 'no', objIds.filter(id => flags.stackable(id)).map(id => [objName(id), 'yes']));
-    // GetUnnotedItem: item 0 unless the note's description is not the usual one
+    // GetUnnotedItem (fixed): note -> unnoted item
     enumBlock(
         'allstar_shop_unnote',
         'obj',
         'namedobj',
         objName(0),
-        objIds.filter(id => flags.isNote(id) && unnote(id) !== 0).map(id => [objName(id), objName(unnote(id))])
+        objIds.filter(id => flags.isNote(id) && objName(unnote(id)) !== undefined).map(id => [objName(id), objName(unnote(id))])
     );
     writeGenerated('configs/shops.enum', enums);
 
